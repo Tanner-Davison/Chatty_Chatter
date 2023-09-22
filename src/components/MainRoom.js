@@ -10,6 +10,7 @@ const MainRoom = ({ mainAccess, setMainAccess }) => {
     const [socket, setSocket] = useState(false)
     useEffect(() => {
         joinRoom();
+        console.log(socket);
 		});
     const joinRoom = () => {
         if (!socket) {
