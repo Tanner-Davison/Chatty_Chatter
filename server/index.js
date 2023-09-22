@@ -14,19 +14,26 @@ const io = new Server(server, {
 		methods: ["GET", "POST", "DELETE", ""],
 	},
 });
-
+numUsers = 0;
 io.on("connection", (socket) => {
 	console.log(`User Connected:${socket.id}`);
-
+    numUsers++
+    console.log({NUMBEROFUSERS: numUsers});
 	socket.on("join_room", (data) => {
 		socket.join(data);
 	});
 	socket.on("send_mesage", (data) => {
-		socket.to(data.room).emit("receive_message", data);
+        socket.to(data.room).emit("receive_message", data);
+        
 		console.log({
 			USER_MESSAGE: `User ${socket.id} sent ${data.message} from room ${data.room}`,
 		});
-	});
+    });
+    socket.on('leave', (data) => {
+        socket.disconnect();
+        numUsers--
+        console.log({ USER_DISCONNECTED: `USER ${socket.id} Disconnected from Room: ${data}`})
+    })
 });
 
 server.listen(3001, () => {
