@@ -15,10 +15,14 @@ const io = new Server(server, {
 	},
 });
 numUsers = 0;
+const tellLogged = () => {
+	console.log({Remaining_Logged_Users: numUsers});
+}
 io.on("connection", (socket) => {
 	console.log(`User Connected:${socket.id}`);
-    numUsers++
-    console.log({NUMBEROFUSERS: numUsers});
+	numUsers += 1
+	
+    console.log({USERS_LOGGED_IN: numUsers});
 	socket.on("join_room", (data) => {
 		socket.join(data);
 	});
@@ -31,8 +35,9 @@ io.on("connection", (socket) => {
     });
     socket.on('leave', (data) => {
         socket.disconnect();
-        numUsers--
+		numUsers--
         console.log({ USER_DISCONNECTED: `USER ${socket.id} Disconnected from Room: ${data}`})
+		tellLogged();
     })
 });
 
