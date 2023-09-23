@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 
-const MainRoom = ({ mainAccess, setMainAccess }) => {
+const MainRoom = ({  setMainAccess }) => {
     
 	const [message, setMessage] = useState("");
 	const [messageRecieved, setMessageRecieved] = useState([]);
 	const [room, setRoom] = useState(1);
-    const [allMessages, setAllMessages] = useState([]);
     const [socket, setSocket] = useState(false)
     useEffect(() => {
         joinRoom();
