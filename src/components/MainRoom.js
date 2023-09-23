@@ -6,7 +6,8 @@ const MainRoom = ({  setMainAccess }) => {
 	const [message, setMessage] = useState("");
 	const [messageRecieved, setMessageRecieved] = useState([]);
 	const [room, setRoom] = useState(1);
-    const [socket, setSocket] = useState(false)
+    const [socket, setSocket] = useState(false);
+	
     useEffect(() => {
         joinRoom();
         
