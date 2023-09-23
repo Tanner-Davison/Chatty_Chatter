@@ -3,6 +3,7 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const { CLIENT_RENEG_LIMIT } = require("tls");
 
 app.use(cors());
 
@@ -14,7 +15,7 @@ const io = new Server(server, {
 		methods: ["GET", "POST", "DELETE", ""],
 	},
 });
-numUsers = 0;
+let numUsers = 0;
 io.on("connection", (socket) => {
 	console.log(`User Connected:${socket.id}`);
     numUsers++
@@ -26,13 +27,19 @@ io.on("connection", (socket) => {
         socket.to(data.room).emit("receive_message", data);
         
 		console.log({
-			USER_MESSAGE: `User ${socket.id} sent ${data.message} from room ${data.room}`,
+			USER_MESSAGE: `User ${socket.id} sent ${data.message} to room ${data.room}`,
 		});
     });
     socket.on('leave', (data) => {
         socket.disconnect();
         numUsers--
-        console.log({ USER_DISCONNECTED: `USER ${socket.id} Disconnected from Room: ${data}`})
+        console.log(
+          {
+            USER_DISCONNECTED: `USER ${socket.id} Disconnected from Room: ${data}`,
+          },
+          { USERS_REMAINING: numUsers }
+        );
+
     })
 });
 
