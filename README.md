@@ -1,4 +1,4 @@
-# CapStone
+
 
 <h1>Chatter Matters </h1>
 Welcome to the official GitHub repository for the Gender vs Gender website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.
