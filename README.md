@@ -1,20 +1,20 @@
 
 
-<h1>Chatter Matters </h1>
-Welcome to the official GitHub repository for the Gender vs Gender website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.
+<h1>ChattyChatter.com </h1>
+Welcome to the official GitHub repository for the ChatterMatters website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.
 
 <h2>Overview</h2>
-Gender vs Gender is a dynamic platform where users can login, engage in active debates on various gender topics, and vote on the responses they resonate with the most. Every 30 minutes, a new topic is introduced, ensuring that the discussions remain fresh and engaging.
+Chatter Matters is a dynamic platform where users can login, engage in active debates on various gender topics, and vote on the responses they resonate with the most. Every 30 minutes, a new topic is introduced, ensuring that the discussions remain fresh and engaging.
 
 <h2>Features</h2>
 <h3>Live Debates:</h3> Connect to a live server and engage in real-time discussions.
-Dynamic Topics: Every half an hour, a new gender topic pops up, ready for your insights!
+Dynamic Topics: Every half an hour, a new topic pops up, ready for your insights!
 Community Engagement: Submit your responses and see what the community thinks.
 Voting System: Upvote the responses you agree with. The top-voted response earns points for the round.
 Database Integration: All answers are securely saved, ensuring that every voice is heard.
 
 <h2>Getting Started</h2>
-Head over to gender v/s gender and sign up.
+Head over to ChattyChatter.com and sign up.
 Once logged in, you'll be directed to the current live debate.
 Share your thoughts, vote on others, and let the best response win!
 
