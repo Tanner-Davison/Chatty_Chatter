@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import MainRoom from "./components/MainRoom";
 import Login from "./components/login/Login";
+import io from "socket.io-client"
+
 function App() {
   const [mainAccess, setMainAccess] = useState(false);
   const [loginPortalToggle, setLoginPortalToggle] = useState(true);
@@ -9,6 +11,10 @@ function App() {
     username: "",
     password: "",
   });
+  const [socket,setSocket]=useState(null)
+  const socketHandler = () =>{
+    return setSocket(io.connect("http://localhost:3001"));
+  }
   const createUserInfo = (username, password) => {
     setUserLoginInfo({ username: username, password: password });
     
@@ -32,7 +38,8 @@ function App() {
               <button
                 className={"mainAccessBtn"}
                 onClick={() => {
-                  setMainAccess(true);
+                  setMainAccess(true)
+                  socketHandler()
                 }}>
                 {" "}
                 Join Community Chatter
@@ -42,7 +49,7 @@ function App() {
         )}
 
         {mainAccess && (
-          <MainRoom mainAccess={mainAccess} setMainAccess={setMainAccess} userInfo={userLoginInfo} />
+          <MainRoom mainAccess={mainAccess} socket={socket}setMainAccess={setMainAccess} userInfo={userLoginInfo} />
         )}
       </div>
     </header>
