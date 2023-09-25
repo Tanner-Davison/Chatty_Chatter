@@ -11,6 +11,7 @@ function App() {
   });
   const createUserInfo = (username, password) => {
     setUserLoginInfo({ username: username, password: password });
+    
     return userLoginInfo;
   };
   useEffect(() => {
@@ -41,7 +42,7 @@ function App() {
         )}
 
         {mainAccess && (
-          <MainRoom mainAccess={mainAccess} setMainAccess={setMainAccess} />
+          <MainRoom mainAccess={mainAccess} setMainAccess={setMainAccess} userInfo={userLoginInfo} />
         )}
       </div>
     </header>

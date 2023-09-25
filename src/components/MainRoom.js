@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 
-const MainRoom = ({  setMainAccess }) => {
+const MainRoom = ({  setMainAccess, userInfo }) => {
     
 	const [message, setMessage] = useState("");
 	const [messageRecieved, setMessageRecieved] = useState([]);
@@ -20,6 +20,9 @@ const MainRoom = ({  setMainAccess }) => {
             socket.emit("join_room", room);
         }
     };
+	const sendUserInfo= (userInfo) =>{
+		socket.emit('userInfo', userInfo)
+	}
     const leaveMain = () => {
         setMainAccess(false)
         socket.emit('leave', room)
@@ -33,6 +36,8 @@ const MainRoom = ({  setMainAccess }) => {
         if (!socket) {
             return;
         }
+		sendUserInfo(userInfo);
+
         socket.on("receive_message", (data) => {
 			setMessageRecieved((prev)=> [...prev, data.message]);
 			console.log(messageRecieved);
@@ -50,7 +55,7 @@ const MainRoom = ({  setMainAccess }) => {
 							setRoom(event.target.value);
 						}}
 					/>
-					<button onClick={joinRoom}>Join Room</button>
+					<button type='submit'onClick={joinRoom}>Join Room</button>
 				</div>
 				<div className={"room-num-input"}>
 					<input
