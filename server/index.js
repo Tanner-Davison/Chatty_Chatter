@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
   numUsers++;
   console.log({ NUMBEROFUSERS: numUsers });
 
-  socket.on("userInfo", (data) => {
+  socket.on("user_info", (data) => {
     const user = new User({
       serverUserID: `${socket.id}`,
       username: `${data.username}`,
