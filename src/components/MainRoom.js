@@ -21,7 +21,7 @@ const MainRoom = ({  setMainAccess, userInfo }) => {
         }
     };
 	const sendUserInfo= (userInfo) =>{
-		socket.emit('userInfo', userInfo)
+		socket.emit('user_info', userInfo)
 	}
     const leaveMain = () => {
         setMainAccess(false)
