@@ -22,13 +22,39 @@ async function connect() {
 connect();
 
 const messagesSchema = new mongoose.Schema({
-  serverUserID: String,
-  username: String,
+  serverUserID: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
   messages: String,
   review: String,
 });
 
+const roomSchema = new mongoose.Schema({
+  room_number: {
+    type: Number,
+    required: true,
+  },
+  sent_by_user: {
+    type: mongoose.Schema.Types.ObjectId, // Using ObjectId for referencing
+    ref: "Message", // reference to the Message model
+    required: true,
+  },
+  username:{
+    type: String,
+    required:true,
+  },
+  message:{
+    type:String
+  }
+});
+
 const User = mongoose.model("User", messagesSchema);
+const Rooms = mongoose.model("Rooms", roomSchema);
 
 const io = new Server(server, {
   cors: {
@@ -43,23 +69,47 @@ io.on("connection", (socket) => {
   numUsers++;
   console.log({ NUMBEROFUSERS: numUsers });
 
-  socket.on("user_info", (data) => {
+socket.on("user_info", async (data) => {
+ User.findOne({ serverUserID: socket.id }).then((user)=>{
+if (!user) {
     const user = new User({
       serverUserID: `${socket.id}`,
       username: `${data.username}`,
       messages: "",
     });
     user.save();
-  });
-
+ }})
+  
+});
   socket.on("join_room", (data) => {
-    socket.join(data);
+    socket.join(data.room);
+    
+  User.findOne({ username: data.username }).then((user) => {
+    if (!user) {
+      console.log(`No user found with username: ${data.username}`);
+      return;
+    }
+
+    const room = new Rooms({
+      room_number: data.room,
+      sent_by_user: user._id,
+      username: data.username,
+      message: data.message
+    });
+
+    room
+      .save()
+      .then(() => {
+        console.log(`Room created successfully @ ${room.room_number}`);
+      })
+      .catch((err) => console.log("Error creating room", err));
   });
-  socket.on("send_mesage", (data) => {
+  });
+  socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data);
 
     console.log({
-      USER_MESSAGE: `User ${socket.id} sent ${data.message} to room ${data.room}`,
+      USER_MESSAGE: `User ${socket.id} sent ${data.message} to room ${data.room} @${data.timestamp}`,
     });
     User.findOneAndUpdate(
       { serverUserID: socket.id },
@@ -75,6 +125,8 @@ io.on("connection", (socket) => {
   });
   socket.on("leave", async (data) => {
     socket.disconnect();
+    User.collection.drop();
+    Rooms.collection.drop();
     numUsers--;
     // Fetch the user details before deleting
     const searchPerson = await User.findOne({
