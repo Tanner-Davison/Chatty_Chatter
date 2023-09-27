@@ -27,17 +27,18 @@ align-items: flex-end;
   width:50vw;
   background-color: #5fc9f8;
    border-radius: 25px;
+   width:fit-content;
 }
 .messagesContainer.receiver{
  position: relative;
  left:15rem;
   display: flex;
   flex-direction: row;
-  
+  width:fit-content;
   justify-content:center;
   border: 2px solid black;
   gap:1rem;
-  width:50vw;
+  padding:1px 30px;
   border-radius: 25px;
   background-color: #5fc9f8;
   
@@ -50,20 +51,27 @@ align-items: flex-end;
   right: 20px;
   color:white;
   padding: 20px;
+  z-index: 1;
 }
 .username.receiver{
-     position: absolute;
+  
+     display: flex;
+     align-items: flex-end;
+     justify-content: flex-end;
     top: 47px;
     left:110%;
     bottom: 1px;
-    display: flex;
-    right: 20px;
     color: white;
-    padding: 20px;
-  
+   
+
 }
 .messageBlockWrapper{
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap:100px;
+}
+.timestamp_hidden{
+display:flex;
+
 }

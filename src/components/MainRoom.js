@@ -126,8 +126,8 @@ const loadRoomHistory = async () => {
               // Message sent by current user
               return (
                 <>
-                  <div className={"messageBlockWrapper"}>
-                    <div key={index} className={"messagesContainer sender"}>
+                  <div key={index} className={"messageBlockWrapper"}>
+                    <div  className={"messagesContainer sender"}>
                       <h3>{msg.message}</h3>
                     </div>
                     <p className={"username sender"}>{msg.username} </p>
@@ -138,18 +138,26 @@ const loadRoomHistory = async () => {
             } else {
               // Message received from another user
               return (
-                <>
-                  <div className={"messageBlockWrapper"}>
-                    <div key={index} className={"messagesContainer receiver"}>
-                      <h3 className={"message_body"}>{msg.message}</h3>
-                    </div>
-                    <div className={"username receiver"}>
-                      <p>{msg.username}</p>
-                    </div>
-                    <p className={"timestamp"}>{msg.timestamp}</p>
-                  </div>
-                </>
-              );
+								<>
+                  <div
+                    draggable="true"
+                   
+										key={index}
+                    className={"messageBlockWrapper"}>
+                    
+										<div className={"messagesContainer receiver"}>
+											<h3 className={"message_body"}>{msg.message}</h3>
+										</div>
+										<div className={"timestamp_hidden"}>
+											<p className={"timestamp"}>{msg.timestamp}</p>
+										</div>
+
+										<div className={"username receiver"}>
+											<p style={{ color: "white" }}>{msg.sentBy}</p>
+										</div>
+									</div>
+								</>
+							);
             }
           })}
         </div>
