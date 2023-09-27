@@ -37,24 +37,25 @@ align-items: flex-end;
   position: relative;
     display: flex;
     align-items: flex-end; /* Vertically align the children in the middle */
-    justify-content:space-evenly; /* Put maximum space between the message body and timestamp */
-    gap: 50px; /* Or whatever gap you want between the message and the timestamp */
+    justify-content:center; /* Put maximum space between the message body and timestamp */
+    gap:none /* Or whatever gap you want between the message and the timestamp */
 }
 
 .timestamp_hidden {
-    display: none; /* hidden by default */
-    transition: all ease-in-out .04s;
+    transform: translateX(100%);   /* Initially push the timestamp to the right */
+    opacity: 0;                    /* Make it transparent */
+    visibility: hidden;            /* Make it non-interactive */
+    transition: transform 0.4s, opacity 0.4s, visibility 0.4s;   /* Add visibility to the transition */
 }
 
 .messageBlockWrapper:hover .timestamp_hidden {
-  
-    display: flex;
-    align-self: center;
-    justify-self: center;
+    transform: translateX(0);  /* Reset the position of the timestamp on hover */
+    opacity: 1;               /* Make the timestamp fully visible */
+    visibility: visible;      /* Make the timestamp interactable */
 }
 
-.messageBlockWrapper:hover .messagesContainer p {
-    transform: translateX(-100px); /* or adjust this value as needed */
+.messageBlockWrapper:hover .messagesContainer {
+    transform: translateX(-100px); /* Slide the entire messagesContainer to the left */
 }
 .sentBy{
  
