@@ -21,6 +21,7 @@ align-items: flex-end;
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: start;
     border: 3px solid black;
     border-radius: 25px;
     background-color: #5fc9f8;
@@ -65,12 +66,20 @@ align-items: flex-end;
   color:white;
   background-color: black;
 }
-p{
+p {
     width: 150px;
     font-size: 14px;
     display: flex;
-    right: -174px;
-    position: relative;
     color: white;
-    left: 175px;
+}
+
+.bodyusername {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.senderInfo {
+    align-self: flex-end; /* Align it to the right of its parent */
+    margin-top: 5px; /* Give a small top margin for spacing */
+    color:white;
 }

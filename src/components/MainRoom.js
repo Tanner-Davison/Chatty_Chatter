@@ -126,14 +126,13 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
 										<div className={"messagesContainer receiver"}>
 											<div className={"bodyusername"}>
 												<h3> {msg.message}</h3>
+												<p className={'senderInfo'}>sent by: {msg.sentBy}</p>
 											</div>
 										</div>
 										<div className={"timestamp_hidden"}>
 											<p className={"timestamp"}>{msg.timestamp}</p>
 										</div>
 									</div>
-
-									<p>sent by: {msg.sentBy}</p>
 								</>
 							);
             }
