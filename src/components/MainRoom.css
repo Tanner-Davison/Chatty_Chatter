@@ -28,6 +28,9 @@ align-items: flex-end;
     transition: transform 0.4s; 
     overflow: hidden;  /* Keep this to handle the slide effect */
     padding:10px;
+    
+    max-width: 300px; /* Adjust as needed */
+    word-wrap: break-word;
 }
 
 .username.sender, 
