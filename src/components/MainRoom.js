@@ -1,40 +1,31 @@
 import { useState, useEffect } from "react";
 import './MainRoom.css'
-
-
-
+import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
+import getCurrentTime from "./Utility-mainRoom/getTime";
 
 const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
-
-
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
   const [room, setRoom] = useState(1);
 
-  const joinRoom = () => {
+  const joinRoom = async () => {
     socket.emit("join_room", {
       room: room,
       username: userInfo.username,
       message: message,
     });
-  loadRoomHistory();
-  };
-const loadRoomHistory = async () => {
-  const response = await fetch(`http://localhost:3001/roomHistory/${room}`);
-  const data = await response.json();
 
-  // assuming the server returns an array of messages
-  if (data.messageHistory) {
-    setMessageRecieved(data.messageHistory);
-    console.log(messageRecieved)
-  }
-};
+    const messages = await loadRoomHistory(room);
+    setMessageRecieved(messages);
+  };
+
   const sendUserInfo = (userInfo) => {
     socket.emit("user_info", userInfo);
   };
   const leaveMain = () => {
     setMainAccess(false);
     socket.emit("leave", room);
+    socket.off("join_room",room)
   };
   const sendMessageFunc = () => {
     // Emit the message
@@ -52,29 +43,18 @@ const loadRoomHistory = async () => {
     setMessage("");
    
   };
-  const getCurrentTime = () => {
-    const date = new Date();
-    let year = String(date.getFullYear())
-    const month = String(date.getMonth() +1)
-    let hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    
-    const strTime = `${month}/${year} @${hours}:${minutes} ${ampm}`;
-    return strTime;
-  };
+ 
  
   useEffect(() => {
     if (!socket) return; // Prevent code from running if socket is null or undefined
-
-    if (mainAccess === true) {
-      joinRoom();
-      setMainAccess("undefined");
-      sendUserInfo(userInfo);
+    const init = async () => {
+      if (mainAccess === true) {
+				joinRoom();
+				setMainAccess("undefined");
+				sendUserInfo(userInfo);
+			}
     }
-    
+    init();
     const handleReceiveMessage = (data) => {
       setMessageRecieved((prev) => [
         ...prev,
@@ -139,23 +119,21 @@ const loadRoomHistory = async () => {
               // Message received from another user
               return (
 								<>
-                  <div
-                    draggable="true"
-                   
+									<div
+										draggable='true'
 										key={index}
-                    className={"messageBlockWrapper"}>
-                    
+										className={"messageBlockWrapper"}>
 										<div className={"messagesContainer receiver"}>
-											<h3 className={"message_body"}>{msg.message}</h3>
+											<div className={"bodyusername"}>
+												<h3> {msg.message}</h3>
+											</div>
 										</div>
 										<div className={"timestamp_hidden"}>
 											<p className={"timestamp"}>{msg.timestamp}</p>
 										</div>
-
-										<div className={"username receiver"}>
-											<p style={{ color: "white" }}>{msg.sentBy}</p>
-										</div>
 									</div>
+
+									<p>sent by: {msg.sentBy}</p>
 								</>
 							);
             }

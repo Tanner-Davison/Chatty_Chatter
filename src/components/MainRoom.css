@@ -14,64 +14,62 @@ flex-direction: column;
 align-items: flex-end;
 }
 
-.messagesContainer.sender{
+.messagesContainer.sender, 
+.messagesContainer.receiver {
+    /* Remove right/left positioning */
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid black;
+    border-radius: 25px;
+    background-color: #5fc9f8;
+    transition: transform 0.4s; 
+    overflow: hidden;  /* Keep this to handle the slide effect */
+    padding:10px;
+}
+
+.username.sender, 
+.username.receiver {
+    position: relative; /* We're no longer taking it out of the flow */
+}
+.messageBlockWrapper {
   position: relative;
-  right:15rem;
-  display: flex;
-  flex-direction: column;
-  
-  justify-content:center;
-  border: 3px solid black;
-  
-  gap:1rem;
-  width:50vw;
-  background-color: #5fc9f8;
-   border-radius: 25px;
-   width:fit-content;
+    display: flex;
+    align-items: flex-end; /* Vertically align the children in the middle */
+    justify-content:space-evenly; /* Put maximum space between the message body and timestamp */
+    gap: 50px; /* Or whatever gap you want between the message and the timestamp */
 }
-.messagesContainer.receiver{
- position: relative;
- left:15rem;
-  display: flex;
-  flex-direction: row;
-  width:fit-content;
-  justify-content:center;
-  border: 2px solid black;
-  gap:1rem;
-  padding:1px 30px;
-  border-radius: 25px;
-  background-color: #5fc9f8;
-  
+
+.timestamp_hidden {
+    display: none; /* hidden by default */
+    transition: all ease-in-out .04s;
 }
-.username.sender{
-  position: absolute;
-  left:-175px;
-  bottom:1px;
+
+.messageBlockWrapper:hover .timestamp_hidden {
+  
+    display: flex;
+    align-self: center;
+    justify-self: center;
+}
+
+.messageBlockWrapper:hover .messagesContainer p {
+    transform: translateX(-100px); /* or adjust this value as needed */
+}
+.sentBy{
+ 
   display: flex;
-  right: 20px;
+  bottom:0px;
+  right:0px;
   color:white;
-  padding: 20px;
-  z-index: 1;
+  background-color: black;
 }
-.username.receiver{
-  
-     display: flex;
-     align-items: flex-end;
-     justify-content: flex-end;
-    top: 47px;
-    left:110%;
-    bottom: 1px;
+p{
+    width: 150px;
+    font-size: 14px;
+    display: flex;
+    right: -174px;
+    position: relative;
     color: white;
-   
-
-}
-.messageBlockWrapper{
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  gap:100px;
-}
-.timestamp_hidden{
-display:flex;
-
+    left: 175px;
 }
