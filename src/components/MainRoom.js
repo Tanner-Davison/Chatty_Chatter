@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import './MainRoom.css'
+import '../App.css'
 import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
 import getCurrentTime from "./Utility-mainRoom/getTime";
 
@@ -98,7 +99,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
           />
           <button onClick={sendMessageFunc}>Send Message</button>
         </div>
-        <h1>Converstion: </h1>
+        <h1>Welcome to room #{room} </h1>
         <div>
           {messageRecieved.map((msg, index) => {
             console.log(msg.message)
@@ -106,35 +107,36 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
               // Message sent by current user
               return (
                 <>
-                  <div key={index} className={"messageBlockWrapper"}>
-                    <div  className={"messagesContainer sender"}>
-                      <h3>{msg.message}</h3>
+                  <div className={"messagesContainer"}>
+                    <div key={index} className={"container"}>
+                      <div className={"message-blue"}>
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>{msg.username}</p>
+                      <div className={"message-timestamp-left"}>
+                        <p>Sent: {msg.timestamp}</p>
+                      </div>
                     </div>
-                    <p className={"username sender"}>{msg.username} </p>
-                    <p>{msg.timestamp}</p>
                   </div>
                 </>
               );
             } else {
               // Message received from another user
               return (
-								<>
-									<div
-										draggable='true'
-										key={index}
-										className={"messageBlockWrapper"}>
-										<div className={"messagesContainer receiver"}>
-											<div className={"bodyusername"}>
-												<h3> {msg.message}</h3>
-												<p className={'senderInfo'}>sent by: {msg.sentBy}</p>
-											</div>
-										</div>
-										<div className={"timestamp_hidden"}>
-											<p className={"timestamp"}>{msg.timestamp}</p>
-										</div>
-									</div>
-								</>
-							);
+                <>
+                  <div className={"messagesContainer"}>
+                    <div key={index} className={"container"}>
+                      <div className={"message-green"}>
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>{msg.sentBy}</p>
+                      <div className={"message-timestamp-right"}>
+                        <p>Sent: {msg.timestamp}</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
             }
           })}
         </div>
