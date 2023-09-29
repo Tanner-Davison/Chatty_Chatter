@@ -102,25 +102,27 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
         <h1>Welcome to room #{room} </h1>
         <div>
           {messageRecieved.map((msg, index) => {
-            console.log(msg.message)
+            console.log(msg.username)
             if (msg.username === userInfo.username) {
               // Message sent by current user
               return (
-                <>
-                  <div className={"messagesContainer"}>
-                    <div key={index} className={"container"}>
-                      <div className={"message-blue"}>
-                        <p className={"message-content"}>{msg.message}</p>
-                      </div>
-                      <p className={"user"}>{msg.username}</p>
-                      <div className={"message-timestamp-left"}>
-                        <p>Sent: {msg.timestamp}</p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              );
-            } else {
+								<>
+									<div className={"messagesContainer"}>
+										<div
+											key={index}
+											className={"container"}>
+											<div className={"message-blue"}>
+												<p className={"message-content"}>{msg.message}</p>
+											</div>
+											<p className={"user"}>{msg.username}</p>
+											<div className={"message-timestamp-left"}>
+												<p>Sent: {msg.timestamp}</p>
+											</div>
+										</div>
+									</div>
+								</>
+							);
+            } else  {
               // Message received from another user
               return (
                 <>
@@ -129,7 +131,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
                       <div className={"message-green"}>
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
-                      <p className={"user"}>{msg.sentBy}</p>
+                      <p className={"user"}>{msg.sentBy ? msg.sentBy:msg.username }</p>
                       <div className={"message-timestamp-right"}>
                         <p>Sent: {msg.timestamp}</p>
                       </div>
