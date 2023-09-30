@@ -13,7 +13,11 @@ function App() {
   });
   const [socket,setSocket]=useState(null)
   const socketHandler = () =>{
-    return setSocket(io.connect("http://localhost:3001"));
+    return setSocket(io.connect("http://localhost:3001"),{
+      reconnection:true,
+      reconnectionAttempts: 20,
+      reconnectionDelay:2000,
+    });
   }
   const createUserInfo = (username, password) => {
     setUserLoginInfo({ username: username, password: password });

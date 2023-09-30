@@ -10,6 +10,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
   const [room, setRoom] = useState(1);
 
   const joinRoom = async () => {
+    console.log(room)
     socket.emit("join_room", {
       room: room,
       username: userInfo.username,
@@ -17,6 +18,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
     });
 
     const messages = await loadRoomHistory(room);
+
     setMessageRecieved(messages);
   };
 
@@ -41,36 +43,44 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
 
     // Update local state to include the new message
     setMessageRecieved((prev) => [...prev, newMessage]);
-    setMessage("");
    
   };
  
  
   useEffect(() => {
     if (!socket) return; // Prevent code from running if socket is null or undefined
-    const init = async () => {
+   
       if (mainAccess === true) {
+        sendUserInfo(userInfo);
 				joinRoom();
 				setMainAccess("undefined");
-				sendUserInfo(userInfo);
+        console.log('use effect ran')
 			}
-    }
-    init();
+    
+  
+
+    socket.on("error", (error) => {
+      console.error("Socket Error:", error);
+      
+    });
+
     const handleReceiveMessage = (data) => {
       setMessageRecieved((prev) => [
-        ...prev,
         {
           message: data.message,
           username: data.username,
           timestamp: getCurrentTime(),
         },
+        ...prev,
       ]);
     };
     setMessage("");
     socket.on("receive_message", handleReceiveMessage);
 
     return () => {
+      socket.off("error");
       socket.off("receive_message", handleReceiveMessage);
+      socket.off('join_room',joinRoom)
     };
     // eslint-disable-next-line
   }, [socket, messageRecieved]);
@@ -102,32 +112,29 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
         <h1>Welcome to room #{room} </h1>
         <div>
           {messageRecieved.map((msg, index) => {
-            console.log(msg.username)
             if (msg.username === userInfo.username) {
               // Message sent by current user
               return (
-								<>
-									<div className={"messagesContainer"}>
-										<div
-											key={index}
-											className={"container"}>
-											<div className={"message-blue"}>
-												<p className={"message-content"}>{msg.message}</p>
-											</div>
-											<p className={"user"}>{msg.username}</p>
-											<div className={"message-timestamp-left"}>
-												<p>Sent: {msg.timestamp}</p>
-											</div>
-										</div>
-									</div>
-								</>
-							);
+                <>
+                  <div key={index}  className={"messagesContainer"}>
+                    <div className={"container"}>
+                      <div className={"message-blue"}>
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>{msg.username}</p>
+                      <div className={"message-timestamp-left"}>
+                        <p>Sent: {msg.timestamp}</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
             } else  {
               // Message received from another user
               return (
                 <>
-                  <div className={"messagesContainer"}>
-                    <div key={index} className={"container"}>
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container"}>
                       <div className={"message-green"}>
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
