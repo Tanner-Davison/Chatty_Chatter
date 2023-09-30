@@ -8,7 +8,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
   const [room, setRoom] = useState(1);
-
+  const useTempName = userInfo.username;
   const joinRoom = async () => {
     console.log(room)
     socket.emit("join_room", {
@@ -112,7 +112,8 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
         <h1>Welcome to room #{room} </h1>
         <div>
           {messageRecieved.map((msg, index) => {
-            if (msg.username === userInfo.username) {
+            console.log(msg.sentBy, useTempName)
+            if (msg.sentBy === useTempName ) {
               // Message sent by current user
               return (
                 <>
@@ -121,7 +122,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
                       <div className={"message-blue"}>
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
-                      <p className={"user"}>{msg.username}</p>
+                      <p className={"user"}>{useTempName}</p>
                       <div className={"message-timestamp-left"}>
                         <p>Sent: {msg.timestamp}</p>
                       </div>

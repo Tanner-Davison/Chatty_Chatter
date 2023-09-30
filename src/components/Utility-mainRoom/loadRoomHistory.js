@@ -3,6 +3,7 @@ const loadRoomHistory = async (room) => {
     const data = await response.json();
 
     if (data.messageHistory) {
+        console.log(data.messageHistory)
         return data.messageHistory;
     } else {
         return [];
