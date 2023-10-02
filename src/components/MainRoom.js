@@ -122,7 +122,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
                       <div className={"message-blue"}>
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
-                      <p className={"user"}>{useTempName}</p>
+                      <p className={"user"}>@{useTempName}</p>
                       <div className={"message-timestamp-left"}>
                         <p>Sent: {msg.timestamp}</p>
                       </div>
@@ -139,11 +139,12 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
                       <div className={"message-green"}>
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
-                      <p className={"user"}>{msg.sentBy ? msg.sentBy:msg.username }</p>
+                      <p className={"user"}>@{msg.sentBy ? msg.sentBy:useTempName}</p>
                       <div className={"message-timestamp-right"}>
                         <p>Sent: {msg.timestamp}</p>
                       </div>
                     </div>
+                    
                   </div>
                 </>
               );

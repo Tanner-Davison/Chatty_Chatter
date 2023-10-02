@@ -69,10 +69,10 @@ p {
   transition: transform 0.5s;
 }
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
-
-  width: 100%;
+  width:100%;
   padding: 10px;
 }
 
@@ -172,7 +172,9 @@ p {
 .messagesContainer {
   display: flex;
   position: relative;
-  width: 50vw;
-  height:50%;
+  width: 35vw;
+  height:100px;
+  
+  
 
 }
