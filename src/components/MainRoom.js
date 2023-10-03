@@ -4,6 +4,7 @@ import "./MainRoom.css";
 import "../App.css";
 import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
 import getCurrentTime from "./Utility-mainRoom/getTime";
+import io from 'socket.io-client';
 
 const MainRoom = () => {
   const {
@@ -11,16 +12,17 @@ const MainRoom = () => {
     setUserLoginInfo,
     mainAccess,
     setMainAccess,
-    loginPortalToggle,
-    setLoginPortalToggle,
     socket,
+    setSocket
     
   } = useContext(LoginContext);
   
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
   const [room, setRoom] = useState(1);
-  const useTempName = userLoginInfo.username;
+  const useTempName = JSON.parse(localStorage.getItem('username'))
+
+
   const joinRoom = async () => {
     console.log(room);
     socket.emit("join_room", {
@@ -41,6 +43,7 @@ const MainRoom = () => {
     setMainAccess(false);
     socket.emit("leave", room);
     socket.off("join_room", room);
+    console.log('working')
   };
   const sendMessageFunc = () => {
     // Emit the message
@@ -49,6 +52,7 @@ const MainRoom = () => {
       room,
       timestamp: getCurrentTime(),
       username: userLoginInfo.username, // add this line
+      sentBy: userLoginInfo.username,
     };
 
     socket.emit("send_message", newMessage);
@@ -56,16 +60,26 @@ const MainRoom = () => {
     // Update local state to include the new message
     setMessageRecieved((prev) => [...prev, newMessage]);
   };
-
+ 
   useEffect(() => {
-    if (!socket) return; // Prevent code from running if socket is null or undefined
+    if (!socket){
+      console.log('there is no active socket')
+      setSocket(io.connect("http://localhost:3001"));
+     setUserLoginInfo({
+       username: JSON.parse(localStorage.getItem('username')),
+       password: JSON.parse(localStorage.getItem('password')),
+     });
+     
+      return 
+    } // Prevent code from running if socket is null or undefined
 
     if (mainAccess === true) {
       sendUserInfo(userLoginInfo);
       joinRoom();
-      setMainAccess("undefined");
+      setMainAccess(false);
       console.log("use effect ran");
     }
+   
 
     socket.on("error", (error) => {
       console.error("Socket Error:", error);
@@ -88,10 +102,16 @@ const MainRoom = () => {
       socket.off("error");
       socket.off("receive_message", handleReceiveMessage);
       socket.off("join_room", joinRoom);
+   
     };
     // eslint-disable-next-line
   }, [socket, messageRecieved]);
-
+ useEffect(() => {
+  if(userLoginInfo.username !== ""){
+joinRoom();
+  }
+   
+ }, [userLoginInfo]);
   return (
     <div className="App">
       <div className="header">

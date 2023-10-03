@@ -1,18 +1,33 @@
 import { useState, useContext } from "react";
 import "./Login.css";
 import { LoginContext } from "../contexts/LoginContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-	const {loginPortalToggle,setLoginPortalToggle, createUserInfo} = useContext(LoginContext)
+	const {createUserInfo, setMainAccess, setLoginPortalToggle} = useContext(LoginContext)
 	
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const navigate = useNavigate();
 
-	const submitHandler = (event) => {
+	const handleLoginSuccess =(event) =>{
 		event.preventDefault();
+		if(username.includes('@') & username.length > 1){
+			setMainAccess(false);
+			setLoginPortalToggle(false)
+			submitHandler();
+			localStorage.setItem('username', JSON.stringify(username))
+			localStorage.setItem('password', JSON.stringify(password))
+		}
 		createUserInfo(username, password);
 
-		setLoginPortalToggle("false");
+		
+	}
+	const submitHandler = (event) => {
+	
+		
+		navigate("/serverfinder");
+		
 	};
 	return (
 		<>
@@ -46,7 +61,7 @@ const Login = () => {
 					<button
 						className={"loginFormSubmitBtn"}
 						type='submit'
-						onClick={submitHandler}>
+						onClick={handleLoginSuccess}>
 						Create New User
 					</button>
 				</div>

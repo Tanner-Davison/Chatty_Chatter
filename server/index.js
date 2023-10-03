@@ -173,6 +173,7 @@ socket.on("join_room", async (data) => {
     socket.disconnect();
     User.collection.drop();
     Rooms.collection.drop();
+    console.log('working')
     numUsers--;
    
     const searchPerson = await User.findOne({

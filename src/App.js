@@ -2,10 +2,27 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import MainRoom from "./components/MainRoom";
 import Login from "./components/login/Login";
-import io from "socket.io-client";
+import CurrentServers from "./currentServers/CurrentServers";
 import { LoginContext } from "./components/contexts/LoginContext";
 
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  Link,
+  RouterProvider,
+} from "react-router-dom";
+
 function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/" element={<Login />} />
+        <Route path="/serverfinder" element={<CurrentServers/>}/>
+        <Route path="/chatroom" element={<MainRoom />} />
+    </>
+    )
+  );
   const [mainAccess, setMainAccess] = useState(false);
   const [loginPortalToggle, setLoginPortalToggle] = useState(true);
   const [socket, setSocket] = useState(null);
@@ -14,13 +31,7 @@ function App() {
     password: "",
   });
 
-  const socketHandler = () => {
-    return setSocket(io.connect("http://localhost:3001"), {
-      reconnection: true,
-      reconnectionAttempts: 20,
-      reconnectionDelay: 2000,
-    });
-  };
+ 
   const createUserInfo = (username, password) => {
     setUserLoginInfo({ username: username, password: password });
 
@@ -43,39 +54,32 @@ function App() {
         setSocket,
         createUserInfo,
       }}>
-      <header className={"App"}>
-        <div className={"App-body"}>
-          {!mainAccess && (
-            <>
-              {loginPortalToggle === true ? (
-                <Login
-                  sendUserInfo={createUserInfo}
-                  loginToggle={setLoginPortalToggle}
-                />
-              ) : (
-                <button
-                  className={"mainAccessBtn"}
-                  onClick={() => {
-                    setMainAccess(true);
-                    socketHandler();
-                  }}>
-                  {" "}
-                  Join Community Chatter
-                </button>
-              )}
-            </>
-          )}
+      <RouterProvider router={router}>
+        <header className={"App"}>
+          <div className={"App-body"}>
+            {!mainAccess && (
+              <>
+                {loginPortalToggle === true ? (
+                  <Login
+                    
+                  />
+                ) : (
+                 <CurrentServers/>
+                )}
+              </>
+            )}
 
-          {mainAccess && (
-            <MainRoom
-              mainAccess={mainAccess}
-              socket={socket}
-              setMainAccess={setMainAccess}
-              userInfo={userLoginInfo}
-            />
-          )}
-        </div>
-      </header>
+            {mainAccess && (
+              <MainRoom
+                mainAccess={mainAccess}
+                socket={socket}
+                setMainAccess={setMainAccess}
+                userInfo={userLoginInfo}
+              />
+            )}
+          </div>
+        </header>
+      </RouterProvider>
     </LoginContext.Provider>
   );
 }
