@@ -1,19 +1,31 @@
-import { useState, useEffect } from "react";
-import './MainRoom.css'
-import '../App.css'
+import { useState, useEffect, useContext } from "react";
+import { LoginContext } from "./contexts/LoginContext";
+import "./MainRoom.css";
+import "../App.css";
 import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
 import getCurrentTime from "./Utility-mainRoom/getTime";
 
-const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
+const MainRoom = () => {
+  const {
+    userLoginInfo,
+    setUserLoginInfo,
+    mainAccess,
+    setMainAccess,
+    loginPortalToggle,
+    setLoginPortalToggle,
+    socket,
+    
+  } = useContext(LoginContext);
+  
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
   const [room, setRoom] = useState(1);
-  const useTempName = userInfo.username;
+  const useTempName = userLoginInfo.username;
   const joinRoom = async () => {
-    console.log(room)
+    console.log(room);
     socket.emit("join_room", {
       room: room,
-      username: userInfo.username,
+      username: userLoginInfo.username,
       message: message,
     });
 
@@ -22,13 +34,13 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
     setMessageRecieved(messages);
   };
 
-  const sendUserInfo = (userInfo) => {
-    socket.emit("user_info", userInfo);
+  const sendUserInfo = (userLoginInfo) => {
+    socket.emit("user_info", userLoginInfo);
   };
   const leaveMain = () => {
     setMainAccess(false);
     socket.emit("leave", room);
-    socket.off("join_room",room)
+    socket.off("join_room", room);
   };
   const sendMessageFunc = () => {
     // Emit the message
@@ -36,32 +48,27 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
       message: message,
       room,
       timestamp: getCurrentTime(),
-      username: userInfo.username, // add this line
+      username: userLoginInfo.username, // add this line
     };
 
     socket.emit("send_message", newMessage);
 
     // Update local state to include the new message
     setMessageRecieved((prev) => [...prev, newMessage]);
-   
   };
- 
- 
+
   useEffect(() => {
     if (!socket) return; // Prevent code from running if socket is null or undefined
-   
-      if (mainAccess === true) {
-        sendUserInfo(userInfo);
-				joinRoom();
-				setMainAccess("undefined");
-        console.log('use effect ran')
-			}
-    
-  
+
+    if (mainAccess === true) {
+      sendUserInfo(userLoginInfo);
+      joinRoom();
+      setMainAccess("undefined");
+      console.log("use effect ran");
+    }
 
     socket.on("error", (error) => {
       console.error("Socket Error:", error);
-      
     });
 
     const handleReceiveMessage = (data) => {
@@ -80,7 +87,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
     return () => {
       socket.off("error");
       socket.off("receive_message", handleReceiveMessage);
-      socket.off('join_room',joinRoom)
+      socket.off("join_room", joinRoom);
     };
     // eslint-disable-next-line
   }, [socket, messageRecieved]);
@@ -102,7 +109,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
         </div>
         <div className={"room-num-input"}>
           <input
-            placeholder={message !== "" ? message: "Message..."}
+            placeholder={message !== "" ? message : "Message..."}
             onChange={(event) => {
               setMessage(event.target.value);
             }}
@@ -112,12 +119,12 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
         <h1>Welcome to room #{room} </h1>
         <div>
           {messageRecieved.map((msg, index) => {
-            console.log(msg.sentBy, useTempName)
-            if (msg.sentBy === useTempName ) {
+            console.log(msg.sentBy, useTempName);
+            if (msg.sentBy === useTempName) {
               // Message sent by current user
               return (
                 <>
-                  <div key={index}  className={"messagesContainer"}>
+                  <div key={index} className={"messagesContainer"}>
                     <div className={"container"}>
                       <div className={"message-blue"}>
                         <p className={"message-content"}>{msg.message}</p>
@@ -130,7 +137,7 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
                   </div>
                 </>
               );
-            } else  {
+            } else {
               // Message received from another user
               return (
                 <>
@@ -139,12 +146,13 @@ const MainRoom = ({ setMainAccess, mainAccess, userInfo, socket }) => {
                       <div className={"message-green"}>
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
-                      <p className={"user"}>@{msg.sentBy ? msg.sentBy:useTempName}</p>
+                      <p className={"user"}>
+                        @{msg.sentBy ? msg.sentBy : useTempName}
+                      </p>
                       <div className={"message-timestamp-right"}>
                         <p>Sent: {msg.timestamp}</p>
                       </div>
                     </div>
-                    
                   </div>
                 </>
               );

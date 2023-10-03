@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./Login.css";
+import { LoginContext } from "../contexts/LoginContext";
 
-const Login = ({ sendUserInfo, loginToggle }) => {
+const Login = () => {
+	const {loginPortalToggle,setLoginPortalToggle, createUserInfo} = useContext(LoginContext)
+	
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
 	const submitHandler = (event) => {
 		event.preventDefault();
-		sendUserInfo(username, password);
+		createUserInfo(username, password);
 
-		loginToggle("false");
+		setLoginPortalToggle("false");
 	};
 	return (
 		<>
