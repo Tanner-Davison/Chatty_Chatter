@@ -28,12 +28,3 @@
     transform: rotate(360deg);
   }
 }
-.mainAccessBtn{
-  width:100px;
-  height: 100px;
-  border: 3px outset black;
-  color: white;
-  background-color: black;
-  border-radius: 10px;
-  
-}

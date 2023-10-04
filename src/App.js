@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import MainRoom from "./components/MainRoom";
 import Login from "./components/login/Login";
-import CurrentServers from "./currentServers/CurrentServers";
+import CurrentServers from "./components/currentServers/CurrentServers";
 import { LoginContext } from "./components/contexts/LoginContext";
 
 import {

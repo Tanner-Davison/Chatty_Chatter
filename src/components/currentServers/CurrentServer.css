@@ -1,0 +1,16 @@
+.mainAccessBtn{
+  width:100px;
+  height: 100px;
+  border: 3px outset black;
+  color: white;
+  background-color: black;
+  border-radius: 10px;
+  
+}
+.server-selection{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+}

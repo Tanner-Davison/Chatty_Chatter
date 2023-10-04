@@ -21,7 +21,7 @@ const MainRoom = () => {
   const [messageRecieved, setMessageRecieved] = useState([]);
   const [room, setRoom] = useState(1);
   const useTempName = JSON.parse(localStorage.getItem('username'))
-
+  const [roomChange,setRoomChange] = useState('')
 
   const joinRoom = async () => {
     console.log(room);
@@ -30,7 +30,7 @@ const MainRoom = () => {
       username: userLoginInfo.username,
       message: message,
     });
-
+    setRoomChange(room)
     const messages = await loadRoomHistory(room);
 
     setMessageRecieved(messages);
@@ -113,75 +113,84 @@ joinRoom();
    
  }, [userLoginInfo]);
   return (
-    <div className="App">
-      <div className="header">
-        <div className={"room-num-input"}>
-          <input
-            placeholder="Room #"
-            value={room}
-            onChange={(event) => {
-              setRoom(event.target.value);
-            }}
-          />
-          <button type="submit" onClick={joinRoom}>
-            Join Room
-          </button>
-        </div>
-        <div className={"room-num-input"}>
-          <input
-            placeholder={message !== "" ? message : "Message..."}
-            onChange={(event) => {
-              setMessage(event.target.value);
-            }}
-          />
-          <button onClick={sendMessageFunc}>Send Message</button>
-        </div>
-        <h1>Welcome to room #{room} </h1>
-        <div>
-          {messageRecieved.map((msg, index) => {
-            console.log(msg.sentBy, useTempName);
-            if (msg.sentBy === useTempName) {
-              // Message sent by current user
-              return (
-                <>
-                  <div key={index} className={"messagesContainer"}>
-                    <div className={"container"}>
-                      <div className={"message-blue"}>
-                        <p className={"message-content"}>{msg.message}</p>
-                      </div>
-                      <p className={"user"}>@{useTempName}</p>
-                      <div className={"message-timestamp-left"}>
-                        <p>Sent: {msg.timestamp}</p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              );
-            } else {
-              // Message received from another user
-              return (
-                <>
-                  <div key={index} className={"messagesContainer"}>
-                    <div className={"container"}>
-                      <div className={"message-green"}>
-                        <p className={"message-content"}>{msg.message}</p>
-                      </div>
-                      <p className={"user"}>
-                        @{msg.sentBy ? msg.sentBy : useTempName}
-                      </p>
-                      <div className={"message-timestamp-right"}>
-                        <p>Sent: {msg.timestamp}</p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              );
-            }
-          })}
-        </div>
-      </div>
-      <button onClick={leaveMain}>Leave Room</button>
-    </div>
-  );
+		<div className='App'>
+			<div className='header'>
+				<div>
+					<h2 style={{color:'white'}}>{userLoginInfo.username} </h2>
+				</div>
+				<div className={"room-num-input"}>
+					<input
+						placeholder='Room #'
+						value={room}
+						onChange={(event) => {
+							setRoom(event.target.value);
+						}}
+					/>
+					<button
+						type='submit'
+						onClick={joinRoom}>
+						Join Room
+					</button>
+				</div>
+				<div className={"room-num-input"}>
+					<input
+						placeholder={message !== "" ? message : "Message..."}
+						onChange={(event) => {
+							setMessage(event.target.value);
+						}}
+					/>
+					<button onClick={sendMessageFunc}>Send Message</button>
+				</div>
+				<h1>Welcome to room #{roomChange} </h1>
+				<div className={'all-messages'}>
+					{messageRecieved.map((msg, index) => {
+						console.log(msg.sentBy, useTempName);
+						if (msg.sentBy === userLoginInfo.username) {
+							// Message sent by current user
+							return (
+								<>
+									<div
+										key={index}
+										className={"messagesContainer"}>
+										<div className={"container blue"}>
+											<div className={"message-blue"}>
+												<p className={"message-content"}>{msg.message}</p>
+											</div>
+											<p className={"user"}>@{userLoginInfo.username}</p>
+											<div className={"message-timestamp-left"}>
+												<p>Sent: {msg.timestamp}</p>
+											</div>
+										</div>
+									</div>
+								</>
+							);
+						} else {
+							// Message received from another user
+							return (
+								<>
+									<div
+										key={index}
+										className={"messagesContainer"}>
+										<div className={"container green"}>
+											<div className={"message-green"}>
+												<p className={"message-content"}>{msg.message}</p>
+											</div>
+											<p className={"user"}>
+												{msg.sentBy ? msg.sentBy : useTempName}
+											</p>
+											<div className={"message-timestamp-right"}>
+												<p>Delivered: {msg.timestamp}</p>
+											</div>
+										</div>
+									</div>
+								</>
+							);
+						}
+					})}
+				</div>
+			</div>
+			<button onClick={leaveMain}>Leave Room</button>
+		</div>
+	);
 };
 export default MainRoom;

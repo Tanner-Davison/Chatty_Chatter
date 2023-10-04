@@ -85,7 +85,7 @@ let numUsers = 0;
 io.on("connection", (socket) => {
   console.log(`User Connected:${socket.id}`);
   numUsers++;
-  console.log({ NUMBEROFUSERS: numUsers });
+  console.log({ Active_Users: numUsers });
 
   socket.on("user_info", async (data) => {
     User.findOne({ serverUserID: socket.id }).then((user) => {
