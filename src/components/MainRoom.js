@@ -146,6 +146,7 @@ joinRoom();
 					{messageRecieved.map((msg, index) => {
 						console.log(msg.sentBy, useTempName);
 						if (msg.sentBy === userLoginInfo.username) {
+            console.log(msg.timestamp)
 							// Message sent by current user
 							return (
 								<>
@@ -156,11 +157,11 @@ joinRoom();
 											<div className={"message-blue"}>
 												<p className={"message-content"}>{msg.message}</p>
 											</div>
-											<p className={"user"}>@{userLoginInfo.username}</p>
+											<p className={"user"}>{userLoginInfo.username}</p>
 											<div className={"message-timestamp-left"}>
-												<p>Sent: {msg.timestamp}</p>
-											</div>
+												<p>Sent:{msg.timestamp}</p>
 										</div>
+											</div>
 									</div>
 								</>
 							);

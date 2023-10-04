@@ -34,13 +34,13 @@ p {
   border: 1px solid #97c6e3;
   border-radius: 10px;
   transition: transform 0.4s;
+  z-index: 3;
 }
 .message-green {
   position: relative;
   display: flex;
   flex-direction: row;
   margin-right: 20px;
-  margin-bottom: 10px;
   padding: 10px;
   background-color: #53d769;
   width: 200px;
@@ -50,6 +50,7 @@ p {
   border: 1px solid #97c6e3;
   border-radius: 10px;
   transition: transform 0.4s;
+ z-index: 3;
 }
 .message-content {
   position: relative;
@@ -60,15 +61,24 @@ p {
 }
 .message-timestamp-left {
   display: none;
-  transition: transform 0.5s;
-  
+  opacity: 0%;
+  transition: transform ease-in-out 0.9s;
+  transition: opacity 3s;
+ 
 }
 .message-timestamp-left >p{
-  color:black;
+  color:white;
+}
+.message-timestamp-right >p{
+  color:white;
 }
 .message-timestamp-right {
-  display: none;
+  opacity:0%;
+  display:none;
   transition: transform 0.5s;
+  transition: opacity 0.5s;
+ z-index: 1;
+ 
 }
 .container {
   position: relative;
@@ -79,47 +89,40 @@ p {
   padding: 10px;
 }
 
-.container:hover .message-timestamp-left {
-  display: flex;
-  position: absolute;
-  top:50%;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85em;
-  font-weight: 300;
-  bottom:50%;
-  width: -moz-fit-content;
-  width: fit-content;
-  left: 100px;
-  transform: translateX(-100px);
+.container:hover >.message-timestamp-left {
+     display: flex;
+     opacity: 100%;
+    position: absolute;
+    bottom: 50%;
+    top:40%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85em;
+    font-weight: 300;
+   font-weight: bold;
+    right: 50%;
+    width: fit-content;
+    transform: translateX(100px);
   
 }
 .container:hover .message-timestamp-right {
-  display: flex;
-  position: relative;
-  align-items: center;
-  font-size: 0.85em;
-  font-weight: 300;
-  top: -56px;
-  width: -moz-fit-content;
-  width: fit-content;
-  right: 272px; /* Changed from left */
-  transform: translateX(-55px); /* Reverse direction */
-  color: white;
+         display: flex;
+   opacity: 100%;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    font-size: 0.85em;
+    font-weight: 300;
+    font-weight: bold;
+    right: 70%;
+    top: 16%;
+    bottom: 50%;
+    width: -moz-fit-content;
+    width: fit-content;
+    transform: translateX(100px);
+   
 }
-.user {
-  display: flex;
-  position: relative;
-  font-size: 0.65em;
-  font-weight: 300;
-  top: -50px;
-  background-color: white;
-  color:black;
-  width: -moz-fit-content;
-  width: fit-content;
-  left: 347px;
-  transition: opacity 0.4s;
-}
+
 
 .message-blue:after {
   content: "";
@@ -165,30 +168,68 @@ p {
   top: 0px;
   left: 25px;
 }
-.container:hover .message-blue {
+.container:hover > .message-blue  {
   transform: translateX(-180px);
+}
+.container.blue:hover .user{
+  transform:translateX(-180px)
+}
+.container.green:hover .user{
+  transform:translateX(180px)
 }
 .container:hover .message-green {
   transform: translateX(
-    -180px
+    180px
   ); 
 }
 .container:hover .user {
-  opacity: 0%;
+  display:none;
+  
 }
 .container.blue{
   display: flex;
   align-items: flex-end;
-
   margin:15px;
 }
+.container.green{
+    display: flex;
+  align-items: flex-start;
+  margin:15px;
+}
+.container.green > .user{
+   display: flex;
+  position: relative;
+  font-size: 0.65em;
+  font-weight: 300;
+  background-color: black;
+  color:white;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-right:30px;
+  transition: opacity 0.4s;
+}
+.container.blue >.user{
+ display: flex;
+  position: relative;
+  font-size: 0.65em;
+  font-weight: 300;
+  background-color: black;
+  color:white;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-right:30px;
+  transition: opacity 0.4s;
+transition: transform 0.4s;
+z-index: 3;
+}
+
 
 .messagesContainer {
   display: flex;
   position: relative;
-  width: 35vw;
+  width: 100%;
   height:fit-content;
-  background-color:snow;
+  background-color:black;
   border-radius: 25px;
 }
 .all-messages{
