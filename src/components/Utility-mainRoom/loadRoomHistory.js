@@ -8,6 +8,7 @@ const loadRoomHistory = async (room) => {
     } else {
         return [];
     }
+    
 }
 
 export {loadRoomHistory}

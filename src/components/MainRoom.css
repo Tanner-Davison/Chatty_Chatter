@@ -10,8 +10,9 @@
 }
 .room-num-input {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  gap:15px;
+  align-items: center;
 }
 
 p {
@@ -172,7 +173,7 @@ p {
   transform: translateX(-180px);
 }
 .container.blue:hover .user{
-  transform:translateX(-180px)
+  transform:translateX(-280px)
 }
 .container.green:hover .user{
   transform:translateX(180px)
@@ -240,4 +241,11 @@ z-index: 3;
 }
 h1{
   color:white;
+}
+.headerContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width:100%;
 }

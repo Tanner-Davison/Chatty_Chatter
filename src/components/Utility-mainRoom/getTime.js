@@ -1,19 +1,33 @@
 const getCurrentTime = () => {
-	const date = new Date();
-	let year = String(date.getFullYear());
-	const month = String(date.getMonth() + 1);
-	let hours = String(date.getHours()).padStart(2, "0");
-	const minutes = String(date.getMinutes()).padStart(2, "0");
-	const ampm = hours >= 12 ? "pm" : "am";
-	hours = hours % 12;
-	hours = hours ? hours : 12;
+  const date = new Date();
+  let year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  let hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? String(hours).padStart(2, "0") : "12"; // Convert to string and pad
 
-	const strTime = (
+  const strTime = `${month}/${year} @ ${hours}:${minutes} ${ampm}`;
+  return strTime;
+};
+
+const getCurrentTimeJSX = () => {
+  const date = new Date();
+  let year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  let hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? String(hours).padStart(2, "0") : "12"; // Convert to string and pad
+
+  return (
     <>
-      {month}/{year} <br />
-     @ {hours}:{minutes} {ampm}
+      {month}/{year} <br />@ {hours}:{minutes} {ampm}
     </>
   );
-	return strTime;
 };
+
+export { getCurrentTimeJSX };
 export default getCurrentTime;
