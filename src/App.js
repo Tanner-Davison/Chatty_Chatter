@@ -18,7 +18,7 @@ function App() {
     createRoutesFromElements(
       <>
         <Route path="/" element={<Login />} />
-        <Route path="/serverfinder" element={<CurrentServers/>}/>
+        <Route path="/currentservers" element={<CurrentServers/>}/>
         <Route path="/chatroom" element={<MainRoom />} />
     </>
     )
@@ -33,7 +33,7 @@ function App() {
 
  
   const createUserInfo = (username, password) => {
-    setUserLoginInfo({ username: username, password: password });
+    setUserLoginInfo({ username: username.toLowerCase(), password: password });
 
     return userLoginInfo;
   };

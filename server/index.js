@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
+
 const url =
   "mongodb+srv://tboydavison:Luliann465$@gendervsgender.iid016a.mongodb.net/";
 
@@ -41,6 +42,7 @@ const messagesSchema = new mongoose.Schema({
     required: true,
   },
   message: String,
+ 
 });
 
 const roomSchema = new mongoose.Schema({
@@ -67,7 +69,7 @@ const roomSchema = new mongoose.Schema({
       timestamp: String,
     },
   ],
-  users_in_room: [String],
+   users_in_room: [String],
 });
 
 const Rooms = mongoose.model("Rooms", roomSchema);
@@ -82,114 +84,134 @@ const io = new Server(server, {
 
 let numUsers = 0;
 io.on("connection", (socket) => {
-  console.log(`User Connected:${socket.id}`);
-  numUsers++;
-  console.log({ Active_Users: numUsers });
+  console.log(`Server Connected on:${socket.id}`);
+  socket.broadcast
+	numUsers++;
+	console.log({ Active_Users: numUsers });
 
-  socket.on("user_info", async (data) => {
-    User.findOne({ serverUserID: socket.id }).then((user) => {
-      if (!user) {
-        const user = new User({
-          serverUserID: `${socket.id}`,
-          username: `${data.username}`,
-          messages: "",
-        });
-        user.save();
-      }
-    });
-  });
-  socket.on("join_room", async (data) => {
-    socket.join(data.room);
+	socket.on("user_info", async (data) => {
+		User.findOne({ serverUserID: socket.id }).then((user) => {
+			if (!user) {
+				const user = new User({
+					serverUserID: `${socket.id}`,
+					username: `${data.username}`,
+					messages: "",
+				});
+				user.save();
+			}
+		});
+	});
+	socket.on("join_room", async (data) => {
+		socket.join(data.room);
 
-    User.findOne({ username: data.username }).then((user) => {
-      if (!user) {
-        console.log(`No user found with username: ${data.username}`);
-        return;
-      }
-      Rooms.findOne({ room_number: data.room }).then((existingRoom) => {
-        if (existingRoom) {
-          if (!existingRoom.users_in_room.includes(data.username)) {
-            existingRoom.users_in_room.push(data.username);
-            existingRoom
-              .save()
-              .then(() =>
-                console.log(`Added user ${data.username} to room ${data.room}`)
-              )
-              .catch((err) => console.error("Error adding user to room:", err));
-          }
-        } else {
-          const room = new Rooms({
-            room_number: data.room,
-            sent_by_user: user._id,
-            username: data.username,
-            message: data.message,
-            users_in_room: [data.username],
-          });
+		User.findOne({ username: data.username }).then((user) => {
+			if (!user) {
+				console.log(`No user found with username: ${data.username}`);
+				return;
+			}
+			Rooms.findOne({ room_number: data.room }).then((existingRoom) => {
+				if (existingRoom) {
+					if (!existingRoom.users_in_room.includes(data.username)) {
+						existingRoom.users_in_room.push(data.username);
+						existingRoom
+							.save()
+							.then(() =>
+								console.log(`Added user ${data.username} to room ${data.room}`)
+							)
+							.catch((err) => console.error("Error adding user to room:", err));
+					}
+				} else {
+					const room = new Rooms({
+						room_number: data.room,
+						sent_by_user: user._id,
+						username: data.username,
+						message: data.message,
+						users_in_room: [data.username],
+					});
 
-          room
-            .save()
-            .then(() => {
-              console.log(`Room created successfully @ ${room.room_number}`);
-            })
-            .catch((err) => console.log("Error creating room", err));
-        }
-      });
-    });
-  });
+					room
+						.save()
+						.then(() => {
+							console.log(`Room created successfully @ ${room.room_number}`);
+						})
+						.catch((err) => console.log("Error creating room", err));
+				}
+			});
+		});
+	});
 
-  socket.on("send_message", async (data) => {
-    // Notice the 'async' keyword here
-    socket.to(data.room).emit("receive_message", data);
+	socket.on("send_message", async (data) => {
+		// Notice the 'async' keyword here
+		socket.to(data.room).emit("receive_message", data);
 
-    console.log({
-      USER_MESSAGE: `User ${socket.id} sent ${data.message} to room ${data.room} @${data.timestamp}`,
-    });
+		console.log({
+			USER_MESSAGE: `User ${socket.id} sent ${data.message} to room ${data.room} @${data.timestamp}`,
+		});
 
-    try {
-      const updatedPerson = await User.findOneAndUpdate(
-        { serverUserID: socket.id },
-        { $set: { messages: data.message } },
-        { new: true, useFindAndModify: false }
-      );
-      console.log("Updated Person", updatedPerson);
+		try {
+			const updatedPerson = await User.findOneAndUpdate(
+				{ serverUserID: socket.id },
+				{ $set: { messages: data.message } },
+				{ new: true, useFindAndModify: false }
+			);
+			console.log("Updated Person", updatedPerson);
 
-      const room = await Rooms.findOne({ room_number: data.room });
-      if (room) {
-        room.messageHistory.push({
-          message: data.message,
-          sentBy: data.username,
-          timestamp: data.timestamp,
-        });
-        await room.save();
-      }
-    } catch (err) {
-      console.error("Error updating Person", err);
+			const room = await Rooms.findOne({ room_number: data.room });
+			if (room) {
+				room.messageHistory.push({
+					message: data.message,
+					sentBy: data.username,
+					timestamp: data.timestamp,
+				});
+				await room.save();
+			}
+		} catch (err) {
+			console.error("Error updating Person", err);
+		}
+	});
+
+	socket.on("leaveroom", async (data) => {
+		if (!socket) {
+			return;
+		}
+		socket.disconnect();
+		console.log("disconnected");
+		numUsers--;
+	});
+
+  socket.on("deleteRoom", async (data) => {
+    const roomOwner = await Rooms.findOne({ room_number: data.room, username: data.username })
+    if (roomOwner) {
+      console.log("_id",roomOwner._id)
+      await Rooms.deleteOne({ _id: roomOwner._id });
+      socket.disconnect();
+      return console.log(`Room deleted Successfully @ ${data.room}`)
     }
-  });
-  socket.on("leave", async (data) => {
+    const searchPerson = await Rooms.findOne({
+      room_number: `${data.room}`,
+			users_in_room: `${data.username}`,
+		});
+		if (searchPerson) {
+      await Rooms.updateOne({ room_number: `${data.room}`, users_in_room: `${data.username}` },
+      {$pull: {users_in_room: `${data.username}`}});
+			console.log({
+				USER_DELETED: `User ${data.username} data has been deleted from the room`,
+      });
+		} else {
+			console.log({ ERROR: `No user found in room with username: ${data.username}` });
+		}
     socket.disconnect();
     User.collection.drop();
     Rooms.collection.drop();
-    console.log("working");
-    numUsers--;
-
-    const searchPerson = await User.findOne({
-      serverUserID: `${socket.id}`,
-    });
-    if (searchPerson) {
-      console.log({
-        USER_DISCONNECTED: `USERNAME ${searchPerson.username} (${socket.id}) Disconnected from Room: ${data}`,
-        USERS_REMAINING: numUsers,
-      });
-
-      await User.deleteOne({ serverUserID: `${socket.id}` });
-      console.log({
-        USER_DELETED: `User ${socket.id} data has been deleted from the database`,
-      });
-    } else {
-      console.log({ ERROR: `No user found with ID ${socket.id}` });
-    }
   });
+
+ socket.on("reconnection_attempt", () => {
+   console.log('recconection attempted');
+ });
+ 
+ socket.on("reconnect", () => {
+   console.log('Connection Restored.');
+ });
 });
 
 server.listen(3001, () => {

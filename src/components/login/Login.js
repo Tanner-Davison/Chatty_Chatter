@@ -16,6 +16,7 @@ const Login = () => {
 			setMainAccess(false);
 			setLoginPortalToggle(false)
 			submitHandler();
+			
 			localStorage.setItem('username', JSON.stringify(username))
 			localStorage.setItem('password', JSON.stringify(password))
 		}
@@ -26,7 +27,7 @@ const Login = () => {
 	const submitHandler = (event) => {
 	
 		
-		navigate("/serverfinder");
+		navigate("/currentservers");
 		
 	};
 	return (

@@ -173,7 +173,7 @@ p {
   transform: translateX(-180px);
 }
 .container.blue:hover .user{
-  transform:translateX(-280px)
+  transform:translateX(-180px)
 }
 .container.green:hover .user{
   transform:translateX(180px)
@@ -189,7 +189,7 @@ p {
 }
 .container.blue{
   display: flex;
-  align-items: flex-end;
+ 
   margin:15px;
 }
 .container.green{
@@ -219,7 +219,7 @@ p {
   width: -moz-fit-content;
   width: fit-content;
   margin-right:30px;
-  transition: opacity 0.4s;
+  transition: opacity 1;
 transition: transform 0.4s;
 z-index: 3;
 }
