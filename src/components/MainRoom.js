@@ -98,25 +98,31 @@ const MainRoom = () => {
     socket.on("error", (error) => {
       console.error("Socket Error:", error);
     });
-    
-    socket.on("receive_message", async (data) => {
-      setMessageRecieved((prev) => [
-				...prev,
-				{
-					message: data.message,
-					username: data.username,
-					timestamp: getCurrentTime(),
-				},
-      ]);
-      const messages = await loadRoomHistory(room);
-      setMessageRecieved(messages);
-    
-    });
+    const handleReceiveMessage= (data)=>{
+      if(data.room !== room){
+        
+        return;
+  }
+setMessageRecieved((prev) => [
+  ...prev,
+  {
+    message: data.message,
+    username: data.username,
+    timestamp: getCurrentTime(),
+  },
+]);
+    }
+    socket.on("receive_message",handleReceiveMessage);
+      
+      // const messages = await loadRoomHistory(room);
+      // setMessageRecieved(messages);
+   
+  
 
     return () => {
       socket.off("error");
       socket.off("join_room", joinRoom);
-      
+      socket.off("receive_message",handleReceiveMessage);
     };
     // eslint-disable-next-line
   }, [socket, messageRecieved, isSocketConnected]);

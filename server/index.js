@@ -85,7 +85,7 @@ const io = new Server(server, {
 let numUsers = 0;
 io.on("connection", (socket) => {
   console.log(`Server Connected on:${socket.id}`);
-  socket.broadcast
+  
 	numUsers++;
 	console.log({ Active_Users: numUsers });
 
@@ -102,6 +102,11 @@ io.on("connection", (socket) => {
 		});
 	});
 	socket.on("join_room", async (data) => {
+    const rooms = io.sockets.adapter.sids[socket.id];
+    for (let room in rooms) {
+      socket.leave(room);
+    }
+   
 		socket.join(data.room);
 
 		User.findOne({ username: data.username }).then((user) => {
@@ -154,7 +159,7 @@ io.on("connection", (socket) => {
 				{ $set: { messages: data.message } },
 				{ new: true, useFindAndModify: false }
 			);
-			console.log("Updated Person", updatedPerson);
+			console.log("Updated Person", data.username);
 
 			const room = await Rooms.findOne({ room_number: data.room });
 			if (room) {
