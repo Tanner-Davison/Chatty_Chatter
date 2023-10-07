@@ -7,8 +7,8 @@ const getCurrentTime = () => {
   const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? String(hours).padStart(2, "0") : "12"; // Convert to string and pad
-
-  const strTime = `${month}/${year} @ ${hours}:${minutes} ${ampm}`;
+  
+  const strTime = `${month}/${year-2000} ${hours}:${minutes} ${ampm}`;
   return strTime;
 };
 
@@ -21,10 +21,10 @@ const getCurrentTimeJSX = () => {
   const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? String(hours).padStart(2, "0") : "12"; // Convert to string and pad
-
+  
   return (
     <>
-      {month}/{year} <br />@ {hours}:{minutes} {ampm}
+      {month}/{year-2000} <br /> {hours}:{minutes} {ampm}
     </>
   );
 };

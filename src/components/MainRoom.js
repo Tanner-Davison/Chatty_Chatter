@@ -157,6 +157,7 @@ const MainRoom = () => {
           <input
             placeholder={message !== "" ? message : "Message..."}
             onChange={(event) => setMessage(event.target.value)}
+            maxLength='255'
           />
           <button onClick={sendMessageFunc}>Send Message</button>
         </div>
@@ -172,7 +173,7 @@ const MainRoom = () => {
                     </div>
                     <p className={"user"}>{userLoginInfo.username}</p>
                     <div className={"message-timestamp-left"}>
-                      <p>Sent:{currentTime}</p>
+                      <p>{currentTime}</p>
                     </div>
                   </div>
                 </div>
@@ -189,7 +190,7 @@ const MainRoom = () => {
                       {msg.sentBy ? msg.sentBy : useTempName}
                     </p>
                     <div className={"message-timestamp-right"}>
-                      <p>Delivered: {msg.timestamp}</p>
+                      <p>{msg.timestamp}</p>
                     </div>
                   </div>
                 </div>
