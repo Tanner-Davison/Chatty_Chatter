@@ -62,9 +62,9 @@ p {
 }
 .message-timestamp-left {
   display: none;
-  opacity: 0%;
-  transition: transform ease-in-out 0.9s;
-  transition: opacity 3s;
+  opacity: 0;
+  transition: transform 0.9s;
+  transition-duration: opacity 3s;
  
 }
 .message-timestamp-left >p{
@@ -92,7 +92,7 @@ p {
 
 .container:hover >.message-timestamp-left {
      display: flex;
-     opacity: 100%;
+     opacity: 1;
     position: absolute;
     bottom: 50%;
     top:40%;
@@ -101,21 +101,21 @@ p {
     font-size: 0.85em;
     font-weight: 300;
    font-weight: bold;
-    right: 50%;
+    right:10%;
     width: fit-content;
     transform: translateX(100px);
   
 }
 .container:hover .message-timestamp-right {
          display: flex;
-   opacity: 100%;
+   opacity: 1;
     align-items: center;
     justify-content: center;
     position: absolute;
     font-size: 0.85em;
     font-weight: 300;
     font-weight: bold;
-    right: 70%;
+    right:92%;
     top: 16%;
     bottom: 50%;
     width: -moz-fit-content;
@@ -189,11 +189,13 @@ p {
 }
 .container.blue{
   display: flex;
- 
+  align-items: end;
+  
   margin:15px;
 }
 .container.green{
     display: flex;
+    justify-content: flex-end;
   align-items: flex-start;
   margin:15px;
 }
@@ -235,10 +237,14 @@ z-index: 3;
 }
 .all-messages{
   display:flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   background-color: black;
-  
+  width: 50%;
+  max-height: 800px; /* Set to your desired height */
+  overflow-y: auto;
+    scroll-behavior: smooth;
 }
+
 h1{
   color:white;
 }
