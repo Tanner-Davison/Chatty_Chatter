@@ -1,15 +1,13 @@
 const loadRoomHistory = async (room) => {
-    const response = await fetch(`http://localhost:3001/roomHistory/${room}`);
-    const data = await response.json();
+  const response = await fetch(`http://localhost:3001/roomHistory/${room}`);
+  const data = await response.json();
 
-    if (data.messageHistory) {
-        console.log(data.messageHistory);
-        return data.messageHistory;
+  if (data.messageHistory) {
+    console.log(data.messageHistory);
+    return data.messageHistory;
+  } else {
+    return [];
+  }
+};
 
-    } else {
-        return [];
-    }
-    
-}
-
-export {loadRoomHistory}
+export { loadRoomHistory };

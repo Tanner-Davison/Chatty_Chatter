@@ -9,30 +9,30 @@ height: 83vh;
   background-color: black;
 }
 button{
-                
-                    display: inline-block;
-                    outline: none;
-                    cursor: pointer;
-                    font-size: 14px;
-                    line-height: 1;
-                    border-radius: 500px;
-                    transition-property: background-color,border-color,color,box-shadow,filter;
-                    transition-duration: .3s;
-                    border: 1px solid transparent;
-                    letter-spacing: 2px;
-                    min-width: 160px;
-                    text-transform: uppercase;
-                    white-space: normal;
-                    font-weight: 700;
-                    text-align: center;
-                    padding: 10px 20px;
-                    color: #fff;
-                    background-color: #ea4335;
-                    height: 48px;
-                    &:hover{
-                        transform: scale(1.04);
-                        background-color: #34a853;
-                    }
+
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 160px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #ea4335;
+  height: 48px;
+  &:hover{
+  transform: scale(1.04);
+  background-color: #34a853;
+  }
                 
               }
 .room-num-input {
@@ -41,18 +41,15 @@ button{
   gap:15px;
   align-items: center;
 }
-
 p {
   width: 150px;
   font-size: 17px;
   color: white;
 }
-
 .message-content {
   position: relative;
   display: flex;
   flex-direction: column;
- 
   width:fit-content;
   min-width: 150px;
   padding: 4px;
@@ -63,7 +60,6 @@ p {
   opacity: 0;
   transition: transform 0.9s;
   transition-duration: opacity 3s;
- 
 }
 .message-timestamp-left >p{
   color:white;
@@ -76,8 +72,7 @@ p {
   display:none;
   transition: transform 0.5s;
   transition: opacity 0.5s;
- z-index: 1;
- 
+  z-index: 1;
 }
 .container {
   position: relative;
@@ -89,26 +84,23 @@ p {
 }
 
 .container:hover >.message-timestamp-left {
-     display: flex;
-     opacity: 1;
+    display: flex;
+    opacity: 1;
     position: absolute;
     bottom: 50%;
     top:20%;
-    
     align-items: center;
     justify-content: center;
     font-size: 0.85em;
     font-weight: 300;
-   font-weight: bold;
+    font-weight: bold;
     right:2%;
-     width: -moz-fit-content;
+    width: -moz-fit-content;
     width: fit-content;
-    
-  
 }
 .container:hover .message-timestamp-right {
-         display: flex;
-   opacity: 1;
+    display: flex;
+    opacity: 1;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -120,17 +112,13 @@ p {
     bottom: 50%;
     width: -moz-fit-content;
     width: fit-content;
-    
-   
 }
-
 .message-blue {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 10px;
-  
   margin-right:25px;
   background-color: #147efb;
   max-width: 500px;
@@ -138,7 +126,6 @@ p {
   max-height:auto;
   text-align: left;
   font: 400 0.9em "Open Sans", sans-serif;
- 
   border: 1px solid #1d1acb00;
   border-radius: 30px;
   transition: transform 0.4s;
@@ -168,7 +155,6 @@ p {
   border-left: 50px solid transparent;
   border-right: 15px solid transparent;
   top: 0;
- 
 }
 .message-blue:before {
   content: "";
@@ -180,7 +166,6 @@ p {
   border-right: 15px solid transparent;
   top: -1px;
   left: -15px;  
-  
 }
 .message-green:after {
   content: "";
@@ -206,21 +191,17 @@ p {
 }
 .container:hover > .message-blue  {
   transform: translateX(-100px);
- 
 }
 .container.blue:hover .user{
   transform:translateX(-100px);
-
 }
 .container.green:hover .user{
   transform:translateX(100px);
-
 }
 .container:hover .message-green {
   transform: translateX(100px); 
   z-index: 3;
 }
-
 .container.blue{
   display: flex;
   align-items: end;
@@ -258,16 +239,13 @@ p {
   width: fit-content;
   margin-right:30px;
   transition: opacity 1;
-transition: transform 0.4s;
-z-index: 3;
+ transition: transform 0.4s;
+ z-index: 3;
 }
-
-
 .messagesContainer {
   display: flex;
   position: relative;
   width: 100%;
-  
   height:fit-content;
   border-radius: 25px;
   background-color: #161a1d;
@@ -303,5 +281,4 @@ h1{
   align-items: center;
   justify-content: space-between;
   width:100%;
-  
 }
