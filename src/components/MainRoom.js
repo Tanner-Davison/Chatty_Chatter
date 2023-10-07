@@ -7,7 +7,7 @@ import getCurrentTime from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
 import { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import { useNavigate } from "react-router-dom";
-
+import Header from "./Header/Header";
 const MainRoom = () => {
   const {
     userLoginInfo,
@@ -141,7 +141,7 @@ const MainRoom = () => {
   return (
     <div className="App">
       <div className="header">
-        <div className={"headerContainer"}>
+        {/* <div className={"headerContainer"}>
           <h2 style={{ color: "white" }}>{userLoginInfo.username} </h2>
 
           <div className={"room-num-input"}>
@@ -151,7 +151,10 @@ const MainRoom = () => {
               Join Room
             </button>
           </div>
-        </div>
+        </div> */}
+       
+        <Header roomChanger={roomChanger} room={room}joinRoom={joinRoom}/>
+       
         <h1>Welcome to room #{room} </h1>
         <div className={"room-num-input"}>
           <input
@@ -193,6 +196,7 @@ const MainRoom = () => {
                       <p>{msg.timestamp}</p>
                     </div>
                   </div>
+                
                 </div>
               );
             }
@@ -218,5 +222,6 @@ const MainRoom = () => {
       </div>
     </div>
   );
+  
 };
 export default MainRoom;
