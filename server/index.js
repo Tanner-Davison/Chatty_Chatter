@@ -161,7 +161,7 @@ io.on("connection", (socket) => {
 			);
 			console.log("Updated Person", data.username);
 
-			const room = await Rooms.findOne({ room_number: data.room });
+			const room = await Rooms.findOne({ room_number: data.room }); 
 			if (room) {
 				room.messageHistory.push({
 					message: data.message,
@@ -174,7 +174,6 @@ io.on("connection", (socket) => {
 			console.error("Error updating Person", err);
 		}
 	});
-
 	socket.on("leaveroom", async (data) => {
 		if (!socket) {
 			return;

@@ -116,9 +116,6 @@ const MainRoom = () => {
     };
     socket.on("receive_message", handleReceiveMessage);
 
-    // const messages = await loadRoomHistory(room);
-    // setMessageRecieved(messages);
-
     return () => {
       socket.off("error");
       socket.off("join_room", joinRoom);
@@ -141,20 +138,8 @@ const MainRoom = () => {
   return (
     <div className="App">
       <div className="header">
-        {/* <div className={"headerContainer"}>
-          <h2 style={{ color: "white" }}>{userLoginInfo.username} </h2>
-
-          <div className={"room-num-input"}>
-            <h2 style={{ color: "white" }}>create Your own server!</h2>
-            <input placeholder="Room #" value={room} onChange={roomChanger} />
-            <button type="submit" onClick={joinRoom}>
-              Join Room
-            </button>
-          </div>
-        </div> */}
-       
+      
         <Header roomChanger={roomChanger} room={room}joinRoom={joinRoom}/>
-       
         <h1>Welcome to room #{room} </h1>
         <div className={"room-num-input"}>
           <input

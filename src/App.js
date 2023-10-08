@@ -4,7 +4,9 @@ import MainRoom from "./components/MainRoom";
 import Login from "./components/login/Login";
 import CurrentServers from "./components/currentServers/CurrentServers";
 import { LoginContext } from "./components/contexts/LoginContext";
+import { MainRoomContext } from "./components/contexts/MainRoomContext";
 import Header from "./components/Header/Header";
+import Profile from "./components/Profile/Profile";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -20,6 +22,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/currentservers" element={<CurrentServers />} />
         <Route path="/chatroom" element={<MainRoom />} />
+        <Route path="/profile/:username" element={<Profile />} />
       </>
     )
   );
@@ -55,21 +58,13 @@ function App() {
       }}>
       <RouterProvider router={router}>
         <header className={"App"}>
-         
           <div className={"App-body"}>
-            <Header></Header>
-            {!mainAccess && (
-              <>{loginPortalToggle === true ? <Login /> : <CurrentServers />}</>
-            )}
-
-            {mainAccess && (
-              <MainRoom
-                mainAccess={mainAccess}
-                socket={socket}
-                setMainAccess={setMainAccess}
-                userInfo={userLoginInfo}
-              />
-            )}
+            <Header>
+              <Login />
+              <CurrentServers />
+              <MainRoom />
+              <Profile />
+            </Header>
           </div>
         </header>
       </RouterProvider>

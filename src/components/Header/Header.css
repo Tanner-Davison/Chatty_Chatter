@@ -1,12 +1,20 @@
-.header {
+.headerContainer {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-height: 83vh;
+  justify-content: space-between;
+  padding:5px;
+  height: 4rem;  
   gap: 5px;
-  width: 100vw;
   background-color: black;
+  border-bottom:3px solid white;
+}
+.room-num-input {
+  display: flex;
+  flex-direction: row;
+  gap:15px;
+  align-items: center;
 }
 button{
 
@@ -33,4 +41,16 @@ button{
   transform: scale(1.04);
   background-color: #34a853;
   }
+}
+.navLinks{
+    display: flex;
+    flex-direction: row;
+    gap:1rem;
+    
+}
+.navLinks a{
+    text-decoration: none;
+}
+.linkActive{
+color:red;
 }
