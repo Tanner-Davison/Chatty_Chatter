@@ -8,8 +8,8 @@
   height: 4rem;  
   gap: 5px;
   background-color: black;
-  border-bottom:3px solid white;
-  margin:-1px
+  /* border-bottom:3px solid white; */
+ 
 }
 .room-num-input {
   display: flex;

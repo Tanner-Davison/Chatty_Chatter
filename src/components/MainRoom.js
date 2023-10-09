@@ -136,76 +136,84 @@ const MainRoom = () => {
   }, [messageRecieved]);
 
   return (
-    <div className="App">
-      <div className="header">
-      
-        <Header roomChanger={roomChanger} room={room}joinRoom={joinRoom}/>
-        <h1>Welcome to room #{room} </h1>
-        <div className={"room-num-input"}>
-          <input
-            placeholder={message !== "" ? message : "Message..."}
-            onChange={(event) => setMessage(event.target.value)}
-            maxLength='255'
+    <>
+      <div className="App">
+        <div className="header">
+          <Header roomChanger={roomChanger} room={room} joinRoom={joinRoom} />
+          <div className={"all-messages"} ref={messagesStartRef}>
+            {messageRecieved.map((msg, index) => {
+              if (msg.sentBy === userLoginInfo.username) {
+                // Message sent by current user
+                return (
+                  <>
+                    <div key={index} className={"messagesContainer"}>
+                      <div className={"container blue"}>
+                        <div className={"message-blue"}>
+                          <p className={"message-content"}>{msg.message}</p>
+                        </div>
+                        <p className={"user"}>{userLoginInfo.username}</p>
+                        <div className={"message-timestamp-left"}>
+                          <p>{currentTime}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              } else {
+                // Message received from another user
+                return (
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container green"}>
+                      <div className={"message-green"}>
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>
+                        {msg.sentBy ? msg.sentBy : useTempName}
+                      </p>
+                      <div className={"message-timestamp-right"}>
+                        <p>{msg.timestamp}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+      <div className={"room-num-input-mainRoom"}>
+        <input
+          placeholder={message !== "" ? message : "Message..."}
+          onChange={(event) => setMessage(event.target.value)}
+          maxLength="255"
           />
-          <button onClick={sendMessageFunc}>Send Message</button>
-        </div>
-        <div className={"all-messages"} ref={messagesStartRef}>
-          {messageRecieved.map((msg, index) => {
-            if (msg.sentBy === userLoginInfo.username) {
-              // Message sent by current user
-              return (
-                <div key={index} className={"messagesContainer"}>
-                  <div className={"container blue"}>
-                    <div className={"message-blue"}>
-                      <p className={"message-content"}>{msg.message}</p>
-                    </div>
-                    <p className={"user"}>{userLoginInfo.username}</p>
-                    <div className={"message-timestamp-left"}>
-                      <p>{currentTime}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            } else {
-              // Message received from another user
-              return (
-                <div key={index} className={"messagesContainer"}>
-                  <div className={"container green"}>
-                    <div className={"message-green"}>
-                      <p className={"message-content"}>{msg.message}</p>
-                    </div>
-                    <p className={"user"}>
-                      {msg.sentBy ? msg.sentBy : useTempName}
-                    </p>
-                    <div className={"message-timestamp-right"}>
-                      <p>{msg.timestamp}</p>
-                    </div>
-                  </div>
-                
-                </div>
-              );
-            }
-          })}
-        </div>
+        <button onClick={sendMessageFunc}>Send Message</button>
       </div>
-      <button onClick={leaveRoom}>Leave Room</button>
-      <button onClick={deleteRoom}> Delete Room </button>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
-        {
-          <>
-            <h3>Status:</h3>
-            <h2
-              style={
-                isSocketConnected === "Connected"
+        <button onClick={leaveRoom}>Leave Room</button>
+        <button onClick={deleteRoom}> Delete Room </button>
+    
+          {
+            <>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+        }}>
+              <h3 style={{color:'white'}}>Status:</h3>
+              <h2
+                style={
+                  isSocketConnected === "Connected"
                   ? { color: "green" }
                   : { color: "red" }
-              }>
-              {isSocketConnected}
-            </h2>
-          </>
-        }
+                }>
+                {isSocketConnected}
+              </h2>
+                  </div>
+            </>
+          }
       </div>
-    </div>
+    </>
   );
   
 };

@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef,useEffect } from "react";
 import "./Login.css";
 import { LoginContext } from "../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
@@ -41,9 +41,15 @@ const Login = () => {
     }
     createUserInfo(username, password);
   };
+  const userExists = JSON.parse(localStorage.getItem('username'))|| null;
   const submitHandler = (event) => {
     navigate("/currentservers");
   };
+  useEffect(()=>{
+	if(userExists != null){
+		navigate('/currentservers')
+	}
+  })
   return (
     <>
       <div className={"login-element-wrapper"}>

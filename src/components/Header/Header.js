@@ -1,12 +1,16 @@
 import "./Header.css";
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import {useParams} from 'react-router-dom';
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Header = ({ joinRoom, roomChanger, room, socket }) => {
   const location = useLocation();
+
   const usernameLocal = JSON.parse(localStorage.getItem("username"));
-    
+  const navigate = useNavigate();
+  const logoutHandler = () => {
+    localStorage.clear();
+    navigate("/");
+  };
   const getLinkStyle = (path) => {
     return path === location.pathname ? "linkActive" : "linkInactive";
   };
@@ -14,7 +18,9 @@ const Header = ({ joinRoom, roomChanger, room, socket }) => {
   return (
     <div className={"headerContainer"}>
       <ul className={"navLinks"}>
-        <h1 className={'logo-font'}>Chatty Chatter</h1>
+        <Link to="/">
+          <h1 className={"logo-font"}>Chatty Chatter</h1>
+        </Link>
         <li>
           <Link to={"/"}>
             <h2 className={getLinkStyle("/")}>HOME</h2>
@@ -27,18 +33,17 @@ const Header = ({ joinRoom, roomChanger, room, socket }) => {
         </li>
         <li>
           <Link to={`/profile/${usernameLocal}`}>
-            {" "}
-            {/* Assuming this is the correct path for PROFILE */}
             <h2 className={getLinkStyle(`/profile/${usernameLocal}`)}>
               PROFILE
             </h2>
           </Link>
         </li>
+        <button type="button" onClick={() => logoutHandler()}>
+          LOGOUT
+        </button>
       </ul>
 
-      <h2 style={{ color: "white" }}>
-        {usernameLocal ? usernameLocal : `Create Account or Login`}{" "}
-      </h2>
+      <h2 style={{ color: "white" }}>{usernameLocal ? usernameLocal : ``}</h2>
       <div className={"room-num-input"}>
         <h2 style={{ color: "white" }}>Create Room</h2>
         <input

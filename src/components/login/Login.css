@@ -19,6 +19,7 @@ h2 {
     flex-direction: column;
     height: fit-content;
     align-items: center;
+    
 }
 .new-user-header{
     display:flex;
@@ -43,6 +44,7 @@ h2 {
     border-radius: 15px;
     border: 3px solid gray;
     padding: 30px;
+    margin-top:55%;
     gap: 10px;
     max-height: 500px;
     max-width: 500px;
@@ -124,6 +126,7 @@ label{
     width:30%;
     font-size: 2rem;
     text-align: center;
+    letter-spacing: 2px;
 
 }
 #closeBtn{
