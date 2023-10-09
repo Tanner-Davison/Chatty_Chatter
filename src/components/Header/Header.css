@@ -9,16 +9,30 @@
   gap: 5px;
   background-color: black;
   border-bottom:3px solid white;
+  margin:-1px
 }
 .room-num-input {
   display: flex;
   flex-direction: row;
-  gap:15px;
+  gap:1rem;
   align-items: center;
+  justify-content: center;
 }
-button{
+.logo-font{
+    font-family: 'Berkshire Swash', serif;
+    margin-right:1rem;
+}
+.logo-font:hover{
+    color:red;
+    cursor: pointer;
+    pointer-events:stroke;
 
-  display: inline-block;
+}
+.buttonHeader{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
   outline: none;
   cursor: pointer;
   font-size: 14px;
@@ -46,6 +60,8 @@ button{
     display: flex;
     flex-direction: row;
     gap:1rem;
+    align-items: center;
+    justify-content: center;
     
 }
 .navLinks a{
@@ -53,4 +69,11 @@ button{
 }
 .linkActive{
 color:red;
+}
+.roomInput{
+    margin:0;
+    border-radius: 7px;
+    height: 25px;
+    align-self: center;
+    width: 20%;
 }

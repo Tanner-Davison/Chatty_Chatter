@@ -14,6 +14,7 @@ const Header = ({ joinRoom, roomChanger, room, socket }) => {
   return (
     <div className={"headerContainer"}>
       <ul className={"navLinks"}>
+        <h1 className={'logo-font'}>Chatty Chatter</h1>
         <li>
           <Link to={"/"}>
             <h2 className={getLinkStyle("/")}>HOME</h2>
@@ -28,7 +29,9 @@ const Header = ({ joinRoom, roomChanger, room, socket }) => {
           <Link to={`/profile/${usernameLocal}`}>
             {" "}
             {/* Assuming this is the correct path for PROFILE */}
-            <h2 className={getLinkStyle(`/profile/${usernameLocal}`)}>PROFILE</h2>
+            <h2 className={getLinkStyle(`/profile/${usernameLocal}`)}>
+              PROFILE
+            </h2>
           </Link>
         </li>
       </ul>
@@ -37,9 +40,14 @@ const Header = ({ joinRoom, roomChanger, room, socket }) => {
         {usernameLocal ? usernameLocal : `Create Account or Login`}{" "}
       </h2>
       <div className={"room-num-input"}>
-        <h2 style={{ color: "white" }}>create Your own server!</h2>
-        <input placeholder="Room #" value={room} onChange={roomChanger} />
-        <button type="submit" onClick={joinRoom}>
+        <h2 style={{ color: "white" }}>Create Room</h2>
+        <input
+          className={"roomInput"}
+          placeholder="Room #"
+          value={room}
+          onChange={roomChanger}
+        />
+        <button className={"buttonHeader"} type="submit" onClick={joinRoom}>
           Join Room
         </button>
       </div>

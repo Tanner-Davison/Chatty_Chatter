@@ -1,4 +1,4 @@
-import { useState, useContext,useRef } from "react";
+import { useState, useContext, useRef } from "react";
 import "./Login.css";
 import { LoginContext } from "../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
@@ -10,16 +10,34 @@ const Login = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState("");
   const inputElement = useRef(null);
+  const [signUpToggle, setSignUpToggle] = useState(false);
+  const [loginToggle, setLoginToggle] = useState(false);
 
+  const signUp = () => {
+    if (signUpToggle === false) {
+      setLoginPortalToggle(false);
+      return setSignUpToggle(true);
+    } else {
+      return setSignUpToggle(false);
+    }
+  };
+  const loginmodal = () => {
+    if (loginToggle === false) {
+      setSignUpToggle(false);
+      return setLoginToggle(true);
+    } else {
+      return setLoginToggle(false);
+    }
+  };
   const navigate = useNavigate();
   const handleLoginSuccess = (event) => {
     event.preventDefault();
     if (username.includes("@") & (username.length > 1)) {
       setMainAccess(false);
       setLoginPortalToggle(false);
-      localStorage.setItem('username', JSON.stringify(username.toLowerCase()));
+      localStorage.setItem("username", JSON.stringify(username.toLowerCase()));
       localStorage.setItem("password", JSON.stringify(password));
-	  submitHandler();
+      submitHandler();
     }
     createUserInfo(username, password);
   };
@@ -28,82 +46,125 @@ const Login = () => {
   };
   return (
     <>
-      <div className={'login-element-wrapper'}>
-        <Header/>
+      <div className={"login-element-wrapper"}>
+        <Header />
         <form onSubmit={submitHandler}>
           <div className={"columnContainer"}>
             <div className={"new-user-header"}>
-              <h2>Create New Account</h2>
-            </div>
-            <div className={"CreateUser"}>
-              <div className={"userLoginElements"}>
-                <label htmlFor="username-id"> Create Username :</label>
-                <input
-                  type="text"
-                  name={"usernameInput"}
-                  ref={inputElement}
-                  //   onClick={()=>{focusInput()}}
-                  onChange={(event) => setUsername(event.target.value)}
-                  id="username-id"
-                />
+              <div className={"columnContainer"}>
+                {signUpToggle && (
+                  <>
+                    <div className={"CreateUser"}>
+                      <h2>Create Account</h2>
+                      <div className={"userLoginElements"}>
+                        <div className={"input-box-container"}>
+                          <label htmlFor="username-id"> Username :</label>
+                          <input
+                            type="text"
+                            name={"usernameInput"}
+                            ref={inputElement}
+                            onChange={(event) =>
+                              setUsername(event.target.value)
+                            }
+                            id="username-id"
+                          />
+                        </div>
+                        <div className={"input-box-container"}>
+                          <label htmlFor="password-id"> Password :</label>
+                          <input
+                            type="text"
+                            name={"passwordInput"}
+                            onChange={(event) => {
+                              setPassword(event.target.value);
+                            }}
+                            id="password-id"
+                          />
+                        </div>
+                      </div>
+                      <div className={"boxWrapper"}>
+                        <button id="closeBtn" type="button" onClick={signUp}>
+                          Back
+                        </button>
+                        <button
+                          id="closeBtn"
+                          type="submit"
+                          onClick={handleLoginSuccess}>
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-
-              <div className={"userLoginElements"}>
-                <label htmlFor="password-id"> Create Password :</label>
-                <input
-                  type="text"
-                  name={"passwordInput"}
-                  onChange={(event) => {
-                    setPassword(event.target.value);
-                  }}
-                  id="password-id"
-                />
-              </div>
-
-              <button
-                className={"loginFormSubmitBtn"}
-                type="submit"
-                onClick={handleLoginSuccess}>
-                Create Account
-              </button>
             </div>
-          </div>
-          <div className={"columnContainer"}>
-            <div className={"new-user-header"}>
-              <h2>Login</h2>
-            </div>
-            <div className={"CreateUser"}>
-              <div className={"userLoginElements"}>
-                <label htmlFor="username-id"> Create Username :</label>
-                <input
-                  type="text"
-                  name={"usernameInput"}
-                  ref={inputElement}
-                  //   onClick={()=>{focusInput()}}
-                  onChange={(event) => setUsername(event.target.value)}
-                  id="username-id"
-                />
-              </div>
+            {!loginToggle && !signUpToggle && (
+              <>
+                <div className={"titleChatty"}>
+                  <h1 id="welcome_">Chatty - Chatter</h1>
+                </div>
+                <div className={"welcomeContainer"}>
+                  <article>
+                    Where the chats gets chatty! Build your own chat hubs, set up
+                    your unique profile, and add your friends. Dive in, and let
+                    Chatty-Chatter bring your chats to life.
+                  </article>
+                </div>
 
-              <div className={"userLoginElements"}>
-                <label htmlFor="password-id"> Create Password :</label>
-                <input
-                  type="text"
-                  name={"passwordInput"}
-                  onChange={(event) => {
-                    setPassword(event.target.value);
-                  }}
-                  id="password-id"
-                />
-              </div>
-
-              <button
-                className={"loginFormSubmitBtn"}
-                type="submit"
-                onClick={handleLoginSuccess}>
-                Login
-              </button>
-            </div>
+                <div className={"new-user-header"}>
+                  {!signUpToggle && !loginToggle && (
+                    <button id="closeBtn" type="button" onClick={signUp}>
+                      New User
+                    </button>
+                  )}
+                  {!loginToggle && (
+                    <button id={"closeBtn"} type="button" onClick={loginmodal}>
+                     Login
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+            {loginToggle === true && (
+              <>
+                <div className={"CreateUser"}>
+                  <h2>User Login</h2>
+                  <div className={"userLoginElements"}>
+                    <div className={"input-box-container"}>
+                      <label htmlFor="username-id"> Username :</label>
+                      <input
+                        type="text"
+                        name={"usernameInput"}
+                        ref={inputElement}
+                        onChange={(event) => setUsername(event.target.value)}
+                        id="username-id"
+                      />
+                    </div>
+                    <div className={"input-box-container"}>
+                      <label htmlFor="password-id"> Password :</label>
+                      <input
+                        type="text"
+                        name={"passwordInput"}
+                        onChange={(event) => {
+                          setPassword(event.target.value);
+                        }}
+                        id="password-id"
+                      />
+                    </div>
+                  </div>
+                  <div className={"boxWrapper"}>
+                    <button id="closeBtn" type="button" onClick={loginmodal}>
+                      close
+                    </button>
+                    <button
+                      id="closeBtn"
+                      type="submit"
+                      onClick={handleLoginSuccess}>
+                      Login
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </form>
       </div>

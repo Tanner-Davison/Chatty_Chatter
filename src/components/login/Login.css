@@ -1,12 +1,12 @@
 .login-element-wrapper{
     display: flex;
     flex-direction: column;
-    height:100vh;
+    height:98vh;
 }
 form{
+    position: relative;
     display:flex;
     flex-direction:row;
-    align-items: center;
     justify-content: space-around;
     height: 100%;
     background-color: black;
@@ -17,45 +17,139 @@ h2 {
 .columnContainer{
     display:flex;
     flex-direction: column;
+    height: fit-content;
+    align-items: center;
 }
 .new-user-header{
     display:flex;
     align-items: center;
+    align-self: center;
     justify-content: center;
+    flex-direction: row;
+    padding-top:100px;
+    width: 100%;
+    gap:10%;
+
 }
 .CreateUser{
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
+    justify-self: center;
     justify-content: center;
     background-color: gray;
     border-radius: 15px;
     border: 3px solid gray;
     padding: 30px;
     gap: 10px;
+    max-height: 500px;
+    max-width: 500px;
+}
+.CreateUser> h2{
+position: absolute;
+top:-45%;
+left:25px;
+font-size:40px;
+}
+.userLoginElements{
+    display:flex;
+    flex-direction: row;
+    gap:20%;
+    width:100%;
+    margin-bottom:10%;
+    padding:25px;
+
+}
+.input-box-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+    outline:none;
+    width: 100%;
     
 }
-
 input {
     margin:0;
-    border-radius: 7px;
-    height: 25px;
+    border-radius: 9px;
+    height: 30px;
     align-self: center;
-    
+    width: 100%;
+    outline: none;
+    border:none;
+
 }
 
 label{
-    display:flex;
-    flex-direction: row;
-    margin-right:20px;
-    align-items: center;
-    justify-content: center;
+   color:whitesmoke;
+   font-weight: 600;
+   font-size: 1.1rem;
+    letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom:7px;
 }
 
-.loginFormSubmitBtn:hover{
-    background-color: black;
+
+.titleChatty{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+#welcome_{
+      font-size:6rem;
+      color:white;
+      font-family: 'Berkshire Swash', serif;
+}
+.boxWrapper{
+    position: absolute;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    margin-top:20%;
+    width:60%;
+    bottom:-25px;
+    
+}
+.welcomeContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.welcomeContainer > article{
     color:white;
-    width: 150px;
-    box-shadow: -2px -2px 5px white;
+    width:30%;
+    font-size: 2rem;
+    text-align: center;
+
+}
+#closeBtn{
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius:12px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 100px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 5px 10px;
+  color: #fff;
+  background-color: #ea4335;
+  height: 48px;
+  &:hover{
+  transform: scale(1.04);
+  background-color: #34a853;
+  }
+    
 }
