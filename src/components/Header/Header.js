@@ -5,10 +5,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const Header = ({ joinRoom, roomChanger, room, socket }) => {
   const location = useLocation();
 
-  const usernameLocal = JSON.parse(localStorage.getItem("username"));
+  const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const navigate = useNavigate();
   const logoutHandler = () => {
     localStorage.clear();
+    sessionStorage.clear();
     navigate("/");
   };
   const getLinkStyle = (path) => {

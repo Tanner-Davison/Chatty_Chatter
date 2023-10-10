@@ -7,7 +7,7 @@ import Header from '../Header/Header';
 const CurrentServers = () =>{
     const {setMainAccess, setSocket,socket} = useContext(LoginContext)
     const navigate = useNavigate();
-    const doesUserExist = JSON.parse(localStorage.getItem('username'));
+    const doesUserExist = JSON.parse(sessionStorage.getItem('username'));
 
     useEffect(()=>{
       doesUserExist ?  console.log(doesUserExist):navigate('/')

@@ -35,6 +35,7 @@ const MainRoom = () => {
       username: userLoginInfo.username,
       message: message,
     });
+    console.log(userLoginInfo.username)
     const messages = await loadRoomHistory(room);
     setMessageRecieved(messages);
 
@@ -76,10 +77,12 @@ const MainRoom = () => {
   useEffect(() => {
     if (!socket) {
       console.log("there is no active socket");
+
       setSocket(io.connect("http://localhost:3001"));
+
       setUserLoginInfo({
-        username: JSON.parse(localStorage.getItem("username")),
-        password: JSON.parse(localStorage.getItem("password")),
+        username: JSON.parse(sessionStorage.getItem("username")),
+        password: JSON.parse(sessionStorage.getItem("password")),
       });
       return;
     } // Prevent code from running if socket is null or undefined
@@ -109,10 +112,12 @@ const MainRoom = () => {
         ...prev,
         {
           message: data.message,
-          username: data.username,
+          username: data.sentBy,
           timestamp: getCurrentTime(),
         },
       ]);
+      console.log(data.sentBy)
+      loadRoomHistory(data.room)
     };
     socket.on("receive_message", handleReceiveMessage);
 
@@ -168,7 +173,7 @@ const MainRoom = () => {
                         <p className={"message-content"}>{msg.message}</p>
                       </div>
                       <p className={"user"}>
-                        {msg.sentBy ? msg.sentBy : useTempName}
+                        {msg.sentBy ? msg.sentBy : msg.username}
                       </p>
                       <div className={"message-timestamp-right"}>
                         <p>{msg.timestamp}</p>

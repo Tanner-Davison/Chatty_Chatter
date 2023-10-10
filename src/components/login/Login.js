@@ -35,13 +35,16 @@ const Login = () => {
     if (username.includes("@") & (username.length > 1)) {
       setMainAccess(false);
       setLoginPortalToggle(false);
-      localStorage.setItem("username", JSON.stringify(username.toLowerCase()));
-      localStorage.setItem("password", JSON.stringify(password));
+    
+    //   localStorage.setItem("password", JSON.stringify(password));
+	  sessionStorage.setItem('username',JSON.stringify(username.toLowerCase()));
+	  sessionStorage.setItem('password',JSON.stringify(password));
       submitHandler();
     }
     createUserInfo(username, password);
   };
-  const userExists = JSON.parse(localStorage.getItem('username'))|| null;
+  const userExists = JSON.parse(sessionStorage.getItem('username'))|| null;
+
   const submitHandler = (event) => {
     navigate("/currentservers");
   };
