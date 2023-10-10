@@ -8,10 +8,13 @@
   height: 4rem;  
   gap: 5px;
   background-color: black;
-  /* border-bottom:3px solid white; */
+  width:100vw;
  
 }
-.room-num-input {
+a{
+  text-decoration: none;
+}
+.create_room_container {
   display: flex;
   flex-direction: row;
   gap:1rem;
@@ -57,13 +60,16 @@
   }
 }
 .navLinks{
+  position: relative;
     display: flex;
     flex-direction: row;
-    gap:1rem;
-    align-items: center;
-    justify-content: center;
     
+    gap:10%;
+    align-items:center;
+    justify-content: space-between;
+    list-style-type:none ;
 }
+
 .navLinks a{
     text-decoration: none;
 }
@@ -76,4 +82,20 @@ color:red;
     height: 25px;
     align-self: center;
     width: 20%;
+}
+.visible_login_success{
+  position: absolute;
+  top:90vh;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap:25px;
+  border:2px solid white;
+  border-radius:10px;
+  padding:10px;
+  font-size: 10px;
+}
+.visible_login_success > #loggedIn{
+  color:#49c219;
 }

@@ -257,4 +257,13 @@ h1{
 .room-num-input-mainRoom > input{
   width:15%;
 }
+#statusBtn{
+  border:none;
+  color:rgb(255, 255, 255);
+  font: size 25px;
+  font-family: 'Poppins', sans-serif;
+  border-radius:8px;
+  
+  
+}
 
