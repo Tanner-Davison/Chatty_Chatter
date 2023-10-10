@@ -23,6 +23,7 @@ const MainRoom = () => {
   const [room, setRoom] = useState(1);
   const useTempName = JSON.parse(localStorage.getItem("username"));
   const messagesStartRef = useRef(null);
+  const PORT = process.env.PORT;
 
   const currentTime = getCurrentTimeJSX();
   const [isSocketConnected, setSocketConnected] = useState('Disconnected');
@@ -78,7 +79,7 @@ const MainRoom = () => {
     if (!socket) {
       console.log("there is no active socket");
 
-      setSocket(io.connect("http://localhost:3001"));
+      setSocket(io.connect(PORT));
 
       setUserLoginInfo({
         username: JSON.parse(sessionStorage.getItem("username")),
@@ -104,11 +105,11 @@ const MainRoom = () => {
       console.error("Socket Error:", error);
     });
    
-    const handleReceiveMessage = (data) => {
+    const handleReceiveMessage = async(data) => {
       if (data.room !== room) {
         return;
       }
-      setMessageRecieved((prev) => [
+       setMessageRecieved((prev) => [
         ...prev,
         {
           message: data.message,
@@ -117,7 +118,7 @@ const MainRoom = () => {
         },
       ]);
       console.log(data.sentBy)
-      loadRoomHistory(data.room)
+      await loadRoomHistory(data.room)
     };
     socket.on("receive_message", handleReceiveMessage);
 
@@ -150,7 +151,7 @@ const MainRoom = () => {
               if (msg.sentBy === userLoginInfo.username) {
                 // Message sent by current user
                 return (
-                  <>
+                  
                     <div key={index} className={"messagesContainer"}>
                       <div className={"container blue"}>
                         <div className={"message-blue"}>
@@ -162,7 +163,7 @@ const MainRoom = () => {
                         </div>
                       </div>
                     </div>
-                  </>
+                  
                 );
               } else {
                 // Message received from another user

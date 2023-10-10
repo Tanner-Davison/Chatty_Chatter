@@ -4,10 +4,9 @@ const http = require("http");
 const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const cors = require("cors");
-
-
-const url =
-  "mongodb+srv://tboydavison:Luliann465$@gendervsgender.iid016a.mongodb.net/";
+require('dotenv').config();
+console.log(process.env.MONGO_DB_KEY)
+const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
 
 app.use(cors());
 
@@ -15,7 +14,7 @@ const server = http.createServer(app);
 
 async function connect() {
   try {
-    await mongoose.connect(url);
+    await mongoose.connect(MONGO_DB_KEY);
     console.log("Connected To MongoDB");
   } catch (err) {
     console.log(err);
