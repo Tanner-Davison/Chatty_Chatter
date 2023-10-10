@@ -30,7 +30,7 @@ const MainRoom = () => {
   const PORT = process.env.PORT;
 
   const currentTime = getCurrentTimeJSX();
-  const [isSocketConnected, setSocketConnected] = useState("Disconnected");
+  const [isSocketConnected, setSocketConnected] = useState("");
   const [latestRoom, setlatestRoom] = useState(1);
 
   const navigate = useNavigate();
