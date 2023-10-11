@@ -5,23 +5,30 @@ const http = require("http");
 const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require('multer')
 const storage = new CloudinaryStorage({
 	cloudinary: cloudinary,
 	params: {
-		folder: "some_folder_name", // The name of the folder in Cloudinary
-		allowedFormats: ["jpg", "png"],
+		folder: "profile_photos", // The name of the folder in Cloudinary
+		// allowedFormats: ["jpg", "png"],
 	},
 });
+
 const parser = multer({ storage: storage });
 require("dotenv").config();
 
 console.log(process.env.MONGO_DB_KEY);
 const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
-app.use(cors());
-
+const PORT_= process.env.PORT_
+app.use(express.urlencoded({ extended: true }));
 const server = http.createServer(app);
 
 async function connect() {
@@ -33,13 +40,14 @@ async function connect() {
 	}
 }
 connect();
-const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
-const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-const CLOUD_NAME = process.env.CLOUD_NAME;
+// const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
+// const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+// const CLOUD_NAME = process.env.CLOUD_NAME;
+// const CLOUDINARY_SECRET = process.env.CLOUDINARY_SECRET;
 cloudinary.config({
-	cloud_name: CLOUD_NAME,
-	api_key: CLOUDINARY_API_KEY,
-	api_secret: CLOUDINARY_URL,
+  cloud_name: "dezclgtpg",
+  api_key: "833978376411799",
+  api_secret: "nNz10mGYYDAGdsbOq50YrK6GpLg",
 });
 
 app.get("/roomHistory/:room", async (req, res) => {
@@ -50,9 +58,20 @@ app.get("/roomHistory/:room", async (req, res) => {
 		res.status(404).json({ message: "Room not Found" });
 	}
 });
+app.get('/user_info/:sessionUsername',async (req,res)=>{
+	const user = await User.findOne({username: req.params.username});
+	if(user){
+		console.log('User was found successfully!')
+		res.json(user);
+	} else{
+		res.status(404).json({message: "User not Found"})
+	}
+})
 app.post("/upload", parser.single("image"), async (req, res) => {
-	const { username,password /*... any other user details like password, email etc. */ } =
+	console.log(req.file.url)
+	const { username,password } =
 		req.body;
+		
 	const image = {
 		url: req.file.url,
 		cloudinary_id: req.file.public_id,
@@ -61,15 +80,17 @@ app.post("/upload", parser.single("image"), async (req, res) => {
 	try {
 		// Check if user already exists
 		const existingUser = await User.findOne({ username: username });
+		
 		if (existingUser) {
+			console.log(existingUser);
 			return res.status(400).send("Username already exists.");
 		}
 
 		// Create new user
 		const newUser = new User({
 			username: username,
+            password: password,
             profileImage: image,
-            passwordl: password,
 			// ... set any other user details here
 		});
 
@@ -77,14 +98,12 @@ app.post("/upload", parser.single("image"), async (req, res) => {
 
 		res.json({ message: "User registered successfully!", image });
 	} catch (error) {
+		console.error("Error registering user:", error);
 		res.status(500).send("Error registering user.");
 	}
 });
 const messagesSchema = new mongoose.Schema({
-	serverUserID: {
-		type: String,
-		required: true,
-	},
+	
 	username: {
 		type: String,
 		required: true,
@@ -141,16 +160,7 @@ io.on("connection", (socket) => {
 	console.log({ Active_Users: numUsers });
 
 	socket.on("user_info", async (data) => {
-		User.findOne({ serverUserID: socket.id }).then((user) => {
-			if (!user) {
-				const user = new User({
-					serverUserID: `${socket.id}`,
-					username: `${data.username}`,
-					messages: "",
-				});
-				user.save();
-			}
-		});
+		
 	});
 	socket.on("join_room", async (data) => {
 		const rooms = io.sockets.adapter.sids[socket.id];
@@ -206,7 +216,7 @@ io.on("connection", (socket) => {
 
 		try {
 			const updatedPerson = await User.findOneAndUpdate(
-				{ serverUserID: socket.id },
+				{ username: data.username},
 				{ $set: { messages: data.message } },
 				{ new: true, useFindAndModify: false }
 			);
@@ -276,6 +286,6 @@ io.on("connection", (socket) => {
 	});
 });
 
-server.listen(3001, () => {
-	console.log("Server is running");
+server.listen(PORT_, () => {
+	console.log(`Server is running on ${PORT_}`);
 });

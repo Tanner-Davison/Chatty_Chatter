@@ -25,7 +25,7 @@ const MainRoom = () => {
   const [room, setRoom] = useState(initialRoom);
   const sessionUsername = JSON.parse(sessionStorage.getItem("username"));
   const sessionPassword = JSON.parse(sessionStorage.getItem("password"));
-
+  const [userProfileImg,setUserProfileImg]=useState('')
   const messagesStartRef = useRef("");
   const PORT = process.env.PORT;
 
@@ -47,13 +47,15 @@ const MainRoom = () => {
     setlatestRoom(room);
     setMessageRecieved(messages);
   };
-
+ const userInfo = async () => {
+   const response = await fetch(`/user_info/${sessionUsername}`);
+   const data = response.json();
+   setUserProfileImg(data.profileImage.url);
+ };
   const roomChanger = (event) => {
     setRoom(event.target.value);
   };
-  const sendUserInfo = (userLoginInfo) => {
-    socket.emit("user_info", userLoginInfo);
-  };
+
   const deleteRoom = () => {
     setMainAccess(true);
     socket.emit("deleteRoom", { room: room, username: userLoginInfo.username });
@@ -82,14 +84,12 @@ const MainRoom = () => {
   useEffect(() => {
     console.log(isSocketConnected);
     if (!socket) {
-      console.log("there is no active socket");
-
       setSocket(io.connect(PORT));
-
       setUserLoginInfo({
         username: JSON.parse(sessionStorage.getItem("username")),
         password: JSON.parse(sessionStorage.getItem("password")),
       });
+      userInfo();
       return;
     } // Prevent code from running if socket is null or undefined
     if (isSocketConnected === "Disconnected") {
@@ -103,7 +103,6 @@ const MainRoom = () => {
     }
     console.log(mainAccess);
     if (mainAccess === true) {
-      sendUserInfo(userLoginInfo);
       joinRoom();
       setMainAccess(false);
     }

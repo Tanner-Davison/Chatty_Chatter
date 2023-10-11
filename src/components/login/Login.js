@@ -12,8 +12,7 @@ const Login = () => {
   const inputElement = useRef(null);
   const [signUpToggle, setSignUpToggle] = useState(false);
   const [loginToggle, setLoginToggle] = useState(false);
-	const [userImage, setUserImage] = useState(null)
-	const [image,setImage]=useState(null)
+  const [image,setImage]=useState(null)
   const navigate = useNavigate();
   const signUp = () => {
     if (signUpToggle === false) {
@@ -34,31 +33,34 @@ const Login = () => {
 	
   const handleLoginSuccess = async(event) => {
 	  event.preventDefault();
-	  
+	  				//username & password & image data are all being set onChange events in the jsx that is where the info
+	  				//is coming from
     if (username.includes("@") & (username.length > 1)) {
       setMainAccess(false);
       setLoginPortalToggle(false);
-	  
-    //   localStorage.setItem("password", JSON.stringify(password));
+    //localStorage.setItem("password", JSON.stringify(password));
 	  sessionStorage.setItem('username',JSON.stringify(username.toLowerCase()));
-		sessionStorage.setItem('password', JSON.stringify(password));
-		if (image) {
-			const formData = new FormData();
-			formData.append("image", image);
-			formData.append("username", username);
-			const response = await fetch("/upload", {
-				method: "POST",
-				body: formData,
+	  sessionStorage.setItem('password', JSON.stringify(password));
+			//storing username and password in session storage.
+
+			if (image) {
+				const formData = new FormData();
+				formData.append("image", image);
+				formData.append("username", username);
+				formData.append('password', password)
+				const response = await fetch("http://localhost:3001/upload", {
+					method: "POST",
+					body: formData,
 			});
 			const data = await response.json();
 			// Assuming server responds with the saved image data
-			if (data && data.url) {
-				userLoginInfo.imgUrl = data.url;
+				if (data && data.url) {
+					createUserInfo(username, password,data.url)
 			}
 		}
       submitHandler();
     }
-	  createUserInfo(username, password);
+	  
 	  
   };
 	
@@ -66,6 +68,7 @@ const Login = () => {
 
   const submitHandler = (event) => {
     navigate("/currentservers");
+	
   };
   useEffect(()=>{
 	if(userExists != null){

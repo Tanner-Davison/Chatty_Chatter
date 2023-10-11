@@ -12,6 +12,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
+    
     navigate("/");
   };
  

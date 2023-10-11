@@ -33,18 +33,25 @@ function App() {
   const [userLoginInfo, setUserLoginInfo] = useState({
     username: "",
     password: "",
-    imgUrl:'',
+    imageUrl: '',
   });
   
-  const createUserInfo = (username, password) => {
-    setUserLoginInfo({ username: username.toLowerCase(), password: password });
-
+  const createUserInfo = (username, password,imageUrl) => {
+    const newUserInfo = {
+      username: username,
+      password:password,
+      imageUrl:imageUrl ||'',
+    }
+    setUserLoginInfo(newUserInfo);//updating userLoginInfo
     return userLoginInfo;
   };
   useEffect(() => {
     console.log(userLoginInfo);
+    if(socket){
+      console.log(socket)
+    }
   
-  }, [userLoginInfo]);
+  }, [userLoginInfo,socket]);
 
   return (
     <LoginContext.Provider
