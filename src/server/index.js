@@ -1,14 +1,25 @@
-import { Cloudinary } from "@cloudinary/url-gen";
+
 const express = require("express");
 const app = express();
 const http = require("http");
 const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require('multer')
+const storage = new CloudinaryStorage({
+	cloudinary: cloudinary,
+	params: {
+		folder: "some_folder_name", // The name of the folder in Cloudinary
+		allowedFormats: ["jpg", "png"],
+	},
+});
+const parser = multer({ storage: storage });
 require("dotenv").config();
+
 console.log(process.env.MONGO_DB_KEY);
 const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
-const cld = new Cloudinary({ cloud: { cloudName: "dezclgtpg" } });
 app.use(cors());
 
 const server = http.createServer(app);
@@ -22,6 +33,14 @@ async function connect() {
 	}
 }
 connect();
+const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+const CLOUD_NAME = process.env.CLOUD_NAME;
+cloudinary.config({
+	cloud_name: CLOUD_NAME,
+	api_key: CLOUDINARY_API_KEY,
+	api_secret: CLOUDINARY_URL,
+});
 
 app.get("/roomHistory/:room", async (req, res) => {
 	const room = await Rooms.findOne({ room_number: req.params.room });
@@ -31,7 +50,14 @@ app.get("/roomHistory/:room", async (req, res) => {
 		res.status(404).json({ message: "Room not Found" });
 	}
 });
+app.post('/upload', parser.single('image'), (req, rs) => {
+    console.log(req.file);
+    const image = {};
+    image.url = req.file.url;
+    image.id = req.file.public_id;
 
+    res.json(image)
+})
 const messagesSchema = new mongoose.Schema({
 	serverUserID: {
 		type: String,

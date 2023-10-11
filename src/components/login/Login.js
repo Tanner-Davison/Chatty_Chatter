@@ -13,6 +13,7 @@ const Login = () => {
   const [signUpToggle, setSignUpToggle] = useState(false);
   const [loginToggle, setLoginToggle] = useState(false);
   const [userImage, setUserImage] = useState(null)
+  const navigate = useNavigate();
   const signUp = () => {
     if (signUpToggle === false) {
       setLoginPortalToggle(false);
@@ -29,12 +30,24 @@ const Login = () => {
       return setLoginToggle(false);
     }
   };
-	const navigate = useNavigate();
+	
+
 	const handleImageUpload = (event) => {
 		const file = event.target.files[0];
 		if (file) {
 			setUserImage(file)
 		}
+	};
+	const handleImageSubmit = async() => {
+		const formData = new FormData();
+		formData.append('image', userImage);
+
+		const response = await fetch('/upload', {
+			method: 'POST',
+			body: formData,
+		})
+		const data = await response.json();
+		setImageUrl(data.url);
 	}
   const handleLoginSuccess = (event) => {
     event.preventDefault();
@@ -67,55 +80,59 @@ const Login = () => {
 				<form onSubmit={submitHandler}>
 					<div className={"columnContainer"}>
 						<div className={"new-user-header"}>
-			<div className={"columnContainer"}>
-				{signUpToggle && (
-					<>
-						<div className={"CreateUser"}>
-							<h2>Create Account</h2>
-							<div className={"userLoginElements"}>
-								<div className={"input-box-container"}>
-									<label htmlFor='username-id'> Username :</label>
-									<input
-										type='text'
-										name={"usernameInput"}
-										ref={inputElement}
-										onChange={(event) =>
-											setUsername(event.target.value)
-										}
-										id='username-id'
-									/>
-								</div>
-								<div className={"input-box-container"}>
-									<label htmlFor='password-id'> Password :</label>
-									<input
-										type='text'
-										name={"passwordInput"}
-										onChange={(event) => {
-											setPassword(event.target.value);
-										}}
-										id='password-id'
-									/>
-								</div>
-										  </div>
-										  <div className="file_upload"></div>
-
-										  <input type='file' onChange={handleImageUpload} /> 
-										  {/* PHOTO UPLOAD HERE */}
-								<div className={"boxWrapper"}>
-									<button
-										id='closeBtn'
-										type='button'
-										onClick={signUp}>
-										Back
-									</button>
-									<button
-										id='closeBtn'
-										type='submit'
-										onClick={handleLoginSuccess}>
-										Submit
-									</button>
-								</div>
-							</div>
+							<div className={"columnContainer"}>
+								{signUpToggle && (
+									<>
+										<div className={"CreateUser"}>
+											<h2>Create Account</h2>
+											<div className={"userLoginElements"}>
+												<div className={"input-box-container"}>
+													<label htmlFor='username-id'> Username :</label>
+													<input
+														type='text'
+														name={"usernameInput"}
+														ref={inputElement}
+														onChange={(event) =>
+															setUsername(event.target.value)
+														}
+														id='username-id'
+													/>
+												</div>
+												<div className={"input-box-container"}>
+													<label htmlFor='password-id'> Password :</label>
+													<input
+														type='text'
+														name={"passwordInput"}
+														onChange={(event) => {
+															setPassword(event.target.value);
+														}}
+														id='password-id'
+													/>
+												</div>
+											</div>
+											<div className='file_upload'>
+												<input
+													type='file'
+													onChange={handleImageUpload}
+											  />
+											  <button>upload photo</button>
+											</div>
+											{/* PHOTO UPLOAD HERE */}
+											<div className={"boxWrapper"}>
+												<button
+													id='closeBtn'
+													type='button'
+													onClick={signUp}>
+													Back
+												</button>
+												<button
+													id='closeBtn'
+													type='submit'
+													onClick={handleLoginSuccess}>
+													Submit
+												</button>
+											</div>
+										</div>
 									</>
 								)}
 							</div>
