@@ -35,13 +35,13 @@ const MainRoom = () => {
 
   const navigate = useNavigate();
 
-  const joinRoom = async () => {
+  const joinRoom = async() => {
+    console.log({ joinRoom: userLoginInfo.username });
     socket.emit("join_room", {
       room: room,
       username: userLoginInfo.username,
       message: message,
     });
-    console.log({ joinRoom: userLoginInfo.username });
     const messages = await loadRoomHistory(room);
     sessionStorage.setItem("lastRoom", room.toString());
     setlatestRoom(room);
@@ -49,8 +49,11 @@ const MainRoom = () => {
   };
  const userInfo = async () => {
    const response = await fetch(`/user_info/${sessionUsername}`);
-   const data = response.json();
+   const data = await response.json();
    setUserProfileImg(data.profileImage.url);
+   if(!data.profileImage.url){
+    console.log('no Image url found')
+   }
  };
   const roomChanger = (event) => {
     setRoom(event.target.value);
@@ -114,6 +117,7 @@ const MainRoom = () => {
 
     socket.on("disconnect", (reason) => {
       setSocketConnected("Disconnected");
+      setMainAccess(true)
     });
 
     socket.on("error", (error) => {

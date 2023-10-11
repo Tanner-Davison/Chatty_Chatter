@@ -112,7 +112,20 @@ const messagesSchema = new mongoose.Schema({
     profileImage: {
         url: String,
         cloudinary_id: String,
-    }
+    },
+	sentMessages:[
+		{
+			message: String,
+			room:Number,
+			timestamp: String
+		}
+	],
+	roomsJoined:[
+		{
+			room:Number,
+			timestamp:String,
+		}
+	]
 });
 
 const roomSchema = new mongoose.Schema({
@@ -163,48 +176,46 @@ io.on("connection", (socket) => {
 		
 	});
 	socket.on("join_room", async (data) => {
-		const rooms = io.sockets.adapter.sids[socket.id];
-		for (let room in rooms) {
-			socket.leave(room);
-		}
+    const rooms = io.sockets.adapter.sids[socket.id];
+    for (let room in rooms) {
+      socket.leave(room);
+    }
 
-		socket.join(data.room);
+    socket.join(data.room);
+    console.log(socket.rooms, socket.id);
 
-		User.findOne({ username: data.username }).then((user) => {
-			if (!user) {
-				console.log(`No user found with username: ${data.username}`);
-				return;
-			}
-			Rooms.findOne({ room_number: data.room }).then((existingRoom) => {
-				if (existingRoom) {
-					if (!existingRoom.users_in_room.includes(data.username)) {
-						existingRoom.users_in_room.push(data.username);
-						existingRoom
-							.save()
-							.then(() =>
-								console.log(`Added user ${data.username} to room ${data.room}`)
-							)
-							.catch((err) => console.error("Error adding user to room:", err));
-					}
-				} else {
-					const room = new Rooms({
-						room_number: data.room,
-						sent_by_user: user._id,
-						username: data.username,
-						message: data.message,
-						users_in_room: [data.username],
-					});
+    try {
+      const user = await User.findOne({ username: data.username });
 
-					room
-						.save()
-						.then(() => {
-							console.log(`Room created successfully @ ${room.room_number}`);
-						})
-						.catch((err) => console.log("Error creating room", err));
-				}
-			});
-		});
-	});
+      if (!user) {
+        console.log(`No user found with username: ${data.username}`);
+        return;
+      }
+
+      let existingRoom = await Rooms.findOne({ room_number: data.room });
+
+      if (existingRoom) {
+        if (!existingRoom.users_in_room.includes(data.username)) {
+          existingRoom.users_in_room.push(data.username);
+          await existingRoom.save();
+          console.log(`Added user ${data.username} to room ${data.room}`);
+        }
+      } else {
+        const room = new Rooms({
+          room_number: data.room,
+          sent_by_user: user._id,
+          username: data.username,
+          message: data.message,
+          users_in_room: [data.username],
+        });
+
+        await room.save();
+        console.log(`Room created successfully @ ${room.room_number}`);
+      }
+    } catch (err) {
+      console.error("Error processing join_room:", err);
+    }
+  });
 
 	socket.on("send_message", async (data) => {
 		// Notice the 'async' keyword here
@@ -231,6 +242,27 @@ io.on("connection", (socket) => {
 				});
 				await room.save();
 			}
+			    try {
+        // Save the message to the user's document
+        await User.findOneAndUpdate(
+            { username: data.username },
+            {
+                $push: {
+                    sentMessages: {
+                        message: data.message,
+                        room: data.room,
+                        timestamp: data.timestamp
+                    }
+                }
+            },
+            { new: true, useFindAndModify: false }
+        );
+
+        // ... rest of the code
+    } catch (err) {
+        console.error("Error saving message to user:", err);
+    }
+
 		} catch (err) {
 			console.error("Error updating Person", err);
 		}
