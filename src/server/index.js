@@ -50,14 +50,36 @@ app.get("/roomHistory/:room", async (req, res) => {
 		res.status(404).json({ message: "Room not Found" });
 	}
 });
-app.post('/upload', parser.single('image'), (req, rs) => {
-    console.log(req.file);
-    const image = {};
-    image.url = req.file.url;
-    image.id = req.file.public_id;
+app.post("/upload", parser.single("image"), async (req, res) => {
+	const { username,password /*... any other user details like password, email etc. */ } =
+		req.body;
+	const image = {
+		url: req.file.url,
+		cloudinary_id: req.file.public_id,
+	};
 
-    res.json(image)
-})
+	try {
+		// Check if user already exists
+		const existingUser = await User.findOne({ username: username });
+		if (existingUser) {
+			return res.status(400).send("Username already exists.");
+		}
+
+		// Create new user
+		const newUser = new User({
+			username: username,
+            profileImage: image,
+            passwordl: password,
+			// ... set any other user details here
+		});
+
+		await newUser.save();
+
+		res.json({ message: "User registered successfully!", image });
+	} catch (error) {
+		res.status(500).send("Error registering user.");
+	}
+});
 const messagesSchema = new mongoose.Schema({
 	serverUserID: {
 		type: String,
@@ -67,7 +89,11 @@ const messagesSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	message: String,
+    message: String,
+    profileImage: {
+        url: String,
+        cloudinary_id: String,
+    }
 });
 
 const roomSchema = new mongoose.Schema({

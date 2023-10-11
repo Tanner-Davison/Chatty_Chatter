@@ -12,7 +12,8 @@ const Login = () => {
   const inputElement = useRef(null);
   const [signUpToggle, setSignUpToggle] = useState(false);
   const [loginToggle, setLoginToggle] = useState(false);
-  const [userImage, setUserImage] = useState(null)
+	const [userImage, setUserImage] = useState(null)
+	const [image,setImage]=useState(null)
   const navigate = useNavigate();
   const signUp = () => {
     if (signUpToggle === false) {
@@ -31,36 +32,34 @@ const Login = () => {
     }
   };
 	
-
-	const handleImageUpload = (event) => {
-		const file = event.target.files[0];
-		if (file) {
-			setUserImage(file)
-		}
-	};
-	const handleImageSubmit = async() => {
-		const formData = new FormData();
-		formData.append('image', userImage);
-
-		const response = await fetch('/upload', {
-			method: 'POST',
-			body: formData,
-		})
-		const data = await response.json();
-		setImageUrl(data.url);
-	}
-  const handleLoginSuccess = (event) => {
-    event.preventDefault();
+  const handleLoginSuccess = async(event) => {
+	  event.preventDefault();
+	  
     if (username.includes("@") & (username.length > 1)) {
       setMainAccess(false);
       setLoginPortalToggle(false);
-    
+	  
     //   localStorage.setItem("password", JSON.stringify(password));
 	  sessionStorage.setItem('username',JSON.stringify(username.toLowerCase()));
-	  sessionStorage.setItem('password',JSON.stringify(password));
+		sessionStorage.setItem('password', JSON.stringify(password));
+		if (image) {
+			const formData = new FormData();
+			formData.append("image", image);
+			formData.append("username", username);
+			const response = await fetch("/upload", {
+				method: "POST",
+				body: formData,
+			});
+			const data = await response.json();
+			// Assuming server responds with the saved image data
+			if (data && data.url) {
+				userLoginInfo.imgUrl = data.url;
+			}
+		}
       submitHandler();
     }
-    createUserInfo(username, password);
+	  createUserInfo(username, password);
+	  
   };
 	
   const userExists = JSON.parse(sessionStorage.getItem('username'))|| null;
@@ -113,7 +112,7 @@ const Login = () => {
 											<div className='file_upload'>
 												<input
 													type='file'
-													onChange={handleImageUpload}
+													onChange={(e)=>setImage(e.target.files[0])}
 											  />
 											  <button>upload photo</button>
 											</div>

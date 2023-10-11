@@ -33,6 +33,7 @@ function App() {
   const [userLoginInfo, setUserLoginInfo] = useState({
     username: "",
     password: "",
+    imgUrl:'',
   });
   
   const createUserInfo = (username, password) => {
