@@ -105,7 +105,7 @@ label{
       color:white;
       font-family: 'Berkshire Swash', serif;
 }
-.boxWrapper{
+.btnWrapper{
     position: absolute;
     display:flex;
     flex-direction: row;
