@@ -17,8 +17,8 @@ const MainRoom = () => {
     socket,
     setSocket,
   } = useContext(LoginContext);
-
   const [message, setMessage] = useState("");
+  //sending to server in JoinRoom(), 
   const [messageRecieved, setMessageRecieved] = useState([]);
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
@@ -50,10 +50,13 @@ const MainRoom = () => {
  const userInfo = async () => {
    const response = await fetch(`/user_info/${sessionUsername}`);
    const data = await response.json();
+   console.log(data);
+   
    setUserProfileImg(data.profileImage.url);
    if(!data.profileImage.url){
     console.log('no Image url found')
    }
+
  };
   const roomChanger = (event) => {
     setRoom(event.target.value);
