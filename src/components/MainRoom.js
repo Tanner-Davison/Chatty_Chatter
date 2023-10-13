@@ -217,7 +217,7 @@ const MainRoom = () => {
 											</div>
 											<img
 												src={msg.imageUrl}
-												className={"user-profile-pic"}
+												className={'user-profile-pic'}
 												style={{
 													width: "4rem",
 													height: "4rem",
@@ -268,14 +268,18 @@ const MainRoom = () => {
 							<h3 style={{ color: "white" }}>Status:</h3>
 							<button
 								type='button'
-                id={"statusBtn"}
+                className={"statusBtn"}
                 onClick={()=>{joinRoom()}}
 								style={
 									isSocketConnected === "Connected"
-										? { backgroundColor: "rgba(46, 178, 13, 0.5)" }
-										: { backgroundColor: "red" }
+										? { backgroundColor: "limegreen" }
+										: { backgroundColor: "red", color:'white'  }
 								}>
-								{isSocketConnected.toUpperCase()}
+								{isSocketConnected &&
+                isSocketConnected.toUpperCase()
+                }
+                {!isSocketConnected && 'DISCONNECTED'}
+                
 							</button>
 						</div>
 					</>

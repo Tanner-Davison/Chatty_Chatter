@@ -218,7 +218,7 @@ io.on("connection", (socket) => {
         console.log(`user ${data.username} has been in this room before`);
       }
       else if (user && !inRoomPrev) {
-        console.log
+       
         console.log('type of room number',typeof data.room)
         const updateUser = await User.findOneAndUpdate(
           { username: data.username },

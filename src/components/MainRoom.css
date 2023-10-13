@@ -284,17 +284,32 @@ h1{
 .room-num-input-mainRoom > input{
   width:15%;
 }
-#statusBtn{
+.statusBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size:1rem;
   border:none;
   color:rgb(255, 255, 255);
-  font: size 25px;
+  height:20px;
+  width:fit-content;
+  padding:7px;
+  color:white;
   font-family: 'Poppins', sans-serif;
   border-radius:8px;
 }
 
+
 .user-profile-pic{
-  border:1px solid white;
-  border-radius:25px;
+ 
+  border-right: 4px solid black;
+  border-bottom: 4px solid black;
+  border-top: 4px solid black;
+  border-left:2px solid black;
+  border-radius:15px;
+ 
+
 }
 @media only screen and (max-width: 600px) {
   .App {
