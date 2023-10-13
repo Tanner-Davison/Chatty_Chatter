@@ -59,7 +59,7 @@ const messagesSchema = new mongoose.Schema({
     required: true,
   },
   message: String,
-  profileImage: {
+  profilePic:{
     url: String,
     cloudinary_id: String,
   },
@@ -100,6 +100,8 @@ const roomSchema = new mongoose.Schema({
       message: String,
       sentBy: String,
       timestamp: String,
+      imageUrl: String,
+      cloudinary_id: String, 
     },
   ],
   users_in_room: [String],
@@ -110,7 +112,7 @@ const User = mongoose.model("User", messagesSchema);
 app.get("/roomHistory/:room", async (req, res) => {
   const room = await Rooms.findOne({ room_number: req.params.room });
   if (room) {
-    res.json(room);
+    res.status(200).json(room);
   } else {
     res.status(404).json({ message: "Room not Found" });
   }
@@ -135,19 +137,15 @@ app.post("/upload", parser.single("image"), async (req, res) => {
     file: req.file,
   });
   const { username, password } = req.body;
-
-//   const image = {
-//     url: req.file.url,
-//     cloudinary_id: req.file.public_id,
-//   };
-const image = {
-  url: req.file.path,
-  cloudinary_id: req.file.filename,
-};
+  
+  const image = {
+    url: req.file.path,
+    cloudinary_id: req.file.filename,
+  };
 
   try {
     // Check if user already exists
-    const existingUser = await User.findOne({ username: username });
+    const existingUser = await User.findOne({ username: username.toLowerCase() });
 
     if (existingUser) {
       console.log(existingUser);
@@ -156,7 +154,7 @@ const image = {
           { username: existingUser.username },
           {
             $set: {
-              profileImage: {
+              profilePic: {
                 url: image.url,
                 cloudinary_id: image.cloudinary_id,
               },
@@ -169,15 +167,15 @@ const image = {
     } else {
       // Create new user
       const createNewUser = new User({
-        username: username,
+        username: username.toLowerCase(),
         password: password,
-        profileImage: {
+        profilePic: {
           url: image.url,
           cloudinary_id: image.cloudinary_id,
         },
       });
       await createNewUser.save();
-      console.log("userCreated", createNewUser.profileImage.url);
+      console.log("userCreated", createNewUser.profilePic.url);
     }
     res.json({ message: "User registered successfully!", image });
   } catch (error) {
@@ -204,16 +202,43 @@ io.on("connection", (socket) => {
     const rooms = io.sockets.adapter.sids[socket.id];
     for (let room in rooms) {
       socket.leave(room);
-    } // leaves all rooms that user is connected to.
+    }
+    // leaves all rooms that user is connected to.
     socket.join(data.room);
+
     console.log(`${data.username} joined room ${data.room}`);
     try {
-      const user = await User.findOne({ username: data.username });
-
+      const user = await User.findOne({ username: data.username.toLowerCase() });
+      const inRoomPrev = await User.findOne({
+				username: data.username,
+				"roomsJoined.room": data.room,
+			});
+      console.log(`Looook here HEEERRREEE`, typeof data.room);
+      if (user && inRoomPrev) {
+        console.log(`user ${data.username} has been in this room before`);
+      }
+      else if (user && !inRoomPrev) {
+        console.log
+        console.log('type of room number',typeof data.room)
+        const updateUser = await User.findOneAndUpdate(
+          { username: data.username },
+          {
+            $push: {
+              roomsJoined:{
+                room: parseInt(data.room,10),
+                timestamp: data.timestamp,
+              },
+            },
+          },
+          { new: true, useFindAndModify: false }
+        )
+      }  
+      console.log(`room ${data.room} added to ${data.username}`);
       if (!user) {
         console.log(`No user found with username: ${data.username}`);
       }
 
+      // BELOW CHECKS IF THE ROOM EXISTS
       let existingRoom = await Rooms.findOne({ room_number: data.room });
 
       if (existingRoom) {
@@ -240,13 +265,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", async (data) => {
-    // Notice the 'async' keyword here
-    socket.to(data.room).emit("receive_message", data);
-
-    console.log({
-      USER_MESSAGE: `User ${socket.id} sent ${data.message} to room ${data.room} @${data.timestamp}`,
-    });
-
+    console.log(data.imageUrl || data.message);
     try {
       await User.findOneAndUpdate(
         { username: data.username },
@@ -261,6 +280,8 @@ io.on("connection", (socket) => {
           message: data.message,
           sentBy: data.username,
           timestamp: data.timestamp,
+          imageUrl: data.imageUrl,
+          cloudinary_id: data.cloudinary_id,
         });
         await room.save();
       }
@@ -279,7 +300,7 @@ io.on("connection", (socket) => {
           },
           { new: true, useFindAndModify: false }
         );
-
+ socket.to(data.room).emit("receive_message", data);
         // ... rest of the code
       } catch (err) {
         console.error("Error saving message to user:", err);

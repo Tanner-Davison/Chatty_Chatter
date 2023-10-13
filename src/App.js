@@ -34,21 +34,29 @@ function App() {
     username: "",
     password: "",
     imageUrl: '',
+    cloudinary_id:'' ,
   });
   
-  const createUserInfo = (username, password,imageUrl) => {
+  const createUserInfo = async () => {
     const newUserInfo = {
-      username: username,
-      password:password,
-      imageUrl:imageUrl ||'',
-    }
-    setUserLoginInfo(newUserInfo);//updating userLoginInfo
+			username: JSON.parse(sessionStorage.getItem("username")),
+      password: JSON.parse(sessionStorage.getItem("password")),
+      imageUrl: sessionStorage.getItem('image-url'),
+      cloudinary_id: sessionStorage.getItem('image-url'),
+		};
+      setUserLoginInfo(newUserInfo);
+    
+    //updating userLoginInfo
     return userLoginInfo;
   };
   useEffect(() => {
     console.log(userLoginInfo);
     if(socket){
       console.log(socket)
+    }
+    if (userLoginInfo.username === '') {
+      createUserInfo()
+      console.log('running on App.js bitch')
     }
   
   }, [userLoginInfo,socket]);

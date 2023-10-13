@@ -290,7 +290,9 @@ h1{
   font: size 25px;
   font-family: 'Poppins', sans-serif;
   border-radius:8px;
-  
-  
 }
 
+.user-profile-pic{
+  border:1px solid white;
+  border-radius:25px;
+}

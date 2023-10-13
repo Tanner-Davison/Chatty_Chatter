@@ -42,8 +42,9 @@ const Login = () => {
         JSON.stringify(username.toLowerCase())
       );
       sessionStorage.setItem("password", JSON.stringify(password));
-	  const sessionUsername = await JSON.parse(sessionStorage.getItem("username"));
-      setUsername(sessionUsername);
+      const sessionUsername = await JSON.parse(sessionStorage.getItem("username"));
+     
+      setUsername(sessionUsername.toLowerCase());
       //storing username and password in session storage.
       if (image) {
         const formData = new FormData();
@@ -60,10 +61,12 @@ console.log("Sending FormData:", {
           body: formData,
         });
         const data = await response.json();
-		
+		      
         if (data && data.image && data.image.url) {
           console.log(data.image.url);
-          createUserInfo(username, password, data.image.url);
+          sessionStorage.setItem("image-url", data.image.url);
+          sessionStorage.setItem("cloudinary_id", data.image.cloudinary_id);
+          createUserInfo();
         }
       }
       submitHandler();

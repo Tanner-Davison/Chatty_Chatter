@@ -17,6 +17,7 @@ const MainRoom = () => {
     socket,
     setSocket,
   } = useContext(LoginContext);
+
   const [message, setMessage] = useState("");
   //sending to server in JoinRoom(), 
   const [messageRecieved, setMessageRecieved] = useState([]);
@@ -25,18 +26,18 @@ const MainRoom = () => {
   const [room, setRoom] = useState(initialRoom);
   const sessionUsername = JSON.parse(sessionStorage.getItem("username"));
   const sessionPassword = JSON.parse(sessionStorage.getItem("password"));
-  const [userProfileImg,setUserProfileImg]=useState('')
+  const sessionImage = (sessionStorage.getItem('image-url'))
+  const sessionCloudinary_id = sessionStorage.getItem('image-url');
+  const [userProfileImg, setUserProfileImg] = useState('')
   const messagesStartRef = useRef("");
   const PORT = process.env.PORT;
 
   const currentTime = getCurrentTimeJSX();
   const [isSocketConnected, setSocketConnected] = useState("");
   const [latestRoom, setlatestRoom] = useState(1);
-
   const navigate = useNavigate();
 
-  const joinRoom = async() => {
-    console.log({ joinRoom: userLoginInfo.username });
+  const joinRoom = async () => {
     socket.emit("join_room", {
       room: room,
       username: userLoginInfo.username,
@@ -47,21 +48,32 @@ const MainRoom = () => {
     setlatestRoom(room);
     setMessageRecieved(messages);
   };
- const userInfo = async () => {
-   const response = await fetch(`/user_info/${sessionUsername}`);
-   const data = await response.json();
-   console.log(data);
-   
-   setUserProfileImg(data.profileImage.url);
-   if(!data.profileImage.url){
-    console.log('no Image url found')
-   }
-
- };
+  const userInfo = () => {
+    userInfo = {
+      username: sessionUsername,
+      password: sessionPassword,
+      imageUrl: sessionImage,
+      cloudinary_id:sessionCloudinary_id,
+    }
+    setUserLoginInfo(userInfo);
+  };
   const roomChanger = (event) => {
     setRoom(event.target.value);
   };
-
+  const sendMessageFunc = () => {
+    
+    const data = {
+      message: message,
+      room,
+      timestamp: getCurrentTime(),
+      username: userLoginInfo.username,
+      sentBy: userLoginInfo.username,
+      imageUrl: sessionImage,
+      cloudinary_id: sessionCloudinary_id,
+    };
+    socket.emit("send_message", data);
+    setMessageRecieved((prev) => [...prev, data]);
+  };
   const deleteRoom = () => {
     setMainAccess(true);
     socket.emit("deleteRoom", { room: room, username: userLoginInfo.username });
@@ -73,37 +85,15 @@ const MainRoom = () => {
     socket.disconnect();
     navigate("/currentservers");
   };
-  const sendMessageFunc = () => {
-    const newMessage = {
-      message: message,
-      room,
-      timestamp: getCurrentTime(),
-      username: userLoginInfo.username, 
-      sentBy: userLoginInfo.username,
-    };
-
-    socket.emit("send_message", newMessage);
-    setMessageRecieved((prev) => [...prev, newMessage]);
-    loadRoomHistory(room);
-  };
-
   useEffect(() => {
-    console.log(isSocketConnected);
+    console.log(`Is socket connected? :`, isSocketConnected, `socket instance :`, socket);
     if (!socket) {
       setSocket(io.connect(PORT));
-      setUserLoginInfo({
-        username: JSON.parse(sessionStorage.getItem("username")),
-        password: JSON.parse(sessionStorage.getItem("password")),
-      });
-      userInfo();
       return;
-    } // Prevent code from running if socket is null or undefined
+    }
     if (isSocketConnected === "Disconnected") {
-      setUserLoginInfo({
-        username: sessionUsername,
-        password: sessionPassword,
-      });
-      console.log("working");
+      
+      console.log("Socket disconnected.");
       setSocketConnected("Connected");
       return;
     }
@@ -112,8 +102,6 @@ const MainRoom = () => {
       joinRoom();
       setMainAccess(false);
     }
-
-    console.log(messageRecieved);
     socket.on("connect", () => {
       setSocketConnected("Connected");
     });
@@ -126,8 +114,7 @@ const MainRoom = () => {
     socket.on("error", (error) => {
       console.error("Socket Error:", error);
     });
-
-    const handleReceiveMessage = async (data) => {
+    socket.on("receive_message", async (data) => {
       if (data.room !== room) {
         return;
       }
@@ -137,28 +124,28 @@ const MainRoom = () => {
           message: data.message,
           username: data.sentBy,
           timestamp: getCurrentTime(),
+          imageUrl: data.imageUrl,
+          cloudinary_id: data.cloudinary_id,
         },
       ]);
       console.log(data.sentBy);
       await loadRoomHistory(data.room);
-    };
-    socket.on("receive_message", handleReceiveMessage);
+    });
+    // const handleReceiveMessage = async (data) => {
 
+   
     return () => {
       socket.off("error");
       socket.off("join_room", joinRoom);
-      socket.off("receive_message", handleReceiveMessage);
+      socket.off("receive_message");
+      socket.off('disconnect')
     };
     // eslint-disable-next-line
   }, [socket, messageRecieved, isSocketConnected]);
-  useEffect(() => {
-    if (!userLoginInfo) {
-      loadRoomHistory(room);
-    }
-  });
+ 
   useEffect(() => {
     if (messagesStartRef.current) {
-      messagesStartRef.current.scrollTop =
+        messagesStartRef.current.scrollTop =
         messagesStartRef.current.scrollHeight;
     }
   }, [messageRecieved]);
@@ -178,8 +165,10 @@ const MainRoom = () => {
 						<div className="room_name">
 							<h2> {room}</h2>
 						</div>
-						{messageRecieved.length > 0 &&
-							messageRecieved.map((msg, index) => {
+            {messageRecieved.length > 0 &&
+              
+              messageRecieved.map((msg, index) => {
+                console.log(msg)
 								if (msg.sentBy === userLoginInfo.username) {
 									// Message sent by current user
 									return (
@@ -194,6 +183,18 @@ const MainRoom = () => {
 												<div className={"message-timestamp-left"}>
 													<p>{currentTime}</p>
 												</div>
+											</div>
+											<div>
+												<img
+													src={userLoginInfo.imageUrl}
+													className={"user-profile-pic"}
+													style={{
+														width: "4rem",
+														height: "4rem",
+														zIndex: "100",
+													}}
+													alt='Profile-Pic'
+												/>
 											</div>
 										</div>
 									);
@@ -214,6 +215,16 @@ const MainRoom = () => {
 													<p>{msg.timestamp}</p>
 												</div>
 											</div>
+											<img
+												src={msg.imageUrl}
+												className={"user-profile-pic"}
+												style={{
+													width: "4rem",
+													height: "4rem",
+													zIndex: "100",
+												}}
+												alt='Profile-Pic'
+											/>
 										</div>
 									);
 								}
@@ -257,7 +268,8 @@ const MainRoom = () => {
 							<h3 style={{ color: "white" }}>Status:</h3>
 							<button
 								type='button'
-								id={"statusBtn"}
+                id={"statusBtn"}
+                onClick={()=>{joinRoom()}}
 								style={
 									isSocketConnected === "Connected"
 										? { backgroundColor: "rgba(46, 178, 13, 0.5)" }
