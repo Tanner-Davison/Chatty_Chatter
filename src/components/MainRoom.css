@@ -296,3 +296,36 @@ h1{
   border:1px solid white;
   border-radius:25px;
 }
+@media only screen and (max-width: 600px) {
+  .App {
+    flex-direction: column;
+    align-items: center;
+  }
+ .all-messages {
+    display: flex;
+    width: 90%;
+    max-width: 90%;
+    max-height: 338px;
+    left:12%;
+    justify-self: flex-end;
+}
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  div>.container.blue{
+    
+    width:23%;
+  }
+  .container.green{
+    display:flex;
+    align-items: flex-start;
+    width:65%;
+  }
+  .message-content {
+    max-width: 40%;
+  }
+  .room-num-input-mainRoom {
+    flex-direction: column;
+  }
+}

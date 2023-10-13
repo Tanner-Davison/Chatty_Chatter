@@ -9,8 +9,15 @@ body {
 }
 html{
   background-color: black;
+  
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+@media only screen and (max-width: 600px){
+  html{
+    width:80vw;
+    height: 100vh;
+  }
 }

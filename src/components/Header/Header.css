@@ -99,3 +99,80 @@ color:red;
 .visible_login_success > #loggedIn{
   color:#49c219;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .headerContainer {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+  }
+  .create_room_container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .roomInput {
+    width: 80%;
+  }
+  .navLinks {
+    flex-direction: column;
+    gap: 0px;
+  }
+  .buttonHeader {
+    min-width: 100px;
+    padding: 5px 10px;
+    height: 36px;
+  }
+  .logo-font {
+    font-size: 24px;
+    margin-right: 0;
+  }
+  .visible_login_success {
+    top: auto;
+    bottom: 0;
+    flex-direction: column;
+    font-size: 8px;
+    padding: 5px;
+  }
+ 
+   ul >li{
+    height: 15%;
+    
+    font-size:1rem;
+   }
+   h2 {
+    height:2px;
+    padding:1px;
+   }
+   .navLinks>button{
+    margin-top:15px;
+    background-color: transparent;
+    color:white;
+    font-weight:700;
+    border:black;
+    border-radius:25px;
+   }
+   
+    .server-selection {
+    display: flex;
+    width: 50%;
+    height: 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.mainAccessBtn {
+    width: 100%;
+    display: flex;
+    border: 3px outset black;
+    color: white;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+    justify-content: center;
+    background-color: black;
+    border-radius: 10px;
+}
+}
