@@ -177,35 +177,35 @@ const MainRoom = () => {
 											className={"messagesContainer"}>
 											<div className={"container blue"}>
 												<div className={"message-blue"}>
+												<img
+													src={userLoginInfo.imageUrl}
+													className={"user-profile-pic blue"}
+													alt='Profile-Pic'
+												/>
 													<p className={"message-content"}>{msg.message}</p>
 												</div>
-												<p className={"user"}>{userLoginInfo.username}</p>
 												<div className={"message-timestamp-left"}>
 													<p>{currentTime}</p>
 												</div>
+												<p className={"user"}>{userLoginInfo.username}</p>
 											</div>
 											<div>
-												<img
-													src={userLoginInfo.imageUrl}
-													className={"user-profile-pic"}
-													style={{
-														width: "4rem",
-														height: "4rem",
-														zIndex: "100",
-													}}
-													alt='Profile-Pic'
-												/>
 											</div>
 										</div>
 									);
 								} else {
 									// Message received from another user
 									return (
-										<div
-											key={index}
-											className={"messagesContainer"}>
+                    <div
+                    key={index}
+                    className={"messagesContainer"}>
 											<div className={"container green"}>
 												<div className={"message-green"}>
+                  <img
+                    src={msg.imageUrl}
+                    className={'user-profile-pic green'}
+                    alt='Profile-Pic'
+                  />
 													<p className={"message-content"}>{msg.message}</p>
 												</div>
 												<p className={"user"}>
@@ -213,19 +213,9 @@ const MainRoom = () => {
 												</p>
 												<div className={"message-timestamp-right"}>
 													<p>{msg.timestamp}</p>
-												</div>
 											</div>
-											<img
-												src={msg.imageUrl}
-												className={'user-profile-pic'}
-												style={{
-													width: "4rem",
-													height: "4rem",
-													zIndex: "100",
-												}}
-												alt='Profile-Pic'
-											/>
-										</div>
+                    </div>
+                </div>
 									);
 								}
 							})}
