@@ -46,7 +46,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
               </Link>
             </li>
             <li>
-              <Link to="/currentservers">
+              <Link to={`/currentservers`}>
                 <h2 className={getLinkStyle("/currentservers")}>SERVERS</h2>
               </Link>
             </li>

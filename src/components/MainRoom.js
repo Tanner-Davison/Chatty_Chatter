@@ -9,6 +9,7 @@ import { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 const MainRoom = () => {
+
   const {
     userLoginInfo,
     setUserLoginInfo,
@@ -24,6 +25,7 @@ const MainRoom = () => {
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
+  const [inRoom, setInroom]=useState(null);
   const sessionUsername = JSON.parse(sessionStorage.getItem("username"));
   const sessionPassword = JSON.parse(sessionStorage.getItem("password"));
   const sessionImage = (sessionStorage.getItem('image-url'))
@@ -31,21 +33,24 @@ const MainRoom = () => {
   const [userProfileImg, setUserProfileImg] = useState('')
   const messagesStartRef = useRef("");
   const PORT = process.env.PORT;
-
   const currentTime = getCurrentTimeJSX();
   const [isSocketConnected, setSocketConnected] = useState("");
   const [latestRoom, setlatestRoom] = useState(1);
+
   const navigate = useNavigate();
 
   const joinRoom = async () => {
+    
     socket.emit("join_room", {
       room: room,
       username: userLoginInfo.username,
       message: message,
     });
+    navigate(`/chatroom/${room}`)
     const messages = await loadRoomHistory(room);
     sessionStorage.setItem("lastRoom", room.toString());
     setlatestRoom(room);
+    setInroom(room)
     setMessageRecieved(messages);
   };
   const userInfo = () => {
@@ -156,14 +161,14 @@ const MainRoom = () => {
 				<div className='header'>
 					<Header
 						roomChanger={roomChanger}
-						room={room}
+						room={room ? room : 1}
 						joinRoom={joinRoom}
 					/>
 					<div
 						className={"all-messages"}
 						ref={messagesStartRef}>
 						<div className="room_name">
-							<h2> {room}</h2>
+							<h2> Room: {inRoom}</h2>
 						</div>
             {messageRecieved.length > 0 &&
               

@@ -1,11 +1,16 @@
-.mainAccessBtn{
-  width:100px;
+.mainAccessBtn {
+  width: 100px;
   height: 100px;
-  border: 3px outset black;
+  border: 3px solid black;
   color: white;
   background-color: black;
-  border-radius: 10px;
-  
+  border-radius: 25px;
+  box-shadow: 0 0 0 0 black;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.mainAccessBtn:hover {
+  box-shadow: 0 0 0 7px #DD4124;
 }
 .server-selection{
   display:flex;

@@ -11,7 +11,6 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Link,
   RouterProvider,
 } from "react-router-dom";
 
@@ -21,7 +20,7 @@ function App() {
       <>
         <Route path="/" element={<Login />} />
         <Route path="/currentservers" element={<CurrentServers />} />
-        <Route path="/chatroom" element={<MainRoom />} />
+        <Route path="/chatroom/:room" element={<MainRoom />} />
         <Route path="/profile/:username" element={<Profile />} />
       </>
     )
@@ -51,15 +50,14 @@ function App() {
   };
   useEffect(() => {
     console.log(userLoginInfo);
-    if(socket){
-      console.log(socket)
+    if (socket) {
+      console.log(socket);
     }
-    if (userLoginInfo.username === '') {
-      createUserInfo()
-      console.log('running on App.js bitch')
+    if (userLoginInfo.username === "") {
+      createUserInfo();
     }
-  
-  }, [userLoginInfo,socket]);
+    // eslint-disable-next-line
+  }, [userLoginInfo, socket]);
 
   return (
     <LoginContext.Provider

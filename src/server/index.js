@@ -127,6 +127,21 @@ app.get("/user_info/:sessionUsername", async (req, res) => {
     res.status(404).json({ message: "User not Found" });
   }
 });
+app.get("/api/users/:username/rooms", async(req,res)=>{
+  try{
+    const username = req.params.username;
+    const userList = await User.findOne({username: username})
+		if(!userList){
+			res.status(404).json({message: "user list is not found"})
+		}else{
+			res.json(userList.roomsJoined);
+		}
+
+	}
+	catch(err){
+		console.error(err)
+	}
+})
 app.post("/upload", parser.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
