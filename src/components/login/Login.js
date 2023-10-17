@@ -27,20 +27,7 @@ const Login = () => {
 
   const handleCreateUser = async (event) => {
     event.preventDefault();
-    if (username.includes("@") & (username.length > 1)) {
-      setMainAccess(false);
-      setLoginPortalToggle(false);
-
-      sessionStorage.setItem(
-        "username",
-        JSON.stringify(username.toLowerCase())
-      );
-      sessionStorage.setItem("password", JSON.stringify(password));
-
-      const sessionUsername = await JSON.parse(
-        sessionStorage.getItem("username")
-      );
-      setUsername(sessionUsername.toLowerCase());
+   
 
       if (image) {
         const formData = new FormData();
@@ -62,11 +49,28 @@ const Login = () => {
         if (data && data.image && data.image.url) {
           sessionStorage.setItem("image-url", data.image.url);
           sessionStorage.setItem("cloudinary_id", data.image.cloudinary_id);
-          createUserInfo();
-        }
+           if (username.includes("@") & (username.length > 1)) {
+             // setMainAccess(false);
+             // setLoginPortalToggle(false);
+
+             sessionStorage.setItem("username",JSON.stringify(username.toLowerCase())
+             );
+             sessionStorage.setItem("password", JSON.stringify(password)
+             );
+
+             const sessionUsername = await JSON.parse(sessionStorage.getItem("username")
+             );
+             setUsername(sessionUsername.toLowerCase());
+             createUserInfo();
+           }else{
+            return;
+           }
+      }else{
+        return;
       }
-      submitHandler();
+      
     }
+    submitHandler();
   };
   const handleLoginSuccess = async (event) => {
     event.preventDefault();

@@ -169,7 +169,7 @@ app.post("/signup", parser.single("image"), async (req, res) => {
     const existingUser = await User.findOne({ username: username.toLowerCase() });
 
     if (existingUser) {
-      return res.status(200).json(existingUser);
+      return res.status(404).json({message: 'user exist please login.'});
 
     } else {
       const salt = await bcrypt.genSalt(saltRounds);
