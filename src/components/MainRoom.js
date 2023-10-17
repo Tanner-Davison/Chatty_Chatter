@@ -9,7 +9,6 @@ import { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 const MainRoom = () => {
-
   const {
     userLoginInfo,
     setUserLoginInfo,
@@ -20,17 +19,17 @@ const MainRoom = () => {
   } = useContext(LoginContext);
 
   const [message, setMessage] = useState("");
-  //sending to server in JoinRoom(), 
+  //sending to server in JoinRoom(),
   const [messageRecieved, setMessageRecieved] = useState([]);
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
-  const [inRoom, setInroom]=useState(null);
+  const [inRoom, setInroom] = useState(null);
   const sessionUsername = JSON.parse(sessionStorage.getItem("username"));
   const sessionPassword = JSON.parse(sessionStorage.getItem("password"));
-  const sessionImage = (sessionStorage.getItem('image-url'))
-  const sessionCloudinary_id = sessionStorage.getItem('image-url');
-  const [userProfileImg, setUserProfileImg] = useState('')
+  const sessionImage = sessionStorage.getItem("image-url");
+  const sessionCloudinary_id = sessionStorage.getItem("image-url");
+  const [userProfileImg, setUserProfileImg] = useState("");
   const messagesStartRef = useRef("");
   const PORT = process.env.PORT;
   const currentTime = getCurrentTimeJSX();
@@ -40,33 +39,31 @@ const MainRoom = () => {
   const navigate = useNavigate();
 
   const joinRoom = async () => {
-    
     socket.emit("join_room", {
       room: room,
       username: userLoginInfo.username,
       message: message,
     });
-    navigate(`/chatroom/${room}`)
+    navigate(`/chatroom/${room}`);
     const messages = await loadRoomHistory(room);
     sessionStorage.setItem("lastRoom", room.toString());
     setlatestRoom(room);
-    setInroom(room)
+    setInroom(room);
     setMessageRecieved(messages);
   };
-  const userInfo = () => {
-    userInfo = {
-      username: sessionUsername,
-      password: sessionPassword,
-      imageUrl: sessionImage,
-      cloudinary_id:sessionCloudinary_id,
-    }
-    setUserLoginInfo(userInfo);
-  };
+  // const userInfo = () => {
+  //  const userInfo = {
+  //     username: sessionUsername,
+  //     password: sessionPassword,
+  //     imageUrl: sessionImage,
+  //     cloudinary_id: sessionCloudinary_id,
+  //   };
+  //   setUserLoginInfo(userInfo);
+  // };
   const roomChanger = (event) => {
     setRoom(event.target.value);
   };
   const sendMessageFunc = () => {
-    
     const data = {
       message: message,
       room,
@@ -91,13 +88,17 @@ const MainRoom = () => {
     navigate("/currentservers");
   };
   useEffect(() => {
-    console.log(`Is socket connected? :`, isSocketConnected, `socket instance :`, socket);
+    console.log(
+      `Is socket connected? :`,
+      isSocketConnected,
+      `socket instance :`,
+      socket
+    );
     if (!socket) {
       setSocket(io.connect(PORT));
       return;
     }
     if (isSocketConnected === "Disconnected") {
-      
       console.log("Socket disconnected.");
       setSocketConnected("Connected");
       return;
@@ -113,7 +114,7 @@ const MainRoom = () => {
 
     socket.on("disconnect", (reason) => {
       setSocketConnected("Disconnected");
-      setMainAccess(true)
+      setMainAccess(true);
     });
 
     socket.on("error", (error) => {
@@ -138,70 +139,64 @@ const MainRoom = () => {
     });
     // const handleReceiveMessage = async (data) => {
 
-   
     return () => {
       socket.off("error");
       socket.off("join_room", joinRoom);
       socket.off("receive_message");
-      socket.off('disconnect')
+      socket.off("disconnect");
     };
     // eslint-disable-next-line
   }, [socket, messageRecieved, isSocketConnected]);
- 
+
   useEffect(() => {
     if (messagesStartRef.current) {
-        messagesStartRef.current.scrollTop =
+      messagesStartRef.current.scrollTop =
         messagesStartRef.current.scrollHeight;
     }
   }, [messageRecieved]);
 
   return (
-		<>
-			<div className='App'>
-				<div className='header'>
-					<Header
-						roomChanger={roomChanger}
-						room={room ? room : 1}
-						joinRoom={joinRoom}
-					/>
-					<div
-						className={"all-messages"}
-						ref={messagesStartRef}>
-						<div className="room_name">
-							<h2> Room: {inRoom}</h2>
-						</div>
+    <>
+      <div className="App">
+        <div className="header">
+          <Header
+            roomChanger={roomChanger}
+            room={room ? room : 1}
+            joinRoom={joinRoom}
+          />
+          <div className={"all-messages"} ref={messagesStartRef}>
+            <div className="room_name">
+              <h2> Room: {inRoom}</h2>
+            </div>
             {messageRecieved.length > 0 &&
-              
               messageRecieved.map((msg, index) => {
-                console.log(msg)
-								if (msg.sentBy === userLoginInfo.username) {
-									// Message sent by current user
-                  let userLoggedIn = '@'+ userLoginInfo.username.split('@')[0].toUpperCase();
-									return (
-										<div
-											key={index}
-											className={"messagesContainer"}>
-											<div className={"container blue"}>
-												<div className={"message-blue"}>
-												<img
-													src={userLoginInfo.imageUrl}
-													className={"user-profile-pic blue"}
-													alt='Profile-Pic'
-												/>
-													<p className={"message-content"}>{msg.message}</p>
-												</div>
-												<div className={"message-timestamp-left"}>
-													<p>{currentTime}</p>
-												</div>
-												<p className={"user"}>{userLoggedIn}</p>
-											</div>
-											<div>
-											</div>
-										</div>
-									);
-								} else {
-									// Message received from another user
-									return (
+                console.log(msg);
+                if (msg.sentBy === userLoginInfo.username) {
+                  // Message sent by current user
+                  let userLoggedIn =
+                    "@" + userLoginInfo.username.split("@")[0].toUpperCase();
+                  return (
+                    <div key={index} className={"messagesContainer"}>
+                      <div className={"container blue"}>
+                        <div className={"message-blue"}>
+                          <img
+                            src={userLoginInfo.imageUrl}
+                            className={"user-profile-pic blue"}
+                            alt="Profile-Pic"
+                          />
+                          <p className={"message-content"}>{msg.message}</p>
+                        </div>
+                        <div className={"message-timestamp-left"}>
+                          <p>{currentTime}</p>
+                        </div>
+                        <p className={"user"}>{userLoggedIn}</p>
+                      </div>
+                      <div></div>
+                    </div>
+                  );
+                } else {
+                  // Message received from another user
+                  return (
                     <div key={index} className={"messagesContainer"}>
                       <div className={"container green"}>
                         <div className={"message-green"}>
@@ -213,7 +208,9 @@ const MainRoom = () => {
                           <p className={"message-content"}>{msg.message}</p>
                         </div>
                         <p className={"user"}>
-                          {msg.sentBy ? '@'+msg.sentBy.split('@')[0].toUpperCase() : msg.username}
+                          {msg.sentBy
+                            ? "@" + msg.sentBy.split("@")[0].toUpperCase()
+                            : msg.username}
                         </p>
                         <div className={"message-timestamp-right"}>
                           <p>{msg.timestamp}</p>
@@ -221,65 +218,64 @@ const MainRoom = () => {
                       </div>
                     </div>
                   );
-								}
-							})}
-						{messageRecieved.length <= 0 && (
-							<>
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "column",
-										alignItems: "center",
-									}}>
-									<h1>No Room History</h1>
-									<p>please choose another room or rejoin</p>
-								</div>
-							</>
-						)}
-					</div>
-				</div>
-				<div className={"room-num-input-mainRoom"}>
-					<input
-						placeholder={message !== "" ? message : "Message..."}
-						value={message}
-						onChange={(event) => setMessage(event.target.value)}
-						maxLength='255'
-					/>
-					<button onClick={sendMessageFunc}>Send Message</button>
-				</div>
-				<button onClick={leaveRoom}>Leave Room</button>
-				<button onClick={deleteRoom}> Delete Room </button>
-
-				{
-					<>
-						<div
-							style={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center",
-								gap: "8px",
-							}}>
-							<h3 style={{ color: "white" }}>Status:</h3>
-							<button
-								type='button'
-                className={"statusBtn"}
-                onClick={()=>{joinRoom()}}
-								style={
-									isSocketConnected === "Connected"
-										? { backgroundColor: "limegreen" }
-										: { backgroundColor: "red", color:'white'  }
-								}>
-								{isSocketConnected &&
-                isSocketConnected.toUpperCase()
                 }
-                {!isSocketConnected && 'DISCONNECTED'}
-                
-							</button>
-						</div>
-					</>
-				}
-			</div>
-		</>
-	);
+              })}
+            {messageRecieved.length <= 0 && (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}>
+                  <h1>No Room History</h1>
+                  <p>please choose another room or rejoin</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className={"room-num-input-mainRoom"}>
+          <input
+            placeholder={message !== "" ? message : "Message..."}
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
+            maxLength="255"
+          />
+          <button onClick={sendMessageFunc}>Send Message</button>
+        </div>
+        <button onClick={leaveRoom}>Leave Room</button>
+        <button onClick={deleteRoom}> Delete Room </button>
+
+        {
+          <>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}>
+              <h3 style={{ color: "white" }}>Status:</h3>
+              <button
+                type="button"
+                className={"statusBtn"}
+                onClick={() => {
+                  joinRoom();
+                }}
+                style={
+                  isSocketConnected === "Connected"
+                    ? { backgroundColor: "limegreen" }
+                    : { backgroundColor: "red", color: "white" }
+                }>
+                {isSocketConnected && isSocketConnected.toUpperCase()}
+                {!isSocketConnected && "DISCONNECTED"}
+              </button>
+            </div>
+          </>
+        }
+      </div>
+    </>
+  );
 };
 export default MainRoom;

@@ -38,13 +38,9 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
         <Link to="/">
           <h1 className={"logo-font"}>Chatty Chatter</h1>
         </Link>
+
         {usernameLocal && (
           <>
-            <li>
-              <Link to={"/"}>
-                <h2 className={getLinkStyle("/")}>HOME</h2>
-              </Link>
-            </li>
             <li>
               <Link to={`/currentservers`}>
                 <h2 className={getLinkStyle("/currentservers")}>SERVERS</h2>
@@ -52,7 +48,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             </li>
             <li>
               <Link to={`/profile/${usernameLocal}`}>
-                <h2 className={getLinkStyle(`/profile/${usernameLocal}`)}>
+                <h2 className={getLinkStyle(`/profile/${usernameLocal.split('@')[0]}`)}>
                   PROFILE
                 </h2>
               </Link>
@@ -66,7 +62,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
       </ul>
       {visible && usernameLocal && (
         <div className={"visible_login_success"}>
-          <h2 id='loggedIn'>Logged in as: </h2>
+          <h2 id="loggedIn">Logged in as: </h2>
           <h2 style={{ color: "white" }}>{usernameLocal}</h2>
         </div>
       )}

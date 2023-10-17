@@ -37,16 +37,30 @@ function App() {
   });
   
   const createUserInfo = async () => {
-    const newUserInfo = {
-			username: JSON.parse(sessionStorage.getItem("username")),
-      password: JSON.parse(sessionStorage.getItem("password")),
-      imageUrl: sessionStorage.getItem('image-url'),
-      cloudinary_id: sessionStorage.getItem('image-url'),
-		};
-      setUserLoginInfo(newUserInfo);
-    
-    //updating userLoginInfo
-    return userLoginInfo;
+    const userLoggedIn = sessionStorage.getItem('active_user');
+    const user = JSON.parse(userLoggedIn);
+    if(user){
+      const loggedInUser ={
+        username:user.username,
+        password:user.password,
+        imageUrl:user.profilePic.url,
+        cloudinary_id:user.profilePic.cloudinary_id,
+      }
+      setUserLoginInfo(loggedInUser);
+
+      return userLoginInfo;
+    }else{
+
+      const newUserInfo = {
+        username: JSON.parse(sessionStorage.getItem("username")),
+        password: JSON.parse(sessionStorage.getItem("password")),
+        imageUrl: sessionStorage.getItem('image-url'),
+        cloudinary_id: sessionStorage.getItem('image-url'),
+      };
+        setUserLoginInfo(newUserInfo);
+      
+      return userLoginInfo;
+    }
   };
   useEffect(() => {
     console.log(userLoginInfo);

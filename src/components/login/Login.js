@@ -3,6 +3,7 @@ import "./Login.css";
 import { LoginContext } from "../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
+import axios from "axios";
 const Login = () => {
   const { createUserInfo, setMainAccess, setLoginPortalToggle } =
     useContext(LoginContext);
@@ -13,22 +14,15 @@ const Login = () => {
   const [signUpToggle, setSignUpToggle] = useState(false);
   const [loginToggle, setLoginToggle] = useState(false);
   const [image, setImage] = useState(null);
+  const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
   const navigate = useNavigate();
-  const signUp = () => {
-    if (signUpToggle === false) {
-      setLoginPortalToggle(false);
-      return setSignUpToggle(true);
-    } else {
-      return setSignUpToggle(false);
-    }
+
+  const toggleSignUp = () => {
+    setSignUpToggle(!signUpToggle);
+    setLoginPortalToggle(signUpToggle);
   };
   const loginmodal = () => {
-    if (loginToggle === false) {
-      setSignUpToggle(false);
-      return setLoginToggle(true);
-    } else {
-      return setLoginToggle(false);
-    }
+    setLoginToggle(!loginToggle);
   };
 
   const handleCreateUser = async (event) => {
@@ -37,10 +31,15 @@ const Login = () => {
       setMainAccess(false);
       setLoginPortalToggle(false);
 
-      sessionStorage.setItem("username", JSON.stringify(username.toLowerCase()));
+      sessionStorage.setItem(
+        "username",
+        JSON.stringify(username.toLowerCase())
+      );
       sessionStorage.setItem("password", JSON.stringify(password));
 
-      const sessionUsername = await JSON.parse(sessionStorage.getItem("username"));
+      const sessionUsername = await JSON.parse(
+        sessionStorage.getItem("username")
+      );
       setUsername(sessionUsername.toLowerCase());
 
       if (image) {
@@ -48,12 +47,12 @@ const Login = () => {
         formData.append("image", image);
         formData.append("username", username);
         formData.append("password", password);
-        console.log("Sending FormData:", 
-        {
-          username: formData.get("username"),
-          password: formData.get("password"),
-          image: formData.get("image"),
-        });
+        // console.log("Sending FormData:",
+        //   {
+        //     username: formData.get("username"),
+        //     password: formData.get("password"),
+        //     image: formData.get("image"),
+        //   });
         const response = await fetch("http://localhost:3001/signup", {
           method: "POST",
           body: formData,
@@ -61,7 +60,6 @@ const Login = () => {
         const data = await response.json();
 
         if (data && data.image && data.image.url) {
-          console.log(data.image.url);
           sessionStorage.setItem("image-url", data.image.url);
           sessionStorage.setItem("cloudinary_id", data.image.cloudinary_id);
           createUserInfo();
@@ -70,21 +68,36 @@ const Login = () => {
       submitHandler();
     }
   };
-
-  const handleLoginSuccess =(event) =>{
+  const handleLoginSuccess = async (event) => {
     event.preventDefault();
-
-
-  }
-
-  const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
-
-  const submitHandler = (event) => {
+    setUsername(username.toLowerCase());
+    try{   
+      const findUser = await axios.post(`http://localhost:3001/login`,{
+        username: username.toLowerCase(),
+        password: password,
+      });
+      const userExist = findUser.data;
+      console.log(userExist.username);
+      sessionStorage.setItem('active_user',JSON.stringify(userExist))
+      createUserInfo()
+      const storedUsername = username.toLowerCase();
+      sessionStorage.setItem(
+        "username",
+        JSON.stringify(storedUsername)
+      );
+    }catch(error){
+      console.error(`Error found in LOGIN/handleLoginSuccess `, error.userExist)
+    }finally{
+      submitHandler();
+    }
+  };
+  const submitHandler = () => {
     navigate("/currentservers");
   };
+
   useEffect(() => {
-    if (userExists != null) {
-      navigate("/currentservers");
+    if (userExists != null ) {
+      navigate(`/profile/${userExists.split('@')[0]}`);
     }
   });
   return (
@@ -135,7 +148,10 @@ const Login = () => {
                       </div>
                       {/* PHOTO UPLOAD HERE */}
                       <div className={"boxWrapper"}>
-                        <button id="closeBtn" type="button" onClick={signUp}>
+                        <button
+                          id="closeBtn"
+                          type="button"
+                          onClick={toggleSignUp}>
                           Back
                         </button>
                         <button
@@ -165,7 +181,7 @@ const Login = () => {
 
                 <div className={"new-user-header"}>
                   {!signUpToggle && !loginToggle && (
-                    <button id="closeBtn" type="button" onClick={signUp}>
+                    <button id="closeBtn" type="button" onClick={toggleSignUp}>
                       New User
                     </button>
                   )}

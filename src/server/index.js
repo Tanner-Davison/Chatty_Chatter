@@ -12,6 +12,7 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
+app.use(express.json())
 app.use((req, res, next) => {
   console.log("Request body:", req.body);
   console.log("Request files:", req.files); // For multiple file uploads
@@ -145,51 +146,35 @@ app.get("/api/users/:username/rooms", async(req,res)=>{
 
 	}
 	catch(err){
-		console.error(err)
+		console.log(err)
 	}
 })
 app.post("/signup", parser.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded. No image found");
   }
-  console.log("Received FormData:", {
-    username: req.body.username,
-    password: req.body.password,
-    file: req.file,
-  });
+  // console.log("Received FormData:", {
+  //   username: req.body.username,
+  //   password: req.body.password,
+  //   file: req.file,
+  // });
   const { username, password } = req.body;
-  
+
   const image = {
     url: req.file.path,
     cloudinary_id: req.file.filename,
   };
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ username: username.toLowerCase() });
 
     if (existingUser) {
-
-    //     await User.findOneAndUpdate(
-    //       { username: existingUser.username },
-    //       {
-    //         $set: {
-    //           profilePic: {
-    //             url: image.url,
-    //             cloudinary_id: image.cloudinary_id,
-    //           },
-    //         },
-    //       },
-    //       { new: true, useFindAndModify: false }
-    //     );
-      
       return res.status(200).json(existingUser);
+
     } else {
-      
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Create new user
       const createNewUser = new User({
         username: username.toLowerCase(),
         password: hashedPassword,
@@ -204,11 +189,30 @@ app.post("/signup", parser.single("image"), async (req, res) => {
     }
     res.json({ message: "User registered successfully!", image });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error registering user:", error.existingUser.data);
     res.status(500).send("Error registering user.");
   }
 });
 
+app.post('/login',async(req,res)=>{
+const {username, password}=req.body;
+ 
+try{
+  const userExist = await User.findOne({username:username})
+     if(!userExist){
+      res.status(404).json({message: `username ${username} does not have an account`})
+    }
+    const passwordMatch = await bcrypt.compare(password, userExist.password);
+
+    if(!passwordMatch){
+      res.status(404).json({message: `INVALID PASSWORD`})
+    }
+      res.status(200).json(userExist)
+    
+}catch(error){
+  console.error(error)
+}
+})
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -217,6 +221,7 @@ const io = new Server(server, {
 });
 
 let numUsers = 0;
+
 io.on("connection", (socket) => {
   console.log(`Server Connected on:${socket.id}`);
 
@@ -325,8 +330,8 @@ io.on("connection", (socket) => {
           },
           { new: true, useFindAndModify: false }
         );
- socket.to(data.room).emit("receive_message", data);
-        // ... rest of the code
+        socket.to(data.room).emit("receive_message", data);
+       
       } catch (err) {
         console.error("Error saving message to user:", err);
       }
