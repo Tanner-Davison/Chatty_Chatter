@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 mongoose.set("debug", true);
 const { Server } = require("socket.io");
 const cors = require("cors");
+const bcrypt = require('bcrypt');
+const saltRounds = 5;
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -56,6 +58,10 @@ cloudinary.config({
 const messagesSchema = new mongoose.Schema({
   username: {
     type: String,
+    required: true,
+  },
+  password:{
+    type:String,
     required: true,
   },
   message: String,
@@ -142,9 +148,9 @@ app.get("/api/users/:username/rooms", async(req,res)=>{
 		console.error(err)
 	}
 })
-app.post("/upload", parser.single("image"), async (req, res) => {
+app.post("/signup", parser.single("image"), async (req, res) => {
   if (!req.file) {
-    return res.status(400).send("No file uploaded.");
+    return res.status(400).send("No file uploaded. No image found");
   }
   console.log("Received FormData:", {
     username: req.body.username,
@@ -163,33 +169,37 @@ app.post("/upload", parser.single("image"), async (req, res) => {
     const existingUser = await User.findOne({ username: username.toLowerCase() });
 
     if (existingUser) {
-      console.log(existingUser);
-      if (existingUser) {
-        await User.findOneAndUpdate(
-          { username: existingUser.username },
-          {
-            $set: {
-              profilePic: {
-                url: image.url,
-                cloudinary_id: image.cloudinary_id,
-              },
-            },
-          },
-          { new: true, useFindAndModify: false }
-        );
-      }
-      return res.json({ message: "Existing user updated successfully", image });
+
+    //     await User.findOneAndUpdate(
+    //       { username: existingUser.username },
+    //       {
+    //         $set: {
+    //           profilePic: {
+    //             url: image.url,
+    //             cloudinary_id: image.cloudinary_id,
+    //           },
+    //         },
+    //       },
+    //       { new: true, useFindAndModify: false }
+    //     );
+      
+      return res.status(200).json(existingUser);
     } else {
+      
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
       // Create new user
       const createNewUser = new User({
         username: username.toLowerCase(),
-        password: password,
+        password: hashedPassword,
         profilePic: {
           url: image.url,
           cloudinary_id: image.cloudinary_id,
         },
       });
       await createNewUser.save();
+
       console.log("userCreated", createNewUser.profilePic.url);
     }
     res.json({ message: "User registered successfully!", image });

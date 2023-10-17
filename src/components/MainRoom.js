@@ -176,6 +176,7 @@ const MainRoom = () => {
                 console.log(msg)
 								if (msg.sentBy === userLoginInfo.username) {
 									// Message sent by current user
+                  let userLoggedIn = '@'+ userLoginInfo.username.split('@')[0].toUpperCase();
 									return (
 										<div
 											key={index}
@@ -192,7 +193,7 @@ const MainRoom = () => {
 												<div className={"message-timestamp-left"}>
 													<p>{currentTime}</p>
 												</div>
-												<p className={"user"}>{userLoginInfo.username}</p>
+												<p className={"user"}>{userLoggedIn}</p>
 											</div>
 											<div>
 											</div>
@@ -201,27 +202,25 @@ const MainRoom = () => {
 								} else {
 									// Message received from another user
 									return (
-                    <div
-                    key={index}
-                    className={"messagesContainer"}>
-											<div className={"container green"}>
-												<div className={"message-green"}>
-                  <img
-                    src={msg.imageUrl}
-                    className={'user-profile-pic green'}
-                    alt='Profile-Pic'
-                  />
-													<p className={"message-content"}>{msg.message}</p>
-												</div>
-												<p className={"user"}>
-													{msg.sentBy ? msg.sentBy : msg.username}
-												</p>
-												<div className={"message-timestamp-right"}>
-													<p>{msg.timestamp}</p>
-											</div>
+                    <div key={index} className={"messagesContainer"}>
+                      <div className={"container green"}>
+                        <div className={"message-green"}>
+                          <img
+                            src={msg.imageUrl}
+                            className={"user-profile-pic green"}
+                            alt="Profile-Pic"
+                          />
+                          <p className={"message-content"}>{msg.message}</p>
+                        </div>
+                        <p className={"user"}>
+                          {msg.sentBy ? '@'+msg.sentBy.split('@')[0].toUpperCase() : msg.username}
+                        </p>
+                        <div className={"message-timestamp-right"}>
+                          <p>{msg.timestamp}</p>
+                        </div>
+                      </div>
                     </div>
-                </div>
-									);
+                  );
 								}
 							})}
 						{messageRecieved.length <= 0 && (

@@ -31,37 +31,35 @@ const Login = () => {
     }
   };
 
-  const handleLoginSuccess = async (event) => {
+  const handleCreateUser = async (event) => {
     event.preventDefault();
     if (username.includes("@") & (username.length > 1)) {
       setMainAccess(false);
       setLoginPortalToggle(false);
-      //localStorage.setItem("password", JSON.stringify(password));
-      sessionStorage.setItem(
-        "username",
-        JSON.stringify(username.toLowerCase())
-      );
+
+      sessionStorage.setItem("username", JSON.stringify(username.toLowerCase()));
       sessionStorage.setItem("password", JSON.stringify(password));
+
       const sessionUsername = await JSON.parse(sessionStorage.getItem("username"));
-     
       setUsername(sessionUsername.toLowerCase());
-      //storing username and password in session storage.
+
       if (image) {
         const formData = new FormData();
         formData.append("image", image);
         formData.append("username", username);
         formData.append("password", password);
-console.log("Sending FormData:", {
-  username: formData.get("username"),
-  password: formData.get("password"),
-  image: formData.get("image"),
-});
-        const response = await fetch("http://localhost:3001/upload", {
+        console.log("Sending FormData:", 
+        {
+          username: formData.get("username"),
+          password: formData.get("password"),
+          image: formData.get("image"),
+        });
+        const response = await fetch("http://localhost:3001/signup", {
           method: "POST",
           body: formData,
         });
         const data = await response.json();
-		      
+
         if (data && data.image && data.image.url) {
           console.log(data.image.url);
           sessionStorage.setItem("image-url", data.image.url);
@@ -72,6 +70,12 @@ console.log("Sending FormData:", {
       submitHandler();
     }
   };
+
+  const handleLoginSuccess =(event) =>{
+    event.preventDefault();
+
+
+  }
 
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
 
@@ -124,8 +128,9 @@ console.log("Sending FormData:", {
                         <input
                           type="file"
                           accept="image/png, image/jpeg"
-						  name='image'
-                          onChange={(e) => setImage(e.target.files[0])}/>
+                          name="image"
+                          onChange={(e) => setImage(e.target.files[0])}
+                        />
                         <button>upload photo</button>
                       </div>
                       {/* PHOTO UPLOAD HERE */}
@@ -136,7 +141,7 @@ console.log("Sending FormData:", {
                         <button
                           id="closeBtn"
                           type="submit"
-                          onClick={handleLoginSuccess}>
+                          onClick={handleCreateUser}>
                           Submit
                         </button>
                       </div>

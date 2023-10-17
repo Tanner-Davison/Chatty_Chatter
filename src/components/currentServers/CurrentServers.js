@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined";
 const CurrentServers = () => {
-  const { setMainAccess, setSocket, socket } = useContext(LoginContext);
+  const { setMainAccess, setSocket, socket, userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
   const doesUserExist = JSON.parse(sessionStorage.getItem("username"));
   const [roomsJoined, setRoomsJoined] = useState([]);
@@ -23,7 +23,7 @@ const CurrentServers = () => {
 
   const displayRooms = async () => {
     if (doesUserExist) {
-      const allRooms = await AllRoomsJoined(doesUserExist);
+      const allRooms = await AllRoomsJoined(doesUserExist ? doesUserExist: userLoginInfo.username);
       console.log("allRooms:", allRooms); // Debug log
       setRoomsJoined(allRooms); // Removed 'return'
     }
