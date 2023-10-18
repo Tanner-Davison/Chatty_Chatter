@@ -9,6 +9,11 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
+   const handleKeyDown = (event) => {
+     if (event.keyCode === 32) {
+       event.preventDefault();
+     }
+   };
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -72,6 +77,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
         <input
           className={"roomInput"}
           placeholder="Room #"
+          onKeyDown={handleKeyDown}
           value={room}
           onChange={roomChanger}
         />

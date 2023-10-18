@@ -269,6 +269,34 @@ font-family: 'Varela Round', sans-serif;
 h1{
   color:white;
 }
+.sendMsgBtn{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 12px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 120px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 0px 10px;
+  color: #fff;
+  background-color: #ea4335;
+  height: 33px;
+  &:hover{
+  transform: scale(1.04);
+  background-color: #34a853;
+  
+  }
+}
 .leave-delete-button{
   display: flex;
   position: absolute;

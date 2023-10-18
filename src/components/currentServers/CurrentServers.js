@@ -10,6 +10,7 @@ const CurrentServers = () => {
   const navigate = useNavigate();
   const doesUserExist = JSON.parse(sessionStorage.getItem("username"));
   const [roomsJoined, setRoomsJoined] = useState([]);
+  const [goToRoom,setGoToRoom]=useState('')
   const colors = [
     "#DD4124", 
     "#D65076",
@@ -25,7 +26,7 @@ const CurrentServers = () => {
     if (doesUserExist) {
       const allRooms = await AllRoomsJoined(doesUserExist ? doesUserExist: userLoginInfo.username);
       console.log("allRooms:", allRooms); // Debug log
-      setRoomsJoined(allRooms); // Removed 'return'
+      setRoomsJoined(allRooms.sort((a,b)=> a.room - b.room)); // Removed 'return'
     }
   };
 
@@ -56,37 +57,44 @@ const CurrentServers = () => {
                 reconnectionAttempts: 20,
                 reconnectionDelay: 2000,
               },
+
               navigate(`/chatroom/1`)
             );
           }}>
           {" "}
           Enter Main Room
         </button>
+
         {roomsJoined.length > 0 &&
           roomsJoined.map((room) => {
-            const inRoom = room.room;
             const id = room._id;
             const randomIndex = Math.floor(Math.random() * colors.length);
             const randomColor = colors[randomIndex];
+
+            const handleRoomButtonClick = (roomNumber) => {
+              setMainAccess(true);
+              setSocket(
+                io.connect("http://localhost:3001"),
+                {
+                  reconnection: true,
+                  reconnectionAttempts: 20,
+                  reconnectionDelay: 2000,
+                },
+                
+                  navigate(`/chatroom/${roomNumber}`)
+                
+              );
+              console.log(room.room)
+            };
+
             return (
               <div key={id}>
                 <button
                   type="button"
                   className={"mainAccessBtn"}
                   style={{ backgroundColor: `${randomColor}` }}
-                  onClick={() => {
-                    setMainAccess(true);
-                    setSocket(
-                      io.connect("http://localhost:3001"),
-                      {
-                        reconnection: true,
-                        reconnectionAttempts: 20,
-                        reconnectionDelay: 2000,
-                      },
-                      navigate(`/chatroom/${inRoom}`)
-                    );
-                  }}>
-                  {inRoom}
+                  onClick={() => handleRoomButtonClick(room.room)}>
+                  {room.room}
                 </button>
               </div>
             );

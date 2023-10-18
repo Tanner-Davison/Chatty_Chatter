@@ -248,7 +248,7 @@ const MainRoom = () => {
           onChange={(event) => setMessage(event.target.value)}
           maxLength="255"
         />
-        <button onClick={sendMessageFunc}>Send Message</button>
+        <button className={'sendMsgBtn'}onClick={sendMessageFunc}>Send Message</button>
       </div>
       
         <div className="leave-delete-button">
