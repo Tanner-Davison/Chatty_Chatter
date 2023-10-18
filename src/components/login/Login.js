@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import axios from "axios";
 const Login = () => {
-  const { createUserInfo, setMainAccess, setLoginPortalToggle } =
-    useContext(LoginContext);
+  const { createUserInfo, setLoginPortalToggle } = useContext(LoginContext);
 
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState("");
@@ -14,6 +13,8 @@ const Login = () => {
   const [signUpToggle, setSignUpToggle] = useState(false);
   const [loginToggle, setLoginToggle] = useState(false);
   const [image, setImage] = useState(null);
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [errorCss, setErrorCss] = useState("");
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
   const navigate = useNavigate();
 
@@ -21,78 +22,79 @@ const Login = () => {
     setSignUpToggle(!signUpToggle);
     setLoginPortalToggle(signUpToggle);
   };
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 32) {
+      event.preventDefault();
+    }
+  };
   const loginmodal = () => {
     setLoginToggle(!loginToggle);
   };
 
   const handleCreateUser = async (event) => {
     event.preventDefault();
-   
-
-      if (image) {
-        const formData = new FormData();
-        formData.append("image", image);
-        formData.append("username", username);
-        formData.append("password", password);
-        // console.log("Sending FormData:",
-        //   {
-        //     username: formData.get("username"),
-        //     password: formData.get("password"),
-        //     image: formData.get("image"),
-        //   });
-        const response = await fetch("http://localhost:3001/signup", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await response.json();
-
-        if (data && data.image && data.image.url) {
-          sessionStorage.setItem("image-url", data.image.url);
-          sessionStorage.setItem("cloudinary_id", data.image.cloudinary_id);
-           if (username.includes("@") & (username.length > 1)) {
-             // setMainAccess(false);
-             // setLoginPortalToggle(false);
-
-             sessionStorage.setItem("username",JSON.stringify(username.toLowerCase())
-             );
-             sessionStorage.setItem("password", JSON.stringify(password)
-             );
-
-             const sessionUsername = await JSON.parse(sessionStorage.getItem("username")
-             );
-             setUsername(sessionUsername.toLowerCase());
-             createUserInfo();
-           }else{
-            return;
-           }
-      }else{
-        return;
-      }
-      
+    if (username.length > 1) {
+      setUsername(username.toLowerCase());
+    } else {
+      return setLoginFailed(true);
     }
-    submitHandler();
+    if (image) {
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("username", username);
+      formData.append("password", password);
+      // console.log("Sending FormData:",
+      //   {
+      //     username: formData.get("username"),
+      //     password: formData.get("password"),
+      //     image: formData.get("image"),
+      //   });
+      axios
+        .post("http://localhost:3001/signup", formData)
+        .then((res) => {
+          const data = res.data;
+          if (data.message === "User created!") {
+            sessionStorage.setItem("image-url", data.image.url);
+            sessionStorage.setItem("cloudinary_id", data.image.cloudinary_id);
+            sessionStorage.setItem(
+              "password",
+              JSON.stringify(data.hashedPassword)
+            );
+            sessionStorage.setItem(
+              "username",
+              JSON.stringify(username.toLowerCase())
+            );
+            createUserInfo();
+          } else {
+            return;
+          }
+          submitHandler();
+        })
+        .catch((err) => console.log(err));
+    }
   };
   const handleLoginSuccess = async (event) => {
     event.preventDefault();
     setUsername(username.toLowerCase());
-    try{   
-      const findUser = await axios.post(`http://localhost:3001/login`,{
+    try {
+      const findUser = await axios.post(`http://localhost:3001/login`, {
         username: username.toLowerCase(),
         password: password,
       });
       const userExist = findUser.data;
-      console.log(userExist.username);
-      sessionStorage.setItem('active_user',JSON.stringify(userExist))
-      createUserInfo()
-      const storedUsername = username.toLowerCase();
-      sessionStorage.setItem(
-        "username",
-        JSON.stringify(storedUsername)
-      );
-    }catch(error){
-      console.error(`Error found in LOGIN/handleLoginSuccess `, error.userExist)
-    }finally{
-      submitHandler();
+      if (userExist.username) {
+        const storedUsername = username.toLowerCase();
+        setLoginFailed(false);
+        sessionStorage.setItem("active_user", JSON.stringify(userExist));
+        sessionStorage.setItem("username", JSON.stringify(storedUsername));
+        createUserInfo();
+        submitHandler();
+      } else {
+        setLoginFailed(true);
+      }
+    } catch (error) {
+      console.error(`error @ LOGIN--> HandleLoginSuccess`);
+      setLoginFailed(true);
     }
   };
   const submitHandler = () => {
@@ -100,10 +102,18 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (userExists != null ) {
-      navigate(`/profile/${userExists.split('@')[0]}`);
+    if (userExists != null) {
+      navigate(`/profile/${userExists.split("@")[0]}`);
     }
   });
+  useEffect(() => {
+    if (loginFailed) {
+      setErrorCss("error-css");
+      console.log("error css is working");
+    } else if (loginFailed === false) {
+      setErrorCss("");
+    }
+  }, [loginFailed]);
   return (
     <>
       <div className={"login-element-wrapper"}>
@@ -121,6 +131,7 @@ const Login = () => {
                           <label htmlFor="username-id"> Username :</label>
                           <input
                             type="text"
+                            onKeyDown={handleKeyDown}
                             name={"usernameInput"}
                             ref={inputElement}
                             onChange={(event) =>
@@ -134,6 +145,7 @@ const Login = () => {
                           <input
                             type="text"
                             name={"passwordInput"}
+                            onKeyDown={handleKeyDown}
                             onChange={(event) => {
                               setPassword(event.target.value);
                             }}
@@ -199,14 +211,15 @@ const Login = () => {
             )}
             {loginToggle === true && (
               <>
-                <div className={"CreateUser"}>
+                <div className={`CreateUser ${errorCss}`}>
                   <h2>User Login</h2>
-                  <div className={"userLoginElements"}>
+                  <div className={`userLoginElements`}>
                     <div className={"input-box-container"}>
                       <label htmlFor="username-id"> Username :</label>
                       <input
                         type="text"
                         name={"usernameInput"}
+                        onKeyDown={handleKeyDown}
                         ref={inputElement}
                         onChange={(event) => setUsername(event.target.value)}
                         id="username-id"
@@ -216,6 +229,7 @@ const Login = () => {
                       <label htmlFor="password-id"> Password :</label>
                       <input
                         type="text"
+                        onKeyDown={handleKeyDown}
                         name={"passwordInput"}
                         onChange={(event) => {
                           setPassword(event.target.value);
@@ -224,6 +238,12 @@ const Login = () => {
                       />
                     </div>
                   </div>
+                  {loginFailed &&
+                    setTimeout(() => setLoginFailed(false), 9000) && (
+                      <div className={"login-failed"}>
+                        Login Failed. Please Try Again.
+                      </div>
+                    )}
                   <div className={"btnWrapper"}>
                     <button id="closeBtn" type="button" onClick={loginmodal}>
                       close

@@ -5,14 +5,14 @@ const mongoose = require("mongoose");
 mongoose.set("debug", true);
 const { Server } = require("socket.io");
 const cors = require("cors");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 5;
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
-app.use(express.json())
+const jwt = require("jsonwebtoken");
+const authenticateUser = require('./utils/auth')
+const {Rooms,User}= require('./utils/User_schema');
+const connectDB = require("./utils/db");
+app.use(cors({ origin: "http://localhost:3000" }));
+app.use(express.json());
 app.use((req, res, next) => {
   console.log("Request body:", req.body);
   console.log("Request files:", req.files); // For multiple file uploads
@@ -38,15 +38,9 @@ app.use(express.urlencoded({ extended: true }));
 
 //create Server
 const server = http.createServer(app);
-async function connect() {
-  try {
-    await mongoose.connect(MONGO_DB_KEY);
-    console.log("Connected To MongoDB");
-  } catch (err) {
-    console.log(err);
-  }
-}
-connect();
+//connect to mongoDB
+connectDB(MONGO_DB_KEY);
+
 const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 // const CLOUD_NAME = process.env.CLOUD_NAME;
@@ -56,65 +50,6 @@ cloudinary.config({
   api_key: "833978376411799",
   api_secret: CLOUDINARY_SECRET,
 });
-const messagesSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  password:{
-    type:String,
-    required: true,
-  },
-  message: String,
-  profilePic:{
-    url: String,
-    cloudinary_id: String,
-  },
-  sentMessages: [
-    {
-      message: String,
-      room: Number,
-      timestamp: String,
-    },
-  ],
-  roomsJoined: [
-    {
-      room: Number,
-      timestamp: String,
-    },
-  ],
-});
-
-const roomSchema = new mongoose.Schema({
-  room_number: {
-    type: Number,
-    required: true,
-  },
-  sent_by_user: {
-    type: mongoose.Schema.Types.ObjectId, // Using ObjectId for referencing
-    ref: "Message", // reference to the Message model
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  message: {
-    type: String,
-  },
-  messageHistory: [
-    {
-      message: String,
-      sentBy: String,
-      timestamp: String,
-      imageUrl: String,
-      cloudinary_id: String, 
-    },
-  ],
-  users_in_room: [String],
-});
-const Rooms = mongoose.model("Rooms", roomSchema);
-const User = mongoose.model("User", messagesSchema);
 
 app.get("/roomHistory/:room", async (req, res) => {
   const room = await Rooms.findOne({ room_number: req.params.room });
@@ -134,30 +69,28 @@ app.get("/user_info/:sessionUsername", async (req, res) => {
     res.status(404).json({ message: "User not Found" });
   }
 });
-app.get("/api/users/:username/rooms", async(req,res)=>{
-  try{
+app.get("/api/users/:username/rooms", async (req, res) => {
+  try {
     const username = req.params.username;
-    const userList = await User.findOne({username: username})
-		if(!userList){
-			res.status(404).json({message: "user list is not found"})
-		}else{
-			res.json(userList.roomsJoined);
-		}
-
-	}
-	catch(err){
-		console.log(err)
-	}
-})
+    const userList = await User.findOne({ username: username });
+    if (!userList) {
+      res.status(404).json({ message: "user list is not found" });
+    } else {
+      res.json(userList.roomsJoined);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.post("/signup", parser.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded. No image found");
   }
-  // console.log("Received FormData:", {
-  //   username: req.body.username,
-  //   password: req.body.password,
-  //   file: req.file,
-  // });
+  console.log("Received FormData:", {
+    username: req.body.username,
+    password: req.body.password,
+    file: req.file,
+  });
   const { username, password } = req.body;
 
   const image = {
@@ -166,11 +99,12 @@ app.post("/signup", parser.single("image"), async (req, res) => {
   };
 
   try {
-    const existingUser = await User.findOne({ username: username.toLowerCase() });
+    const existingUser = await User.findOne({
+      username: username.toLowerCase(),
+    });
 
     if (existingUser) {
-      return res.status(404).json({message: 'user exist please login.'});
-
+      return res.status(404).json({ message: "user exist please login." });
     } else {
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -184,35 +118,31 @@ app.post("/signup", parser.single("image"), async (req, res) => {
         },
       });
       await createNewUser.save();
-
-      console.log("userCreated", createNewUser.profilePic.url);
+      res.status(200).json({ message: "User created!", image, hashedPassword });
     }
-    res.json({ message: "User registered successfully!", image });
   } catch (error) {
     console.error("Error registering user:", error.existingUser.data);
     res.status(500).send("Error registering user.");
   }
 });
 
-app.post('/login',async(req,res)=>{
-const {username, password}=req.body;
- 
-try{
-  const userExist = await User.findOne({username:username})
-     if(!userExist){
-      res.status(404).json({message: `username ${username} does not have an account`})
-    }
-    const passwordMatch = await bcrypt.compare(password, userExist.password);
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const result = await authenticateUser(username, password);
 
-    if(!passwordMatch){
-      res.status(404).json({message: `INVALID PASSWORD`})
-    }
-      res.status(200).json(userExist)
-    
-}catch(error){
-  console.error(error)
-}
-})
+  if (result === "INVALID PASSWORD") {
+    res.status(401).send("Invalid password");
+  } else if (result === "USER NOT FOUND") {
+    res.status(404).send("User not found");
+  } else if (result === "INTERNAL SERVER ERROR") {
+    res.status(500).send("Internal Server Error");
+  } else {
+    // Authentication was successful, proceed with your logic
+    res.status(200).send(result);
+  }
+});
+
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -238,31 +168,31 @@ io.on("connection", (socket) => {
 
     console.log(`${data.username} joined room ${data.room}`);
     try {
-      const user = await User.findOne({ username: data.username.toLowerCase() });
+      const user = await User.findOne({
+        username: data.username.toLowerCase(),
+      });
       const inRoomPrev = await User.findOne({
-				username: data.username,
-				"roomsJoined.room": data.room,
-			});
+        username: data.username,
+        "roomsJoined.room": data.room,
+      });
       console.log(`Looook here HEEERRREEE`, typeof data.room);
       if (user && inRoomPrev) {
         console.log(`user ${data.username} has been in this room before`);
-      }
-      else if (user && !inRoomPrev) {
-       
-        console.log('type of room number',typeof data.room)
+      } else if (user && !inRoomPrev) {
+        console.log("type of room number", typeof data.room);
         const updateUser = await User.findOneAndUpdate(
           { username: data.username },
           {
             $push: {
-              roomsJoined:{
-                room: parseInt(data.room,10),
+              roomsJoined: {
+                room: parseInt(data.room, 10),
                 timestamp: data.timestamp,
               },
             },
           },
           { new: true, useFindAndModify: false }
-        )
-      }  
+        );
+      }
       console.log(`room ${data.room} added to ${data.username}`);
       if (!user) {
         console.log(`No user found with username: ${data.username}`);
@@ -331,7 +261,6 @@ io.on("connection", (socket) => {
           { new: true, useFindAndModify: false }
         );
         socket.to(data.room).emit("receive_message", data);
-       
       } catch (err) {
         console.error("Error saving message to user:", err);
       }

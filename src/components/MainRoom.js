@@ -170,14 +170,16 @@ const MainRoom = () => {
             </div>
             {messageRecieved.length > 0 &&
               messageRecieved.map((msg, index) => {
-                console.log(msg);
                 if (msg.sentBy === userLoginInfo.username) {
                   // Message sent by current user
                   let userLoggedIn =
-                    "@" + userLoginInfo.username.split("@")[0].toUpperCase();
+                    "@" + userLoginInfo.username.toUpperCase();
                   return (
                     <div key={index} className={"messagesContainer"}>
                       <div className={"container blue"}>
+                        <div className={"message-timestamp-left"}>
+                          <p>{currentTime}</p>
+                        </div>
                         <div className={"message-blue"}>
                           <img
                             src={userLoginInfo.imageUrl}
@@ -185,9 +187,6 @@ const MainRoom = () => {
                             alt="Profile-Pic"
                           />
                           <p className={"message-content"}>{msg.message}</p>
-                        </div>
-                        <div className={"message-timestamp-left"}>
-                          <p>{currentTime}</p>
                         </div>
                         <p className={"user"}>{userLoggedIn}</p>
                       </div>
@@ -209,8 +208,8 @@ const MainRoom = () => {
                         </div>
                         <p className={"user"}>
                           {msg.sentBy
-                            ? "@" + msg.sentBy.split("@")[0].toUpperCase()
-                            : msg.username}
+                            ? "@" + msg.sentBy.toUpperCase()
+                            : "@"+ msg.username.toUpperCase()}
                         </p>
                         <div className={"message-timestamp-right"}>
                           <p>{msg.timestamp}</p>

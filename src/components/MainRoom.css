@@ -46,14 +46,15 @@ p {
     display: flex;
     opacity: 1;
     position: absolute;
-    bottom: 50%;
-    top:20%;
+    right:-4%;
+    top:-50%;
+    bottom:-20%;
+    color:white;
     align-items: center;
     justify-content: center;
     font-size: 0.85em;
     font-weight: 300;
     font-weight: bold;
-    right:2%;
     width: -moz-fit-content;
     width: fit-content;
 }
@@ -163,7 +164,7 @@ p {
 
 .container.blue{
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-self: flex-end;
   width:fit-content;
   padding-left:41%;

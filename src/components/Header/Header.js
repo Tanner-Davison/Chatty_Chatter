@@ -54,8 +54,8 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
               </Link>
             </li>
 
-            <button type="button" onClick={() => logoutHandler()}>
-              LOGOUT
+            <button type="button" id={'logout_button'} onClick={() => logoutHandler()}>
+              Logout
             </button>
           </>
         )}

@@ -40,12 +40,16 @@ function App() {
     const userLoggedIn = sessionStorage.getItem('active_user');
     const user = JSON.parse(userLoggedIn);
     if(user){
-      const loggedInUser ={
-        username:user.username,
-        password:user.password,
-        imageUrl:user.profilePic.url,
-        cloudinary_id:user.profilePic.cloudinary_id,
-      }
+      const loggedInUser = {
+        username: user.username,
+        password: user.password,
+        imageUrl:
+          user.profilePic.url ||
+          "https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg",
+        cloudinary_id:
+          user.profilePic.cloudinary_id ||
+          "https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg",
+      };
       setUserLoginInfo(loggedInUser);
 
       return userLoginInfo;
