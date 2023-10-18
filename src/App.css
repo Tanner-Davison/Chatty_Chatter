@@ -17,9 +17,11 @@
   font-size: calc(10px + 2vmin);
   color: white;
   overscroll-behavior-x:none ;
-
+  
 }
-
+.App::-webkit-scrollbar{
+  display:none;
+}
 
 @keyframes App-logo-spin {
   from {

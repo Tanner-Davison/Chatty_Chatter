@@ -157,123 +157,132 @@ const MainRoom = () => {
 
   return (
     <>
-      <div className="App">
-        <div className="header">
-          <Header
-            roomChanger={roomChanger}
-            room={room ? room : 1}
-            joinRoom={joinRoom}
-          />
-          <div className={"all-messages"} ref={messagesStartRef}>
-            <div className="room_name">
-              <h2> Room: {inRoom}</h2>
-            </div>
-            {messageRecieved.length > 0 &&
-              messageRecieved.map((msg, index) => {
-                if (msg.sentBy === userLoginInfo.username) {
-                  // Message sent by current user
-                  let userLoggedIn =
-                    "@" + userLoginInfo.username.toUpperCase();
-                  return (
-                    <div key={index} className={"messagesContainer"}>
-                      <div className={"container blue"}>
-                        <div className={"message-timestamp-left"}>
-                          <p>{currentTime}</p>
-                        </div>
-                        <div className={"message-blue"}>
-                          <img
-                            src={userLoginInfo.imageUrl}
-                            className={"user-profile-pic blue"}
-                            alt="Profile-Pic"
-                          />
-                          <p className={"message-content"}>{msg.message}</p>
-                        </div>
-                        <p className={"user"}>{userLoggedIn}</p>
+      <div className="roomWrapper">
+        <Header
+          roomChanger={roomChanger}
+          room={room ? room : 1}
+          joinRoom={joinRoom}
+        />
+
+        <div className={"all-messages"} ref={messagesStartRef}>
+          <div className="room_name">
+            <h2> Room: {inRoom}</h2>
+          </div>
+
+          {messageRecieved.length > 0 &&
+            messageRecieved.map((msg, index) => {
+              const timestampParts = msg.timestamp.split(" ");
+              const datePart = timestampParts[0];
+              const timePart = timestampParts[1] + " " + timestampParts[2];
+              if (msg.sentBy === userLoginInfo.username) {
+                // Message sent by current user
+                let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
+                return (
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container blue"}>
+                      <div className={"message-timestamp-left"}>
+                        <p>{currentTime}</p>
                       </div>
-                      <div></div>
+                      <div className={"message-blue"}>
+                        <img
+                          src={userLoginInfo.imageUrl}
+                          className={"user-profile-pic blue"}
+                          alt="Profile-Pic"
+                        />
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>{userLoggedIn}</p>
                     </div>
-                  );
-                } else {
-                  // Message received from another user
-                  return (
-                    <div key={index} className={"messagesContainer"}>
-                      <div className={"container green"}>
-                        <div className={"message-green"}>
-                          <img
-                            src={msg.imageUrl}
-                            className={"user-profile-pic green"}
-                            alt="Profile-Pic"
-                          />
-                          <p className={"message-content"}>{msg.message}</p>
-                        </div>
-                        <p className={"user"}>
+                    <div></div>
+                  </div>
+                );
+              } else {
+                // Message received from another user
+                return (
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container green"}>
+                      <div className={"message-timestamp-right"}>
+                        <p>
+                          {datePart}
+                          <br />
+                          {timePart}
+                        </p>
+                      </div>
+                      <div className={"message-green"}>
+                        <img
+                          src={msg.imageUrl}
+                          className={"user-profile-pic green"}
+                          alt="Profile-Pic"
+                        />
+                        <p className={"message-content"}>{msg.message}</p>
+                        <p className={"user green"}>
                           {msg.sentBy
                             ? "@" + msg.sentBy.toUpperCase()
-                            : "@"+ msg.username.toUpperCase()}
+                            : "@" + msg.username.toUpperCase()}
                         </p>
-                        <div className={"message-timestamp-right"}>
-                          <p>{msg.timestamp}</p>
-                        </div>
                       </div>
                     </div>
-                  );
-                }
-              })}
-            {messageRecieved.length <= 0 && (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}>
-                  <h1>No Room History</h1>
-                  <p>please choose another room or rejoin</p>
-                </div>
-              </>
-            )}
-          </div>
+                  </div>
+                );
+              }
+            })}
+          {messageRecieved.length <= 0 && (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}>
+                <h1>No Room History</h1>
+                <p>please choose another room or rejoin</p>
+              </div>
+            </>
+          )}
         </div>
-        <div className={"room-num-input-mainRoom"}>
-          <input
-            placeholder={message !== "" ? message : "Message..."}
-            value={message}
-            onChange={(event) => setMessage(event.target.value)}
-            maxLength="255"
-          />
-          <button onClick={sendMessageFunc}>Send Message</button>
-        </div>
-        <button onClick={leaveRoom}>Leave Room</button>
-        <button onClick={deleteRoom}> Delete Room </button>
-
-        {
-          <>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-              }}>
-              <h3 style={{ color: "white" }}>Status:</h3>
-              <button
-                type="button"
-                className={"statusBtn"}
-                onClick={() => {
-                  joinRoom();
-                }}
-                style={
-                  isSocketConnected === "Connected"
-                    ? { backgroundColor: "limegreen" }
-                    : { backgroundColor: "red", color: "white" }
-                }>
-                {isSocketConnected && isSocketConnected.toUpperCase()}
-                {!isSocketConnected && "DISCONNECTED"}
-              </button>
-            </div>
-          </>
-        }
       </div>
+      <div className={"room-num-input-mainRoom"}>
+        <input
+          placeholder={message !== "" ? message : "Message..."}
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          maxLength="255"
+        />
+        <button onClick={sendMessageFunc}>Send Message</button>
+      </div>
+      
+        <div className="leave-delete-button">
+          <button onClick={leaveRoom}>Leave Room</button>
+          <button onClick={deleteRoom}>Delete Room</button>
+        </div>
+      
+      {
+        <>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+            }}>
+            <h3 style={{ color: "white" }}>Status:</h3>
+            <button
+              type="button"
+              className={"statusBtn"}
+              onClick={() => {
+                joinRoom();
+              }}
+              style={
+                isSocketConnected === "Connected"
+                  ? { backgroundColor: "limegreen" }
+                  : { backgroundColor: "red", color: "white" }
+              }>
+              {isSocketConnected && isSocketConnected.toUpperCase()}
+              {!isSocketConnected && "DISCONNECTED"}
+            </button>
+          </div>
+        </>
+      }
     </>
   );
 };

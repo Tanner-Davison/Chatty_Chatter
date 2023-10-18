@@ -91,16 +91,14 @@ function App() {
         createUserInfo,
       }}>
       <RouterProvider router={router}>
-        <header className={"App"}>
-          <div className={"App-body"}>
+       
             <Header>
               <Login />
               <CurrentServers />
               <MainRoom />
               <Profile />
             </Header>
-          </div>
-        </header>
+          
       </RouterProvider>
     </LoginContext.Provider>
   );
