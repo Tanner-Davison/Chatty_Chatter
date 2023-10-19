@@ -10,7 +10,7 @@ const CurrentServers = () => {
   const navigate = useNavigate();
   const doesUserExist = JSON.parse(sessionStorage.getItem("username"));
   const [roomsJoined, setRoomsJoined] = useState([]);
-  const [goToRoom,setGoToRoom]=useState('')
+
   const colors = [
     "#DD4124", 
     "#D65076",
@@ -29,6 +29,16 @@ const CurrentServers = () => {
       setRoomsJoined(allRooms.sort((a,b)=> a.room - b.room)); // Removed 'return'
     }
   };
+   const handleRoomButtonClick = (roomNumber) => {
+     setMainAccess(true);
+     setSocket(io.connect("http://localhost:3001"), {
+       reconnection: true,
+       reconnectionAttempts: 20,
+       reconnectionDelay: 2000,
+     });
+     sessionStorage.setItem("lastRoom", roomNumber.toString());
+     navigate(`/chatroom/${roomNumber}`);
+   };
 
   useEffect(() => {
     displayRooms();
@@ -36,15 +46,11 @@ const CurrentServers = () => {
 
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    doesUserExist ? console.log(doesUserExist) : navigate("/");
-    // eslint-disable-next-line
-  }, []);
+ 
 
   return (
     <>
-      <Header socket={socket} />
+      <Header socket={socket}  />
       <div className="server-selection">
         <button
           className={"mainAccessBtn"}
@@ -57,11 +63,9 @@ const CurrentServers = () => {
                 reconnectionAttempts: 20,
                 reconnectionDelay: 2000,
               },
-
+              );
               navigate(`/chatroom/1`)
-            );
           }}>
-          {" "}
           Enter Main Room
         </button>
 
@@ -71,23 +75,7 @@ const CurrentServers = () => {
             const randomIndex = Math.floor(Math.random() * colors.length);
             const randomColor = colors[randomIndex];
 
-            const handleRoomButtonClick = (roomNumber) => {
-              setMainAccess(true);
-              setSocket(
-                io.connect("http://localhost:3001"),
-                {
-                  reconnection: true,
-                  reconnectionAttempts: 20,
-                  reconnectionDelay: 2000,
-                },
-                
-                  navigate(`/chatroom/${roomNumber}`)
-                
-              );
-              console.log(room.room)
-            };
-
-            return (
+            return(
               <div key={id}>
                 <button
                   type="button"
@@ -97,8 +85,8 @@ const CurrentServers = () => {
                   {room.room}
                 </button>
               </div>
-            );
-          })}
+            
+          )})}
       </div>
       {}
     </>

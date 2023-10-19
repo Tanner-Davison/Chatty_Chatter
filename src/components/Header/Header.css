@@ -122,8 +122,13 @@ color:red;
 @media only screen and (max-width: 600px) {
   .headerContainer {
     flex-direction: row;
+    align-items: flex-start;
+    width: 97%;
     height: auto;
-    padding: 1rem;
+    margin: 0px;
+    border-radius: 5px 5px 15px 15px;
+    padding: 0;
+    border: 6px inset white;
   }
   .create_room_container {
     flex-direction: column;
@@ -146,9 +151,10 @@ color:red;
     margin-right: 0;
   }
   .visible_login_success {
-    top: auto;
-    bottom: 0;
-    flex-direction: column;
+    top:15%;
+    right:20px;
+    align-self:center;
+    gap:2px;
     font-size: 8px;
     padding: 5px;
   }
@@ -159,7 +165,7 @@ color:red;
     font-size:1rem;
    }
    h2 {
-    height:2px;
+   
     padding:1px;
    }
    .navLinks>button{

@@ -58,8 +58,8 @@ function App() {
       const newUserInfo = {
         username: JSON.parse(sessionStorage.getItem("username")),
         password: JSON.parse(sessionStorage.getItem("password")),
-        imageUrl: sessionStorage.getItem('image-url'),
-        cloudinary_id: sessionStorage.getItem('image-url'),
+        imageUrl: sessionStorage.getItem("image-url"),
+        cloudinary_id: sessionStorage.getItem("cloudinary_id"),
       };
         setUserLoginInfo(newUserInfo);
       

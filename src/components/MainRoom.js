@@ -34,7 +34,7 @@ const MainRoom = () => {
   const PORT = process.env.PORT;
   const currentTime = getCurrentTimeJSX();
   const [isSocketConnected, setSocketConnected] = useState("");
-  const [latestRoom, setlatestRoom] = useState(1);
+ 
 
   const navigate = useNavigate();
 
@@ -47,7 +47,6 @@ const MainRoom = () => {
     navigate(`/chatroom/${room}`);
     const messages = await loadRoomHistory(room);
     sessionStorage.setItem("lastRoom", room.toString());
-    setlatestRoom(room);
     setInroom(room);
     setMessageRecieved(messages);
   };
@@ -174,6 +173,7 @@ const MainRoom = () => {
               const timestampParts = msg.timestamp.split(" ");
               const datePart = timestampParts[0];
               const timePart = timestampParts[1] + " " + timestampParts[2];
+
               if (msg.sentBy === userLoginInfo.username) {
                 // Message sent by current user
                 let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
@@ -185,7 +185,7 @@ const MainRoom = () => {
                       </div>
                       <div className={"message-blue"}>
                         <img
-                          src={userLoginInfo.imageUrl}
+                          src={userLoginInfo.imageUrl ||userLoginInfo.cloudinary_id}
                           className={"user-profile-pic blue"}
                           alt="Profile-Pic"
                         />
@@ -210,7 +210,7 @@ const MainRoom = () => {
                       </div>
                       <div className={"message-green"}>
                         <img
-                          src={msg.imageUrl}
+                          src={msg.imageUrl || msg.cloudinary_id}
                           className={"user-profile-pic green"}
                           alt="Profile-Pic"
                         />
@@ -248,7 +248,7 @@ const MainRoom = () => {
           onChange={(event) => setMessage(event.target.value)}
           maxLength="255"
         />
-        <button className={'sendMsgBtn'}onClick={sendMessageFunc}>Send Message</button>
+        <button className={'sendMsgBtn'}onClick={sendMessageFunc}>Send</button>
       </div>
       
         <div className="leave-delete-button">
@@ -259,12 +259,7 @@ const MainRoom = () => {
       {
         <>
           <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}>
+           className={'status_container'}>
             <h3 style={{ color: "white" }}>Status:</h3>
             <button
               type="button"
