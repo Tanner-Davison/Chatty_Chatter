@@ -185,7 +185,8 @@ const MainRoom = () => {
                       </div>
                       <div className={"message-blue"}>
                         <img
-                          src={userLoginInfo.imageUrl ||userLoginInfo.cloudinary_id}
+                          src={userLoginInfo.imageUrl || userLoginInfo.cloudinary_id}
+                          loading="lazy"
                           className={"user-profile-pic blue"}
                           alt="Profile-Pic"
                         />

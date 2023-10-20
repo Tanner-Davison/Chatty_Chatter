@@ -138,7 +138,7 @@ const Login = () => {
                             <input
                               type="text"
                               onKeyDown={handleKeyDown}
-                              name={"usernameInput"}
+                              className={"usernameInput"}
                               ref={inputElement}
                               onChange={(event) => {
                                 setUsername(event.target.value);
