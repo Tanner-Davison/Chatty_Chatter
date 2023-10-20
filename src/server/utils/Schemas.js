@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const messagesSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -24,6 +25,13 @@ const messagesSchema = new mongoose.Schema({
     {
       room: Number,
       timestamp: String,
+    },
+  ],
+  friends:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      unique:true,
     },
   ],
 });
@@ -57,7 +65,7 @@ const roomSchema = new mongoose.Schema({
   users_in_room: [String],
 });
 const Rooms = mongoose.model("Rooms", roomSchema);
-const User = mongoose.model("User", messagesSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = {
     Rooms, 
     User

@@ -1,4 +1,4 @@
-const {User} = require("./User_schema"); // your User model
+const { User } = require("./Schemas"); // your User model
 const bcrypt = require("bcrypt");
 
 const authenticateUser = async (username, password) => {

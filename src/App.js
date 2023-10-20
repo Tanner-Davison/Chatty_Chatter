@@ -92,13 +92,7 @@ function App() {
       }}>
       <RouterProvider router={router}>
        
-            <Header>
-              <Login />
-              <CurrentServers />
-              <MainRoom />
-              <Profile />
-            </Header>
-          
+         
       </RouterProvider>
     </LoginContext.Provider>
   );

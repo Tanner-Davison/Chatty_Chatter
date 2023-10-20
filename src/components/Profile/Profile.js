@@ -1,16 +1,76 @@
 import { useParams } from "react-router-dom";
 import Header from "../Header/Header";
+import { useEffect, useState } from "react";
+import { LoadProfileRoom } from "./LoadProfileRoom";
+import "./Profile.css";
+import SwitchOn from "./svgs/SwitchOn.svg";
+import SwitchOff from "./svgs/SwitchOff.svg";
 function Profile() {
-  const {username} = useParams();
+  const [switchToggle, setSwitchToggle] = useState(false);
+  const [userDataExists, setUserDataExists] = useState(false);
+  const { username } = useParams();
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    profile_pic: "",
+  });
 
-  // make a getUserInfo Function essentially just get all the user info and display it here the username params is what you are going to search in the DB
-  // const userInfo = // make a get request;
+  const getData = async (username) => {
+    const data = await LoadProfileRoom(username);
+    const userData = await data;
+    if (userData) {
+      setUserDataExists(true);
+      console.log(userData.profilePic);
+      setUserInfo({
+        username: userData.username,
+        profile_pic: userData.profilePic,
+      });
+    } else {
+      console.log("no data");
+      setUserDataExists(false);
+      return;
+    }
+  };
 
+  useEffect(() => {
+    !userDataExists ? getData(username) : console.log(userInfo);
+    // eslint-disable-next-line
+  }, []);
   return (
     <>
       <Header />
-      <div style={{ color: "white" }}>
-        Profile for ID: <h1 style={{ color: "white" }}>{username} </h1>
+      <div className={"profile-main-container"}>
+        {!userDataExists && <div>Loading ...</div>}
+        <div className={"profile-content"}>
+          <div className={"wrapper"}>
+            <div class={switchToggle ? `gradient-border` : `regular-border`}>
+              <img
+                id={"profile-pic"}
+                src={userInfo.profile_pic.url}
+                alt={"profile_pic"}
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div id={'username-switch-wrapper'}>
+            <h2>@{userInfo.username.toUpperCase()}</h2>
+            <img
+              src={!switchToggle ? SwitchOn : SwitchOff}
+              onClick={() => setSwitchToggle(!switchToggle)}
+              id={"button-svg-toggle"}
+              alt="Description"
+            />
+          </div>
+        </div>
+
+        <div>
+          <p>Hello</p>
+        </div>
+        <div>
+          <p>Hello</p>
+        </div>
+        <div>
+          <p>Hello</p>
+        </div>
       </div>
     </>
   );

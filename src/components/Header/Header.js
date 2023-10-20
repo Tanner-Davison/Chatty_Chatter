@@ -51,15 +51,22 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
                 <h2 className={getLinkStyle("/currentservers")}>SERVERS</h2>
               </Link>
             </li>
+            <span style={{ color: "white" }}>|</span>
             <li>
               <Link to={`/profile/${usernameLocal}`}>
-                <h2 className={getLinkStyle(`/profile/${usernameLocal.split('@')[0]}`)}>
+                <h2
+                  className={getLinkStyle(
+                    `/profile/${usernameLocal.split("@")[0]}`
+                  )}>
                   PROFILE
                 </h2>
               </Link>
             </li>
-
-            <button type="button" id={'logout_button'} onClick={() => logoutHandler()}>
+            <span style={{ color: "white" }}>|</span>
+            <button
+              type="button"
+              id={"logout_button"}
+              onClick={() => logoutHandler()}>
               Logout
             </button>
           </>

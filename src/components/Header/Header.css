@@ -11,9 +11,7 @@
   width:100vw;
  
 }
-a{
-  text-decoration: none;
-}
+
 .create_room_container {
   display: flex;
   flex-direction: row;
@@ -32,7 +30,6 @@ a{
 
 }
 .buttonHeader{
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +57,6 @@ a{
   }
 }
 #logout_button{
-  
   background-color: transparent;
   height: 100%;
   width:100%;
@@ -81,19 +77,18 @@ a{
   position: relative;
     display: flex;
     flex-direction: row;
-    
     gap:10%;
     align-items:center;
     justify-content: space-between;
     list-style-type:none ;
+    
 }
 
 .navLinks a{
     text-decoration: none;
+    
 }
-.linkActive{
-color:red;
-}
+
 .roomInput{
     margin:0;
     border-radius: 7px;
@@ -117,7 +112,15 @@ color:red;
 .visible_login_success > #loggedIn{
   color:#49c219;
 }
-
+.linkActive{
+color:red;
+&:hover{
+    color:maroon;
+  }
+}
+.linkInactive:hover{
+  color:rgb(0, 252, 0);
+}
 
 @media only screen and (max-width: 600px) {
   .headerContainer {
@@ -133,6 +136,7 @@ color:red;
   .create_room_container {
     flex-direction: column;
     gap: 0.5rem;
+    margin-top:.5rem;
   }
   .roomInput {
     width: 80%;

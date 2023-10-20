@@ -1,16 +1,18 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-const mongoose = require("mongoose");
-mongoose.set("debug", true);
 const { Server } = require("socket.io");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const saltRounds = 5;
 const jwt = require("jsonwebtoken");
-const authenticateUser = require('./utils/auth')
-const {Rooms,User}= require('./utils/User_schema');
+const authenticateUser = require("./utils/auth");
+const { Rooms, User } = require("./utils/Schemas");
+const EndpointHandler = require("./utils/EndpointHandler");
 const connectDB = require("./utils/db");
+const mongoose = require("mongoose");
+mongoose.set("debug", true);
+
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use((req, res, next) => {
@@ -41,26 +43,19 @@ const server = http.createServer(app);
 //connect to mongoDB
 connectDB(MONGO_DB_KEY);
 
+// const CLOUD_NAME = process.env.CLOUD_NAME;
 const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-// const CLOUD_NAME = process.env.CLOUD_NAME;
 const CLOUDINARY_SECRET = process.env.CLOUDINARY_SECRET;
 cloudinary.config({
   cloud_name: "dezclgtpg",
-  api_key: "833978376411799",
+  api_key: CLOUDINARY_API_KEY,
   api_secret: CLOUDINARY_SECRET,
 });
 
-app.get("/roomHistory/:room", async (req, res) => {
-  const room = await Rooms.findOne({ room_number: req.params.room });
-  if (room) {
-    res.status(200).json(room);
-  } else {
-    res.status(404).json({ message: "Room not Found" });
-  }
-});
-app.get("/user_info/:sessionUsername", async (req, res) => {
-  console.log(`sent from app.get/sessionUsername`, req.params.username);
+app.get("/roomHistory/:room", EndpointHandler.roomHistory);
+app.get("/user_info/:username", async (req, res) => {
+  console.log(`sent from app.get/user_info`, req.params.username);
   const user = await User.findOne({ username: req.params.username });
   if (user) {
     console.log("User was found successfully!");
@@ -141,7 +136,6 @@ app.post("/login", async (req, res) => {
     res.status(200).send(result);
   }
 });
-
 
 const io = new Server(server, {
   cors: {

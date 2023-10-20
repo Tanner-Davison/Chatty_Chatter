@@ -38,7 +38,7 @@ const Login = () => {
     } else {
       return setLoginFailed(true);
     }
-    if (image) {
+    if (image!=null) {
       const formData = new FormData();
       formData.append("image", image);
       formData.append("username", username);
@@ -66,11 +66,16 @@ const Login = () => {
             );
             createUserInfo();
           } else {
-            return;
+            return setLoginFailed(true);
           }
           submitHandler();
-        })
-        .catch((err) => console.log(err));
+          })
+        .catch((err) =>{console.log(err);
+        
+      })
+        
+    }else{
+      return setLoginFailed(true)
     }
   };
   const handleLoginSuccess = async (event) => {
@@ -124,46 +129,59 @@ const Login = () => {
               <div className={"columnContainer"}>
                 {signUpToggle && (
                   <>
-                    <div className={"CreateUser"}>
+                    <div className="create_account_h2">
                       <h2>Create Account</h2>
-                      <div className={"userLoginElements"}>
-                        <div className={"input-box-container"}>
-                          <label htmlFor="username-id"> Username :</label>
-                          <input
-                            type="text"
-                            onKeyDown={handleKeyDown}
-                            name={"usernameInput"}
-                            ref={inputElement}
-                            onChange={(event) =>
-                              setUsername(event.target.value)
-                            }
-                            id="username-id"
-                          />
+                      <div className={`create_user account ${errorCss}`}>
+                        <div className={"userLoginElements"}>
+                          <div className={"input-box-container"}>
+                            <label htmlFor="username-id"> Username :</label>
+                            <input
+                              type="text"
+                              onKeyDown={handleKeyDown}
+                              name={"usernameInput"}
+                              ref={inputElement}
+                              onChange={(event) => {
+                                setUsername(event.target.value);
+                                setLoginFailed(false);
+                              }}
+                              id="username-id"
+                            />
+                          </div>
+                          <div className={"input-box-container"}>
+                            <label htmlFor="password-id"> Password :</label>
+                            <input
+                              type="text"
+                              name={"passwordInput"}
+                              onKeyDown={handleKeyDown}
+                              onChange={(event) => {
+                                setPassword(event.target.value);
+                                
+                              }}
+                              id="password-id"
+                            />
+                          </div>
                         </div>
-                        <div className={"input-box-container"}>
-                          <label htmlFor="password-id"> Password :</label>
-                          <input
-                            type="text"
-                            name={"passwordInput"}
-                            onKeyDown={handleKeyDown}
-                            onChange={(event) => {
-                              setPassword(event.target.value);
-                            }}
-                            id="password-id"
-                          />
+                        <div className="file_upload">
+                          <div className={"uploaded_div"}>
+                            <label for="fileUpload">Upload Photo</label>
+                            <input
+                              className={"photo-upload_buttons"}
+                              type="file"
+                              accept="image/png, image/jpeg"
+                              name="image"
+                              title="Add Image"
+                              onChange={(e) => setImage(e.target.files[0])}
+                            />
+                          </div>
+                          <button
+                            id={"upload"}
+                            className={"photo-upload_buttons"}>
+                            upload photo
+                          </button>
                         </div>
-                      </div>
-                      <div className="file_upload">
-                        <input
-                          type="file"
-                          accept="image/png, image/jpeg"
-                          name="image"
-                          onChange={(e) => setImage(e.target.files[0])}
-                        />
-                        <button>upload photo</button>
                       </div>
                       {/* PHOTO UPLOAD HERE */}
-                      <div className={"boxWrapper"}>
+                      <div className={"login-button-wrapper"}>
                         <button
                           id="closeBtn"
                           type="button"
@@ -211,50 +229,55 @@ const Login = () => {
             )}
             {loginToggle === true && (
               <>
-                <div className={`CreateUser ${errorCss}`}>
+                <div className="create_account_h2">
                   <h2>User Login</h2>
-                  <div className={`userLoginElements`}>
-                    <div className={"input-box-container"}>
-                      <label htmlFor="username-id"> Username :</label>
-                      <input
-                        type="text"
-                        name={"usernameInput"}
-                        onKeyDown={handleKeyDown}
-                        ref={inputElement}
-                        onChange={(event) => setUsername(event.target.value)}
-                        id="username-id"
-                      />
-                    </div>
-                    <div className={"input-box-container"}>
-                      <label htmlFor="password-id"> Password :</label>
-                      <input
-                        type="text"
-                        onKeyDown={handleKeyDown}
-                        name={"passwordInput"}
-                        onChange={(event) => {
-                          setPassword(event.target.value);
-                        }}
-                        id="password-id"
-                      />
-                    </div>
-                  </div>
-                  {loginFailed &&
-                    setTimeout(() => setLoginFailed(false), 9000) && (
-                      <div className={"login-failed"}>
-                        Login Failed. Please Try Again.
+                  <div className={`create_user ${errorCss}`}>
+                    <div className={`userLoginElements`}>
+                      <div className={"input-box-container"}>
+                        <label htmlFor="username-id"> Username :</label>
+                        <input
+                          type="text"
+                          name={"usernameInput"}
+                          onKeyDown={handleKeyDown}
+                          ref={inputElement}
+                          onChange={(event) => {
+                            setUsername(event.target.value);
+                            setLoginFailed(false);
+                          }}
+                          id="username-id"
+                        />
                       </div>
-                    )}
-                  <div className={"btnWrapper"}>
-                    <button id="closeBtn" type="button" onClick={loginmodal}>
-                      close
-                    </button>
-                    <button
-                      id="closeBtn"
-                      type="submit"
-                      onClick={handleLoginSuccess}>
-                      Login
-                    </button>
+                      <div className={"input-box-container"}>
+                        <label htmlFor="password-id"> Password :</label>
+                        <input
+                          type="text"
+                          onKeyDown={handleKeyDown}
+                          name={"passwordInput"}
+                          onChange={(event) => {
+                            setPassword(event.target.value);
+                          }}
+                          id="password-id"
+                        />
+                      </div>
+                    </div>
+                    {loginFailed &&
+                      setTimeout(() => setLoginFailed(false), 9000) && (
+                        <div className={"login-failed"}>
+                          Login Failed. Please Try Again.
+                        </div>
+                      )}
                   </div>
+                </div>
+                <div className={"login-button-wrapper"}>
+                  <button id="closeBtn" type="button" onClick={loginmodal}>
+                    close
+                  </button>
+                  <button
+                    id="closeBtn"
+                    type="submit"
+                    onClick={handleLoginSuccess}>
+                    Login
+                  </button>
                 </div>
               </>
             )}
