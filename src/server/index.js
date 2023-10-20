@@ -4,11 +4,12 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const EndpointHandler = require("./utils/EndpointHandler");
+const LoginHelper = require("./utils/LoginHelper");
 const saltRounds = 5;
 const jwt = require("jsonwebtoken");
 const authenticateUser = require("./utils/auth");
 const { Rooms, User } = require("./utils/Schemas");
-const EndpointHandler = require("./utils/EndpointHandler");
 const connectDB = require("./utils/db");
 const mongoose = require("mongoose");
 mongoose.set("debug", true);
@@ -21,18 +22,7 @@ app.use((req, res, next) => {
   console.log("Request file:", req.file); // For single file upload
   next();
 });
-const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const multer = require("multer");
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "profile_photos", // The name of the folder in Cloudinary
-    // allowedFormats: ["jpg", "png"],
-  },
-});
 
-const parser = multer({ storage: storage });
 require("dotenv").config();
 const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
 const PORT_ = process.env.PORT_;
@@ -43,99 +33,11 @@ const server = http.createServer(app);
 //connect to mongoDB
 connectDB(MONGO_DB_KEY);
 
-// const CLOUD_NAME = process.env.CLOUD_NAME;
-const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
-const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-const CLOUDINARY_SECRET = process.env.CLOUDINARY_SECRET;
-cloudinary.config({
-  cloud_name: "dezclgtpg",
-  api_key: CLOUDINARY_API_KEY,
-  api_secret: CLOUDINARY_SECRET,
-});
-
 app.get("/roomHistory/:room", EndpointHandler.roomHistory);
-app.get("/user_info/:username", async (req, res) => {
-  console.log(`sent from app.get/user_info`, req.params.username);
-  const user = await User.findOne({ username: req.params.username });
-  if (user) {
-    console.log("User was found successfully!");
-    res.json(user);
-  } else {
-    res.status(404).json({ message: "User not Found" });
-  }
-});
-app.get("/api/users/:username/rooms", async (req, res) => {
-  try {
-    const username = req.params.username;
-    const userList = await User.findOne({ username: username });
-    if (!userList) {
-      res.status(404).json({ message: "user list is not found" });
-    } else {
-      res.json(userList.roomsJoined);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-app.post("/signup", parser.single("image"), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).send("No file uploaded. No image found");
-  }
-  console.log("Received FormData:", {
-    username: req.body.username,
-    password: req.body.password,
-    file: req.file,
-  });
-  const { username, password } = req.body;
-
-  const image = {
-    url: req.file.path,
-    cloudinary_id: req.file.filename,
-  };
-
-  try {
-    const existingUser = await User.findOne({
-      username: username.toLowerCase(),
-    });
-
-    if (existingUser) {
-      return res.status(404).json({ message: "user exist please login." });
-    } else {
-      const salt = await bcrypt.genSalt(saltRounds);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const createNewUser = new User({
-        username: username.toLowerCase(),
-        password: hashedPassword,
-        profilePic: {
-          url: image.url,
-          cloudinary_id: image.cloudinary_id,
-        },
-      });
-      await createNewUser.save();
-      res.status(200).json({ message: "User created!", image, hashedPassword });
-    }
-  } catch (error) {
-    console.error("Error registering user:", error.existingUser.data);
-    res.status(500).send("Error registering user.");
-  }
-});
-
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const result = await authenticateUser(username, password);
-
-  if (result === "INVALID PASSWORD") {
-    res.status(401).send("Invalid password");
-  } else if (result === "USER NOT FOUND") {
-    res.status(404).send("User not found");
-  } else if (result === "INTERNAL SERVER ERROR") {
-    res.status(500).send("Internal Server Error");
-  } else {
-    // Authentication was successful, proceed with your logic
-    res.status(200).send(result);
-  }
-});
+app.get("/user_info/:username", EndpointHandler.userInfo);
+app.get("/api/users/:username/rooms", EndpointHandler.joinedRooms);
+app.post("/signup", LoginHelper.signUp);
+app.post("/login", LoginHelper.Login);
 
 const io = new Server(server, {
   cors: {
@@ -153,28 +55,31 @@ io.on("connection", (socket) => {
   console.log({ Active_Users: numUsers });
 
   socket.on("join_room", async (data) => {
-    const rooms = io.sockets.adapter.sids[socket.id];
-    for (let room in rooms) {
-      socket.leave(room);
-    }
-    // leaves all rooms that user is connected to.
-    socket.join(data.room);
-
-    console.log(`${data.username} joined room ${data.room}`);
     try {
+      // Leaving other rooms first
+      const rooms = io.sockets.adapter.sids[socket.id];
+      for (let room in rooms) {
+        socket.leave(room);
+      }
+      socket.join(data.room);
+
+      console.log(`${data.username} joined room ${data.room}`);
+
+      // Find the user
       const user = await User.findOne({
         username: data.username.toLowerCase(),
       });
-      const inRoomPrev = await User.findOne({
-        username: data.username,
-        "roomsJoined.room": data.room,
-      });
-      console.log(`Looook here HEEERRREEE`, typeof data.room);
-      if (user && inRoomPrev) {
-        console.log(`user ${data.username} has been in this room before`);
-      } else if (user && !inRoomPrev) {
-        console.log("type of room number", typeof data.room);
-        const updateUser = await User.findOneAndUpdate(
+      if (!user) {
+        console.log(`No user found with username: ${data.username}`);
+        return;
+      }
+
+      // Check if the user has been in this room before
+      const inRoomPrev = user.roomsJoined.some((r) => r.room === data.room);
+
+      if (!inRoomPrev) {
+        // If the user has never been in this room, add it
+        await User.findOneAndUpdate(
           { username: data.username },
           {
             $push: {
@@ -186,32 +91,32 @@ io.on("connection", (socket) => {
           },
           { new: true, useFindAndModify: false }
         );
-      }
-      console.log(`room ${data.room} added to ${data.username}`);
-      if (!user) {
-        console.log(`No user found with username: ${data.username}`);
+        console.log(`Room ${data.room} added to ${data.username}`);
       }
 
-      // BELOW CHECKS IF THE ROOM EXISTS
+      // Check if room has messages
+      const roomHasMessages = await Rooms.findOne({
+        room_number: data.room,
+        "messageHistory.1": { $exists: true },
+      });
+
+      if (inRoomPrev) {
+        console.log(`User ${data.username} has been in this room before`);
+      } else if (!roomHasMessages) {
+        console.log("Messages don't exist in this room");
+      }
+
+      // Check if the room exists
       let existingRoom = await Rooms.findOne({ room_number: data.room });
 
       if (existingRoom) {
         if (!existingRoom.users_in_room.includes(data.username)) {
           existingRoom.users_in_room.push(data.username);
           await existingRoom.save();
-          console.log(`Added user ${data.username} to room ${data.room}`);
+          console.log(`Added ${data.username} to room ${data.room}`);
         }
       } else {
-        const room = new Rooms({
-          room_number: data.room,
-          sent_by_user: user._id,
-          username: data.username,
-          message: data.message,
-          users_in_room: [data.username],
-        });
-
-        await room.save();
-        console.log(`Room created successfully @ ${room.room_number}`);
+        console.log("The room does not exist yet.");
       }
     } catch (err) {
       console.error("Error processing join_room:", err);
@@ -219,17 +124,26 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", async (data) => {
-    console.log(data.imageUrl || data.message);
     try {
-      await User.findOneAndUpdate(
+      const messageAdded = await User.findOneAndUpdate(
         { username: data.username },
         { $set: { messages: data.message } },
         { new: true, useFindAndModify: false }
       );
-      console.log("Updated Person", data.username);
+      await messageAdded.save();
 
-      const room = await Rooms.findOne({ room_number: data.room });
-      if (room) {
+      let room = await Rooms.findOne({ room_number: data.room });
+
+      if (!room) {
+        // Create new room if it doesn't exist
+        room = new Rooms({
+          room_number: data.room,
+          sent_by_user: messageAdded._id, // Assuming messageAdded is the User document
+          username: data.username,
+          message: data.message,
+          users_in_room: [data.username],
+        });
+        await room.save();
         room.messageHistory.push({
           message: data.message,
           sentBy: data.username,
@@ -238,30 +152,39 @@ io.on("connection", (socket) => {
           cloudinary_id: data.cloudinary_id,
         });
         await room.save();
-      }
-      try {
-        // Save the message to the user's document
+
+        // Add this room to the user's list of rooms joined
         await User.findOneAndUpdate(
-          { username: data.username },
+          { _id: messageAdded._id },
           {
             $push: {
-              sentMessages: {
-                message: data.message,
+              roomsJoined: {
                 room: data.room,
-                timestamp: data.timestamp,
+                timestamp: new Date(),
               },
             },
           },
           { new: true, useFindAndModify: false }
         );
+      } else {
+        // Room exists, add message to messageHistory
+        if (messageAdded) {
+          room.messageHistory.push({
+            message: data.message,
+            sentBy: data.username,
+            timestamp: data.timestamp,
+            imageUrl: data.imageUrl,
+            cloudinary_id: data.cloudinary_id,
+          });
+          await room.save();
+        }
         socket.to(data.room).emit("receive_message", data);
-      } catch (err) {
-        console.error("Error saving message to user:", err);
       }
     } catch (err) {
       console.error("Error updating Person", err);
     }
   });
+
   socket.on("leaveroom", async (data) => {
     if (!socket) {
       return;
