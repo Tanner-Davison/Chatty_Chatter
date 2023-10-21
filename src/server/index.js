@@ -3,12 +3,8 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
 const EndpointHandler = require("./utils/EndpointHandler");
 const LoginHelper = require("./utils/LoginHelper");
-const saltRounds = 5;
-const jwt = require("jsonwebtoken");
-const authenticateUser = require("./utils/auth");
 const { Rooms, User } = require("./utils/Schemas");
 const connectDB = require("./utils/db");
 const mongoose = require("mongoose");
@@ -22,7 +18,6 @@ app.use((req, res, next) => {
   console.log("Request file:", req.file); // For single file upload
   next();
 });
-
 require("dotenv").config();
 const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
 const PORT_ = process.env.PORT_;
@@ -75,7 +70,7 @@ io.on("connection", (socket) => {
       }
 
       // Check if the user has been in this room before
-      const inRoomPrev = user.roomsJoined.some((r) => r.room === data.room);
+      const inRoomPrev = user.roomsJoined.some((r) => String(r.room) === String(data.room));
 
       if (!inRoomPrev) {
         // If the user has never been in this room, add it

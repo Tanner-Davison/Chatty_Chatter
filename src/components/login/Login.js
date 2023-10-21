@@ -38,7 +38,7 @@ const Login = () => {
     } else {
       return setLoginFailed(true);
     }
-    if (image!=null) {
+    if (image != null) {
       const formData = new FormData();
       formData.append("image", image);
       formData.append("username", username);
@@ -69,13 +69,12 @@ const Login = () => {
             return setLoginFailed(true);
           }
           submitHandler();
-          })
-        .catch((err) =>{console.log(err);
-        
-      })
-        
-    }else{
-      return setLoginFailed(true)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return setLoginFailed(true);
     }
   };
   const handleLoginSuccess = async (event) => {
@@ -86,9 +85,10 @@ const Login = () => {
         username: username.toLowerCase(),
         password: password,
       });
-      const userExist = findUser.data;
-      if (userExist.username) {
-        const storedUsername = username.toLowerCase();
+      const userExist = await findUser.data;
+      if (userExist.username === username.toLowerCase()) {
+        const storedUsername = userExist.username;
+        console.log(userExist.profilePic.url);
         setLoginFailed(false);
         sessionStorage.setItem("active_user", JSON.stringify(userExist));
         sessionStorage.setItem("username", JSON.stringify(storedUsername));
@@ -155,7 +155,6 @@ const Login = () => {
                               onKeyDown={handleKeyDown}
                               onChange={(event) => {
                                 setPassword(event.target.value);
-                                
                               }}
                               id="password-id"
                             />
@@ -163,7 +162,7 @@ const Login = () => {
                         </div>
                         <div className="file_upload">
                           <div className={"uploaded_div"}>
-                            <label for="fileUpload">Upload Photo</label>
+                            <label htmlFor="fileUpload">Upload Photo</label>
                             <input
                               className={"photo-upload_buttons"}
                               type="file"

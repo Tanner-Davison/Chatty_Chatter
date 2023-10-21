@@ -50,9 +50,9 @@ function App() {
           user.profilePic.cloudinary_id ||
           "https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg",
       };
+      console.log(loggedInUser.imageUrl)
       setUserLoginInfo(loggedInUser);
 
-      return userLoginInfo;
     }else{
 
       const newUserInfo = {
@@ -62,8 +62,6 @@ function App() {
         cloudinary_id: sessionStorage.getItem("cloudinary_id"),
       };
         setUserLoginInfo(newUserInfo);
-      
-      return userLoginInfo;
     }
   };
   useEffect(() => {

@@ -2,7 +2,7 @@ const { User } = require("./Schemas");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-const authenticateUser = require('./auth')
+const authenticateUser = require("./auth");
 require("dotenv").config();
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 const CLOUDINARY_SECRET = process.env.CLOUDINARY_SECRET;
@@ -10,11 +10,11 @@ const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
 const bcrypt = require("bcrypt");
 const saltRounds = 5;
 const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: "profile_photos", // The name of the folder in Cloudinary
-        allowedFormats: ["jpg", "png"],
-    }, 
+  cloudinary: cloudinary,
+  params: {
+    folder: "profile_photos", // The name of the folder in Cloudinary
+    allowedFormats: ["jpg", "png"],
+  },
 });
 const parser = multer({ storage: storage });
 const connectDB = require("./db");
@@ -62,6 +62,7 @@ module.exports = {
               url: image.url,
               cloudinary_id: image.cloudinary_id,
             },
+            
           });
           await createNewUser.save();
           res

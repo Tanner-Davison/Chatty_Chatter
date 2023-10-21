@@ -40,7 +40,7 @@ const MainRoom = () => {
 
   const joinRoom = async () => {
     socket.emit("join_room", {
-      room: room,
+      room: String(room),
       username: userLoginInfo.username,
       message: message,
     });
@@ -63,16 +63,18 @@ const MainRoom = () => {
     setRoom(event.target.value);
   };
   const sendMessageFunc = () => {
+    console.log(sessionImage)
     const data = {
       message: message,
       room,
       timestamp: getCurrentTime(),
       username: userLoginInfo.username,
       sentBy: userLoginInfo.username,
-      imageUrl: sessionImage,
-      cloudinary_id: sessionCloudinary_id,
+      imageUrl: sessionImage ? sessionImage: userLoginInfo.imageUrl,
+      cloudinary_id: sessionCloudinary_id ? sessionCloudinary_id: userLoginInfo.cloudinary_id,
     };
     socket.emit("send_message", data);
+    
     setMessageRecieved((prev) => [...prev, data]);
   };
   const deleteRoom = () => {
@@ -156,12 +158,12 @@ const MainRoom = () => {
 
   return (
     <>
-      <div className="roomWrapper">
         <Header
           roomChanger={roomChanger}
           room={room ? room : 1}
           joinRoom={joinRoom}
         />
+      <div className="roomWrapper">
 
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
@@ -212,6 +214,7 @@ const MainRoom = () => {
                       <div className={"message-green"}>
                         <img
                           src={msg.imageUrl || msg.cloudinary_id}
+                          loading='lazy'
                           className={"user-profile-pic green"}
                           alt="Profile-Pic"
                         />

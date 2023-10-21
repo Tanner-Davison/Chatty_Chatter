@@ -1,7 +1,6 @@
 
 
 p {
-  width: 150px;
   font-size: 17px;
   color: white;
 }
@@ -9,16 +8,18 @@ p {
   position: relative;
   display: flex;
   flex-direction: column;
-  width:fit-content;
-  min-width: 150px;
+  width:auto;
+  word-wrap: break-word;
+  min-width: 130px;
   padding: 4px;
   margin: 0;
 }
+
 .message-timestamp-left {
   display: none;
   
   opacity: 0;
-  transition: transform 0.9s;
+  transition: transform 0.4s;
   transition-duration: opacity 3s;
 }
 .message-timestamp-left >p{
@@ -87,27 +88,41 @@ p {
   font: 500 0.9em "Open Sans", sans-serif;
   border: 1px solid #1d1acb00;
   border-radius: 30px;
-  transition: transform 0.6s;
+  transition: transform 0.4s;
   z-index: 50;
 }
-.message-green {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  margin-right: 20px;
-  padding: 10px;
-  background-color: #53d769;
-  width:fit-content;
-  max-height:auto;
-  height: auto;
-  text-align: left;
-  font: 400 0.9em "Open Sans", sans-serif;
-  border: 1px solid #97c6e3;
-  border-radius: 10px;
-  transition: transform 0.8s;
- z-index: 50;
-}
+.message-content p {
+  width: 100%;
 
+}
+.message-green {
+     position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-right: 20px;
+    padding: 10px;
+    background-color: #53d769;
+    width: -moz-fit-content;
+    max-width: 75%;
+    max-height: auto;
+    height: auto;
+    text-align: left;
+    font: 400 0.9em "Open Sans", sans-serif;
+    border: 1px solid #97c6e3;
+    border-radius: 10px;
+    transition: transform 0.4s;
+    z-index: 50;
+}
+.message-green .message-content{
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    word-wrap: break-word;
+    min-width: 151px;
+    padding: 4px;
+    margin: 0;
+}
 .message-blue:after {
   content: "";
   position: absolute;
@@ -164,8 +179,8 @@ p {
 }
 
 .container.blue{
+  position: relative;
   display: flex;
-  
   justify-self: flex-end;
   width:auto;
   justify-content: flex-end;
@@ -173,6 +188,7 @@ p {
  
 }
 .container.green{
+  position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -202,12 +218,12 @@ p {
     align-items: center;
     align-self: center;
     justify-content: center;
-    box-shadow: 0px 0px 10px 5px red;
-    border-bottom: 3px outset black;
+    box-shadow: 0px 0px 20px 3px whitesmoke;
+    border-bottom: 5px outset black;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
     z-index: 60;
     top: 0px;
      background-image: linear-gradient(to right, #2f2e2e 0%, #1a1919 51%, #030303 100%);
@@ -228,7 +244,7 @@ p {
   width: fit-content;
   margin-right:25px;
   transition: opacity 1;
- transition: transform 0.8s;
+ transition: transform 0.4s;
  z-index: 50;
 }
 .messagesContainer {
@@ -245,7 +261,6 @@ p {
   position:relative;
   display:flex;
   flex-direction: column;
-  background-color: black;
   width: 35%;
   max-height: 600px; /* Set to your desired height */
   overflow-y: auto;
@@ -257,7 +272,7 @@ p {
   z-index: 1;
   border-right:4px solid white;
   border-left:4px solid white;
-  border-top:.1rem solid rgb(67, 65, 65);
+  border-top:4px solid rgb(255, 255, 255);
   border-bottom: 4px solid white;
 }
 
@@ -394,40 +409,38 @@ h1{
   gap:8px;
 }
 @media only screen and (max-width: 600px) {
-  .App {
-    flex-direction: column;
-    align-items: center;
-  }
+ 
   html{
     width:100%;
   }
+  
  .all-messages {
     display: flex;
-    width: 80%;
-    max-width: 90%;
+    width: 90%;
     max-height: 338px;
     justify-self: flex-end;
     padding:0px 10px 10px 10px;
 }
-  .container {
-    flex-direction: column;
-    align-items: flex-start;
+ 
+  .message-green{
+    max-width: 116%;
   }
-  
   .container.green{
     display:flex;
     align-items: flex-start;
     width:45%;
     margin-left:20%;   
   }
-  .messagesContainer .container.blue{
+ .container.blue{
     display:flex;
     align-items: flex-start;
     width:65%;
     margin-left:20%;  
   }
   .message-blue{
-     left:10%;
+     left: 9%;
+    flex-wrap: wrap;
+    width: 130px;
   }
   .container:hover .message-green {
   transform: translateX(50px); 
@@ -442,9 +455,10 @@ h1{
 .user-profile-pic{
   position: absolute;
   display: flex;
-  width:4rem;
-  height: 4rem;
+  width:3rem;
+  height:3rem;
   padding:0px;
+  margin-left:20px;
 }
 
 .roomWrapper{
@@ -453,9 +467,6 @@ h1{
   width:100vw;
 }
 
-  .message-content {
-    max-width: 20%;
-  }
   .room-num-input-mainRoom {
     flex-direction: row;
     margin-bottom:25px;
@@ -481,33 +492,10 @@ h1{
     letter-spacing: 1px;
     width:15px;
   }
-  .room_name{
-        position: sticky;
-    display: flex;
-    width: -moz-fit-content;
-    width: 100%;
-    height: 30px;
-    align-items: flex-start;
-    align-self: flex-start;
-   
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    text-align: center;
-    background-color: #161a1d;
-    border-bottom: 2px inset black;
-    border-top: none;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    z-index: 60;
-    top: 0px;
-  }
+
   .room_name>h2{
     font-size:17px;
-    align-self: flex-start;
-    justify-self: flex-end;
+    align-self: center;
   }
  .status_container{
   position: absolute;
