@@ -105,7 +105,7 @@ const Login = () => {
   const submitHandler = () => {
     navigate("/currentservers");
   };
-
+  
   useEffect(() => {
     if (userExists != null) {
       navigate(`/profile/${userExists.split("@")[0]}`);
@@ -121,88 +121,16 @@ const Login = () => {
   }, [loginFailed]);
   return (
     <>
+      <Header />
       <div className={"login-element-wrapper"}>
-        <Header />
-        <form onSubmit={submitHandler}>
-          <div className={"columnContainer"}>
-            <div className={"new-user-header"}>
-              <div className={"columnContainer"}>
-                {signUpToggle && (
-                  <>
-                    <div className="create_account_h2">
-                      <h2>Create Account</h2>
-                      <div className={`create_user account ${errorCss}`}>
-                        <div className={"userLoginElements"}>
-                          <div className={"input-box-container"}>
-                            <label htmlFor="username-id"> Username :</label>
-                            <input
-                              type="text"
-                              onKeyDown={handleKeyDown}
-                              className={"usernameInput"}
-                              ref={inputElement}
-                              onChange={(event) => {
-                                setUsername(event.target.value);
-                                setLoginFailed(false);
-                              }}
-                              id="username-id"
-                            />
-                          </div>
-                          <div className={"input-box-container"}>
-                            <label htmlFor="password-id"> Password :</label>
-                            <input
-                              type="text"
-                              name={"passwordInput"}
-                              onKeyDown={handleKeyDown}
-                              onChange={(event) => {
-                                setPassword(event.target.value);
-                              }}
-                              id="password-id"
-                            />
-                          </div>
-                        </div>
-                        <div className="file_upload">
-                          <div className={"uploaded_div"}>
-                            <label htmlFor="fileUpload">Upload Photo</label>
-                            <input
-                              className={"photo-upload_buttons"}
-                              type="file"
-                              accept="image/png, image/jpeg"
-                              name="image"
-                              title="Add Image"
-                              onChange={(e) => setImage(e.target.files[0])}
-                            />
-                          </div>
-                          <button
-                            id={"upload"}
-                            className={"photo-upload_buttons"}>
-                            upload photo
-                          </button>
-                        </div>
-                      </div>
-                      {/* PHOTO UPLOAD HERE */}
-                      <div className={"login-button-wrapper"}>
-                        <button
-                          id="closeBtn"
-                          type="button"
-                          onClick={toggleSignUp}>
-                          Back
-                        </button>
-                        <button
-                          id="closeBtn"
-                          type="submit"
-                          onClick={handleCreateUser}>
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
+        <div className={"columnContainer"}>
+          <form className={"new-user-header"} onSubmit={submitHandler}>
             {!loginToggle && !signUpToggle && (
               <>
                 <div className={"titleChatty"}>
-                  <h1 id="welcome_">Chatty - Chatter</h1>
+                  <h1 id="welcome_">
+                    Chatty  Chatter
+                  </h1>
                 </div>
                 <div className={"welcomeContainer"}>
                   <article>
@@ -212,20 +140,85 @@ const Login = () => {
                   </article>
                 </div>
 
-                <div className={"new-user-header"}>
-                  {!signUpToggle && !loginToggle && (
+                {!signUpToggle && !loginToggle && (
+                  <div className={"login-button-wrapper"}>
                     <button id="closeBtn" type="button" onClick={toggleSignUp}>
                       New User
                     </button>
-                  )}
-                  {!loginToggle && (
+
                     <button id={"closeBtn"} type="button" onClick={loginmodal}>
                       Login
                     </button>
-                  )}
+                  </div>
+                )}
+              </>
+            )}
+            {signUpToggle && (
+              <>
+                <div className="create_account_h2">
+                  <h2>Create Account</h2>
+                  <div className={`create_user account ${errorCss}`}>
+                    <div className={"userLoginElements"}>
+                      <div className={"input-box-container"}>
+                        <label htmlFor="username-id"> Username :</label>
+                        <input
+                          type="text"
+                          onKeyDown={handleKeyDown}
+                          className={"usernameInput"}
+                          ref={inputElement}
+                          onChange={(event) => {
+                            setUsername(event.target.value);
+                            setLoginFailed(false);
+                          }}
+                          id="username-id"
+                        />
+                      </div>
+                      <div className={"input-box-container"}>
+                        <label htmlFor="password-id"> Password :</label>
+                        <input
+                          type="text"
+                          name={"passwordInput"}
+                          onKeyDown={handleKeyDown}
+                          onChange={(event) => {
+                            setPassword(event.target.value);
+                          }}
+                          id="password-id"
+                        />
+                      </div>
+                    </div>
+                    <div className="file_upload">
+                      <div className={"uploaded_div"}>
+                        <label htmlFor="fileUpload">Upload Photo</label>
+                        <input
+                          className={"photo-upload_buttons"}
+                          type="file"
+                          accept="image/png, image/jpeg"
+                          name="image"
+                          title="Add Image"
+                          onChange={(e) => setImage(e.target.files[0])}
+                        />
+                      </div>
+                      <button id={"upload"} className={"photo-upload_buttons"}>
+                        upload photo
+                      </button>
+                    </div>
+                  </div>
+                  {/* PHOTO UPLOAD HERE */}
+                  <div className={"login-button-wrapper"}>
+                    <button id="closeBtn" type="button" onClick={toggleSignUp}>
+                      Back
+                    </button>
+                    <button
+                      id="closeBtn"
+                      type="submit"
+                      onClick={handleCreateUser}>
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </>
             )}
+
             {loginToggle === true && (
               <>
                 <div className="create_account_h2">
@@ -266,22 +259,22 @@ const Login = () => {
                         </div>
                       )}
                   </div>
-                </div>
-                <div className={"login-button-wrapper"}>
-                  <button id="closeBtn" type="button" onClick={loginmodal}>
-                    close
-                  </button>
-                  <button
-                    id="closeBtn"
-                    type="submit"
-                    onClick={handleLoginSuccess}>
-                    Login
-                  </button>
+                  <div className={"login-button-wrapper"}>
+                    <button id="closeBtn" type="button" onClick={loginmodal}>
+                      close
+                    </button>
+                    <button
+                      id="closeBtn"
+                      type="submit"
+                      onClick={handleLoginSuccess}>
+                      Login
+                    </button>
+                  </div>
                 </div>
               </>
             )}
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </>
   );

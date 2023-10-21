@@ -104,7 +104,6 @@ const MainRoom = () => {
       setSocketConnected("Connected");
       return;
     }
-    console.log(mainAccess);
     if (mainAccess === true) {
       joinRoom();
       setMainAccess(false);
@@ -114,18 +113,15 @@ const MainRoom = () => {
     });
 
     socket.on("disconnect", (reason) => {
+      console.log(reason);
       setSocketConnected("Disconnected");
       setMainAccess(true);
-    });
-
-    socket.on("error", (error) => {
-      console.error("Socket Error:", error);
     });
     socket.on("receive_message", async (data) => {
       if (data.room !== room) {
         return;
       }
-      setMessageRecieved((prev) => [
+      setMessageRecieved((prev)=> [
         ...prev,
         {
           message: data.message,
@@ -138,10 +134,8 @@ const MainRoom = () => {
       console.log(data.sentBy);
       await loadRoomHistory(data.room);
     });
-    // const handleReceiveMessage = async (data) => {
 
     return () => {
-      socket.off("error");
       socket.off("join_room", joinRoom);
       socket.off("receive_message");
       socket.off("disconnect");

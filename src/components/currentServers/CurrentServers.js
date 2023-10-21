@@ -5,11 +5,14 @@ import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined";
+
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
   const doesUserExist = JSON.parse(sessionStorage.getItem("username"));
   const [roomsJoined, setRoomsJoined] = useState([]);
+  const mainRoom = 1;
+  const [newUserToggle, setNewUserToggle]=useState(true)
 
   const colors = [
     "#DD4124", 
@@ -26,7 +29,11 @@ const CurrentServers = () => {
     if (doesUserExist) {
       const allRooms = await AllRoomsJoined(doesUserExist ? doesUserExist: userLoginInfo.username);
       console.log("allRooms:", allRooms); // Debug log
-      setRoomsJoined(allRooms.sort((a,b)=> a.room - b.room)); // Removed 'return'
+      setRoomsJoined(allRooms.sort((a,b)=> a.room - b.room)); 
+      if(allRooms.length>0){
+        setNewUserToggle(false)
+      }
+      
     }
   };
    const handleRoomButtonClick = (roomNumber) => {
@@ -37,37 +44,38 @@ const CurrentServers = () => {
        reconnectionDelay: 2000,
      });
      sessionStorage.setItem("lastRoom", roomNumber.toString());
-     navigate(`/chatroom/${roomNumber}`);
+     return navigate(`/chatroom/${roomNumber}`);
    };
 
   useEffect(() => {
     displayRooms();
     console.log(roomsJoined);
-
+    
     // eslint-disable-next-line
   }, []);
  
 
   return (
     <>
-      <Header socket={socket}  />
-      <div className="server-selection">
-        <button
-          className={"mainAccessBtn"}
-          onClick={() => {
-            setMainAccess(true);
-            setSocket(
-              io.connect("http://localhost:3001"),
-              {
-                reconnection: true,
-                reconnectionAttempts: 20,
-                reconnectionDelay: 2000,
-              },
-              );
-              navigate(`/chatroom/1`)
-          }}>
-          Enter Main Room
-        </button>
+      <Header socket={socket} />
+      <div className={`room-container`}>
+        {newUserToggle && (
+          <h1 style={{ color: "black", alignSelf: "center" }}>
+            Enter main room to get started!
+          </h1>
+        )}
+        <div
+          className={
+            newUserToggle ? `main-room-wrapper new-user` : "main-room-wrapper"
+          }>
+          <button
+            className={"main-room-button"}
+            onClick={() => handleRoomButtonClick(mainRoom)}>
+            <p> Public - Room </p>
+          </button>
+          
+        </div>
+          
 
         {roomsJoined.length > 0 &&
           roomsJoined.map((room) => {
@@ -75,18 +83,18 @@ const CurrentServers = () => {
             const randomIndex = Math.floor(Math.random() * colors.length);
             const randomColor = colors[randomIndex];
 
-            return(
+            return (
               <div key={id}>
                 <button
                   type="button"
-                  className={"mainAccessBtn"}
+                  className={newUserToggle ? "room-item" : "room-item no-rooms"}
                   style={{ backgroundColor: `${randomColor}` }}
                   onClick={() => handleRoomButtonClick(room.room)}>
                   {room.room}
                 </button>
               </div>
-            
-          )})}
+            );
+          })}
       </div>
       {}
     </>

@@ -1,28 +1,61 @@
 .login-element-wrapper{
+    position: relative;
     display: flex;
     flex-direction: column;
-    height:98vh;
+    height:89vh;
+    width:99vw;
+    margin-left:3px;
+    background-color: white;;
+    overflow-y:hidden;
+    overscroll-behavior: none;
+    outline:4px solid red;
+    box-sizing: border-box;
+    
 }
 
 h2 {
-    color:white;
+    color:black;
+}
+
+form{
+    position: relative;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+    height: 100%;
+    background-color: white;
+    
 }
 .columnContainer{
+    position: absolute;
     display:flex;
     flex-direction: column;
-    height: fit-content;
+    height: 100%;
     align-items: center;
-    
+    position: relative;
+   
+}
+.background-image {
+    position: relative;
+    display: flex;
+    height: 70%;
+    overflow: visible;
+   
+    width: 26%;
+    background-size: 37%;
+    background-repeat: no-repeat;
+    background-position: -12px;
+    background-image: url('./svgs/speachBubble.svg');
 }
 .new-user-header{
     display:flex;
     align-items: center;
     align-self: center;
-    justify-content: center;
-    flex-direction: row;
-    padding-top:100px;
+    justify-content: flex-start;
+    flex-direction: column;
     width: 100%;
     gap:10%;
+   
 }
 .create_user{
     position: relative;
@@ -41,6 +74,7 @@ h2 {
     gap: 10px;
     max-height: 500px;
     max-width: 500px;
+   
 }
 
 .create_user> h2{
@@ -70,13 +104,24 @@ font-size:40px;
     padding:25px;
 }
 .titleChatty{
-    display:flex;
-    align-items: center;
+    position: relative;
+    background-image: url('./svgs/speachBubble.svg');
+    background-repeat: no-repeat;
+    background-size: 377px;
+    background-position: -4px;
+    padding-bottom: 25px;
+    display: flex;
+    overflow: visible;
+    padding: 76px;
+    align-items: flex-start;
     justify-content: center;
+    align-self: center;
+    justify-self: center;
+    flex-direction: column;
 }
 #welcome_{
       font-size:6rem;
-      color:white;
+      color:black;
       font-family: 'Berkshire Swash', serif;
 }
 .login-button-wrapper{
@@ -99,21 +144,15 @@ box-sizing: border-box;
     align-items: center;
 }
 .welcomeContainer > article{
-    color:white;
+    color:black;
     width:30%;
     font-size: 2rem;
     text-align: center;
     letter-spacing: 2px;
+    font-family: 'Caveat', cursive;
 
 }
-form{
-    position: relative;
-    display:flex;
-    flex-direction:row;
-    justify-content: space-around;
-    height: 100%;
-    background-color: black;
-}
+
 .create_user.error-css input{
     border:3px solid red;
     
