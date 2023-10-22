@@ -49,9 +49,7 @@ module.exports = {
           username: username.toLowerCase(),
         });
         if (existingUser) {
-          return res
-            .status(404)
-            .sendStatus(404);
+          return res.status(404).sendStatus(404);
         } else {
           const salt = await bcrypt.genSalt(saltRounds);
           const hashedPassword = await bcrypt.hash(password, salt);
@@ -62,7 +60,6 @@ module.exports = {
               url: image.url,
               cloudinary_id: image.cloudinary_id,
             },
-            
           });
           await createNewUser.save();
           res
@@ -87,7 +84,7 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     } else {
       // Authentication was successful, proceed with your logic
-      res.sendStatus(200).send(result);
+      res.status(200).send(result);
     }
   },
 };

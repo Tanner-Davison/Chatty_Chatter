@@ -1,8 +1,15 @@
 
-
+.roomWrapper{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
 p {
   font-size: 17px;
   color: white;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .message-content {
   position: relative;
@@ -13,6 +20,7 @@ p {
   min-width: 130px;
   padding: 4px;
   margin: 0;
+
 }
 
 .message-timestamp-left {
@@ -48,7 +56,6 @@ p {
     display: flex;
     opacity: 1;
     position: absolute;
-    right:-8%;
     top:8%;
     bottom:-20%;
     color:white;
@@ -91,8 +98,9 @@ p {
   transition: transform 0.4s;
   z-index: 50;
 }
-.message-content p {
+.message-content> p {
   width: 100%;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
 }
 .message-green {
@@ -226,7 +234,8 @@ p {
     border-top-right-radius: 1px;
     z-index: 60;
     top: 0px;
-     background-image: linear-gradient(to right, #2f2e2e 0%, #1a1919 51%, #030303 100%);
+     background-image: linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
+     ;
 }
 
 .message-content{
@@ -265,7 +274,7 @@ p {
   max-height: 600px; /* Set to your desired height */
   overflow-y: auto;
   scroll-behavior: smooth;
-  border-radius: 30px;
+  border-radius: 35px;
   background-color: #161a1d;
   margin:15px 15px;
   padding: 0px 15px  30px;
@@ -319,8 +328,6 @@ h1{
  left:30%;
 }
 .leave-delete-button button{
-  
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -357,12 +364,7 @@ h1{
   justify-content: space-between;
   width:100%;
 }
-.roomWrapper{
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+
 .room-num-input-mainRoom{
   display: flex;
   flex-direction: row;
@@ -370,8 +372,16 @@ h1{
   align-items: center;
   justify-content: center;
 }
+
 .room-num-input-mainRoom > input{
   width:15%;
+  background-color: black;
+  color:white;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+.room-num-input-mainRoom >input::placeholder{
+  color:white;
+  padding-left:3px;
 }
 .statusBtn{
   display: flex;
@@ -450,7 +460,11 @@ h1{
 }
 .container:hover .message-timestamp-left{
   position: absolute;
-  right:-20%;
+  right:0;
+}
+.container:hover .message-timestamp-right{
+  position:absolute;
+ left:-33%;
 }
 .user-profile-pic{
   position: absolute;

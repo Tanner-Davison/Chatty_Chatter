@@ -112,6 +112,9 @@
 .visible_login_success > #loggedIn{
   color:#49c219;
 }
+.linkInactive{
+  color:white;
+}
 .linkActive{
 color:red;
 &:hover{
@@ -169,8 +172,8 @@ color:red;
     font-size:1rem;
    }
    h2 {
-   
     padding:1px;
+    
    }
    .navLinks>button{
     margin-top:15px;

@@ -34,7 +34,6 @@ const MainRoom = () => {
   const PORT = process.env.PORT;
   const currentTime = getCurrentTimeJSX();
   const [isSocketConnected, setSocketConnected] = useState("");
- 
 
   const navigate = useNavigate();
 
@@ -63,18 +62,20 @@ const MainRoom = () => {
     setRoom(event.target.value);
   };
   const sendMessageFunc = () => {
-    console.log(sessionImage)
+    console.log(sessionImage);
     const data = {
       message: message,
       room,
       timestamp: getCurrentTime(),
       username: userLoginInfo.username,
       sentBy: userLoginInfo.username,
-      imageUrl: sessionImage ? sessionImage: userLoginInfo.imageUrl,
-      cloudinary_id: sessionCloudinary_id ? sessionCloudinary_id: userLoginInfo.cloudinary_id,
+      imageUrl: sessionImage ? sessionImage : userLoginInfo.imageUrl,
+      cloudinary_id: sessionCloudinary_id
+        ? sessionCloudinary_id
+        : userLoginInfo.cloudinary_id,
     };
     socket.emit("send_message", data);
-    
+
     setMessageRecieved((prev) => [...prev, data]);
   };
   const deleteRoom = () => {
@@ -121,7 +122,7 @@ const MainRoom = () => {
       if (data.room !== room) {
         return;
       }
-      setMessageRecieved((prev)=> [
+      setMessageRecieved((prev) => [
         ...prev,
         {
           message: data.message,
@@ -152,13 +153,12 @@ const MainRoom = () => {
 
   return (
     <>
-        <Header
-          roomChanger={roomChanger}
-          room={room ? room : 1}
-          joinRoom={joinRoom}
-        />
+      <Header
+        roomChanger={roomChanger}
+        room={room ? room : 1}
+        joinRoom={joinRoom}
+      />
       <div className="roomWrapper">
-
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
             <h2> Room: {inRoom}</h2>
@@ -181,7 +181,10 @@ const MainRoom = () => {
                       </div>
                       <div className={"message-blue"}>
                         <img
-                          src={userLoginInfo.imageUrl || userLoginInfo.cloudinary_id}
+                          src={
+                            userLoginInfo.imageUrl ||
+                            userLoginInfo.cloudinary_id
+                          }
                           loading="lazy"
                           className={"user-profile-pic blue"}
                           alt="Profile-Pic"
@@ -208,7 +211,7 @@ const MainRoom = () => {
                       <div className={"message-green"}>
                         <img
                           src={msg.imageUrl || msg.cloudinary_id}
-                          loading='lazy'
+                          loading="lazy"
                           className={"user-profile-pic green"}
                           alt="Profile-Pic"
                         />
@@ -246,18 +249,19 @@ const MainRoom = () => {
           onChange={(event) => setMessage(event.target.value)}
           maxLength="255"
         />
-        <button className={'sendMsgBtn'}onClick={sendMessageFunc}>Send</button>
+        <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
+          Send
+        </button>
       </div>
-      
-        <div className="leave-delete-button">
-          <button onClick={leaveRoom}>Leave Room</button>
-          <button onClick={deleteRoom}>Delete Room</button>
-        </div>
-      
+
+      <div className="leave-delete-button">
+        <button onClick={leaveRoom}>Leave Room</button>
+        <button onClick={deleteRoom}>Delete Room</button>
+      </div>
+
       {
         <>
-          <div
-           className={'status_container'}>
+          <div className={"status_container"}>
             <h3 style={{ color: "white" }}>Status:</h3>
             <button
               type="button"

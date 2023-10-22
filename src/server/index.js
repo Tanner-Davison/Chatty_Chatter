@@ -147,6 +147,7 @@ io.on("connection", (socket) => {
           cloudinary_id: data.cloudinary_id,
         });
         await room.save();
+         socket.to(data.room).emit("receive_message", data);
 
         // Add this room to the user's list of rooms joined
         await User.findOneAndUpdate(
