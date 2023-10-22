@@ -51,7 +51,7 @@ module.exports = {
         if (existingUser) {
           return res
             .status(404)
-            .json({ message: "User exists, please login." });
+            .sendStatus(404);
         } else {
           const salt = await bcrypt.genSalt(saltRounds);
           const hashedPassword = await bcrypt.hash(password, salt);
@@ -71,7 +71,7 @@ module.exports = {
         }
       } catch (error) {
         console.error("Error registering user:", error);
-        res.status(500).send("Error registering user.");
+        res.sendStatus(500).send("Error registering user.");
       }
     });
   },
@@ -87,7 +87,7 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     } else {
       // Authentication was successful, proceed with your logic
-      res.status(200).send(result);
+      res.sendStatus(200).send(result);
     }
   },
 };
