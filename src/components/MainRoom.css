@@ -183,13 +183,15 @@ p {
 }
 
 .container.blue:hover .user {
-  transform: translateX(-100px);
+  transform: translateX(-100px); /* Add this rule */
 }
 
 .container.green:hover .user.green {
-  transform: translateX(15px);
+  transform: translateX(15px); /* Add this rule */
 }
-
+.user.green{
+  transition: transform 0.3s ease-in-out;
+}
 .container:hover > .message-green {
   transform: translateX(100px);
 }
@@ -222,7 +224,7 @@ p {
   color: white;
   width: -moz-fit-content;
   width: auto;
-  transition: transform 1s;
+  transition: transform 0.5s ease-in-out;
   z-index: 2;
 }
 
@@ -262,10 +264,12 @@ p {
   width: -moz-fit-content;
   width: fit-content;
   margin-right: 25px;
-  transition: opacity 1, transform 0.4s;
+  transition: opacity 1, transform 1s;
   z-index: 50;
 }
-
+.user{
+  transition: transform 0.5s ease-in-out
+}
 .messagesContainer {
   position: relative;
   width: 100%;

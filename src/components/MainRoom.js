@@ -147,7 +147,6 @@ const MainRoom = () => {
     //eslint-disable-next-line
   }, [socket, messageRecieved, isSocketConnected]);
 
-
   useEffect(() => {
     if (messagesStartRef.current) {
       messagesStartRef.current.scrollTop =
