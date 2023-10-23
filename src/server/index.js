@@ -5,6 +5,8 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const EndpointHandler = require("./utils/EndpointHandler");
 const LoginHelper = require("./utils/LoginHelper");
+const dbController = require("./utils/dbController");
+const socketController = require("./utils/socketUtils/socketController");
 const { Rooms, User } = require("./utils/Schemas");
 const connectDB = require("./utils/db");
 const mongoose = require("mongoose");
@@ -23,9 +25,10 @@ const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
 const PORT_ = process.env.PORT_;
 app.use(express.urlencoded({ extended: true }));
 
-//create Server
+// Create Server
 const server = http.createServer(app);
-//connect to mongoDB
+
+// Connect to MongoDB
 connectDB(MONGO_DB_KEY);
 
 app.get("/roomHistory/:room", EndpointHandler.roomHistory);
@@ -39,62 +42,37 @@ const io = new Server(server, {
     origin: "http://localhost:3000",
     methods: ["GET", "POST", "DELETE"],
   },
+  reconnection: true,
+  reconnectionAttempts: 200,
+  reconnectionDelay: 2000,
 });
 
-let numUsers = 0;
-
 io.on("connection", (socket) => {
-  console.log(`Server Connected on:${socket.id}`);
-
-  numUsers++;
-  console.log({ Active_Users: numUsers });
+  socket.recovered
+    ? console.log(
+        "Recovery was successful: socket.id, socket.rooms, and socket.data were restored"
+      )
+    : console.log("New or unrecoverable session.");
+  console.log(
+    `${socket.id} connected successfully. SOCKET CONNECTED: ${socket.connected}`
+  );
 
   socket.on("join_room", async (data) => {
+    const userExist = await dbController.findUserAndRoom(data);
+    const inRoomPrev = userExist.inRoomPrev;
+    const roomHasMessages = userExist.hasMessages;
+
+    if (!userExist) {
+      return console.log("No user found.");
+    }
     try {
-      // Leaving other rooms first
-      const rooms = io.sockets.adapter.sids[socket.id];
-      for (let room in rooms) {
-        socket.leave(room);
+      const joinResult = await socketController.joinRoom(io, socket, data);
+
+      if (joinResult.success) {
+        console.log(joinResult.message);
+      } else {
+        console.log(joinResult.message); // If joinResult was falsey
       }
-      socket.join(data.room);
-
-      console.log(`${data.username} joined room ${data.room}`);
-
-      // Find the user
-      const user = await User.findOne({
-        username: data.username.toLowerCase(),
-      });
-      if (!user) {
-        console.log(`No user found with username: ${data.username}`);
-        return;
-      }
-
-      // Check if the user has been in this room before
-      const inRoomPrev = user.roomsJoined.some((r) => String(r.room) === String(data.room));
-
-      if (!inRoomPrev) {
-        // If the user has never been in this room, add it
-        await User.findOneAndUpdate(
-          { username: data.username },
-          {
-            $push: {
-              roomsJoined: {
-                room: parseInt(data.room, 10),
-                timestamp: data.timestamp,
-              },
-            },
-          },
-          { new: true, useFindAndModify: false }
-        );
-        console.log(`Room ${data.room} added to ${data.username}`);
-      }
-
-      // Check if room has messages
-      const roomHasMessages = await Rooms.findOne({
-        room_number: data.room,
-        "messageHistory.1": { $exists: true },
-      });
-
       if (inRoomPrev) {
         console.log(`User ${data.username} has been in this room before`);
       } else if (!roomHasMessages) {
@@ -118,76 +96,53 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("send_message", async (data) => {
-    try {
-      const messageAdded = await User.findOneAndUpdate(
-        { username: data.username },
-        { $set: { messages: data.message } },
-        { new: true, useFindAndModify: false }
-      );
-      await messageAdded.save();
+   socket.on("send_message", async (data) => {
+     try {
+       const addedMessageToUser = await dbController.updateUsersMessage(data);
+       let room = await dbController.findRoom(data.room);
 
-      let room = await Rooms.findOne({ room_number: data.room });
-
-      if (!room) {
-        // Create new room if it doesn't exist
-        room = new Rooms({
-          room_number: data.room,
-          sent_by_user: messageAdded._id, // Assuming messageAdded is the User document
-          username: data.username,
-          message: data.message,
-          users_in_room: [data.username],
-        });
-        await room.save();
-        room.messageHistory.push({
-          message: data.message,
-          sentBy: data.username,
-          timestamp: data.timestamp,
-          imageUrl: data.imageUrl,
-          cloudinary_id: data.cloudinary_id,
-        });
-        await room.save();
-         socket.to(data.room).emit("receive_message", data);
-
-        // Add this room to the user's list of rooms joined
-        await User.findOneAndUpdate(
-          { _id: messageAdded._id },
-          {
-            $push: {
-              roomsJoined: {
-                room: data.room,
-                timestamp: new Date(),
-              },
-            },
-          },
-          { new: true, useFindAndModify: false }
-        );
-      } else {
-        // Room exists, add message to messageHistory
-        if (messageAdded) {
-          room.messageHistory.push({
-            message: data.message,
-            sentBy: data.username,
-            timestamp: data.timestamp,
-            imageUrl: data.imageUrl,
-            cloudinary_id: data.cloudinary_id,
-          });
-          await room.save();
-        }
-        socket.to(data.room).emit("receive_message", data);
-      }
-    } catch (err) {
-      console.error("Error updating Person", err);
-    }
-  });
+       if (!room) {
+         // Initialize room object and messageHistory in one go
+         room = new Rooms({
+           room_number: data.room,
+           sent_by_user: addedMessageToUser._id,
+           created_by: data.username,
+           first_message: data.message,
+           users_in_room: [data.username],
+           messageHistory: [
+             {
+               message: data.message,
+               sentBy: data.username,
+               timestamp: data.timestamp,
+               imageUrl: data.imageUrl,
+               cloudinary_id: data.cloudinary_id,
+             },
+           ],
+         });
+         await room.save(); // Single save operation
+       } else {
+         // Append message to existing room
+         room.messageHistory.push({
+           message: data.message,
+           sentBy: data.username,
+           timestamp: data.timestamp,
+           imageUrl: data.imageUrl,
+           cloudinary_id: data.cloudinary_id,
+         });
+         await room.save();
+       }
+       socket.to(data.room).emit("receive_message", data);
+     } catch (err) {
+       console.error("Error in send_message:", err);
+     }
+   });
 
   socket.on("leaveroom", async (data) => {
     if (!socket) {
       return;
     }
     socket.disconnect();
-    console.log("disconnected");
-    numUsers--;
+    console.log("Disconnected");
   });
 
   socket.on("deleteRoom", async (data) => {
@@ -199,7 +154,7 @@ io.on("connection", (socket) => {
       console.log("_id", roomOwner._id);
       await Rooms.deleteOne({ _id: roomOwner._id });
       socket.disconnect();
-      return console.log(`Room deleted Successfully @ ${data.room}`);
+      return console.log(`Room deleted successfully @ ${data.room}`);
     }
     const searchPerson = await Rooms.findOne({
       room_number: `${data.room}`,
@@ -224,7 +179,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("reconnection_attempt", () => {
-    console.log("recconection attempted");
+    console.log("Reconnection attempt");
   });
 
   socket.on("reconnect", () => {

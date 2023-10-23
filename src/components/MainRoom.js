@@ -1,13 +1,13 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { LoginContext } from "./contexts/LoginContext";
 import "./MainRoom.css";
 import "../App.css";
 import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
-import getCurrentTime from "./Utility-mainRoom/getTime";
+import getCurrentTime, { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
-import { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
+
 const MainRoom = () => {
   const {
     userLoginInfo,
@@ -19,29 +19,24 @@ const MainRoom = () => {
   } = useContext(LoginContext);
 
   const [message, setMessage] = useState("");
-  //sending to server in JoinRoom(),
   const [messageRecieved, setMessageRecieved] = useState([]);
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
   const [inRoom, setInroom] = useState(null);
-  const sessionUsername = JSON.parse(sessionStorage.getItem("username"));
-  const sessionPassword = JSON.parse(sessionStorage.getItem("password"));
   const sessionImage = sessionStorage.getItem("image-url");
-  const sessionCloudinary_id = sessionStorage.getItem("image-url");
-  const [userProfileImg, setUserProfileImg] = useState("");
-  const messagesStartRef = useRef("");
+  const sessionCloudinary_id = sessionStorage.getItem("cloudinary_id");
+  const messagesStartRef = useRef(null);
   const PORT = process.env.PORT;
   const currentTime = getCurrentTimeJSX();
-  const [isSocketConnected, setSocketConnected] = useState("");
-
+  const [isSocketConnected, setSocketConnected] = useState(false);
   const navigate = useNavigate();
 
   const joinRoom = async () => {
     socket.emit("join_room", {
-      room: String(room),
+      room,
       username: userLoginInfo.username,
-      message: message,
+      message,
     });
     navigate(`/chatroom/${room}`);
     const messages = await loadRoomHistory(room);
@@ -49,22 +44,14 @@ const MainRoom = () => {
     setInroom(room);
     setMessageRecieved(messages);
   };
-  // const userInfo = () => {
-  //  const userInfo = {
-  //     username: sessionUsername,
-  //     password: sessionPassword,
-  //     imageUrl: sessionImage,
-  //     cloudinary_id: sessionCloudinary_id,
-  //   };
-  //   setUserLoginInfo(userInfo);
-  // };
+
   const roomChanger = (event) => {
     setRoom(event.target.value);
   };
+
   const sendMessageFunc = () => {
-    console.log(sessionImage);
     const data = {
-      message: message,
+      message,
       room,
       timestamp: getCurrentTime(),
       username: userLoginInfo.username,
@@ -75,74 +62,98 @@ const MainRoom = () => {
         : userLoginInfo.cloudinary_id,
     };
     socket.emit("send_message", data);
-
     setMessageRecieved((prev) => [...prev, data]);
   };
+
   const deleteRoom = () => {
     setMainAccess(true);
-    socket.emit("deleteRoom", { room: room, username: userLoginInfo.username });
+    socket.emit("deleteRoom", { room, username: userLoginInfo.username });
     socket.off("join_room", room);
     navigate("/currentServers");
   };
+
   const leaveRoom = () => {
     socket.emit("leaveroom", room);
     socket.disconnect();
     navigate("/currentservers");
   };
+
   useEffect(() => {
-    console.log(
-      `Is socket connected? :`,
-      isSocketConnected,
-      `socket instance :`,
-      socket
-    );
+    // Handle socket connection
+    const handleSocketConnect = async () => {
+      const fetchRoomHistoryData = async () => {
+        const messages = await loadRoomHistory(room);
+        setMessageRecieved(messages);
+      };
+
+      if (socket.recovered) {
+        console.log("Socket has recovered. Fetching room history...");
+      } else {
+        console.log("New or unrecoverable session.");
+      }
+
+      await fetchRoomHistoryData();
+    };
+
+    // Initialize socket if not already initialized
     if (!socket) {
-      setSocket(io.connect(PORT));
+      setSocket(
+        io.connect(`${PORT}`, {
+          reconnection: true,
+          reconnectionAttempts: 20,
+          reconnectionDelay: 2000,
+        })
+      );
       return;
     }
-    if (isSocketConnected === "Disconnected") {
-      console.log("Socket disconnected.");
-      setSocketConnected("Connected");
-      return;
-    }
+
+    // Auto join room if main access is true
     if (mainAccess === true) {
       joinRoom();
       setMainAccess(false);
     }
-    socket.on("connect", () => {
-      setSocketConnected("Connected");
-    });
+
+    // Socket event handlers
+    socket.on("connect", handleSocketConnect);
 
     socket.on("disconnect", (reason) => {
       console.log(reason);
       setSocketConnected("Disconnected");
       setMainAccess(true);
     });
+
     socket.on("receive_message", async (data) => {
-      if (data.room !== room) {
-        return;
-      }
-      setMessageRecieved((prev) => [
-        ...prev,
-        {
-          message: data.message,
-          username: data.sentBy,
-          timestamp: getCurrentTime(),
-          imageUrl: data.imageUrl,
-          cloudinary_id: data.cloudinary_id,
-        },
-      ]);
-      console.log(data.sentBy);
+      if (data.room !== room) return;
+
+      const newData = {
+        message: data.message,
+        username: data.sentBy,
+        timestamp: getCurrentTime(),
+        imageUrl: data.imageUrl,
+        cloudinary_id: data.cloudinary_id,
+      };
+
+      setMessageRecieved((prev) => [...prev, newData]);
       await loadRoomHistory(data.room);
     });
 
+    // Cleanup function to remove event listeners
     return () => {
       socket.off("join_room", joinRoom);
       socket.off("receive_message");
       socket.off("disconnect");
     };
-    // eslint-disable-next-line
+
+    //eslint-disable-next-line
   }, [socket, messageRecieved, isSocketConnected]);
+
+
+  useEffect(() => {
+    if (messagesStartRef.current) {
+      messagesStartRef.current.scrollTop =
+        messagesStartRef.current.scrollHeight;
+    }
+  }, [messageRecieved]);
 
   useEffect(() => {
     if (messagesStartRef.current) {

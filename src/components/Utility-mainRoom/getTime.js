@@ -29,5 +29,5 @@ const getCurrentTimeJSX = () => {
   );
 };
 
-export { getCurrentTimeJSX };
+export { getCurrentTimeJSX, getCurrentTime };
 export default getCurrentTime;

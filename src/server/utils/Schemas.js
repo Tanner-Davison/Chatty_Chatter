@@ -45,11 +45,11 @@ const roomSchema = new mongoose.Schema({
     ref: "User", // reference to the Message model
     required: true,
   },
-  username: {
+  created_by: {
     type: String,
     required: true,
   },
-  message: {
+  first_message: {
     type: String,
   },
   messageHistory: [
