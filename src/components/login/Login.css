@@ -47,7 +47,7 @@ form{
   flex-direction: column;
   width: 100%;
   height: 100vh;
-
+perspective: 1000px;
   gap: 10%;
   
   /* Adding styling to match the chat room */
@@ -211,8 +211,16 @@ form{
     transition: transform 4s;
     box-sizing: border-box;
     z-index: 1;
-   
+    border: 4px inset rgba(0, 0, 0, 0.2);
     border-radius:6px;
+
+     box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+    padding-right:10px;
+    border-radius:25px;
+    margin-top:10px;
     
 }
 .speach-bubble{
