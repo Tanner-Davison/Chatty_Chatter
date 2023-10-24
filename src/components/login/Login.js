@@ -4,7 +4,9 @@ import { LoginContext } from "../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import axios from "axios";
-import speachBubble from './svgs/speachBubble.svg'
+import speachBubble from "./svgs/speachBubble.svg";
+
+
 const Login = () => {
   const { createUserInfo, setLoginPortalToggle } = useContext(LoginContext);
 
@@ -17,7 +19,7 @@ const Login = () => {
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorCss, setErrorCss] = useState("");
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
-   const [parentBackgroundColor, setParentBackgroundColor] = useState("gray");
+  const [parentBackgroundColor, setParentBackgroundColor] = useState("gray");
   const [resError, setResError] = useState(null);
   const navigate = useNavigate();
 
@@ -56,8 +58,7 @@ const Login = () => {
         .post("http://localhost:3001/signup", formData)
         .then((res) => {
           const data = res.data;
-          
-         
+
           if (data.message === "User created!") {
             sessionStorage.setItem("image-url", data.image.url);
             sessionStorage.setItem("cloudinary_id", data.image.cloudinary_id);
@@ -81,7 +82,7 @@ const Login = () => {
             console.log("Status code:", error.response?.status);
 
             setParentBackgroundColor("gray");
-             setResError('Username taken. please login or change name.');
+            setResError("Username taken. please login or change name.");
             setErrorCss("error-css");
             return;
           }
@@ -119,30 +120,30 @@ const Login = () => {
     navigate("/currentservers");
   };
 
-  const handleAnimationEnd =()=>{
-    setParentBackgroundColor('#00bb2d');
-  }
+  const handleAnimationEnd = () => {
+    setParentBackgroundColor("#00bb2d");
+  };
   useEffect(() => {
     if (userExists != null) {
       navigate(`/profile/${userExists.split("@")[0]}`);
     }
   });
-  useEffect(()=>{
-    resError && setResError(null)
-  },[])
+  useEffect(() => {
+    resError && setResError(null);
+  }, []);
   useEffect(() => {
     if (loginFailed) {
       setErrorCss("error-css");
       console.log("error css is working");
     } else if (loginFailed === false) {
       setErrorCss("");
-      setResError('')
+      setResError("");
     }
   }, [loginFailed]);
-  useEffect(()=>{
-    image && console.log(image)
+  useEffect(() => {
+    image && console.log(image);
     //eslint-disable-next-line
-  },[])
+  }, []);
   return (
     <>
       <Header />
@@ -152,13 +153,14 @@ const Login = () => {
             {!loginToggle && !signUpToggle && (
               <>
                 <div className={"titleChatty"}>
-                  <img
+                  {/* <img
                     className={"speach-bubble"}
                     src={speachBubble}
-                    alt={"background"}></img>
+                    alt={"background"}></img> */}
                   <h1 id="chatty">Chatty</h1>
                   <h1 id="chatty">Chatter</h1>
                 </div>
+
                 <div className={"welcomeContainer"}>
                   <article>
                     Where the chats gets chatty! Build your own chat hubs, set

@@ -84,6 +84,7 @@ const MainRoom = () => {
       const fetchRoomHistoryData = async () => {
         const messages = await loadRoomHistory(room);
         setMessageRecieved(messages);
+        setSocketConnected(true);
       };
 
       if (socket.recovered) {
@@ -104,6 +105,7 @@ const MainRoom = () => {
           reconnectionDelay: 2000,
         })
       );
+
       return;
     }
 
@@ -118,7 +120,7 @@ const MainRoom = () => {
 
     socket.on("disconnect", (reason) => {
       console.log(reason);
-      setSocketConnected("Disconnected");
+      setSocketConnected(false);
       setMainAccess(true);
     });
 
@@ -147,7 +149,6 @@ const MainRoom = () => {
     //eslint-disable-next-line
   }, [socket, messageRecieved, isSocketConnected]);
 
-
   useEffect(() => {
     if (messagesStartRef.current) {
       messagesStartRef.current.scrollTop =
@@ -172,7 +173,13 @@ const MainRoom = () => {
       <div className="roomWrapper">
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
-            <h2> Room: {inRoom}</h2>
+            <h2>
+              {inRoom
+                ? "Room:" + inRoom
+                : String.fromCodePoint(0x1f449) +
+                  " Empty " +
+                  String.fromCodePoint(0x1f448)}
+            </h2>
           </div>
 
           {messageRecieved.length > 0 &&
@@ -281,11 +288,11 @@ const MainRoom = () => {
                 joinRoom();
               }}
               style={
-                isSocketConnected === "Connected"
+                isSocketConnected
                   ? { backgroundColor: "limegreen" }
                   : { backgroundColor: "red", color: "white" }
               }>
-              {isSocketConnected && isSocketConnected.toUpperCase()}
+              {isSocketConnected && "CONNECTED"}
               {!isSocketConnected && "DISCONNECTED"}
             </button>
           </div>

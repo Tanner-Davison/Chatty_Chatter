@@ -60,7 +60,7 @@ const CurrentServers = () => {
       <Header socket={socket} />
       <div className={`room-container`}>
         {newUserToggle && (
-          <h1 style={{ color: "black", alignSelf: "center" }}>
+          <h1>
             Enter main room to get started!
           </h1>
         )}
