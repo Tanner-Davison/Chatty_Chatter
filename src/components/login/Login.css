@@ -1,24 +1,9 @@
 :root{
     --parent-background-color:gray;
 }
-.login-element-wrapper{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height:89vh;
-    width:99vw;
-    margin-left:3px;
-    background-color: white;;
-    overflow-y:hidden;
-    overscroll-behavior: none;
-    outline:4px solid red;
-    box-sizing: border-box;
-    padding-top:50px;
-    
-}
 
 h2 {
-    color:black;
+    color:white;
 }
 #inline-font-change{
     color:red;
@@ -54,15 +39,26 @@ form{
     background-position: -12px;
     background-image: url('./svgs/speachBubble.svg');
 }
-.new-user-header{
-    display:flex;
-    align-items: center;
-    align-self: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    width: 100%;
-    gap:10%;
-   
+.new-user-header {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+perspective: 1000px;
+  gap: 10%;
+  
+  /* Adding styling to match the chat room */
+  background: linear-gradient(45deg, #161a1d, #2e353b, #3a434a); /* Dark background */
+  box-shadow: 
+    0 4px 8px rgba(255, 255, 255, 0.1),  /* Slight white tint */
+    0 8px 16px rgba(255, 255, 255, 0.1),  /* Slight white tint */
+    0 12px 24px rgba(0, 0, 0, 0.2); /* General shadow */
+  
+  /* Optional: 3D border to add a pop */
+  border: 3px outset #2e353b;
 }
 .create_user{
     position: relative;
@@ -206,7 +202,7 @@ form{
     padding-bottom: 25px;
     display: flex;
     overflow: visible;
-    background-color: rgb(253, 253, 253);
+    background-color: transparent;
     margin-bottom:3%;
     align-items: flex-start;
     justify-content: center;
@@ -215,8 +211,16 @@ form{
     transition: transform 4s;
     box-sizing: border-box;
     z-index: 1;
-    border:11px solid black;
+    border: 4px inset rgba(0, 0, 0, 0.2);
     border-radius:6px;
+
+     box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+    padding-right:10px;
+    border-radius:25px;
+    margin-top:10px;
     
 }
 .speach-bubble{
@@ -224,7 +228,8 @@ form{
     width:60%;
     right:-20px;
     top:-35px;
-    background-color: white;
+    background-color:transparent;
+    
     border-radius: 20%;
     z-index: 0;
 
@@ -233,7 +238,7 @@ form{
     display: flex;
     position: relative;
       font-size:5em;
-      color:black;
+      color:#F5F5F5;
       font-family: 'Berkshire Swash', serif;
       z-index: 1;
 }
@@ -256,15 +261,27 @@ box-sizing: border-box;
     position: relative;
     top:10%;
 }
-.welcomeContainer{
-    position: relative;
-    bottom: 100px;
-    display: flex;
-    flex-direction: column;
-    max-width: 450px;
-    align-items: center;
-    outline:2px solid red;
-    
+.welcomeContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  align-items: center;
+  background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+  bottom: 10%;
+  transition: transform 2s ease;
+  color: white;
+
+  /* Multi-layer borders for 3D effect */
+ 
+  box-shadow: 
+    0 0 0 10px #888, 
+    0 0 0 15px #aaa, 
+    0 0 0 20px #ccc,
+    0 0 0 25px #eee;
+
+  /* Border radius for rounded but not a full circle */
+  border-radius: 49px
 }
 fieldset{
     border-color:black;
@@ -291,8 +308,9 @@ article{
     padding-right: 2em;
     font-size: 3ch;
     text-align: center;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     font-family: 'Caveat', cursive;
+    color:white;
 }
 
 .create_user.error-css input{
@@ -425,7 +443,9 @@ input::file-selector-button:hover{
     .speach-bubble {
   display: none;
     }
-    
+    .welcomeContainer{
+        width:350px;
+    }
 element.style {
     gap: 15px;
 }
