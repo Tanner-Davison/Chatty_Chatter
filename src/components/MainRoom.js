@@ -7,7 +7,7 @@ import getCurrentTime, { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
-
+import CreateRoom from './Utility-mainRoom/CreateRoom'
 const MainRoom = () => {
   const {
     userLoginInfo,
@@ -177,7 +177,7 @@ const MainRoom = () => {
               {inRoom
                 ? "Room:" + inRoom
                 : String.fromCodePoint(0x1f449) +
-                  " Empty " +
+                  "Empty " +
                   String.fromCodePoint(0x1f448)}
             </h2>
           </div>
@@ -195,24 +195,23 @@ const MainRoom = () => {
                   <div key={index} className={"messagesContainer"}>
                     <div className={"container blue"}>
                       <div className={"message-timestamp-left"}>
-                        <p>{currentTime}</p>
-                      </div>
+                      <p>{currentTime}</p>
+                        </div>
                       <div className={"message-blue"}>
-                        <img
-                          src={
-                            userLoginInfo.imageUrl ||
-                            userLoginInfo.cloudinary_id
+                      <img
+                        src={
+                          userLoginInfo.imageUrl ||
+                          userLoginInfo.cloudinary_id
                           }
-                          loading="lazy"
-                          className={"user-profile-pic blue"}
-                          alt="Profile-Pic"
-                        />
-                        <p className={"message-content"}>{msg.message}</p>
-                      </div>
-                      <p className={"user"}>{userLoggedIn}</p>
-                    </div>
-                    <div></div>
+                        loading="lazy"
+                        className={"user-profile-pic blue"}
+                        alt="Profile-Pic"
+                      />
+                    <p className={"message-content"}>{msg.message}</p>
                   </div>
+                    <p className={"user"}>{userLoggedIn}</p>
+                  </div>
+                 </div>
                 );
               } else {
                 // Message received from another user
@@ -246,17 +245,7 @@ const MainRoom = () => {
               }
             })}
           {messageRecieved.length <= 0 && (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}>
-                <h1>No Room History</h1>
-                <p>please choose another room or rejoin</p>
-              </div>
-            </>
+        <CreateRoom/>
           )}
         </div>
       </div>
@@ -271,7 +260,6 @@ const MainRoom = () => {
           Send
         </button>
       </div>
-
       <div className="leave-delete-button">
         <button onClick={leaveRoom}>Leave Room</button>
         <button onClick={deleteRoom}>Delete Room</button>

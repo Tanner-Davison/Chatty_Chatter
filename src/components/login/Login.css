@@ -342,18 +342,18 @@ input {
     
 }
 label{
-   color:whitesmoke;
-   font-weight: 600;
-   font-size: 1.1rem;
+    color:whitesmoke;
+    font-weight: 600;
+    font-size: 1.1rem;
     letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-bottom:7px;
-  z-index: 2;
+    text-transform: uppercase;
+    padding-bottom:7px;
+    z-index: 2;
 }
 
 .file_upload:focus-within input::file-selector-button{
-        outline:4px solid purple;
-        outline-offset: -2px;
+    outline:4px solid purple;
+    outline-offset: -2px;
         
 }
  #upload:focus{

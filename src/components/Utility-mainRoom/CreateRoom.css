@@ -1,0 +1,15 @@
+form{
+    display:flex;
+    align-items: center;
+    background: linear-gradient(135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100%);
+    outline: 3px solid red;
+}
+form h3{
+    color:white
+}
+
+.room-creation{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+}
