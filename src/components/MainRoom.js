@@ -177,7 +177,7 @@ const MainRoom = () => {
               {inRoom
                 ? "Room:" + inRoom
                 : String.fromCodePoint(0x1f449) +
-                  "Empty " +
+                  " Empty " +
                   String.fromCodePoint(0x1f448)}
             </h2>
           </div>

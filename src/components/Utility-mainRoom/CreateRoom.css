@@ -4,12 +4,41 @@ form{
     background: linear-gradient(135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100%);
     outline: 3px solid red;
 }
+.wrapper{
+    display:flex;
+    flex-direction: column;
+    outline: 3px solid blue;
+    width: 90%;
+    text-align: center;
+    
+}
+.toggle-wrapper>p{
+    font-weight: 800;
+}
 form h3{
     color:white
 }
-
-.room-creation{
+.question-wrapper{
+    position: relative;
     display:flex;
     flex-direction: column;
-    gap:10px;
+    outline: 4px solid pink;
+    justify-content: center;
+}
+.toggle-wrapper{
+    position: relative;
+  display: flex;
+  flex-direction: row;
+  align-self:center;
+  align-items: center;
+  gap:10px;
+  justify-content:flex-start;
+}
+.public-off{
+    opacity:100%;
+    transition: opacity .3s ease;
+}
+
+.public-off.true{
+    opacity:0%;
 }
