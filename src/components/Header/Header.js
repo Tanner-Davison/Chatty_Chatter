@@ -22,7 +22,6 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   };
  
     
-
     useEffect(()=>{
       const timer = setTimeout(()=>{
         setVisible(false);
@@ -38,64 +37,76 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   };
 
   return (
-    <div className={"headerContainer"}>
-      <ul className={"navLinks"}>
-        <Link to="/">
-          <h1 className={"logo-font"}>Chatty Chatter</h1>
-        </Link>
+		<div className={"headerContainer"}>
+			<ul className={"navLinks"}>
+				<Link to='/'>
+					<h1 className={"logo-font"}>Chatty Chatter</h1>
+				</Link>
 
-        {usernameLocal && (
-          <>
-            <li>
-              <Link to={`/currentservers`}>
-                <h2 className={getLinkStyle("/currentservers")}>SERVERS</h2>
-              </Link>
-            </li>
-            <span style={{ color: "white" }}>|</span>
-            <li>
-              <Link to={`/profile/${usernameLocal}`}>
-                <h2
-                  className={getLinkStyle(
-                    `/profile/${usernameLocal.split("@")[0]}`
-                  )}>
-                  PROFILE
-                </h2>
-              </Link>
-            </li>
-            <span style={{ color: "white" }}>|</span>
-            <button
-              type="button"
-              id={"logout_button"}
-              onClick={() => logoutHandler()}>
-              Logout
-            </button>
-          </>
-        )}
-      </ul>
-      {usernameLocal && (
-        <div className={"create_room_container"}>
-          <h2 style={{ color: "white" }}>Room Search</h2>
-          <input
-            className={"roomInput"}
-            placeholder="Room #"
-            onKeyDown={handleKeyDown}
-            value={room}
-            onChange={roomChanger}
-          />
-          <button className={"buttonHeader"} type="submit" onClick={joinRoom}>
-            Join Room
-          </button>
-        </div>
-      )}
-      {visible && usernameLocal && (
-        <div className={"visible_login_success"}>
-          <h2 id="loggedIn">Logged in as: </h2>
-          <h2 style={{ color: "white" }}>{usernameLocal}</h2>
-        </div>
-      )}
-
-    </div>
-  );
+				{usernameLocal && (
+					<>
+						<li>
+							<Link to={`/currentservers`}>
+								<h2 className={getLinkStyle("/currentservers")}>SERVERS</h2>
+							</Link>
+						</li>
+						<span style={{ color: "white" }}>|</span>
+						<li>
+							<Link to={`/profile/${usernameLocal}`}>
+								<h2
+									className={getLinkStyle(
+										`/profile/${usernameLocal.split("@")[0]}`
+									)}>
+									PROFILE
+								</h2>
+							</Link>
+						</li>
+						<li>
+							<Link to={`/createroom/${room || 0}`}>
+								<h2
+									className={getLinkStyle(
+										`/createroom/${room}`
+									)}>
+									Create Room!
+								</h2>
+							</Link>
+						</li>
+						<span style={{ color: "white" }}>|</span>
+						<button
+							type='button'
+							id={"logout_button"}
+							onClick={() => logoutHandler()}>
+							Logout
+						</button>
+					</>
+				)}
+			</ul>
+			{usernameLocal && (
+				<div className={"create_room_container"}>
+					<h2 style={{ color: "white" }}>Room Search</h2>
+					<input
+						className={"roomInput"}
+						placeholder='Room #'
+						onKeyDown={handleKeyDown}
+						value={room}
+						onChange={roomChanger}
+					/>
+					<button
+						className={"buttonHeader"}
+						type='submit'
+						onClick={joinRoom}>
+						Join Room
+					</button>
+				</div>
+			)}
+			{visible && usernameLocal && (
+				<div className={"visible_login_success"}>
+					<h2 id='loggedIn'>Logged in as: </h2>
+					<h2 style={{ color: "white" }}>{usernameLocal}</h2>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default Header;

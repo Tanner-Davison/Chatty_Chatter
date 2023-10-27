@@ -61,7 +61,7 @@ form h3{
     position: relative;
     display:flex;
     flex-direction: column;
-    min-height:200px;
+    min-height:400px;
     justify-content: flex-start;
     width: 40%;
     align-self: center;
@@ -71,6 +71,21 @@ form h3{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
     max-width: 400px; 
     margin: 0 auto; 
+}
+.question-wrapper.dark-mode{
+min-height: 200px;
+}
+#number-value{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#name-value{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .toggle-wrapper{
   position: relative;
@@ -118,7 +133,48 @@ form h3{
    width: auto;
     box-sizing: border-box;
 }
- 
+.private-info{
+    display:flex;
+    flex-direction: column;
+}
+
+ .submit-button {
+  width: 150px;
+  height: 50px;
+  border: 3px solid #1c2125;  /* Border color */
+  background: linear-gradient(135deg, #1a1f23 0%, #2a3a4c 25%, #232a30 50%, #1a1f23 100%); /* Gradient background */
+  background-size: 200% 200%;
+  animation: gradientBackground 24s ease infinite;
+  border-radius: 25px;
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.2),
+    0 10px 24px rgba(0, 0, 0, 0.2),
+    0 16px 40px rgba(0, 0, 0, 0.2),
+    inset 0 -4px 12px #0d1115,
+    inset 0 4px 8px #1c2125;  /* Shadows for 3D effect */
+  transition: all 0.2s ease-in-out;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  transform: scale(0.95); /* Squish effect on hover */
+  border-radius:10px;
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
 @media only screen and (max-width: 600px) {
 #header-border{
     display:flex;
