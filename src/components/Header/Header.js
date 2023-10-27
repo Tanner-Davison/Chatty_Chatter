@@ -74,7 +74,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
       </ul>
       {usernameLocal && (
         <div className={"create_room_container"}>
-          <h2 style={{ color: "white" }}>Create Room</h2>
+          <h2 style={{ color: "white" }}>Room Search</h2>
           <input
             className={"roomInput"}
             placeholder="Room #"

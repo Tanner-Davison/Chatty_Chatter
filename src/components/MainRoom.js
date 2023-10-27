@@ -8,6 +8,7 @@ import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import CreateRoom from './Utility-mainRoom/CreateRoom'
+
 const MainRoom = () => {
   const {
     userLoginInfo,
@@ -23,7 +24,7 @@ const MainRoom = () => {
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
-  const [inRoom, setInroom] = useState(null);
+  const [inRoom, setInroom] = useState(initialRoom );
   const sessionImage = sessionStorage.getItem("image-url");
   const sessionCloudinary_id = sessionStorage.getItem("cloudinary_id");
   const messagesStartRef = useRef(null);
@@ -174,10 +175,10 @@ const MainRoom = () => {
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
             <h2>
-              {inRoom
-                ? "Room:" + inRoom
+              {lastRoom
+                ? "Room:" + lastRoom
                 : String.fromCodePoint(0x1f449) +
-                  " Empty " +
+                  lastRoom + " No Existing Room" +
                   String.fromCodePoint(0x1f448)}
             </h2>
           </div>
@@ -192,27 +193,30 @@ const MainRoom = () => {
                 // Message sent by current user
                 let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
                 return (
-                  <div key={index} className={"messagesContainer"}>
-                    <div className={"container blue"}>
-                      <div className={"message-timestamp-left"}>
-                      <p>{currentTime}</p>
-                        </div>
-                      <div className={"message-blue"}>
-                      <img
-                        src={
-                          userLoginInfo.imageUrl ||
-                          userLoginInfo.cloudinary_id
-                          }
-                        loading="lazy"
-                        className={"user-profile-pic blue"}
-                        alt="Profile-Pic"
-                      />
-                    <p className={"message-content"}>{msg.message}</p>
-                  </div>
-                    <p className={"user"}>{userLoggedIn}</p>
-                  </div>
-                 </div>
-                );
+									<div
+										key={index}
+										className={"messagesContainer"}>
+										<div className={"container blue"}>
+											<div className={"message-timestamp-left"}>
+												<p>{currentTime}</p>
+											</div>
+											<div className={"message-blue"}>
+												<img
+													src={
+														userLoginInfo.imageUrl ||
+														userLoginInfo.cloudinary_id
+													}
+													loading='lazy'
+													className={"user-profile-pic blue"}
+													alt='Profile-Pic'
+													onClick={() => navigate(`/profile/${userLoginInfo.username}`)}
+												/>
+												<p className={"message-content"}>{msg.message}</p>
+											</div>
+											<p className={"user"}>{userLoggedIn}</p>
+										</div>
+									</div>
+								);
               } else {
                 // Message received from another user
                 return (
@@ -231,6 +235,7 @@ const MainRoom = () => {
                           loading="lazy"
                           className={"user-profile-pic green"}
                           alt="Profile-Pic"
+                          onClick={()=> navigate(`/profile/${msg.sentBy}`)}
                         />
                         <p className={"message-content"}>{msg.message}</p>
                         <p className={"user green"}>
@@ -244,9 +249,7 @@ const MainRoom = () => {
                 );
               }
             })}
-          {messageRecieved.length <= 0 && (
-        <CreateRoom/>
-          )}
+          {messageRecieved.length <= 0 && navigate(`/createroom/${room}`)}
         </div>
       </div>
       <div className={"room-num-input-mainRoom"}>

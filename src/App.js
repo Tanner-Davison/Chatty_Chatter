@@ -7,6 +7,7 @@ import CurrentServers from "./components/currentServers/CurrentServers";
 import { LoginContext } from "./components/contexts/LoginContext";
 import Header from "./components/Header/Header";
 import Profile from "./components/Profile/Profile";
+import CreateRoom from "./components/Utility-mainRoom/CreateRoom";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -16,15 +17,31 @@ import {
 
 function App() {
   const router = createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="/" element={<Login />} />
-        <Route path="/currentservers" element={<CurrentServers />} />
-        <Route path="/chatroom/:room" element={<MainRoom />} />
-        <Route path="/profile/:username" element={<Profile />} />
-      </>
-    )
-  );
+		createRoutesFromElements(
+			<>
+				<Route
+					path='/'
+					element={<Login />}
+				/>
+				<Route
+					path='/currentservers'
+					element={<CurrentServers />}
+				/>
+				<Route
+					path='/chatroom/:room'
+					element={<MainRoom />}
+				/>
+				<Route
+					path='/profile/:username'
+					element={<Profile />}
+				/>
+				<Route
+					path='/createroom/:room'
+					element={<CreateRoom/>}
+				/>
+			</>
+		)
+	);
   const [mainAccess, setMainAccess] = useState(false);
   const [loginPortalToggle, setLoginPortalToggle] = useState(true);
   const [socket, setSocket] = useState(null);
