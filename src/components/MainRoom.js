@@ -29,8 +29,8 @@ const MainRoom = () => {
   const messagesStartRef = useRef(null);
   const PORT = process.env.PORT;
   const currentTime = getCurrentTimeJSX();
-  const [isSocketConnected, setSocketConnected] = useState(false);
   const [roomIsEmpty, setRoomIsEmpty] = useState(false)
+  const [isSocketConnected, setSocketConnected] = useState(false);
   const navigate = useNavigate();
   
   const joinRoom = async () => {
@@ -44,6 +44,9 @@ const MainRoom = () => {
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);
     setMessageRecieved(messages);
+    if(messages.length <= 0){
+      setRoomIsEmpty(true);
+    }
   };
 
   const roomChanger = (event) => {
@@ -157,11 +160,7 @@ const MainRoom = () => {
     }
   }, [messageRecieved]);
 
-  useEffect(()=>{
-    messageRecieved.length<=0 ?
-    setRoomIsEmpty(true):
-    setRoomIsEmpty(false)
-  },roomIsEmpty)
+ 
  
   return (
     <>
@@ -248,7 +247,7 @@ const MainRoom = () => {
                 );
               }
             })}
-          {messageRecieved.length <= 0 && navigate(`/createroom/${room}`)}
+          {roomIsEmpty && navigate(`/createroom/${room}`)}
         </div>
       </div>
       <div className={"room-num-input-mainRoom"}>

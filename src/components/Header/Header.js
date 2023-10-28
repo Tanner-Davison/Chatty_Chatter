@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 
 const Header = ({ joinRoom, roomChanger, room, }) => {
   const location = useLocation();
+  const currentLocation = window.location.href.toString();
 
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const [visible, setVisible] = useState(true);
@@ -23,6 +24,8 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
  
     
     useEffect(()=>{
+      console.log(currentLocation);
+      
       const timer = setTimeout(()=>{
         setVisible(false);
       },5000);
@@ -81,7 +84,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
           </>
         )}
       </ul>
-      {usernameLocal && (
+      {usernameLocal && !currentLocation.includes('createroom')&&(
         <div className={"create_room_container"}>
           <h2 style={{ color: "white" }}>Public Search</h2>
           <input
