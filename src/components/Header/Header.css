@@ -143,6 +143,7 @@ color:red;
     border-radius: 5px 5px 15px 15px;
     padding: 0;
     border: 6px inset white;
+    justify-content: center;
   }
   .create_room_container {
     flex-direction: column;
@@ -164,6 +165,7 @@ color:red;
     gap: 0px;
     height: 300px;
     padding-bottom:7px;
+    justify-content: center;
   }
   .buttonHeader {
     min-width: 100px;
@@ -185,8 +187,11 @@ color:red;
  
    ul >li{
     height: 15%;
-    
     font-size:1rem;
+   }
+
+   #span-id{
+    display:none;
    }
    .navLinks>button{
     margin-top:15px;

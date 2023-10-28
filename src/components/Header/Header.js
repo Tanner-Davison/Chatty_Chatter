@@ -58,15 +58,20 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
                 </h2>
               </Link>
             </li>
-            <span style={{ color: "white" }}>|</span>
+            <br></br>
+            <span id={"span-id"} style={{ color: "white" }}>
+              {" "}
+              |{" "}
+            </span>
             <li>
               <Link to={`/currentservers`}>
-                <h2 className={getLinkStyle("/currentservers")}>
-                  All Rooms
-                </h2>
+                <h2 className={getLinkStyle("/currentservers")}>All Rooms</h2>
               </Link>
             </li>
-            <span style={{ color: "white" }}>|</span>
+            <br></br>
+            <span id={"span-id"} style={{ color: "white" }}>
+              |
+            </span>
             <li>
               <Link to={`/createroom/${0}`}>
                 <h2 className={getLinkStyle(`/createroom/${room}`)}>
@@ -74,7 +79,10 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
                 </h2>
               </Link>
             </li>
-            <span style={{ color: "white" }}>|</span>
+            <br></br>
+            <span id={"span-id"} style={{ color: "white" }}>
+              |
+            </span>
             <button
               type="button"
               id={"logout_button"}
@@ -84,7 +92,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
           </>
         )}
       </ul>
-      {usernameLocal && !currentLocation.includes('createroom')&&(
+      {usernameLocal && currentLocation.includes("chatroom") && (
         <div className={"create_room_container"}>
           <h2 style={{ color: "white" }}>Public Search</h2>
           <input

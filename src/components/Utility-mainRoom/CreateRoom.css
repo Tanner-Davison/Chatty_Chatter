@@ -20,11 +20,8 @@ form{
     position: relative;
     display:flex;
     flex-direction: column;
-    outline: 3px solid blue;
     width: 90%;
     text-align: center;
- 
-    
 }
 #header-border{
     
@@ -61,7 +58,7 @@ form h3{
     position: relative;
     display:flex;
     flex-direction: column;
-    min-height:400px;
+    max-height:700px;
     justify-content: flex-start;
     width: 40%;
     align-self: center;
@@ -77,16 +74,62 @@ min-height: 300px;
 }
 #number-value{
     display:flex;
-    width:100%;
+    width:auto;
+    height: 30px;
+    margin-top:10px;
+
     gap:0px;
     flex-direction:column;
     align-items: center;
     justify-content: flex-end;
 }
+.content-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline:4px solid greenyellow;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+.content-container{
+    display: flex;
+    flex-direction: column;
+}
+.info-div{
+    display:flex;
+    flex-direction: column;
+    gap:15px;
+    align-items: center;
+}
+.category-container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.category-result{
+    display:flex;
+    flex-direction: column;
+    height:50px;
+    gap:0px;
+    width: auto;
+    
+}
+#public-category{
+    width: auto;
+    text-align: center;
+    font-weight: 700;
+    padding:5px;
+    
+}
+#public-category::placeholder{
+    color:#FF8C22;
+}
 #name-value{
     display:flex;
     flex-direction: column;
-    width: 100%;
+    width:auto;
+    height:10px;
     gap:0px;
     white-space: nowrap;
     align-items: center;
@@ -96,12 +139,21 @@ min-height: 300px;
     font-weight: 700;
     width: fit-content;
     text-align: center;
+    padding:5px;
     
+    
+}
+#public-number::placeholder{
+    color:#FF8C22;
 }
 #public-name{
     font-weight: 700;
     width: fit-content;
     text-align: center;
+    padding:5px;
+}
+#public-name::placeholder{
+    color:#FF8C22;
 }
 
 .toggle-wrapper{
@@ -144,6 +196,9 @@ min-height: 300px;
     display: flex;
     flex-direction: row;
 }
+#room-lookup> input{
+    text-align: center;
+}
 .private-room-inputs input{
     width:45%;
 }
@@ -170,6 +225,7 @@ min-height: 300px;
 .private-info{
     display:flex;
     flex-direction: column;
+    gap:20px;
 }
 #room-lookup{
     flex-direction: column;
@@ -223,7 +279,9 @@ min-height: 300px;
     border-radius:10px;
     height:86px ;
 }
-
+.private-info{
+    gap:10px;
+}
 .form-wrapper{
     margin:10px;
     align-items: center;

@@ -35,6 +35,22 @@ module.exports = {
       console.log(err);
     }
   },
+  roomAvailable: async (req,res) =>{
+    try{
+        const roomToCheck = req.params.numberValue;
+          const result = await Rooms.findOne({
+            room_number: roomToCheck
+          })
+          if(result){
+            res.status(200).json({room: true})
+          }else if(!result){
+            res.status(200).json({room: false})
+          }
+    }catch (error){
+      console.log(error);
+      
+    }
+  }
 
   
 };
