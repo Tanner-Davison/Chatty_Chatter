@@ -12,7 +12,6 @@ import CreateRoom from './Utility-mainRoom/CreateRoom'
 const MainRoom = () => {
   const {
     userLoginInfo,
-    setUserLoginInfo,
     mainAccess,
     setMainAccess,
     socket,
@@ -31,8 +30,9 @@ const MainRoom = () => {
   const PORT = process.env.PORT;
   const currentTime = getCurrentTimeJSX();
   const [isSocketConnected, setSocketConnected] = useState(false);
+  const [roomIsEmpty, setRoomIsEmpty] = useState(false)
   const navigate = useNavigate();
-
+  
   const joinRoom = async () => {
     socket.emit("join_room", {
       room,
@@ -157,13 +157,12 @@ const MainRoom = () => {
     }
   }, [messageRecieved]);
 
-  useEffect(() => {
-    if (messagesStartRef.current) {
-      messagesStartRef.current.scrollTop =
-        messagesStartRef.current.scrollHeight;
-    }
-  }, [messageRecieved]);
-
+  useEffect(()=>{
+    messageRecieved.length<=0 ?
+    setRoomIsEmpty(true):
+    setRoomIsEmpty(false)
+  },roomIsEmpty)
+ 
   return (
     <>
       <Header

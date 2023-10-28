@@ -40,6 +40,14 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  room_name: {
+    type: String,
+    required : false,
+  },
+  private_room: {
+    type: Boolean,
+    required: true,
+  },
   sent_by_user: {
     type: mongoose.Schema.Types.ObjectId, // Using ObjectId for referencing
     ref: "User", // reference to the Message model
@@ -48,6 +56,10 @@ const roomSchema = new mongoose.Schema({
   created_by: {
     type: String,
     required: true,
+  },
+  room_category: {
+    type: String,
+    required: false,
   },
   first_message: {
     type: String,
@@ -63,6 +75,7 @@ const roomSchema = new mongoose.Schema({
   ],
   users_in_room: [String],
 });
+
 const Rooms = mongoose.model("Rooms", roomSchema);
 const User = mongoose.model("User", userSchema);
 module.exports = {

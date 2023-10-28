@@ -4,12 +4,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding:5px;
+  padding:9px;
   height: 4rem;  
   gap: 5px;
   background-color: black;
-  width:100vw;
- 
+  width: auto;
+  
 }
 
 .create_room_container {
@@ -22,6 +22,7 @@
 .logo-font{
     font-family: 'Berkshire Swash', serif;
     margin-right:1rem;
+    padding-bottom:5px;
 }
 .logo-font:hover{
     color:red;
@@ -77,7 +78,8 @@
   position: relative;
     display: flex;
     flex-direction: row;
-    gap:10%;
+    gap:5%;
+    width: fit-content;
     align-items:center;
     justify-content: space-between;
     list-style-type:none ;
@@ -114,8 +116,14 @@
 }
 .linkInactive{
   color:white;
+   white-space: nowrap;
+ min-width: fit-content;
+ text-overflow: ellipsis;
 }
 .linkActive{
+   white-space: nowrap;
+ min-width: fit-content;
+ text-overflow: ellipsis;
 color:red;
 &:hover{
     color:maroon;
@@ -139,7 +147,14 @@ color:red;
   .create_room_container {
     flex-direction: column;
     gap: 0.5rem;
-    margin-top:.5rem;
+    border: 3px solid silver;
+    border-bottom-left-radius: 25px;
+    padding-bottom: 5px;
+    align-self: flex-start;
+  }
+  .create_room_container> h2 {
+   padding:1px;
+   height: 10px;
   }
   .roomInput {
     width: 80%;
@@ -147,6 +162,8 @@ color:red;
   .navLinks {
     flex-direction: column;
     gap: 0px;
+    height: 300px;
+    padding-bottom:7px;
   }
   .buttonHeader {
     min-width: 100px;
@@ -170,10 +187,6 @@ color:red;
     height: 15%;
     
     font-size:1rem;
-   }
-   h2 {
-    padding:1px;
-    
    }
    .navLinks>button{
     margin-top:15px;

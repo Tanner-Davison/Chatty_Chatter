@@ -1,13 +1,13 @@
-import { useState, useEffect,useContext } from "react";
-import "./CreateRoom.css";
+import {LoginContext} from '../contexts/LoginContext';
 import toggleOff from "./svgs/toggleOff.svg";
 import { useParams } from "react-router-dom";
+import { useState,useContext, useEffect } from "react";
 import toggleOn from "./svgs/toggleOn.svg";
 import lockOpen from "./svgs/lockOpen.svg";
 import locked from "./svgs/locked.svg";
 import Header from "../Header/Header";
 import build from "./svgs/build.svg";
-import {LoginContext} from '../contexts/LoginContext';
+import "./CreateRoom.css";
 
 const CreateRoom = (props) => {
 	const {
@@ -17,8 +17,7 @@ const CreateRoom = (props) => {
 	const [privateRoom, setPrivateRoom] = useState(true);
 	const [roomName, setRoomName] = useState("");
 	const [category, setCategory]= useState('')
-	const username = props.username;
-	const { room } = useParams();
+	let { room } = useParams();
 	const categoryOptions = [
 		"General",
 		"Discussions",
@@ -39,7 +38,7 @@ const CreateRoom = (props) => {
 	]
 	const handlePublicSubmit = () => {
 			//do something
-		}
+	}
 	return (
 		<>
 			<Header />
@@ -127,12 +126,12 @@ const CreateRoom = (props) => {
 								<div>
 									<content>
 										<h4>
-											Room <span style={{ color: "skyblue" }}>{room}</span> is{" "}
+											Room <span style={{ color: "skyblue" }}>{room}</span> is
 											<span style={{ color: "lightgreen", fontWeight: "800" }}>
-												{" "}
-												available!{" "}
+												
+												available!
 											</span>
-											{""}
+											
 											<br></br> Create a free public room!
 										</h4>
 									</content>
@@ -160,7 +159,7 @@ const CreateRoom = (props) => {
 										</h3>
 										<div className={"private-info"}>
 											<div id={"number-value"}>
-												<label htmlFor={"number-value"}>Created room: </label>
+												<label htmlFor={"number-value"}>room # </label>
 												<input
 													type='number'
 													id={"number-value"}
@@ -170,17 +169,18 @@ const CreateRoom = (props) => {
 														textAlign: "center",
 														fontSize: "20px",
 													}}
-													disabled
+													readOnly
 												/>
 											</div>
 											<div id={"name-value"}>
-												<label htmlFor={"public-name"}>public username:</label>
+												<label htmlFor={"public-name"}>Created By @ </label>
+												
 												<input
 													type='name'
 													id={"public-name"}
 													placeholder={userLoginInfo.username}
 													style={{ width: "50px", textAlign: "center" }}
-													disabled
+													readOnly
 												/>
 											</div>
 										</div>

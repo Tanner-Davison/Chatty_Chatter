@@ -34,10 +34,10 @@ form{
     background:linear-gradient(135deg, #2e333c 0%, #46556f 25%, #3a475b 50%, #2e333c 100%);
     background-size: 400% 400%;
      justify-content: center;
-  align-items: center;
-  height: 100vh; /* Make the body take up the full viewport height */
-  border: 10px solid #2c3135; /* Border color */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    align-items: center;
+    height: 100vh; /* Make the body take up the full viewport height */
+    border: 10px solid #2c3135; /* Border color */
+     bvbox-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     animation: gradientAnimation 20s ease infinite;
 }
 @keyframes gradientAnimation {
@@ -77,15 +77,19 @@ min-height: 200px;
 }
 #number-value{
     display:flex;
-    flex-direction: column;
+    width:85%;
+    gap:10px;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
 #name-value{
     display:flex;
-    flex-direction: column;
+    flex-direction: row;
+    width: 85%;
+    gap:10px;
     align-items: center;
-    justify-content: center;
+    justify-content:flex-end;
 }
 .toggle-wrapper{
   position: relative;
@@ -144,7 +148,6 @@ min-height: 200px;
   border: 3px solid #1c2125;  /* Border color */
   background: linear-gradient(135deg, #1a1f23 0%, #2a3a4c 25%, #232a30 50%, #1a1f23 100%); /* Gradient background */
   background-size: 200% 200%;
-  animation: gradientBackground 24s ease infinite;
   border-radius: 25px;
   box-shadow: 
     0 6px 12px rgba(0, 0, 0, 0.2),
@@ -159,21 +162,25 @@ min-height: 200px;
   text-align: center;
   line-height: 50px;
   cursor: pointer;
+  margin-top:30px;
 }
 
 .submit-button:hover {
+    font-weight: 780;
   transform: scale(0.95); /* Squish effect on hover */
+   background: linear-gradient(135deg, #FF8C22 0%, #FFC085 25%, #FFA555 50%, #FF8C22 100%);
+  border: 3px solid #FF8C22;  /* Updated Border color to match new color scheme */
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.2),
+    0 10px 24px rgba(0, 0, 0, 0.2),
+    0 16px 40px rgba(0, 0, 0, 0.2),
+    inset 0 -4px 12px #FF6A00, /* Updated inset color to match new color scheme */
+    inset 0 4px 8px #FF8C22;  
   border-radius:10px;
+
 }
 
-@keyframes gradientBackground {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 200% 200%;
-  }
-}
+
 
 @media only screen and (max-width: 600px) {
 #header-border{
