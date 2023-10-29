@@ -1,15 +1,14 @@
-import "./Header.css";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
+import "./Header.css";
 
 const Header = ({ joinRoom, roomChanger, room, }) => {
-  const location = useLocation();
-  const currentLocation = window.location.href.toString();
-
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
+  const currentLocation = window.location.href.toString();
   const [visible, setVisible] = useState(true);
+  const location = useLocation();
   const navigate = useNavigate();
+
    const handleKeyDown = (event) => {
      if (event.keyCode === 32) {
        event.preventDefault();
@@ -21,21 +20,20 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
     
     navigate("/");
   };
- 
-    
     useEffect(()=>{
       console.log(currentLocation);
-      
       const timer = setTimeout(()=>{
         setVisible(false);
       },5000);
        return () => {
          clearTimeout(timer);
        };
-       
     },[room])
   
   const getLinkStyle = (path) => {
+    if (path.includes('/createroom') && location.pathname.includes('/createroom')) {
+      return 'linkActive'
+    }
     return path === location.pathname ? "linkActive" : "linkInactive";
   };
 
@@ -74,8 +72,8 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             </span>
             <li>
               <Link to={`/createroom/${0}`}>
-                <h2 className={getLinkStyle(`/createroom/${room}`)}>
-                  Create-A-Room
+                <h2 className={getLinkStyle(`/createroom/${Number}`)}>
+                  Create-Hub
                 </h2>
               </Link>
             </li>
