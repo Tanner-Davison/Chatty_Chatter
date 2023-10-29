@@ -7,6 +7,7 @@ const EndpointHandler = require("./utils/EndpointHandler");
 const LoginHelper = require("./utils/LoginHelper");
 const dbController = require("./utils/dbController");
 const socketController = require("./utils/socketUtils/socketController");
+const RoomCreation = require('./utils/RoomCreation')
 const { Rooms, User } = require("./utils/Schemas");
 const connectDB = require("./utils/db");
 const mongoose = require("mongoose");
@@ -34,8 +35,8 @@ connectDB(MONGO_DB_KEY);
 app.get("/roomHistory/:room", EndpointHandler.roomHistory);
 app.get("/user_info/:username", EndpointHandler.userInfo);
 app.get("/api/users/:username/rooms", EndpointHandler.joinedRooms);
-app.get("/availability/:numberValue", EndpointHandler.roomAvailable)
-
+app.get("/availability/:numberValue", EndpointHandler.roomAvailable);
+app.post('/new-room-creation', RoomCreation.createPublic);
 app.post("/signup", LoginHelper.signUp);
 app.post("/login", LoginHelper.Login);
 

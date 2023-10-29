@@ -1,32 +1,33 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../contexts/LoginContext";
+import searchGlass from "./svgs/searchGlass.svg";
+import CategoryOptions from "./categoryOptions";
+import { useNavigate } from "react-router-dom";
 import toggleOff from "./svgs/toggleOff.svg";
 import { useParams } from "react-router-dom";
 import toggleOn from "./svgs/toggleOn.svg";
 import lockOpen from "./svgs/lockOpen.svg";
-import CategoryOptions from "./categoryOptions";
+import dropdown from "./svgs/dropdown.svg";
 import locked from "./svgs/locked.svg";
 import Header from "../Header/Header";
 import build from "./svgs/build.svg";
 import "./CreateRoom.css";
 import axios from "axios";
-import searchGlass from "./svgs/searchGlass.svg";
-import dropdown from "./svgs/dropdown.svg";
+
 const CreateRoom = (props) => {
-  const { userLoginInfo } = useContext(LoginContext);
-  const [roomPassword, setRoomPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [privateRoom, setPrivateRoom] = useState(false);
+  const [roomPassword, setRoomPassword] = useState("");
+  const [roomTaken, setRoomTaken] = useState(Boolean);
   const [searchValue, setSearchValue] = useState("");
+  const { userLoginInfo } = useContext(LoginContext);
+  const categoryKeys = Object.keys(CategoryOptions);
   const [roomName, setRoomName] = useState("");
   const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [roomTaken, setRoomTaken] = useState(Boolean);
   const [category, setCategory] = useState("");
   const PORT = process.env.REACT_APP_PORT;
   const navigate = useNavigate();
   let { room } = useParams();
-  const categoryKeys = Object.keys(CategoryOptions);
 
   const handlePublicSubmit = async () => {
     const newPublicRoom = {
@@ -37,7 +38,7 @@ const CreateRoom = (props) => {
     axios.post(`${PORT}/new-room-creation`, newPublicRoom);
   };
   const handleRoomAvailability = async (numberValue) => {
-    if (numberValue === "") {
+    if (numberValue === ""){
       return;
     }
     const roomAvailable = await axios.get(
