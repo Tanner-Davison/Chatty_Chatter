@@ -169,7 +169,7 @@ const MainRoom = () => {
         room={room ? room : 1}
         joinRoom={joinRoom}
       />
-      <div className="roomWrapper">
+      <div className="room-wrapper">
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
             <h2>
@@ -249,8 +249,8 @@ const MainRoom = () => {
             })}
           {roomIsEmpty && navigate(`/createroom/${room}`)}
         </div>
-      </div>
       <div className={"room-num-input-mainRoom"}>
+        <button onClick={leaveRoom}>Leave Room</button>
         <input
           placeholder={message !== "" ? message : "Message..."}
           value={message}
@@ -262,8 +262,8 @@ const MainRoom = () => {
         </button>
       </div>
       <div className="leave-delete-button">
-        <button onClick={leaveRoom}>Leave Room</button>
         <button onClick={deleteRoom}>Delete Room</button>
+      </div>
       </div>
 
       {

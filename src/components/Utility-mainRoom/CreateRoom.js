@@ -11,7 +11,7 @@ import Header from "../Header/Header";
 import build from "./svgs/build.svg";
 import "./CreateRoom.css";
 import axios from "axios";
-
+import searchGlass from './svgs/searchGlass.svg'
 const CreateRoom = (props) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [roomPassword, setRoomPassword] = useState("");
@@ -35,6 +35,21 @@ const CreateRoom = (props) => {
     }
     axios.post(`${PORT}/new-room-creation`,newPublicRoom)
   };
+  const handleRoomAvailability = async (numberValue) => {
+    if(numberValue === ''){
+      return;
+    }
+    const roomAvailable = await axios.get(
+      `${PORT}/availability/${numberValue}`
+    );
+    if (roomAvailable.data.room === true) {
+      setRoomTaken(true);
+      
+    } else if (roomAvailable.data.room === false) {
+      setRoomTaken(false);
+      navigate(`/createroom/${numberValue}`);
+    }
+  };
 
   const handleInputChange = (event) => {
     setPassword(event.target.value);
@@ -47,18 +62,6 @@ const CreateRoom = (props) => {
     }
   };
 
-  const handleRoomAvailability = async (numberValue) => {
-    const roomAvailable = await axios.get(
-      `${PORT}/availability/${numberValue}`
-    );
-    if (roomAvailable.data.room === true) {
-      setRoomTaken(true);
-      
-    } else if (roomAvailable.data.room === false) {
-      setRoomTaken(false);
-      navigate(`/createroom/${numberValue}`);
-    }
-  };
 
   return (
     <>
@@ -155,19 +158,26 @@ const CreateRoom = (props) => {
                 {room === "0" && (
                   <div>
                     <label id="room-lookup">
-                      Search for available room #
-                      <input
-                        type="number"
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        placeholder="What public room number you want #"
-                      />
-                    </label>
+                      Search for available room
+                      <div id={'search-glass-wrapper'}>
+                        <input
+                          type="number"
+                          value={searchValue}
+                          onChange={(e) => setSearchValue(e.target.value)}
+                          placeholder="Public number search(#)"
+                        />
                     <button
                       type="button"
+                      id={'search-for-avail-room-button'}
                       onClick={() => handleRoomAvailability(searchValue)}>
-                      check availability
+                        <img
+                          src={searchGlass}
+                          alt={"look-up-icon"}
+                          width={"23"}
+                        />
                     </button>
+                      </div>
+                    </label>
                   </div>
                 )}
                 {room !== "0" && (
@@ -220,22 +230,22 @@ const CreateRoom = (props) => {
                       </h3>
                       <div className={"private-info"}>
                         <div id={"number-value"}>
-                          <label htmlFor={"public-number"}>room # </label>
+                          <label htmlFor={"public-number"}>room </label>
                           <input
                             type="number"
                             id={"public-number"}
-                            placeholder={room}
+                            placeholder={"#" + room}
                             readOnly
                           />
                         </div>
                         <br></br>
                         <div id={"name-value"}>
-                          <label htmlFor={"public-name"}>Created By @ </label>
+                          <label htmlFor={"public-name"}>Created By </label>
 
                           <input
                             type="name"
                             id={"public-name"}
-                            placeholder={userLoginInfo.username}
+                            placeholder={"@" + userLoginInfo.username}
                             readOnly
                           />
                         </div>

@@ -1,10 +1,11 @@
 
-.roomWrapper {
+.room-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
  background-color: #161a1d;;
+ padding-bottom: 20px;
 }
 
 p {
@@ -17,7 +18,7 @@ p {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: auto;
+  width: fit-content;
   word-wrap: break-word;
   min-width: 130px;
   padding: 4px;
@@ -88,9 +89,8 @@ p {
   flex-direction: row;
   padding: 10px;
   background-color: #147efb;
-  max-width: 500px;
+  max-width: 359px;
   width: auto;
-  max-height: auto;
   text-align: left;
   font: 500 0.9em "Open Sans", sans-serif;
   border: 1px solid #1d1acb00;
@@ -100,7 +100,7 @@ p {
 }
 
 .message-content > p {
-  width: 100%;
+  
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -212,7 +212,7 @@ p {
   justify-content: flex-start;
   align-items: flex-start;
   width: auto;
-  padding-left: 15%;
+  padding-left: 18%;
 }
 
 .container.green .user.green {
@@ -366,10 +366,11 @@ h1 {
 
 .leave-delete-button {
   display: flex;
-  position: absolute;
-  width: 50%;
-  gap: 50%;
-  left: 30%;
+  position: relative;
+  width:100%;
+  align-items:center;
+  justify-content: center;
+  padding-top:10px;;
 }
 
 .leave-delete-button button {
@@ -393,7 +394,7 @@ h1 {
   padding: 10px 20px;
   color: #fff;
   background-color: #ea4335;
-  height: 48px;
+  height: 30px;
 }
 
 .headerContainer {
@@ -453,12 +454,15 @@ h1 {
   max-height: 4.5rem;
   z-index: 100;
 }
+.user-profile-pic.green{
+  left:-95px;
+}
 
 .status_container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  
 }
 
 @media only screen and (max-width: 600px) {
@@ -495,7 +499,7 @@ h1 {
   .message-blue {
     left: 9%;
     flex-wrap: wrap;
-    width: 130px;
+    width: 87%;
   }
 
   .container:hover .message-green {
@@ -536,7 +540,7 @@ h1 {
 
   .room-num-input-mainRoom {
     flex-direction: row;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
   }
 
   .room-num-input-mainRoom input {
@@ -550,10 +554,7 @@ h1 {
   }
 
   .leave-delete-button {
-    display: flex;
-    flex-direction: row;
-    left: 10%;
-    gap: 8%;
+  padding-top:0px;
   }
 
   .leave-delete-button button {

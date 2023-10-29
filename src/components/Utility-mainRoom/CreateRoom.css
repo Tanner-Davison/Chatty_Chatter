@@ -32,9 +32,9 @@ form{
     background-size: 400% 400%;
      justify-content: center;
     align-items: center;
-    height: 100vh; /* Make the body take up the full viewport height */
+    height: 200px; /* Make the body take up the full viewport height */
     border: 10px solid #2c3135; /* Border color */
-     bvbox-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     animation: gradientAnimation 20s ease infinite;
 }
 @keyframes gradientAnimation {
@@ -107,6 +107,16 @@ min-height: 300px;
     align-items: center;
     justify-content: space-between;
 }
+.category-container>select{
+    color:#fe662b;
+    font-weight: 800;
+    text-align: center;
+    border-radius:25px;
+    height:30px;
+}
+.category-container>select>option{
+    color:black;
+}
 .category-result{
     display:flex;
     flex-direction: column;
@@ -123,7 +133,8 @@ min-height: 300px;
     
 }
 #public-category::placeholder{
-    color:#FF8C22;
+    color:#Fe662b;
+    font-weight: 800;
 }
 #name-value{
     display:flex;
@@ -140,20 +151,22 @@ min-height: 300px;
     width: fit-content;
     text-align: center;
     padding:5px;
+    font-weight:800;
     
     
 }
 #public-number::placeholder{
-    color:#FF8C22;
+    color:blueviolet;
 }
 #public-name{
     font-weight: 700;
     width: fit-content;
     text-align: center;
     padding:5px;
+    font-weight: 800;
 }
 #public-name::placeholder{
-    color:#FF8C22;
+    color:black;
 }
 
 .toggle-wrapper{
@@ -185,6 +198,24 @@ min-height: 300px;
     border:white
     
 }
+#search-glass-wrapper{
+    display:flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    gap:5px;
+}
+#search-for-avail-room-button {
+  padding-top: 2px;
+  background: linear-gradient(135deg, #1a1f23 0%, #2a3a4c 25%, #232a30 50%, #1a1f23 100%); /* Gradient background */
+  background-size: 200% 200%;
+  border-radius: 10px;
+  transition: background-position 0.5s ease;
+}
+
+#search-for-avail-room-button:hover {
+  background-position: 100% 100%;
+}
 .private-wrapper{
     display: flex;
     flex-direction: column;
@@ -195,10 +226,15 @@ min-height: 300px;
 #room-lookup{
     display: flex;
     flex-direction: row;
-}
-#room-lookup> input{
+    margin-top:15px;
+    align-items: center;
+    gap:15px;
     text-align: center;
 }
+#search-glass-wrapper>input{
+    text-align: center;
+}
+
 .private-room-inputs input{
     width:45%;
 }

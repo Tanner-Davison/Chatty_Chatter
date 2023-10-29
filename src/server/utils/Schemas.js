@@ -46,7 +46,7 @@ const roomSchema = new mongoose.Schema({
   },
   private_room: {
     type: Boolean,
-    required: true,
+    required: false,
   },
   sent_by_user: {
     type: mongoose.Schema.Types.ObjectId, // Using ObjectId for referencing

@@ -23,7 +23,7 @@ code {
 }
 @media only screen and (max-width: 600px){
   html{
-    width:80vw;
+    width:100vw;
     height: 100vh;
   }
 }
