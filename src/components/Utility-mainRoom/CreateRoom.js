@@ -11,14 +11,14 @@ import Header from "../Header/Header";
 import build from "./svgs/build.svg";
 import "./CreateRoom.css";
 import axios from "axios";
-import searchGlass from './svgs/searchGlass.svg'
+import searchGlass from "./svgs/searchGlass.svg";
+import dropdown from "./svgs/dropdown.svg";
 const CreateRoom = (props) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [roomPassword, setRoomPassword] = useState("");
   const [privateRoom, setPrivateRoom] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [roomName, setRoomName] = useState("");
-  const categoryKeys = Object.keys(CategoryOptions);
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [roomTaken, setRoomTaken] = useState(Boolean);
@@ -26,17 +26,18 @@ const CreateRoom = (props) => {
   const PORT = process.env.REACT_APP_PORT;
   const navigate = useNavigate();
   let { room } = useParams();
+  const categoryKeys = Object.keys(CategoryOptions);
 
   const handlePublicSubmit = async () => {
-    const newPublicRoom ={
-      category:category,
-      room:searchValue,
-      createdBy:userLoginInfo.username,
-    }
-    axios.post(`${PORT}/new-room-creation`,newPublicRoom)
+    const newPublicRoom = {
+      category: category,
+      room: searchValue,
+      createdBy: userLoginInfo.username,
+    };
+    axios.post(`${PORT}/new-room-creation`, newPublicRoom);
   };
   const handleRoomAvailability = async (numberValue) => {
-    if(numberValue === ''){
+    if (numberValue === "") {
       return;
     }
     const roomAvailable = await axios.get(
@@ -44,7 +45,6 @@ const CreateRoom = (props) => {
     );
     if (roomAvailable.data.room === true) {
       setRoomTaken(true);
-      
     } else if (roomAvailable.data.room === false) {
       setRoomTaken(false);
       navigate(`/createroom/${numberValue}`);
@@ -61,7 +61,6 @@ const CreateRoom = (props) => {
       setIsPasswordVisible(!isPasswordVisible);
     }
   };
-
 
   return (
     <>
@@ -118,6 +117,11 @@ const CreateRoom = (props) => {
               <>
                 <div className={"private-wrapper"}>
                   <slot>
+                    <h3>
+                      <span id={"logo-style-inline"}>Chatty Chatter </span>
+                      <br></br>
+                      Private Chat
+                    </h3>
                     <p>
                       Private rooms are Locked to the public by a custom key.
                     </p>
@@ -159,32 +163,38 @@ const CreateRoom = (props) => {
                   <div>
                     <label id="room-lookup">
                       Search for available room
-                      <div id={'search-glass-wrapper'}>
+                      <div id={"search-glass-wrapper"}>
                         <input
                           type="number"
                           value={searchValue}
                           onChange={(e) => setSearchValue(e.target.value)}
                           placeholder="Public number search(#)"
                         />
-                    <button
-                      type="button"
-                      id={'search-for-avail-room-button'}
-                      onClick={() => handleRoomAvailability(searchValue)}>
-                        <img
-                          src={searchGlass}
-                          alt={"look-up-icon"}
-                          width={"23"}
-                        />
-                    </button>
+                        <button
+                          type="button"
+                          id={"search-for-avail-room-button"}
+                          onClick={() => handleRoomAvailability(searchValue)}>
+                          <img
+                            src={searchGlass}
+                            alt={"look-up-icon"}
+                            width={"23"}
+                          />
+                        </button>
                       </div>
                     </label>
                   </div>
                 )}
                 {room !== "0" && (
                   <div>
+                    <h3>
+                      <span id={"logo-style-inline"}>Chatty Chatter </span>
+                      <br></br>
+                      Community Chat
+                    </h3>
                     <slot className="content-container">
-                      <h4>
+                      <p>
                         Congrats!
+                        <br></br>
                         <br></br>
                         Room <span style={{ color: "yellow" }}>{room}</span> is
                         <span
@@ -192,24 +202,41 @@ const CreateRoom = (props) => {
                           {" "}
                           Available!
                         </span>
-                        <br></br> Create a free public room below!<br></br>
-                        Or
+                        <br></br>
+                        Create a free public Chat Hub below!
+                        <br></br>
                         <br></br>
                         Toggle to create a private room.
-                      </h4>
+                      </p>
                     </slot>
-                    <h2>
-                      <u>Room Creator</u>
-                    </h2>
+
                     <div className="category-container">
-                      <label htmlFor="category-list">Category:</label>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                        <img
+                          id={"img-flip"}
+                          src={dropdown}
+                          alt={"dropdown-icon"}
+                        />{" "}
+                        <label htmlFor="category-list">Category</label>{" "}
+                        <img src={dropdown} alt={"dropdown-icon"} />
+                      </div>
                       <select
                         name="Category"
                         id="category-list"
                         onChange={(e) => setCategory(e.target.value)}>
                         <option value="">--Please choose an option--</option>
-                        {categoryKeys.map((cat) => {
-                          return <option value={cat}>{cat}</option>;
+                        {categoryKeys.map((key, id) => {
+                          const keyValue = CategoryOptions[key];
+                          return (
+                            <option key={id} value={keyValue}>
+                              {keyValue}
+                            </option>
+                          );
                         })}
                       </select>
                     </div>
@@ -220,14 +247,12 @@ const CreateRoom = (props) => {
                   room !== "0" &&
                   category && (
                     <div className="info-div">
-                      <h3>
-                        The following information <br></br>{" "}
-                        <span style={{ color: "#FF8C22" }}>
-                          {" "}
-                          <em>will be shared</em>
+                      <h4>
+                        <span style={{ color: "#BBDEFB" }}>
+                          * Following information <br></br>{" "}
+                          <em>will be public.*</em>
                         </span>{" "}
-                        with the public.
-                      </h3>
+                      </h4>
                       <div className={"private-info"}>
                         <div id={"number-value"}>
                           <label htmlFor={"public-number"}>room </label>

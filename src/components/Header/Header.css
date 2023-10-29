@@ -135,14 +135,15 @@ color:red;
 
 @media only screen and (max-width: 600px) {
   .headerContainer {
+    
     flex-direction: row;
-    align-items: flex-start;
     width: 97%;
-    height: auto;
+    min-height: auto;
     margin: 0px;
     border-radius: 5px 5px 15px 15px;
     padding: 0;
     border: 6px inset white;
+    align-items: center;
     justify-content: center;
   }
   .create_room_container {
@@ -163,8 +164,8 @@ color:red;
   .navLinks {
     flex-direction: column;
     gap: 0px;
-    height: 300px;
-    padding-bottom:7px;
+    height: 150px;
+    padding-bottom: 40px;
     justify-content: center;
   }
   .buttonHeader {
@@ -186,7 +187,7 @@ color:red;
   }
  
    ul >li{
-    height: 15%;
+    height: 10%;
     font-size:1rem;
    }
 

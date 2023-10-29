@@ -306,11 +306,12 @@ article{
     color:black;
     padding-left:2em;
     padding-right: 2em;
-    font-size: 3ch;
+    font-size: 24px;
     text-align: center;
-    letter-spacing: 3px;
-    font-family: 'Caveat', cursive;
+    letter-spacing: 1px;
+    font-family: 'Shantell Sans', cursive;
     color:white;
+    line-height: 38px;
 }
 
 .create_user.error-css input{
@@ -455,13 +456,11 @@ element.style {
     display: flex;
     flex-direction: row;
     overflow: visible;
-    background-color: rgb(253, 253, 253);
     align-items: center;
     justify-content: center;
     height: fit-content;
     width:fit-content;
     transition: gap 0.4s ease-in;
-    outline: 5px solid red;
     box-sizing: border-box;
     gap:5px;
     z-index: 1;
@@ -471,5 +470,8 @@ element.style {
     position: relative;
     align-self:center;
     font-size:3em;
+}
+article{
+    min-width:291px
 }
 }

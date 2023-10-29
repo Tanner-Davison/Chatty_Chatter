@@ -7,7 +7,7 @@ import getCurrentTime, { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
-import CreateRoom from './Utility-mainRoom/CreateRoom'
+
 
 const MainRoom = () => {
   const {
@@ -250,7 +250,7 @@ const MainRoom = () => {
           {roomIsEmpty && navigate(`/createroom/${room}`)}
         </div>
       <div className={"room-num-input-mainRoom"}>
-        <button onClick={leaveRoom}>Leave Room</button>
+        <button id={'leave-room-btn'}onClick={leaveRoom}>Leave</button>
         <input
           placeholder={message !== "" ? message : "Message..."}
           value={message}

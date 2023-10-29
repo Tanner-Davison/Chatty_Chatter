@@ -341,7 +341,28 @@ h1 {
 }
 
 .sendMsgBtn {
+  background: linear-gradient(135deg, #007aff 0%, #0056d6 25%, #007aff 50%, #0056d6 100%); /* Gradient background */
+  background-size: 200% 200%;
+  border-radius: 10px;
+  transition: background-position 0.5s ease;
+  color:white;
+  font-weight: 600;
+  padding:7px;
+  width:100px;
+}
+.sendMsgBtn:hover{
+   background-position: 100% 100%;
+}
+.leave-delete-button {
   display: flex;
+  position: relative;
+  width:100%;
+  align-items:center;
+  justify-content: center;
+  padding-top:10px;;
+}
+#leave-room-btn{
+    display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
@@ -362,15 +383,6 @@ h1 {
   color: #fff;
   background-color: #ea4335;
   height: 33px;
-}
-
-.leave-delete-button {
-  display: flex;
-  position: relative;
-  width:100%;
-  align-items:center;
-  justify-content: center;
-  padding-top:10px;;
 }
 
 .leave-delete-button button {
@@ -411,18 +423,20 @@ h1 {
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  width:35%;
 }
 
 .room-num-input-mainRoom > input {
-  width: 15%;
+  width: 100%;
   background-color: black;
+  
   color: white;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .room-num-input-mainRoom > input::placeholder {
   color: white;
-  padding-left: 3px;
+  padding-left: 5px;
 }
 
 .statusBtn {
@@ -541,16 +555,17 @@ h1 {
   .room-num-input-mainRoom {
     flex-direction: row;
     margin-bottom: 15px;
+    width:75%;
   }
 
   .room-num-input-mainRoom input {
-    width: 45%;
+    width: 100%;
   }
 
   .sendMsgBtn {
-    min-width: 20px;
+    
     height: fit-content;
-    padding: 5px;
+    padding: 5px 15px 5px 15px;
   }
 
   .leave-delete-button {
@@ -564,7 +579,11 @@ h1 {
     letter-spacing: 1px;
     width: 15px;
   }
-
+  #leave-room-btn{
+    min-width: 50px;
+    height: fit-content;
+   padding: 5px 15px 5px 15px;
+  }
   .room_name> h2 {
     font-size: 17px;
     align-self: center;

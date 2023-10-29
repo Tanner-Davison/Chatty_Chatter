@@ -163,7 +163,7 @@ const Login = () => {
 
                 <div className={"welcomeContainer"}>
                   <article>
-                    Where the chats gets chatty! Build your own chat hubs, set
+                    Where the chatter gets chatty! Build your own chat hubs, set
                     up your unique profile, and add your friends. Dive in, and
                     let <span id={"inline-font-change"}>Chatty-Chatter</span>{" "}
                     bring your chats to life.
@@ -213,7 +213,7 @@ const Login = () => {
                               <p>Username taken. Login or Try again.</p>
                             </div>
                           )}
-                          <label htmlFor="username-id"> Username :</label>
+                          <label htmlFor="username-id"> Username</label>
                           <input
                             type="text"
                             onKeyDown={handleKeyDown}
@@ -228,7 +228,7 @@ const Login = () => {
                           />
                         </div>
                         <div className={"input-box-container"}>
-                          <label htmlFor="password-id"> Password :</label>
+                          <label htmlFor="password-id"> Password</label>
                           <input
                             type="text"
                             name={"passwordInput"}
@@ -312,7 +312,7 @@ const Login = () => {
                     <div className={`create_user ${errorCss}`}>
                       <div className={`userLoginElements`}>
                         <div className={"input-box-container"}>
-                          <label htmlFor="username-id"> Username :</label>
+                          <label htmlFor="username-id"> Username </label>
                           <input
                             type="text"
                             name={"usernameInput"}
@@ -326,7 +326,7 @@ const Login = () => {
                           />
                         </div>
                         <div className={"input-box-container"}>
-                          <label htmlFor="password-id"> Password :</label>
+                          <label htmlFor="password-id"> Password </label>
                           <input
                             type="text"
                             onKeyDown={handleKeyDown}
