@@ -245,15 +245,13 @@ p {
   border-bottom: 3px outset #2e353b;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   z-index: 60;
   top: 0px;
-  opacity: 100%;
-  background-color: linear-gradient(45deg, #161a1d, #2e353b, #3a434a);
+  opacity: 90%;
+  background-color: black;
 }
-
-
 .room_name> h2{
   color:white;
 }
@@ -262,7 +260,6 @@ p {
   font-family: 'Inter', sans-serif;
   font-family: 'Varela Round', sans-serif;
 }
-
 .container.blue > .user {
   display: flex;
   position: relative;

@@ -193,7 +193,7 @@ const CreateRoom = (props) => {
                     </h3>
                     <slot className="content-container">
                       <p>
-                        Congrats!
+                        You're in luck!
                         <br></br>
                         <br></br>
                         Room <span style={{ color: "yellow" }}>{room}</span> is
@@ -203,10 +203,10 @@ const CreateRoom = (props) => {
                           Available!
                         </span>
                         <br></br>
-                        Create a free public Chat Hub below!
+                       Continue to create a public Chat Hub below!
                         <br></br>
                         <br></br>
-                        Toggle to create a private room.
+                        Toggle above for a private hub.
                       </p>
                     </slot>
 
