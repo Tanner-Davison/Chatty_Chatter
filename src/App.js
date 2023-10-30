@@ -50,7 +50,6 @@ function App() {
           user.profilePic.cloudinary_id ||
           "https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg",
       };
-      console.log(loggedInUser.imageUrl);
       setUserLoginInfo(loggedInUser);
     } else {
       const newUserInfo = {
@@ -63,15 +62,11 @@ function App() {
     }
   };
   useEffect(() => {
-    console.log(userLoginInfo);
-    if (socket) {
-      console.log(socket);
-    }
     if (userLoginInfo.username === "") {
       createUserInfo();
     }
     // eslint-disable-next-line
-  }, [userLoginInfo, socket]);
+  }, [userLoginInfo]);
 
   return (
     <LoginContext.Provider
