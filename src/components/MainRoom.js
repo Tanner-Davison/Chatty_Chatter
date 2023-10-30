@@ -7,32 +7,27 @@ import getCurrentTime, { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
-import sendIcon from './Utility-mainRoom/svgs/SendIcon.svg'
+import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
 
 const MainRoom = () => {
-  const {
-    userLoginInfo,
-    mainAccess,
-    setMainAccess,
-    socket,
-    setSocket,
-  } = useContext(LoginContext);
+  const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
+    useContext(LoginContext);
 
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
-  const [inRoom, setInroom] = useState(initialRoom );
+  const [inRoom, setInroom] = useState(initialRoom);
   const sessionImage = sessionStorage.getItem("image-url");
   const sessionCloudinary_id = sessionStorage.getItem("cloudinary_id");
   const messagesStartRef = useRef(null);
   const PORT = process.env.REACT_APP_PORT;
   const currentTime = getCurrentTimeJSX();
-  const [roomIsEmpty, setRoomIsEmpty] = useState(false)
+  const [roomIsEmpty, setRoomIsEmpty] = useState(false);
   const [isSocketConnected, setSocketConnected] = useState(false);
   const navigate = useNavigate();
-  
+
   const joinRoom = async () => {
     socket.emit("join_room", {
       room,
@@ -44,7 +39,7 @@ const MainRoom = () => {
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);
     setMessageRecieved(messages);
-    if(messages.length <= 0){
+    if (messages.length <= 0) {
       setRoomIsEmpty(true);
     }
   };
@@ -83,16 +78,16 @@ const MainRoom = () => {
   };
 
   useEffect(() => {
-     if (!socket) {
-       setSocket(
-         io.connect(`${PORT}`, {
-           reconnection: true,
-           reconnectionAttempts: 20,
-           reconnectionDelay: 2000,
-         })
-       );
-       return;
-     }
+    if (!socket) {
+      setSocket(
+        io.connect(`${PORT}`, {
+          reconnection: true,
+          reconnectionAttempts: 20,
+          reconnectionDelay: 2000,
+        })
+      );
+      return;
+    }
 
     // Handle socket connection
     const handleSocketConnect = async () => {
@@ -112,7 +107,7 @@ const MainRoom = () => {
     };
 
     // Initialize socket if not already initialized
-   
+
     // Auto join room if main access is true
     if (mainAccess === true) {
       joinRoom();
@@ -160,8 +155,6 @@ const MainRoom = () => {
     }
   }, [messageRecieved]);
 
- 
- 
   return (
     <>
       <Header
@@ -176,7 +169,8 @@ const MainRoom = () => {
               {lastRoom
                 ? "Room:" + lastRoom
                 : String.fromCodePoint(0x1f449) +
-                  lastRoom + " No Existing Room" +
+                  lastRoom +
+                  " No Existing Room" +
                   String.fromCodePoint(0x1f448)}
             </h2>
           </div>
@@ -191,30 +185,30 @@ const MainRoom = () => {
                 // Message sent by current user
                 let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
                 return (
-									<div
-										key={index}
-										className={"messagesContainer"}>
-										<div className={"container blue"}>
-											<div className={"message-timestamp-left"}>
-												<p>{currentTime}</p>
-											</div>
-											<div className={"message-blue"}>
-												<img
-													src={
-														userLoginInfo.imageUrl ||
-														userLoginInfo.cloudinary_id
-													}
-													loading='lazy'
-													className={"user-profile-pic blue"}
-													alt='Profile-Pic'
-													onClick={() => navigate(`/profile/${userLoginInfo.username}`)}
-												/>
-												<p className={"message-content"}>{msg.message}</p>
-											</div>
-											<p className={"user"}>{userLoggedIn}</p>
-										</div>
-									</div>
-								);
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container blue"}>
+                      <div className={"message-timestamp-left"}>
+                        <p>{currentTime}</p>
+                      </div>
+                      <div className={"message-blue"}>
+                        <img
+                          src={
+                            userLoginInfo.imageUrl ||
+                            userLoginInfo.cloudinary_id
+                          }
+                          loading="lazy"
+                          className={"user-profile-pic blue"}
+                          alt="Profile-Pic"
+                          onClick={() =>
+                            navigate(`/profile/${userLoginInfo.username}`)
+                          }
+                        />
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>{userLoggedIn}</p>
+                    </div>
+                  </div>
+                );
               } else {
                 // Message received from another user
                 return (
@@ -233,7 +227,7 @@ const MainRoom = () => {
                           loading="lazy"
                           className={"user-profile-pic green"}
                           alt="Profile-Pic"
-                          onClick={()=> navigate(`/profile/${msg.sentBy}`)}
+                          onClick={() => navigate(`/profile/${msg.sentBy}`)}
                         />
                         <p className={"message-content"}>{msg.message}</p>
                         <p className={"user green"}>
@@ -249,22 +243,24 @@ const MainRoom = () => {
             })}
           {roomIsEmpty && navigate(`/createroom/${room}`)}
         </div>
-      <div className={"room-num-input-mainRoom"}>
-        <button id={'leave-room-btn'}onClick={leaveRoom}>Leave</button>
-        <input
-          placeholder={message !== "" ? message : "Message..."}
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          maxLength="255"
-        />
-        <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
-          Send
-          <img src={sendIcon} alt={'icon-for-send'}></img>
-        </button>
-      </div>
-      <div className="leave-delete-button">
-        <button onClick={deleteRoom}>Delete Room</button>
-      </div>
+        <div className={"room-num-input-mainRoom"}>
+          <button id={"leave-room-btn"} onClick={leaveRoom}>
+            Leave
+          </button>
+          <input
+            placeholder={message !== "" ? message : "Message..."}
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
+            maxLength="255"
+          />
+          <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
+            Send
+            <img src={sendIcon} alt={"icon-for-send"}></img>
+          </button>
+        </div>
+        <div className="leave-delete-button">
+          <button onClick={deleteRoom}>Delete Room</button>
+        </div>
       </div>
 
       {

@@ -15,46 +15,31 @@ import {
 
 function App() {
   const router = createBrowserRouter(
-		createRoutesFromElements(
-			<>
-				<Route
-					path='/'
-					element={<Login />}
-				/>
-				<Route
-					path='/currentservers'
-					element={<CurrentServers />}
-				/>
-				<Route
-					path='/chatroom/:room'
-					element={<MainRoom />}
-				/>
-				<Route
-					path='/profile/:username'
-					element={<Profile />}
-				/>
-				<Route
-					path='/createroom/:room'
-					element={<CreateRoom/>}
-				/>
-			</>
-		)
-	);
+    createRoutesFromElements(
+      <>
+        <Route path="/" element={<Login />} />
+        <Route path="/currentservers" element={<CurrentServers />} />
+        <Route path="/chatroom/:room" element={<MainRoom />} />
+        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/createroom/:room" element={<CreateRoom />} />
+      </>
+    )
+  );
   const [mainAccess, setMainAccess] = useState(false);
   const [loginPortalToggle, setLoginPortalToggle] = useState(true);
   const [socket, setSocket] = useState(null);
-  
+
   const [userLoginInfo, setUserLoginInfo] = useState({
     username: "",
     password: "",
-    imageUrl: '',
-    cloudinary_id:'' ,
+    imageUrl: "",
+    cloudinary_id: "",
   });
-  
+
   const createUserInfo = async () => {
-    const userLoggedIn = sessionStorage.getItem('active_user');
+    const userLoggedIn = sessionStorage.getItem("active_user");
     const user = JSON.parse(userLoggedIn);
-    if(user){
+    if (user) {
       const loggedInUser = {
         username: user.username,
         password: user.password,
@@ -65,18 +50,16 @@ function App() {
           user.profilePic.cloudinary_id ||
           "https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg",
       };
-      console.log(loggedInUser.imageUrl)
+      console.log(loggedInUser.imageUrl);
       setUserLoginInfo(loggedInUser);
-
-    }else{
-
+    } else {
       const newUserInfo = {
         username: JSON.parse(sessionStorage.getItem("username")),
         password: JSON.parse(sessionStorage.getItem("password")),
         imageUrl: sessionStorage.getItem("image-url"),
         cloudinary_id: sessionStorage.getItem("cloudinary_id"),
       };
-        setUserLoginInfo(newUserInfo);
+      setUserLoginInfo(newUserInfo);
     }
   };
   useEffect(() => {
@@ -103,10 +86,7 @@ function App() {
         setSocket,
         createUserInfo,
       }}>
-      <RouterProvider router={router}>
-       
-         
-      </RouterProvider>
+      <RouterProvider router={router}></RouterProvider>
     </LoginContext.Provider>
   );
 }

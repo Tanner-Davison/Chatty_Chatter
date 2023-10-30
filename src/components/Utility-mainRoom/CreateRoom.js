@@ -38,7 +38,7 @@ const CreateRoom = (props) => {
     axios.post(`${PORT}/new-room-creation`, newPublicRoom);
   };
   const handleRoomAvailability = async (numberValue) => {
-    if (numberValue === ""){
+    if (numberValue === "") {
       return;
     }
     const roomAvailable = await axios.get(
@@ -204,7 +204,7 @@ const CreateRoom = (props) => {
                           Available!
                         </span>
                         <br></br>
-                       Continue to create a public Chat Hub below!
+                        Continue to create a public Chat Hub below!
                         <br></br>
                         <br></br>
                         Toggle above for a private hub.

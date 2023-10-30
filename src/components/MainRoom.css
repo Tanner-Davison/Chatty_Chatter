@@ -1,17 +1,16 @@
-
 .room-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
- background-color: #161a1d;;
- padding-bottom: 20px;
+  background-color: #161a1d;
+  padding-bottom: 20px;
 }
 
 p {
   font-size: 17px;
   color: white;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .message-content {
@@ -100,45 +99,43 @@ p {
   z-index: 50;
 }
 @keyframes slideFromTop {
-       0% {
-         transform: rotateX(180deg);
-        }
-        25%{
-          transform: translateX(-100%);
-       }
-       30% {
-         transform: translateX(0);
-       }
-       40%{
-        transform:rotateX(45deg)
-       }
-       50%{
-        transform: translateX(-50%) 
-       }
-        60%{
-        transform: translateX(-45%)
-       }
-       70%{
-        transform: translateX(0);
-       }
-       80%{
-        transform: translateX(-28%);
-       }
-       90%{
-        transform: translateX(0);
-       }
-       95%{
-        transform: translateX(-2%)
-       }
-       100%{
-        transform: translateX(0);
-       }
-     }
-
+  0% {
+    transform: rotateX(180deg);
+  }
+  25% {
+    transform: translateX(-100%);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: rotateX(45deg);
+  }
+  50% {
+    transform: translateX(-50%);
+  }
+  60% {
+    transform: translateX(-45%);
+  }
+  70% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(-28%);
+  }
+  90% {
+    transform: translateX(0);
+  }
+  95% {
+    transform: translateX(-2%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 
 .message-content > p {
-  
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .message-green {
@@ -161,40 +158,40 @@ p {
   z-index: 50;
 }
 @keyframes slideFromTop {
-       0% {
-         transform: rotateX(180deg);
-        }
-        25%{
-          transform: translateY(-100%);
-       }
-       30% {
-         transform: translateX(0);
-       }
-       40%{
-        transform:rotateX(45deg)
-       }
-       50%{
-        transform: translateY(-50%) 
-       }
-        60%{
-        transform: translateY(-45%)
-       }
-       70%{
-        transform: translateX(0);
-       }
-       80%{
-        transform: translateY(-28%);
-       }
-       90%{
-        transform: translateX(0);
-       }
-       95%{
-        transform: translateY(-2%)
-       }
-       100%{
-        transform: translateX(0);
-       }
-     }
+  0% {
+    transform: rotateX(180deg);
+  }
+  25% {
+    transform: translateY(-100%);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: rotateX(45deg);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+  60% {
+    transform: translateY(-45%);
+  }
+  70% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateY(-28%);
+  }
+  90% {
+    transform: translateX(0);
+  }
+  95% {
+    transform: translateY(-2%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 
 .message-green .message-content {
   position: relative;
@@ -263,7 +260,7 @@ p {
 .container.green:hover .user.green {
   transform: translateX(15px); /* Add this rule */
 }
-.user.green{
+.user.green {
   transition: transform 0.3s ease-in-out;
 }
 .container:hover > .message-green {
@@ -311,10 +308,9 @@ p {
   align-items: center;
   align-self: center;
   justify-content: center;
-  box-shadow: 
-    0 4px 8px rgba(255, 255, 255, 0.1),  /* Slight white tint */
-    0 8px 16px rgba(255, 255, 255, 0.1),  /* Slight white tint */
-    0 12px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1),
+    /* Slight white tint */ 0 8px 16px rgba(255, 255, 255, 0.1),
+    /* Slight white tint */ 0 12px 24px rgba(0, 0, 0, 0.2);
   border-bottom: 3px outset #2e353b;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
@@ -325,13 +321,13 @@ p {
   opacity: 90%;
   background-color: black;
 }
-.room_name> h2{
-  color:white;
+.room_name > h2 {
+  color: white;
 }
 .message-content {
   z-index: 5;
-  font-family: 'Inter', sans-serif;
-  font-family: 'Varela Round', sans-serif;
+  font-family: "Inter", sans-serif;
+  font-family: "Varela Round", sans-serif;
 }
 .container.blue > .user {
   display: flex;
@@ -346,15 +342,14 @@ p {
   transition: opacity 1, transform 1s;
   z-index: 50;
 }
-.user{
+.user {
   transition: transform 0.5s ease-in-out;
 
   transition: opacity 1, transform 0.3s ease;
   z-index: 50;
 }
-.user{
+.user {
   transition: transform 0.4s ease;
-
 }
 .messagesContainer {
   position: relative;
@@ -374,21 +369,24 @@ p {
   max-height: 600px; /* Set to your desired height */
   overflow-y: auto;
   scroll-behavior: smooth;
-  background: linear-gradient(135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100%);
+  background: linear-gradient(
+    135deg,
+    #161a1d 0%,
+    #283644 25%,
+    #1e252b 50%,
+    #161a1d 100%
+  );
   background-size: 200% 200%;
   animation: gradientBackground 16s ease infinite; /*#161a1d  */
   margin: 15px 15px;
   padding: 0px 15px 30px;
   z-index: 1;
-  border-radius: 16px;  /* Increased for more rounded edges */
-  box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.2),
-    0 10px 24px rgba(0, 0, 0, 0.2),
-    0 16px 40px rgba(0, 0, 0, 0.2),
-    inset 0 -4px 12px #0d1115,
+  border-radius: 16px; /* Increased for more rounded edges */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 10px 24px rgba(0, 0, 0, 0.2),
+    0 16px 40px rgba(0, 0, 0, 0.2), inset 0 -4px 12px #0d1115,
     inset 0 4px 8px #1c2125;
-    box-sizing: border-box;
-   perspective: 600px;
+  box-sizing: border-box;
+  perspective: 600px;
 }
 @keyframes gradientBackground {
   0% {
@@ -411,31 +409,31 @@ h1 {
 }
 
 .sendMsgBtn {
-  display:flex;
+  display: flex;
   align-items: center;
-  gap:5px;
+  gap: 5px;
   background-color: transparent;
-  border:2px solid rgb(12, 144, 237);
+  border: 2px solid rgb(12, 144, 237);
   border-radius: 100px;
-  color:white;
+  color: white;
   font-weight: 600;
-  padding:3px 15px;
-  width:100px;
+  padding: 3px 15px;
+  width: 100px;
 }
-.sendMsgBtn:hover{
-   background-position: 100% 100%;
-   transform: scale(1.05) 
+.sendMsgBtn:hover {
+  background-position: 100% 100%;
+  transform: scale(1.05);
 }
 .leave-delete-button {
   display: flex;
   position: relative;
-  width:100%;
-  align-items:center;
+  width: 100%;
+  align-items: center;
   justify-content: center;
-  padding-top:10px;;
+  padding-top: 10px;
 }
-#leave-room-btn{
-    display: flex;
+#leave-room-btn {
+  display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
@@ -496,15 +494,15 @@ h1 {
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  width:35%;
+  width: 35%;
 }
 
 .room-num-input-mainRoom > input {
   width: 100%;
   background-color: black;
-  
+
   color: white;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .room-num-input-mainRoom > input::placeholder {
@@ -524,7 +522,7 @@ h1 {
   width: fit-content;
   padding: 7px;
   color: white;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   border-radius: 8px;
 }
 
@@ -541,15 +539,14 @@ h1 {
   max-height: 4.5rem;
   z-index: 100;
 }
-.user-profile-pic.green{
-  left:-95px;
+.user-profile-pic.green {
+  left: -95px;
 }
 
 .status_container {
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 
 @media only screen and (max-width: 600px) {
@@ -617,9 +614,9 @@ h1 {
   }
 
   .roomWrapper {
-    border-radius:25px;
-    padding:10px;
-    padding-left:5px;
+    border-radius: 25px;
+    padding: 10px;
+    padding-left: 5px;
     display: flex;
     align-items: center;
     width: 100vw;
@@ -628,7 +625,7 @@ h1 {
   .room-num-input-mainRoom {
     flex-direction: row;
     margin-bottom: 15px;
-    width:75%;
+    width: 75%;
   }
 
   .room-num-input-mainRoom input {
@@ -636,13 +633,12 @@ h1 {
   }
 
   .sendMsgBtn {
-    
     height: fit-content;
     padding: 5px 15px 5px 15px;
   }
 
   .leave-delete-button {
-  padding-top:0px;
+    padding-top: 0px;
   }
 
   .leave-delete-button button {
@@ -652,12 +648,12 @@ h1 {
     letter-spacing: 1px;
     width: 15px;
   }
-  #leave-room-btn{
+  #leave-room-btn {
     min-width: 50px;
     height: fit-content;
-   padding: 5px 15px 5px 15px;
+    padding: 5px 15px 5px 15px;
   }
-  .room_name> h2 {
+  .room_name > h2 {
     font-size: 17px;
     align-self: center;
   }

@@ -7,15 +7,16 @@ import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined";
 
 const CurrentServers = () => {
-  const { setMainAccess, setSocket, socket, userLoginInfo } = useContext(LoginContext);
+  const { setMainAccess, setSocket, socket, userLoginInfo } =
+    useContext(LoginContext);
   const navigate = useNavigate();
   const doesUserExist = JSON.parse(sessionStorage.getItem("username"));
   const [roomsJoined, setRoomsJoined] = useState([]);
   const mainRoom = 1;
-  const [newUserToggle, setNewUserToggle]=useState(true)
+  const [newUserToggle, setNewUserToggle] = useState(true);
   const PORT = process.env.REACT_APP_PORT;
   const colors = [
-    "#DD4124", 
+    "#DD4124",
     "#D65076",
     "#45B8AC",
     "#5B5EA6",
@@ -27,56 +28,51 @@ const CurrentServers = () => {
 
   const displayRooms = async () => {
     if (doesUserExist) {
-      const allRooms = await AllRoomsJoined(doesUserExist ? doesUserExist: userLoginInfo.username);
+      const allRooms = await AllRoomsJoined(
+        doesUserExist ? doesUserExist : userLoginInfo.username
+      );
       console.log("allRooms:", allRooms); // Debug log
-      setRoomsJoined(allRooms.sort((a,b)=> a.room - b.room)); 
-      if(allRooms.length>0){
-        setNewUserToggle(false)
+      setRoomsJoined(allRooms.sort((a, b) => a.room - b.room));
+      if (allRooms.length > 0) {
+        setNewUserToggle(false);
       }
-      
     }
   };
-   const handleRoomButtonClick = (roomNumber) => {
-     setMainAccess(true);
-     setSocket(io.connect(`${PORT}`), {
-       reconnection: true,
-       reconnectionAttempts: 20,
-       reconnectionDelay: 2000,
-     });
-     sessionStorage.setItem("lastRoom", roomNumber.toString());
-     return navigate(`/chatroom/${roomNumber}`);
-   };
+  const handleRoomButtonClick = (roomNumber) => {
+    setMainAccess(true);
+    setSocket(io.connect(`${PORT}`), {
+      reconnection: true,
+      reconnectionAttempts: 20,
+      reconnectionDelay: 2000,
+    });
+    sessionStorage.setItem("lastRoom", roomNumber.toString());
+    return navigate(`/chatroom/${roomNumber}`);
+  };
 
   useEffect(() => {
-       if (!socket) {
-         setSocket(
-           io.connect(`${PORT}`, {
-             reconnection: true,
-             reconnectionAttempts: 20,
-             reconnectionDelay: 2000,
-           })
-         );
+    if (!socket) {
+      setSocket(
+        io.connect(`${PORT}`, {
+          reconnection: true,
+          reconnectionAttempts: 20,
+          reconnectionDelay: 2000,
+        })
+      );
 
-         return;
-       }
+      return;
+    }
 
-    
     displayRooms();
     console.log(roomsJoined);
-    
+
     // eslint-disable-next-line
   }, []);
- 
 
   return (
     <>
       <Header socket={socket} />
       <div className={`room-container`}>
-        {newUserToggle && (
-          <h1>
-            Enter main room to get started!
-          </h1>
-        )}
+        {newUserToggle && <h1>Enter main room to get started!</h1>}
         <div
           className={
             newUserToggle ? `main-room-wrapper new-user` : "main-room-wrapper"
@@ -86,9 +82,7 @@ const CurrentServers = () => {
             onClick={() => handleRoomButtonClick(mainRoom)}>
             <p> Public - Room </p>
           </button>
-          
         </div>
-          
 
         {roomsJoined.length > 0 &&
           roomsJoined.map((room) => {
