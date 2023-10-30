@@ -13,7 +13,7 @@ const CurrentServers = () => {
   const [roomsJoined, setRoomsJoined] = useState([]);
   const mainRoom = 1;
   const [newUserToggle, setNewUserToggle]=useState(true)
-
+  const PORT = process.env.REACT_APP_PORT;
   const colors = [
     "#DD4124", 
     "#D65076",
@@ -38,7 +38,7 @@ const CurrentServers = () => {
   };
    const handleRoomButtonClick = (roomNumber) => {
      setMainAccess(true);
-     setSocket(io.connect("http://localhost:3001"), {
+     setSocket(io.connect(`${PORT}`), {
        reconnection: true,
        reconnectionAttempts: 20,
        reconnectionDelay: 2000,
@@ -48,6 +48,19 @@ const CurrentServers = () => {
    };
 
   useEffect(() => {
+       if (!socket) {
+         setSocket(
+           io.connect(`${PORT}`, {
+             reconnection: true,
+             reconnectionAttempts: 20,
+             reconnectionDelay: 2000,
+           })
+         );
+
+         return;
+       }
+
+    
     displayRooms();
     console.log(roomsJoined);
     

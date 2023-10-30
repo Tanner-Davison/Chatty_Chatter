@@ -7,7 +7,7 @@ import getCurrentTime, { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
-
+import sendIcon from './Utility-mainRoom/svgs/SendIcon.svg'
 
 const MainRoom = () => {
   const {
@@ -27,7 +27,7 @@ const MainRoom = () => {
   const sessionImage = sessionStorage.getItem("image-url");
   const sessionCloudinary_id = sessionStorage.getItem("cloudinary_id");
   const messagesStartRef = useRef(null);
-  const PORT = process.env.PORT;
+  const PORT = process.env.REACT_APP_PORT;
   const currentTime = getCurrentTimeJSX();
   const [roomIsEmpty, setRoomIsEmpty] = useState(false)
   const [isSocketConnected, setSocketConnected] = useState(false);
@@ -83,6 +83,17 @@ const MainRoom = () => {
   };
 
   useEffect(() => {
+     if (!socket) {
+       setSocket(
+         io.connect(`${PORT}`, {
+           reconnection: true,
+           reconnectionAttempts: 20,
+           reconnectionDelay: 2000,
+         })
+       );
+       return;
+     }
+
     // Handle socket connection
     const handleSocketConnect = async () => {
       const fetchRoomHistoryData = async () => {
@@ -101,18 +112,7 @@ const MainRoom = () => {
     };
 
     // Initialize socket if not already initialized
-    if (!socket) {
-      setSocket(
-        io.connect(`${PORT}`, {
-          reconnection: true,
-          reconnectionAttempts: 20,
-          reconnectionDelay: 2000,
-        })
-      );
-
-      return;
-    }
-
+   
     // Auto join room if main access is true
     if (mainAccess === true) {
       joinRoom();
@@ -259,6 +259,7 @@ const MainRoom = () => {
         />
         <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
           Send
+          <img src={sendIcon} alt={'icon-for-send'}></img>
         </button>
       </div>
       <div className="leave-delete-button">

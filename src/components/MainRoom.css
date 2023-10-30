@@ -42,7 +42,7 @@ p {
 .message-timestamp-right {
   opacity: 0%;
   display: none;
-  transition: transform 0.5s, opacity 0.5s;
+  transition: transform 0.5s, display 4s;
   z-index: 1;
 }
 
@@ -84,6 +84,7 @@ p {
 }
 
 .message-blue {
+  animation: slideFromTop 1s ease-out 0s 1;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -98,6 +99,42 @@ p {
   transition: transform 0.4s;
   z-index: 50;
 }
+@keyframes slideFromTop {
+       0% {
+         transform: rotateX(180deg);
+        }
+        25%{
+          transform: translateX(-100%);
+       }
+       30% {
+         transform: translateX(0);
+       }
+       40%{
+        transform:rotateX(45deg)
+       }
+       50%{
+        transform: translateX(-50%) 
+       }
+        60%{
+        transform: translateX(-45%)
+       }
+       70%{
+        transform: translateX(0);
+       }
+       80%{
+        transform: translateX(-28%);
+       }
+       90%{
+        transform: translateX(0);
+       }
+       95%{
+        transform: translateX(-2%)
+       }
+       100%{
+        transform: translateX(0);
+       }
+     }
+
 
 .message-content > p {
   
@@ -105,6 +142,7 @@ p {
 }
 
 .message-green {
+  animation: slideFromTop 1s ease-out 0s 1;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -122,6 +160,41 @@ p {
   transition: transform 0.4s;
   z-index: 50;
 }
+@keyframes slideFromTop {
+       0% {
+         transform: rotateX(180deg);
+        }
+        25%{
+          transform: translateY(-100%);
+       }
+       30% {
+         transform: translateX(0);
+       }
+       40%{
+        transform:rotateX(45deg)
+       }
+       50%{
+        transform: translateY(-50%) 
+       }
+        60%{
+        transform: translateY(-45%)
+       }
+       70%{
+        transform: translateX(0);
+       }
+       80%{
+        transform: translateY(-28%);
+       }
+       90%{
+        transform: translateX(0);
+       }
+       95%{
+        transform: translateY(-2%)
+       }
+       100%{
+        transform: translateX(0);
+       }
+     }
 
 .message-green .message-content {
   position: relative;
@@ -338,17 +411,20 @@ h1 {
 }
 
 .sendMsgBtn {
-  background: linear-gradient(135deg, #007aff 0%, #0056d6 25%, #007aff 50%, #0056d6 100%); /* Gradient background */
-  background-size: 200% 200%;
-  border-radius: 10px;
-  transition: background-position 0.5s ease;
+  display:flex;
+  align-items: center;
+  gap:5px;
+  background-color: transparent;
+  border:2px solid rgb(12, 144, 237);
+  border-radius: 100px;
   color:white;
   font-weight: 600;
-  padding:7px;
+  padding:3px 15px;
   width:100px;
 }
 .sendMsgBtn:hover{
    background-position: 100% 100%;
+   transform: scale(1.05) 
 }
 .leave-delete-button {
   display: flex;

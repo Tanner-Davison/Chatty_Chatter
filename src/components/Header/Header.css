@@ -19,10 +19,15 @@
   align-items: center;
   justify-content: center;
 }
+
 .logo-font{
     font-family: 'Berkshire Swash', serif;
     margin-right:1rem;
     padding-bottom:5px;
+}
+.logo-font a {
+  text-decoration: none;
+  color: inherit; /* Or set to any color you like */
 }
 .logo-font:hover{
     color:red;
@@ -30,32 +35,60 @@
     pointer-events:stroke;
 
 }
-.buttonHeader{
-  display: flex;
+.buttonHeader {
+  animation: slideFromTop 1s ease-out 0s 1;
+  display:flex;
+  background-color: transparent;
+  text-align: center;
+  color:white;
+  border:2px solid rgb(12, 144, 237);
+  border-radius:100px;
+  padding:3px 15px;
   align-items: center;
   justify-content: center;
-  outline: none;
+  font-size:1rem;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  border-radius: 500px;
-  transition-property: background-color,border-color,color,box-shadow,filter;
-  transition-duration: .3s;
-  border: 1px solid transparent;
-  letter-spacing: 2px;
-  min-width: 160px;
-  text-transform: uppercase;
-  white-space: normal;
-  font-weight: 700;
-  text-align: center;
-  padding: 10px 20px;
-  color: #fff;
-  background-color: #ea4335;
-  height: 48px;
-  &:hover{
-  transform: scale(1.04);
-  background-color: #34a853;
-  }
+  font-weight: 800;
+}
+@keyframes slideFromTop {
+       0% {
+         transform: rotateX(180deg);
+        }
+        25%{
+          transform: translateY(-100%);
+       }
+       30% {
+         transform: translateX(0);
+       }
+       40%{
+        transform:rotateX(45deg)
+       }
+       50%{
+        transform: translateY(-50%) 
+       }
+        60%{
+        transform: translateY(-45%)
+       }
+       70%{
+        transform: translateX(0);
+       }
+       80%{
+        transform: translateY(-28%);
+       }
+       90%{
+        transform: translateX(0);
+       }
+       95%{
+        transform: translateY(-2%)
+       }
+       100%{
+        transform: translateX(0);
+       }
+     }
+
+.buttonHeader:hover {
+  background-position: 100% 100%;
+  transform: scale(1.05)
 }
 #logout_button{
   background-color: transparent;
@@ -107,7 +140,7 @@
   align-items: center;
   justify-content: center;
   gap:25px;
-  border:2px solid white;
+  border:1px solid white;
   border-radius:10px;
   padding:10px;
   font-size: 10px;
@@ -122,16 +155,18 @@
  text-overflow: ellipsis;
 }
 .linkActive{
+  display:flex;
    white-space: nowrap;
  min-width: fit-content;
  text-overflow: ellipsis;
-color:red;
+color:rgb(15, 207, 255);
 &:hover{
-    color:maroon;
+    color:rgb(8, 178, 246);
+    scale: 1;
   }
 }
 .linkInactive:hover{
-  color:rgb(0, 252, 0);
+  color:rgb(241, 255, 240);
 }
 
 @media only screen and (max-width: 600px) {
