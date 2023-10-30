@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import {useNavigate} from 'react-router-dom';
 import "./App.css";
 import MainRoom from "./components/MainRoom";
 import Login from "./components/login/Login";
 import CurrentServers from "./components/currentServers/CurrentServers";
 import { LoginContext } from "./components/contexts/LoginContext";
-import Header from "./components/Header/Header";
 import Profile from "./components/Profile/Profile";
 import CreateRoom from "./components/Utility-mainRoom/CreateRoom";
 import {

@@ -24,7 +24,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
       console.log(currentLocation);
       const timer = setTimeout(()=>{
         setVisible(false);
-      },5000);
+      },50000);
        return () => {
          clearTimeout(timer);
        };
@@ -39,11 +39,12 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
 
   return (
     <div className={"headerContainer"}>
-      <ul className={"navLinks"}>
+      <div>
         <Link to="/">
           <h1 className={"logo-font"}>Chatty Chatter</h1>
         </Link>
-
+      </div>
+      <ul className={"navLinks"}>
         {usernameLocal && (
           <>
             <li>
@@ -92,7 +93,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
       </ul>
       {usernameLocal && currentLocation.includes("chatroom") && (
         <div className={"create_room_container"}>
-          <h2 style={{ color: "white" }}>Public Search</h2>
+          <h2 style={{ color: "white" }}>Hub Finder</h2>
           <input
             className={"roomInput"}
             placeholder="Room #"
@@ -101,14 +102,14 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             onChange={roomChanger}
           />
           <button className={"buttonHeader"} type="submit" onClick={joinRoom}>
-            Join Room
+            public search
           </button>
         </div>
       )}
-      {visible && usernameLocal && (
+      {visible && usernameLocal && !currentLocation.includes("chatroom") && (
         <div className={"visible_login_success"}>
-          <h2 id="loggedIn">Logged in as: </h2>
-          <h2 style={{ color: "white" }}>{usernameLocal}</h2>
+          <p id="loggedIn">Logged in as: </p>
+          <p style={{ color: "white" }}>{"@" + usernameLocal}</p>
         </div>
       )}
     </div>
