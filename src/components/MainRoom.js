@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
 import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
-import TypingComp from './Utility-mainRoom/TypingComp'
+import TypingComp from "./Utility-mainRoom/TypingComp";
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
     useContext(LoginContext);
@@ -30,9 +30,14 @@ const MainRoom = () => {
   const [loading, setLoading] = useState(false);
   const [typing, setTyping] = useState(false);
   const typingTimeoutId = useRef(null);
-  const currentTyper = useRef(null)
+  const currentTyper = useRef(null);
   const navigate = useNavigate();
-  const handleIsTyping = useIsTyping(socket, userLoginInfo.username, room,typingTimeoutId)
+  const handleIsTyping = useIsTyping(
+    socket,
+    userLoginInfo.username,
+    room,
+    typingTimeoutId
+  );
 
   const joinRoom = async () => {
     socket.emit("join_room", {
@@ -143,15 +148,14 @@ const MainRoom = () => {
       setMessageRecieved((prev) => [...prev, newData]);
       await loadRoomHistory(data.room);
     });
-  
-      
+
     socket.on("sender_is_typing", (data) => {
       currentTyper.current = data.toString();
-      clearTimeout(typingTimeoutId.current); 
-      setTyping(true); 
+      clearTimeout(typingTimeoutId.current);
+      setTyping(true);
       typingTimeoutId.current = setTimeout(() => {
-        setTyping(false); 
-      }, 4000); 
+        setTyping(false);
+      }, 4000);
     });
     // Cleanup functions
     return () => {
@@ -257,9 +261,7 @@ const MainRoom = () => {
               }
             })}
           {roomIsEmpty && navigate(`/createroom/${room}`)}
-          {typing === true && (
-          <TypingComp typer={currentTyper.current}/>
-          )}
+          {typing === true && <TypingComp typer={currentTyper.current} />}
         </div>
         <div className={"room-num-input-mainRoom"}>
           <button id={"leave-room-btn"} onClick={leaveRoom}>
@@ -269,6 +271,7 @@ const MainRoom = () => {
             placeholder={message !== "" ? message : "Message..."}
             value={message}
             onChange={(event) => {
+              console.log("event inside Onchange", event);
               setMessage(event.target.value);
               handleIsTyping(event);
             }}

@@ -1,11 +1,12 @@
 import { useRef } from "react";
 
 export const useIsTyping = (socket, username, room, typingTimeoutId) => {
-  
   const handleIsTyping = (event) => {
-    if(event.keyCode === 8){
+    if (event.nativeEvent.inputType === "deleteContentBackward") {
       return;
     }
+    console.log(event.key);
+
     clearTimeout(typingTimeoutId.current);
 
     typingTimeoutId.current = setTimeout(() => {

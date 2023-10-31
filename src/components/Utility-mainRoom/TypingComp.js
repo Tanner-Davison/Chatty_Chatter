@@ -1,6 +1,6 @@
-import {useState, useEffect} from 'react'
-import './TypingComp.css'
-const TypingComp = ({typer}) =>{
+import { useState, useEffect } from "react";
+import "./TypingComp.css";
+const TypingComp = ({ typer }) => {
   const [dots, setDots] = useState("");
 
   useEffect(() => {
@@ -24,5 +24,5 @@ const TypingComp = ({typer}) =>{
       </p>
     </div>
   );
-}
+};
 export default TypingComp;

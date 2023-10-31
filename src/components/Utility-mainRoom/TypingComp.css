@@ -1,19 +1,17 @@
-.flex-dots{
-    display:flex;
-    color:white;
-    
-   
+.flex-dots {
+  display: flex;
+  color: white;
 }
-:is(p){
-    text-transform: capitalize;
-    font-family:sans-serif;
-    font-weight: 800;
+:is(p) {
+  text-transform: capitalize;
+  font-family: sans-serif;
+  font-weight: 800;
 }
-:is(em){
-    color:rgb(10, 203, 233);
-    text-transform: lowercase;
+:is(em) {
+  color: rgb(10, 203, 233);
+  text-transform: lowercase;
 }
-:is(#dots){
-    color:rgb(253, 250, 250);
-    font-weight: 800;
+:is(#dots) {
+  color: rgb(253, 250, 250);
+  font-weight: 800;
 }

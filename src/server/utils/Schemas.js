@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const userSchema = new mongoose.Schema({
   username: {
@@ -27,10 +27,10 @@ const userSchema = new mongoose.Schema({
       timestamp: String,
     },
   ],
-  friends:[
+  friends: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   ],
 });
@@ -42,7 +42,7 @@ const roomSchema = new mongoose.Schema({
   },
   room_name: {
     type: String,
-    required : false,
+    required: false,
   },
   private_room: {
     type: Boolean,
@@ -79,6 +79,6 @@ const roomSchema = new mongoose.Schema({
 const Rooms = mongoose.model("Rooms", roomSchema);
 const User = mongoose.model("User", userSchema);
 module.exports = {
-    Rooms, 
-    User
+  Rooms,
+  User,
 };
