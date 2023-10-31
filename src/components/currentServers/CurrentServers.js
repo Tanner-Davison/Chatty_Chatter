@@ -50,17 +50,7 @@ const CurrentServers = () => {
   };
 
   useEffect(() => {
-    if (!socket) {
-      setSocket(
-        io.connect(`${PORT}`, {
-          reconnection: true,
-          reconnectionAttempts: 20,
-          reconnectionDelay: 2000,
-        })
-      );
-
-      return;
-    }
+  
 
     displayRooms();
     console.log(roomsJoined);

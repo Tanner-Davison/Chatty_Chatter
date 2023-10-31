@@ -1,11 +1,10 @@
-.headerContainer {
+.headerContainer{
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding:9px;
-  min-height:10px;  
   gap: 5px;
   background-color: black;
   width: auto;
@@ -173,14 +172,26 @@ color:rgb(15, 207, 255);
   .headerContainer {
    flex-direction: row;
     min-width: 92%;
-    min-height: 204px;
+    height: fit-content;
     margin: 0px;
-    border-radius: 10px 10px 29px 29px;
+    border-radius:25px;
     /* padding: 7px; */
     border: 2px ridge silver;
     align-items: center;
     justify-content: flex-start;
   }
+  .headerContainer.home {
+   flex-direction: row;
+    min-width: 92%;
+    max-height: 50px;
+    height: fit-content;
+    margin: 0px;
+    border-radius:25px;
+    border: 2px ridge silver;
+    align-items: center;
+    justify-content: flex-start;
+  }
+ 
   .create_room_container {
       animation: slideFromTop 1s ease-out 0s 1;
     flex-direction: column;
@@ -195,7 +206,7 @@ color:rgb(15, 207, 255);
     border-radius: 20px;
     align-self: flex-start;
     right: 0px;
-    bottom: -66px;
+    bottom: -43px;
     margin-left: 3rem;
   }
   @keyframes slideFromTop {

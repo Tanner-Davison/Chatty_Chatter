@@ -8,7 +8,8 @@ import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
-
+import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
+import TypingComp from './Utility-mainRoom/TypingComp'
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
     useContext(LoginContext);
@@ -26,7 +27,12 @@ const MainRoom = () => {
   const currentTime = getCurrentTimeJSX();
   const [roomIsEmpty, setRoomIsEmpty] = useState(false);
   const [isSocketConnected, setSocketConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const typingTimeoutId = useRef(null);
+  const currentTyper = useRef(null)
   const navigate = useNavigate();
+  const handleIsTyping = useIsTyping(socket, userLoginInfo.username, room,typingTimeoutId)
 
   const joinRoom = async () => {
     socket.emit("join_room", {
@@ -35,10 +41,12 @@ const MainRoom = () => {
       message,
     });
     navigate(`/chatroom/${room}`);
+    setLoading(true);
     const messages = await loadRoomHistory(room);
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);
     setMessageRecieved(messages);
+    setLoading(false);
     if (messages.length <= 0) {
       setRoomIsEmpty(true);
     }
@@ -76,8 +84,8 @@ const MainRoom = () => {
     socket.disconnect();
     navigate("/currentservers");
   };
-
   useEffect(() => {
+    // Handle socket connection
     if (!socket) {
       setSocket(
         io.connect(`${PORT}`, {
@@ -86,10 +94,9 @@ const MainRoom = () => {
           reconnectionDelay: 2000,
         })
       );
-      return;
+      return setMainAccess(true);
     }
 
-    // Handle socket connection
     const handleSocketConnect = async () => {
       const fetchRoomHistoryData = async () => {
         const messages = await loadRoomHistory(room);
@@ -118,14 +125,13 @@ const MainRoom = () => {
     socket.on("connect", handleSocketConnect);
 
     socket.on("disconnect", (reason) => {
-      console.log(reason);
       setSocketConnected(false);
       setMainAccess(true);
     });
 
     socket.on("receive_message", async (data) => {
       if (data.room !== room) return;
-
+      setTyping(false);
       const newData = {
         message: data.message,
         username: data.sentBy,
@@ -137,23 +143,32 @@ const MainRoom = () => {
       setMessageRecieved((prev) => [...prev, newData]);
       await loadRoomHistory(data.room);
     });
-
-    // Cleanup function to remove event listeners
+  
+      
+    socket.on("sender_is_typing", (data) => {
+      currentTyper.current = data.toString();
+      clearTimeout(typingTimeoutId.current); 
+      setTyping(true); 
+      typingTimeoutId.current = setTimeout(() => {
+        setTyping(false); 
+      }, 4000); 
+    });
+    // Cleanup functions
     return () => {
       socket.off("join_room", joinRoom);
       socket.off("receive_message");
       socket.off("disconnect");
+      socket.off("sender_is_typing", useIsTyping);
     };
-
     //eslint-disable-next-line
-  }, [socket, messageRecieved, isSocketConnected]);
+  }, [socket, messageRecieved, isSocketConnected, typing]);
 
   useEffect(() => {
     if (messagesStartRef.current) {
       messagesStartRef.current.scrollTop =
         messagesStartRef.current.scrollHeight;
     }
-  }, [messageRecieved]);
+  }, [messageRecieved, typing]);
 
   return (
     <>
@@ -242,6 +257,9 @@ const MainRoom = () => {
               }
             })}
           {roomIsEmpty && navigate(`/createroom/${room}`)}
+          {typing === true && (
+          <TypingComp typer={currentTyper.current}/>
+          )}
         </div>
         <div className={"room-num-input-mainRoom"}>
           <button id={"leave-room-btn"} onClick={leaveRoom}>
@@ -250,7 +268,10 @@ const MainRoom = () => {
           <input
             placeholder={message !== "" ? message : "Message..."}
             value={message}
-            onChange={(event) => setMessage(event.target.value)}
+            onChange={(event) => {
+              setMessage(event.target.value);
+              handleIsTyping(event);
+            }}
             maxLength="255"
           />
           <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
@@ -266,7 +287,7 @@ const MainRoom = () => {
       {
         <>
           <div className={"status_container"}>
-            <h3 style={{ color: "white" }}>Status:</h3>
+            <h3 style={{ color: "white" }}>Status :</h3>
             <button
               type="button"
               className={"statusBtn"}
@@ -275,10 +296,10 @@ const MainRoom = () => {
               }}
               style={
                 isSocketConnected
-                  ? { backgroundColor: "limegreen" }
-                  : { backgroundColor: "red", color: "white" }
+                  ? { backgroundColor: "#323232" }
+                  : { backgroundColor: "red", color: "#3691F0" }
               }>
-              {isSocketConnected && "CONNECTED"}
+              {isSocketConnected && "Connected"}
               {!isSocketConnected && "DISCONNECTED"}
             </button>
           </div>

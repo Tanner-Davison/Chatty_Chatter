@@ -38,12 +38,15 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   };
 
   return (
-    <div className={"headerContainer"}>
-      <div>
-        <Link to="/" style={{textDecoration: 'none', color: 'inherit' }}>
+    <div
+      className={
+        currentLocation === "http://localhost:3000/"
+          ? "headerContainer home"
+          : "headerContainer other"
+      }>
+      
           <h1 className={"logo-font"}>Chatty Chatter</h1>
-        </Link>
-      </div>
+     
       <ul className={"navLinks"}>
         {usernameLocal && (
           <>
@@ -102,7 +105,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             onChange={roomChanger}
           />
           <button className={"buttonHeader"} type="submit" onClick={joinRoom}>
-           <img src={searchGlass} alt={'search hub'}/>
+            <img src={searchGlass} alt={"search hub"} />
             Search
           </button>
         </div>

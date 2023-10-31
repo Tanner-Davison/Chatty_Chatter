@@ -140,6 +140,11 @@ io.on("connection", (socket) => {
      }
    });
 
+  socket.on('typing', (data)=>{
+    socket.to(data.room).emit('sender_is_typing',data.username)
+    console.log(data.username)
+  });
+
   socket.on("leaveroom", async (data) => {
     if (!socket) {
       return;
