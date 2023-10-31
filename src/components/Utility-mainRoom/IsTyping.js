@@ -1,4 +1,3 @@
-import { useRef } from "react";
 
 export const useIsTyping = (socket, username, room, typingTimeoutId) => {
   const handleIsTyping = (event) => {
