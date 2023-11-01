@@ -42,7 +42,7 @@ function Profile() {
         {!userDataExists && <div>Loading ...</div>}
         <div className={"profile-content"}>
           <div className={"wrapper"}>
-            <div class={switchToggle ? `gradient-border` : `regular-border`}>
+            <div className={switchToggle ? `gradient-border` : `regular-border`}>
               <img
                 id={"profile-pic"}
                 src={userInfo.profile_pic.url}

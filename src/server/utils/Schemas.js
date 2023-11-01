@@ -27,6 +27,15 @@ const userSchema = new mongoose.Schema({
       timestamp: String,
     },
   ],
+  roomsCreated: [
+    {
+      roomName: String,
+      room: Number,
+      private: Boolean,
+      timestamp: String,
+    },
+    
+  ],
   friends: [
     {
       type: Schema.Types.ObjectId,
@@ -47,11 +56,6 @@ const roomSchema = new mongoose.Schema({
   private_room: {
     type: Boolean,
     required: false,
-  },
-  sent_by_user: {
-    type: mongoose.Schema.Types.ObjectId, // Using ObjectId for referencing
-    ref: "User", // reference to the Message model
-    required: true,
   },
   created_by: {
     type: String,

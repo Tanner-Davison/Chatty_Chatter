@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext} from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import searchGlass from "./svgs/searchGlass.svg";
 import CategoryOptions from "./categoryOptions";
@@ -13,29 +13,57 @@ import Header from "../Header/Header";
 import build from "./svgs/build.svg";
 import "./CreateRoom.css";
 import axios from "axios";
+import getCurrentTime, { getCurrentTimeJSX } from "./getTime";
 
 const CreateRoom = (props) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [privateRoom, setPrivateRoom] = useState(false);
   const [roomPassword, setRoomPassword] = useState("");
   const [roomTaken, setRoomTaken] = useState(Boolean);
+  const [privateRoomName, setPrivateRoomName] = useState("");
+  const [publicRoomName, setPublicRoomName]= useState("")
   const [searchValue, setSearchValue] = useState("");
   const { userLoginInfo } = useContext(LoginContext);
   const categoryKeys = Object.keys(CategoryOptions);
-  const [roomName, setRoomName] = useState("");
   const [password, setPassword] = useState("");
   const [category, setCategory] = useState("");
   const PORT = process.env.REACT_APP_PORT;
   const navigate = useNavigate();
+  const currentTime = getCurrentTime();
   let { room } = useParams();
-
-  const handlePublicSubmit = async () => {
+  const myUsername = userLoginInfo.username;
+  const handlePublicSubmit = async(event) => {
+    event.preventDefault()
+    console.log('this is running')
     const newPublicRoom = {
-      category: category,
-      room: searchValue,
-      createdBy: userLoginInfo.username,
-    };
-    axios.post(`${PORT}/new-room-creation`, newPublicRoom);
+      category,
+      room,
+      createdBy: myUsername,
+      timeStamp: currentTime,
+      publicRoom: publicRoomName,
+      imageUrl: userLoginInfo.imageUrl,
+      cloudinary: userLoginInfo.cloudinary_id,
+    }
+    console.log(newPublicRoom)
+  
+    axios.post(`${PORT}/new-room-creation`, newPublicRoom)
+    .then((res)=>{
+      console.log('made it this fat lol');
+      console.log(res.data.message)
+      if(res.data.message === 'room created'){
+        console.log('room created success')
+        navigate(`/currentservers`)
+      }
+    }).catch((error) => { 
+  console.log(error.message); 
+  if (error.response) {
+    console.log(error.response.data);
+    console.log(error.response.status);
+  }
+  console.log('at CreateRoom.js handle public submit <---');
+  
+  });
+    
   };
   const handleRoomAvailability = async (numberValue) => {
     if (numberValue === "") {
@@ -49,6 +77,7 @@ const CreateRoom = (props) => {
     } else if (roomAvailable.data.room === false) {
       setRoomTaken(false);
       navigate(`/createroom/${numberValue}`);
+      
     }
   };
 
@@ -62,7 +91,6 @@ const CreateRoom = (props) => {
       setIsPasswordVisible(!isPasswordVisible);
     }
   };
-
   return (
     <>
       <Header />
@@ -134,8 +162,8 @@ const CreateRoom = (props) => {
                       <input
                         type="text"
                         id="name"
-                        onChange={(e) => setRoomName(e.target.value)}
-                        value={roomName}
+                        onChange={(e) => setPrivateRoomName(e.target.value)}
+                        value={privateRoomName}
                       />
                     </label>
                     <div className={"private-room-inputs"}>
@@ -240,21 +268,51 @@ const CreateRoom = (props) => {
                           );
                         })}
                       </select>
+                    <div className={"public-hub-name"}>
+                      <label htmlFor={"public-hub-name"}>Name the Hub?</label>
+
+                      <input
+                        type="text"
+                        id={"public-hub-name"}
+                        placeholder={'"Name the public Hub"'}
+                        onChange={(e) => setPublicRoomName(e.target.value)}
+                      />
+                    </div>
                     </div>
                   </div>
                 )}
                 {categoryKeys !== "" &&
                   !privateRoom &&
                   room !== "0" &&
-                  category && (
-                    <div className="info-div">
+                  category && publicRoomName &&(
+                    <>
                       <h4>
                         <span style={{ color: "#BBDEFB" }}>
-                          * Following information <br></br>{" "}
-                          <em>will be public.*</em>
+                          * Following information
+                          <br></br> <em>will be public.*</em>
                         </span>{" "}
                       </h4>
                       <div className={"private-info"}>
+                            <div className="info-div">
+                        <div className={"category-result"}>
+                          <label htmlFor={"public-name"}>Category</label>
+                          <input
+                            type="text"
+                            id={"public-category"}
+                            placeholder={category}
+                            readOnly
+                          />
+                        </div>
+                        <div className={"public-hub-name overview"}>
+                          <label htmlFor={"public-hub-name"}>Hub Name</label>
+                          <input
+                            type="text"
+                            id={"public-hub-name overview"}
+                            placeholder={publicRoomName}
+                            readOnly
+                          />
+                        </div>
+
                         <div id={"number-value"}>
                           <label htmlFor={"public-number"}>room </label>
                           <input
@@ -275,24 +333,15 @@ const CreateRoom = (props) => {
                             readOnly
                           />
                         </div>
-                        <div className={"category-result"}>
-                          <label htmlFor={"public-name"}>Category</label>
-
-                          <input
-                            type="text"
-                            id={"public-category"}
-                            placeholder={category}
-                            readOnly
-                          />
-                        </div>
                       </div>
-                      <button
-                        type="submit"
-                        className={"submit-button"}
-                        onClick={() => handlePublicSubmit}>
-                        Create
-                      </button>
                     </div>
+                      <button
+                        type="button"
+                        className={"submit-button"}
+                        onClick={(event)=>handlePublicSubmit(event)}>
+                        Create Hub
+                      </button>
+                    </>
                   )}
               </>
             )}

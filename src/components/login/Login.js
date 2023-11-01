@@ -130,6 +130,7 @@ const Login = () => {
   });
   useEffect(() => {
     resError && setResError(null);
+    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     if (loginFailed) {

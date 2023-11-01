@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined";
-
+import RoomsCreated from './utils/RoomsCreated'
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } =
     useContext(LoginContext);
@@ -14,6 +14,7 @@ const CurrentServers = () => {
   const [roomsJoined, setRoomsJoined] = useState([]);
   const mainRoom = 1;
   const [newUserToggle, setNewUserToggle] = useState(true);
+  const [roomsCreated, setRoomsCreated] = useState([]);
   const PORT = process.env.REACT_APP_PORT;
   const colors = [
     "#DD4124",
@@ -31,9 +32,13 @@ const CurrentServers = () => {
       const allRooms = await AllRoomsJoined(
         doesUserExist ? doesUserExist : userLoginInfo.username
       );
-      console.log("allRooms:", allRooms); // Debug log
-      setRoomsJoined(allRooms.sort((a, b) => a.room - b.room));
-      if (allRooms.length > 0) {
+      console.log({rooms_created: allRooms.roomsCreated,rooms_joined: allRooms.roomsJoined}); // Debug log
+      setRoomsJoined(allRooms.roomsJoined);
+      setRoomsCreated(allRooms.roomsCreated);
+      
+      console.log(allRooms.roomsJoined.length);
+      
+      if (allRooms.roomsJoined.length > 0 || allRooms.roomsCreated.length > 0) {
         setNewUserToggle(false);
       }
     }
@@ -93,7 +98,7 @@ const CurrentServers = () => {
             );
           })}
       </div>
-      {}
+      {<RoomsCreated roomsCreated={roomsCreated}/>}
     </>
   );
 };

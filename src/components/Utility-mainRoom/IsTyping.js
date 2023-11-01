@@ -4,7 +4,6 @@ export const useIsTyping = (socket, username, room, typingTimeoutId) => {
     if (event.nativeEvent.inputType === "deleteContentBackward") {
       return;
     }
-    console.log(event.key);
 
     clearTimeout(typingTimeoutId.current);
 

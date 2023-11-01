@@ -2,9 +2,10 @@ import axios from 'axios'
 
 
 const AllRoomsJoined = async (username) => {
+  const PORT = process.env.REACT_APP_PORT;
   try {
     const roomsArray = await axios.get(
-      `http://localhost:3001/api/users/${username}/rooms`
+      `${PORT}/api/users/${username}/rooms`
     );
     const data = roomsArray.data;
     console.log(data);

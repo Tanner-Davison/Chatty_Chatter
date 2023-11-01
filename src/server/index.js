@@ -108,7 +108,6 @@ io.on("connection", (socket) => {
          // Initialize room object and messageHistory in one go
          room = new Rooms({
            room_number: data.room,
-           sent_by_user: addedMessageToUser._id,
            created_by: data.username,
            first_message: data.message,
            users_in_room: [data.username],

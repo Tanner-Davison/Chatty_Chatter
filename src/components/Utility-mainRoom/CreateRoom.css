@@ -71,25 +71,18 @@ form {
   color: white;
 }
 .question-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: auto;
-  justify-content: flex-start;
-  width: 40%;
-  align-self: center;
-  background: linear-gradient(
-    135deg,
-    #4b5364 0%,
-    #7588a7 25%,
-    #5b6d8b 50%,
-    #4b5364 100%
-  ); /* Use the same gradient as the background */
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  margin: 0 auto;
+ position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    justify-content: flex-start;
+    align-self: center;
+    background: linear-gradient( 135deg, #4b5364 0%, #7588a7 25%, #5b6d8b 50%, #4b5364 100% );
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    min-width: 89%;
+    margin: 0 auto;
 }
 .question-wrapper.dark-mode {
   min-height: auto;
@@ -127,10 +120,13 @@ form {
 }
 
 .info-div {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
+     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-self: center;
+    align-items: center;
 }
 .category-container {
   display: flex;
@@ -155,7 +151,6 @@ form {
 .category-result {
   display: flex;
   flex-direction: column;
-  height: 50px;
   gap: 0px;
   width: auto;
 }
@@ -163,7 +158,7 @@ form {
   width: auto;
   text-align: center;
   font-weight: 700;
-  padding: 5px;
+  height: 30px;
 }
 #public-category::placeholder {
   color: #fe662b;
@@ -193,7 +188,7 @@ form {
   font-weight: 700;
   width: fit-content;
   text-align: center;
-  padding: 5px;
+  padding: 8px;
   font-weight: 800;
 }
 #public-name::placeholder {
@@ -277,15 +272,38 @@ form {
 }
 .private-room-inputs label {
   display: flex;
-
+  margin-top:10px;
   align-items: center;
   justify-content: flex-end;
   white-space: nowrap;
   gap: 20px;
 }
+.public-hub-name{
+  display: flex;
+  flex-direction: column;
+ 
+}
+.public-hub-name>input::placeholder{
+  display: flex;
+  font-weight:500
+}
+
+.public-hub-name>input{
+  width:200px;
+  padding-left:10px;
+  font-family: sans-serif;
+  font-weight: 700;
+  text-align: center;
+  color:gray;
+}
 label {
   font-family: "Varela Round", sans-serif;
   font-weight: 500;
+}
+.public-hub-name.overview> input::placeholder{
+  font-family: sans-serif;
+  font-weight: 800;
+  color: gray;
 }
 .private-room-inputs {
   display: flex;
@@ -299,10 +317,17 @@ label {
   width: auto;
   box-sizing: border-box;
 }
-.private-info {
+/* .private-info {
   display: flex;
   flex-direction: column;
   gap: 20px;
+} */
+.private-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }
 #room-lookup {
   flex-direction: column;
@@ -329,8 +354,9 @@ label {
   font-weight: bold;
   text-align: center;
   line-height: 50px;
+  align-self: center;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .submit-button:hover {
@@ -359,12 +385,16 @@ label {
     height: 86px;
   }
   .private-info {
-    gap: 10px;
+    gap: 20px;
   }
+ 
   .form-wrapper {
     margin: 10px;
     align-items: center;
     justify-content: flex-start;
+  }
+  form{
+    align-items: center;
   }
   .question-wrapper {
     width: 88%;
@@ -378,6 +408,6 @@ label {
   #name-value {
     flex-direction: column;
     gap: 0px;
-    margin-top: 25px;
+    
   }
 }

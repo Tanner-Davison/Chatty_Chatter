@@ -116,11 +116,15 @@
  .profile-content{
     flex-direction: column;
     gap:0px;
+    align-items: center;
  }
  .profile-content>h2{
     align-self: center;
 }
 #username-switch-wrapper{
     align-self:center;
+}
+.regular-border{
+  align-self:center;
 }
 }

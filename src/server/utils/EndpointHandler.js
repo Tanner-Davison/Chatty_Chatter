@@ -29,7 +29,8 @@ module.exports = {
       if (!userList) {
         res.status(404).json({ message: "user list is not found" });
       } else {
-        res.json(userList.roomsJoined);
+        res.json({roomsJoined:userList.roomsJoined,
+        roomsCreated:userList.roomsCreated});
       }
     } catch (err) {
       console.log(err);
