@@ -24,7 +24,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
       console.log(currentLocation);
       const timer = setTimeout(()=>{
         setVisible(false);
-      },50000);
+      },5000);
        return () => {
          clearTimeout(timer);
        };
@@ -98,6 +98,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
         <div className={"create_room_container"}>
           <h2 style={{ color: "white" }}>Hub Finder</h2>
           <input
+            type='number'
             className={"roomInput"}
             placeholder="Room #"
             onKeyDown={handleKeyDown}

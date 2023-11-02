@@ -15,6 +15,8 @@ import "./CreateRoom.css";
 import axios from "axios";
 import getCurrentTime, { getCurrentTimeJSX } from "./getTime";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
+import EmojiObjectsTwoToneIcon from "@mui/icons-material/EmojiObjectsTwoTone";
+import ToolTip from "../tools/ToolTip";
 
 const CreateRoom = (props) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -111,7 +113,8 @@ const CreateRoom = (props) => {
             <div className={"toggle-wrapper"}>
               <p
                 style={{ borderColor: "white" }}
-                className={privateRoom ? "public-off true" : "public-off"}>
+                className={privateRoom ? "public-off true" : "public-off"}
+                onClick={() => setPrivateRoom(false)}>
                 Public
               </p>
               <img
@@ -139,8 +142,9 @@ const CreateRoom = (props) => {
                 />
               </span>
               <p
-                style={{ borderColor: "lightgreen" }}
-                className={privateRoom ? "public-off" : "public-off true"}>
+                style={{ borderColor: "black" }}
+                className={privateRoom ? "public-off" : "public-off true"}
+                onClick={() => setPrivateRoom(true)}>
                 Private
               </p>
             </div>
@@ -151,13 +155,46 @@ const CreateRoom = (props) => {
                     <h3>
                       <span id={"logo-style-inline"}>Chatty Chatter </span>
                       <br></br>
-                      Private Chat
+                      <span>Private Chat </span>
                     </h3>
-                    <p>
-                      Private rooms are Locked to the public by a custom key.
-                    </p>
+                    <slot className={"content-container private"}>
+                      <EmojiObjectsTwoToneIcon id={"lightbulb"} />
+                      <p>
+                        Private rooms are Locked to the public by a custom key.
+                      </p>
+                    </slot>
                   </slot>
                   <div className={"private-room-inputs"}>
+                    <div className="category-container">
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                        <img
+                          id={"img-flip"}
+                          src={dropdown}
+                          alt={"dropdown-icon"}
+                        />{" "}
+                        <label htmlFor="category-list">Category</label>{" "}
+                        <img src={dropdown} alt={"dropdown-icon"} />
+                      </div>
+                      <select
+                        name="Category"
+                        id="category-list"
+                        onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">--Please choose an option--</option>
+                        {categoryKeys.map((key, id) => {
+                          const keyValue = CategoryOptions[key];
+                          return (
+                            <option key={id} value={keyValue}>
+                              {keyValue}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
                     <label htmlFor={"name"}>
                       {" "}
                       Room Name:
@@ -175,12 +212,18 @@ const CreateRoom = (props) => {
                           type={isPasswordVisible ? "text" : "password"}
                           id={"room-password"}
                           value={password}
+                          placeholder=" Enter password"
                           onChange={handleInputChange}
                           onKeyDown={handleKeyPress}
                         />
-                        <VisibilityTwoToneIcon 
-                        id={'visible_eye'}
-                        onClick={()=>setIsPasswordVisible(!isPasswordVisible)}/>
+                        
+                          <VisibilityTwoToneIcon
+                            id={"visible_eye"}
+                            onClick={() =>
+                              setIsPasswordVisible(!isPasswordVisible)
+                            }
+                          />
+                        
                       </label>
                     </div>
                   </div>
@@ -191,6 +234,11 @@ const CreateRoom = (props) => {
               <>
                 {room === "0" && (
                   <div>
+                    <h3>
+                      <span id={"logo-style-inline"}>Chatty Chatter </span>
+                      <br></br>
+                      Community Chat
+                    </h3>
                     <label id="room-lookup">
                       Search for available room
                       <div id={"search-glass-wrapper"}>

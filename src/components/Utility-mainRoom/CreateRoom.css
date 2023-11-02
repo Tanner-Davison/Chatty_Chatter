@@ -33,10 +33,10 @@ form {
   text-align: center;
 }
 #logo-style-inline {
-  font-family: "Berkshire Swash", serif;
-  letter-spacing: 1px;
-  font-size: 24px;
-  color: white;
+      font-family: "Berkshire Swash", serif;
+    letter-spacing: 1px;
+    font-size: 50px;
+    color: white;
 }
 #header-border {
   display:flex;
@@ -109,6 +109,7 @@ form {
   justify-content: flex-end;
 }
 .content-container {
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -128,7 +129,18 @@ form {
   color: whitesmoke;
   font-family: "Varela Round", sans-serif;
 }
+.content-container.private{
+  width:45%;
+  padding:10px;
+  align-self: center;
+  padding:15px;
+}
+#lightbulb{
+  position: absolute;
+  top:50px;
+  color:rgb(255, 255, 119);
 
+}
 .info-div {
      display: flex;
     flex-direction: column;
@@ -218,12 +230,14 @@ form {
   cursor: pointer;
 }
 .public-off {
-  border: 2px solid black;
-  padding: 3px;
-  border-radius: 4px;
+  border: 5px solid black;
+  padding: 8px;
+  border-radius: 15px;
   transition: opacity 0.3s ease;
   box-sizing: border-box;
   font-size: larger;
+  cursor:default
+ 
 }
 .material-icon {
   color: white;
@@ -234,6 +248,7 @@ form {
   box-sizing: border-box;
   border-color: white;
   border: white;
+   cursor: pointer;
 }
 #search-glass-wrapper {
   display: flex;
@@ -401,7 +416,13 @@ label {
   .private-info {
     gap: 20px;
   }
-
+  .toggle-wrapper {
+    gap:0px;
+    box-sizing: border-box;
+  }
+  .public-off{
+    box-sizing: border-box;
+  }
   .form-wrapper {
     margin: 10px;
     align-items: center;
@@ -419,6 +440,16 @@ label {
   left: 89%;
   color: darkgray;
   }
+  .content-container.private{
+    width:75%;
+  }
+  #lightbulb{
+  position: absolute;
+  top:55px;
+  width:75%;
+  color:rgb(255, 255, 119);
+
+}
   .private-room-wrapper {
     justify-content: space-around;
     width: 100%;
@@ -436,5 +467,8 @@ label {
     flex-direction: column;
     gap: 0px;
     
+  }
+  #logo-style-inline {
+    font-size:30px;
   }
 }
