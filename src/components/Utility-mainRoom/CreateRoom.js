@@ -38,6 +38,7 @@ const CreateRoom = (props) => {
     const newPublicRoom = {
       category,
       room,
+      publicRoomName,
       createdBy: myUsername,
       timeStamp: currentTime,
       publicRoom: publicRoomName,
@@ -268,23 +269,26 @@ const CreateRoom = (props) => {
                           );
                         })}
                       </select>
-                    <div className={"public-hub-name"}>
-                      <label htmlFor={"public-hub-name"}>Name the Hub?</label>
+                      <div className={"public-hub-name"}>
+                        <label htmlFor={"public-hub-name"}>hub name</label>
 
-                      <input
-                        type="text"
-                        id={"public-hub-name"}
-                        placeholder={'"Name the public Hub"'}
-                        onChange={(e) => setPublicRoomName(e.target.value)}
-                      />
-                    </div>
+                        <input
+                          type="text"
+                          id={"public-hub-name"}
+                          placeholder={'"Name the public Hub"'}
+                          onChange={(e) => setPublicRoomName(e.target.value)}
+                          maxLength="20"
+                          required='true'
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
                 {categoryKeys !== "" &&
                   !privateRoom &&
                   room !== "0" &&
-                  category && publicRoomName &&(
+                  category &&
+                  publicRoomName && (
                     <>
                       <h4>
                         <span style={{ color: "#BBDEFB" }}>
@@ -293,52 +297,52 @@ const CreateRoom = (props) => {
                         </span>{" "}
                       </h4>
                       <div className={"private-info"}>
-                            <div className="info-div">
-                        <div className={"category-result"}>
-                          <label htmlFor={"public-name"}>Category</label>
-                          <input
-                            type="text"
-                            id={"public-category"}
-                            placeholder={category}
-                            readOnly
-                          />
-                        </div>
-                        <div className={"public-hub-name overview"}>
-                          <label htmlFor={"public-hub-name"}>Hub Name</label>
-                          <input
-                            type="text"
-                            id={"public-hub-name overview"}
-                            placeholder={publicRoomName}
-                            readOnly
-                          />
-                        </div>
+                        <div className="info-div">
+                          <div className={"category-result"}>
+                            <label htmlFor={"public-name"}>Category</label>
+                            <input
+                              type="text"
+                              id={"public-category"}
+                              placeholder={category}
+                              readOnly
+                            />
+                          </div>
+                          <div className={"public-hub-name overview"}>
+                            <label htmlFor={"public-hub-name"}>Hub Name</label>
+                            <input
+                              type="text"
+                              id={"public-hub-name overview"}
+                              placeholder={publicRoomName}
+                              readOnly
+                            />
+                          </div>
 
-                        <div id={"number-value"}>
-                          <label htmlFor={"public-number"}>room </label>
-                          <input
-                            type="number"
-                            id={"public-number"}
-                            placeholder={"#" + room}
-                            readOnly
-                          />
-                        </div>
-                        <br></br>
-                        <div id={"name-value"}>
-                          <label htmlFor={"public-name"}>Created By </label>
+                          <div id={"number-value"}>
+                            <label htmlFor={"public-number"}>room </label>
+                            <input
+                              type="number"
+                              id={"public-number"}
+                              placeholder={"#" + room}
+                              readOnly
+                            />
+                          </div>
+                          <br></br>
+                          <div id={"name-value"}>
+                            <label htmlFor={"public-name"}>Created By </label>
 
-                          <input
-                            type="name"
-                            id={"public-name"}
-                            placeholder={"@" + userLoginInfo.username}
-                            readOnly
-                          />
+                            <input
+                              type="name"
+                              id={"public-name"}
+                              placeholder={"@" + userLoginInfo.username}
+                              readOnly
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
                       <button
                         type="button"
                         className={"submit-button"}
-                        onClick={(event)=>handlePublicSubmit(event)}>
+                        onClick={(event) => handlePublicSubmit(event)}>
                         Create Hub
                       </button>
                     </>
