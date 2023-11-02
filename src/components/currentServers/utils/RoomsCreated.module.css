@@ -17,6 +17,9 @@
 }
 #icon_left_right{
   color:white;
+  &:hover{
+    transform:scale(1.50)
+  }
 }
 .flex{
     display:flex;
@@ -53,6 +56,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 725px;
   gap: 100px;
   overflow: hidden;
   padding: 20px;
@@ -68,12 +72,13 @@
     0 8px 8px rgba(0, 0, 0, 0.2);
     
 }
-.room_item{
+.room_item {
+  animation: gradientBackground 24s ease infinite;
   position: relative;
-  display:flex;
+  display: flex;
   width: 100px;
   height: 100px;
-  border: 3px solid #1c2125; /* Border color to match .roomWrapper */
+  border: 3px solid #1c2125; /* Border color */
   color: white;
   background: linear-gradient(
     135deg,
@@ -81,18 +86,48 @@
     #2a3a4c 25%,
     #232a30 50%,
     #1a1f23 100%
-  ); /* Lighter background gradient */
+  );
   background-size: 200% 200%;
-  animation: gradientBackground 24s ease infinite;
   border-radius: 50px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 10px 24px rgba(0, 0, 0, 0.2),
-    0 16px 40px rgba(0, 0, 0, 0.2), inset 0 -4px 12px #0d1115,
-    inset 0 4px 8px #1c2125; /* Shadows for 3D effect */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2),
+              0 10px 24px rgba(0, 0, 0, 0.2),
+              0 16px 40px rgba(0, 0, 0, 0.2),
+              inset 0 -4px 12px #0d1115,
+              inset 0 4px 8px #1c2125; /* Shadows for 3D effect */
   transition: all 0.3s ease-in-out;
   align-items: center;
   text-align: center;
   justify-content: center;
+}
 
+/* Keyframes and animation for sliding out to the left */
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0)rotate(360deg);
+  }
+  to {
+    transform: translateX(-800%);
+  }
+}
+
+/* Keyframes and animation for sliding in from the right */
+@keyframes slideInRight {
+ 0% {
+    transform: translateX(800%) rotate(720deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0) translateY(0);
+  }
+}
+
+/* Applying the slide out animation to .slideOut elements */
+.slideOut {
+  animation: slideOutLeft 600ms forwards;
+}
+
+/* Applying the slide in animation to .slideIn elements */
+.slideIn {
+  animation: slideInRight 800ms forwards;
 }
 .room_item:hover{
    
@@ -125,17 +160,24 @@
     }
     .room_item_wrapper{
         gap:10px;
-        max-width: 350px;
-        padding:10px;
+        min-width: 350px;
+        padding:15px;
         align-items: flex-start;
-        min-height:120px;
+        min-height:71px;
     }
     .room_item{
         height:70px;
+        width:75px;
     }
     .room_item>p{
         font-size:10px;
     }
-    
+    #room_owned_by_img{
+    position: absolute;
+    border-radius:50px;
+    height: 25px;
+    top:-5px;
+    left:-8px;
+}
 
 }

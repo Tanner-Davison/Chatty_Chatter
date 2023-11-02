@@ -48,4 +48,7 @@ module.exports = {
         console.log(err)
     }
   },
+  createPrivate: async (req,res)=>{
+    
+  }
 };
