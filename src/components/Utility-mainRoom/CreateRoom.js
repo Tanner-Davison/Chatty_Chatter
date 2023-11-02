@@ -14,6 +14,7 @@ import build from "./svgs/build.svg";
 import "./CreateRoom.css";
 import axios from "axios";
 import getCurrentTime, { getCurrentTimeJSX } from "./getTime";
+import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
 
 const CreateRoom = (props) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -169,18 +170,17 @@ const CreateRoom = (props) => {
                     </label>
                     <div className={"private-room-inputs"}>
                       <label htmlFor={"room-password"}>
-                        Create Key:
+                        Custom Key:
                         <input
                           type={isPasswordVisible ? "text" : "password"}
                           id={"room-password"}
-                          value={
-                            isPasswordVisible
-                              ? password
-                              : "•".repeat(password.length)
-                          }
+                          value={password}
                           onChange={handleInputChange}
-                          onKeyDown={() => handleKeyPress}
+                          onKeyDown={handleKeyPress}
                         />
+                        <VisibilityTwoToneIcon 
+                        id={'visible_eye'}
+                        onClick={()=>setIsPasswordVisible(!isPasswordVisible)}/>
                       </label>
                     </div>
                   </div>
@@ -278,7 +278,7 @@ const CreateRoom = (props) => {
                           placeholder={'"Name the public Hub"'}
                           onChange={(e) => setPublicRoomName(e.target.value)}
                           maxLength="20"
-                          required='true'
+                          required="true"
                         />
                       </div>
                     </div>

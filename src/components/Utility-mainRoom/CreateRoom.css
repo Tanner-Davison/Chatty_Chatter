@@ -11,6 +11,11 @@ form {
     #161a1d 100%
   );
 }
+#visible_eye{
+    position: absolute;
+    top:25%;
+    left:105%;
+  }
 .form-wrapper {
   position: relative;
   flex-direction: column;
@@ -34,7 +39,9 @@ form {
   color: white;
 }
 #header-border {
-  width: 250px;
+  display:flex;
+  flex-direction: row;
+  width: 400px;
   align-self: center;
   border-radius: 25px;
   background: linear-gradient(
@@ -86,6 +93,9 @@ form {
 }
 .question-wrapper.dark-mode {
   min-height: auto;
+}
+.question-wrapper.dark-mode>p{
+  font-size:px;
 }
 #number-value {
   display: flex;
@@ -252,8 +262,10 @@ form {
 .private-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   outline: 5px solid green;
+}
+.private-wrapper p{
+  font-size: 15px;
 }
 #room-lookup {
   display: flex;
@@ -306,6 +318,7 @@ label {
   color: gray;
 }
 .private-room-inputs {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-self: flex-start;
@@ -379,6 +392,7 @@ label {
 @media only screen and (max-width: 600px) {
   #header-border {
     display: flex;
+    width:300px;
     flex-direction: row;
     border-width: 2px;
     border-radius: 10px;
@@ -387,7 +401,7 @@ label {
   .private-info {
     gap: 20px;
   }
- 
+
   .form-wrapper {
     margin: 10px;
     align-items: center;
@@ -399,12 +413,25 @@ label {
   .question-wrapper {
     width: 88%;
   }
+  #visible_eye{
+  position: absolute;
+  top: 30%;
+  left: 89%;
+  color: darkgray;
+  }
   .private-room-wrapper {
     justify-content: space-around;
     width: 100%;
     flex-wrap: wrap;
     gap: 0px;
   }
+  .private-wrapper{
+    gap:0px;
+    
+  }
+ .private-wrapper p{
+  font-size:12px;
+ }
   #name-value {
     flex-direction: column;
     gap: 0px;
