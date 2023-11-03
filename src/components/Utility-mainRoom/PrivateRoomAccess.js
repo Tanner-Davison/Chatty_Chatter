@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from 'axios';
 import Button from "@mui/material/Button";
 const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
+	console.log(roomData)
     const PORT = process.env.REACT_APP_PORT;
 	const [isPasswordVisible, setIsPasswordVisible] = useState(true);
 	const [password, setPassword] = useState("");
@@ -13,7 +14,9 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
     const handlePasswordSubmit = async(e) => {
         console.log(roomData.private_room_password)
         e.preventDefault();
-       
+       if(password === null || roomData.private_room_password=== null || roomData.room_number=== null){
+		return
+	   }
         axios.get(`${PORT}/password_check/`, {
             params: {
                 password: password,

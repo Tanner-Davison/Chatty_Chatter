@@ -52,6 +52,8 @@ const MainRoom = () => {
     navigate(`/chatroom/${room}`);
     setLoading(true);
     const messages = await loadRoomHistory(room);
+    setRoomData(messages.allRoomData);
+    console.log(messages.private)
     setIsPrivateRoom(messages.private)
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);
@@ -111,7 +113,6 @@ const MainRoom = () => {
       const fetchRoomHistoryData = async () => {
         const data = await loadRoomHistory(room);
         setMessageRecieved(data.messageHistory);
-        setRoomData(data.allRoomData)
         setSocketConnected(true);
       };
       

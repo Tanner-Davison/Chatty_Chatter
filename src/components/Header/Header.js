@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useContext, } from "react";
+import { LoginContext } from "../contexts/LoginContext";
 import "./Header.css";
 import searchGlass from './svgs/searchGlass.svg'
 const Header = ({ joinRoom, roomChanger, room, }) => {
@@ -8,7 +9,14 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   const [visible, setVisible] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  
+  const { mainAccess, setMainAccess, } =
+    useContext(LoginContext);
+
+  const headerClickHandler = (e) =>{
+    e.preventDefault();
+    setMainAccess(true);
+    joinRoom();
+  }
    const handleKeyDown = (event) => {
      if (event.keyCode === 32) {
        event.preventDefault();
@@ -104,7 +112,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             onKeyDown={handleKeyDown}
             onChange={roomChanger}
           />
-          <button className={"buttonHeader"} type="submit" onClick={joinRoom}>
+          <button className={"buttonHeader"} type="button" onClick={(e)=>headerClickHandler(e)}>
             <img src={searchGlass} alt={"search hub"} />
             Search
           </button>

@@ -13,14 +13,13 @@ import Header from "../Header/Header";
 import build from "./svgs/build.svg";
 import "./CreateRoom.css";
 import axios from "axios";
-import getCurrentTime, { getCurrentTimeJSX } from "./getTime";
+import getCurrentTime from "./getTime";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
 import EmojiObjectsTwoToneIcon from "@mui/icons-material/EmojiObjectsTwoTone";
 import AddIcon from "@mui/icons-material/Add";
 const CreateRoom = (props) => {
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [privateRoom, setPrivateRoom] = useState(false);
-	const [roomPassword, setRoomPassword] = useState("");
 	const [roomTaken, setRoomTaken] = useState(Boolean);
 	const [privateRoomName, setPrivateRoomName] = useState("");
 	const [publicRoomName, setPublicRoomName] = useState("");
