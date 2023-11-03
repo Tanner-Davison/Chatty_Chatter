@@ -53,7 +53,6 @@ const MainRoom = () => {
     setLoading(true);
     const messages = await loadRoomHistory(room);
     setRoomData(messages.allRoomData);
-    console.log(messages.private)
     setIsPrivateRoom(messages.private)
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);

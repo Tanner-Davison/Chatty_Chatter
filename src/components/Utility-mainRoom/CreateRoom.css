@@ -328,6 +328,39 @@ form {
   text-align: center;
   color:gray;
 }
+#hub-name{
+  position: relative;
+  display:flex;
+  flex-direction: column;
+  width:89%;
+  align-items: center;
+  justify-content: center;
+}
+#hub-name>input::placeholder,
+#hub-name>input{
+  text-align: center;
+  font-weight: 700;
+}
+  #verify_name_button{
+    position: relative;
+    display: flex;
+    width: 100px;
+    height: 35px;
+    border: 3px solid #1c2125;
+    background: linear-gradient( 135deg, #1a1f23 0%, #2a3a4c 25%, #232a30 50%, #1a1f23 100% );
+    background-size: 200% 200%;
+    border-radius: 25px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 10px 24px rgba(0, 0, 0, 0.2), 0 16px 40px rgba(0, 0, 0, 0.2), inset 0 -4px 12px #0d1115, inset 0 4px 8px #1c2125;
+    transition: all 0.2s ease-in-out;
+    color: rgb(10, 156, 205);
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 label {
   font-family: "Varela Round", sans-serif;
   font-weight: 500;
@@ -410,6 +443,10 @@ label {
     /* Updated inset color to match new color scheme */ inset 0 4px 8px #ff8c22;
   border-radius: 10px;
 }
+#verify_name{
+  color:white;
+  border-color: blue;
+}
 
 @media only screen and (max-width: 600px) {
   #header-border {
@@ -420,7 +457,9 @@ label {
     border-radius: 10px;
     height: 86px;
   }
- 
+   #verify_name{
+  position: relative;
+  }
   .private-info {
     gap: 20px;
   }
