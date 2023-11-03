@@ -58,7 +58,7 @@ const MainRoom = () => {
     setInroom(room);
     setMessageRecieved(messages.messageHistory);
     setLoading(false);
-    if (messages.length <= 0) {
+    if (messages.messageHistory.length <= 0) {
       setRoomIsEmpty(true);
     }
   };
