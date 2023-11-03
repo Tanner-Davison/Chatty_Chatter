@@ -3,23 +3,31 @@ import { LoginContext } from "../../contexts/LoginContext";
 import styles from "./RoomsCreated.module.css";
 import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowRightTwoTone";
 import KeyboardDoubleArrowLeftTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowLeftTwoTone";
-
+import { Tilt } from "react-tilt";
 const RoomsCreated = ({ roomsCreated }) => {
+  
   const { userLoginInfo } = useContext(LoginContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
   const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
+  const defaultOptions = {
+    reverse: false, // reverse the tilt direction
+    max: 35, // max tilt rotation (degrees)
+    perspective: 1000, // Transform perspective, the lower the more extreme the tilt gets.
+    scale: 1.1, // 2 = 200%, 1.5 = 150%, etc..
+    speed: 1000, // Speed of the enter/exit transition
+    transition: true, // Set a transition on enter/exit.
+    axis: null, // What axis should be disabled. Can be X or Y.
+    reset: true, // If the tilt effect has to be reset on exit.
+    easing: "cubic-bezier(.03,.98,.52,.99)", // Easing on enter/exit.
+  };
   const roomsPerPage = 4;
-
   const endIndex = Math.min(currentIndex + roomsPerPage, roomsCreated.length);
 
   const changeRooms = (direction) => {
     setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
-
-    // wait until animation finishes before sliding in the new items.
     setTimeout(() => {
       setItemsToAnimateOut(new Set());
-
       setCurrentIndex((prevIndex) => {
         if (direction === "left") {
           const newIndex = prevIndex - roomsPerPage;
@@ -65,28 +73,30 @@ const RoomsCreated = ({ roomsCreated }) => {
               const isAnimatingOut = itemsToAnimateOut.has(room.id);
               const isAnimatingIn = itemsToAnimateIn.has(room.id);
               const roomClass = `${styles.room_item} ${
-                isAnimatingOut
-                  ? styles.slideOut
-                  : isAnimatingIn
-                  ? styles.slideIn
-                  : ""
-              }`;
-
+								isAnimatingOut
+									? styles.slideOut
+									: isAnimatingIn
+									? styles.slideIn
+									: ""
+							} ${room.private ? styles.room_private : ""}`;
               return (
-                <div
-                  key={room.id}
-                  className={roomClass}
-                  type="button"
-                  value={room.room}>
-                  <img
-                    id={styles.room_owned_by_img}
-                    src={userLoginInfo.imageUrl}
-                    alt="owner"
-                    height={40}
-                  />
-                  <p>{room.roomName}</p>
-                </div>
-              );
+								<Tilt options={defaultOptions}>
+									<div
+										key={room.id}
+										className={roomClass}
+										type='button'
+										value={room.room}>
+				
+											<img
+												id={styles.room_owned_by_img}
+												src={userLoginInfo.imageUrl}
+												alt='owner'
+												height={40}
+											/>
+										<p>{room.roomName}</p>
+									</div>
+								</Tilt>
+							);
             })}
           </div>
           <div className={styles.flex_row}>

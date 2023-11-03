@@ -37,6 +37,7 @@ app.get("/user_info/:username", EndpointHandler.userInfo);
 app.get("/api/users/:username/rooms", EndpointHandler.joinedRooms);
 app.get("/availability/:numberValue", EndpointHandler.roomAvailable);
 app.post('/new-room-creation', RoomCreation.createPublic);
+app.post('/create-private-room', RoomCreation.createPrivate);
 app.post("/signup", LoginHelper.signUp);
 app.post("/login", LoginHelper.Login);
 

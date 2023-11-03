@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
   roomsJoined: [
     {
       room: Number,
+      roomName: String,
       timestamp: String,
     },
   ],
@@ -47,7 +48,7 @@ const userSchema = new mongoose.Schema({
 const roomSchema = new mongoose.Schema({
   room_number: {
     type: Number,
-    required: true,
+    required: false,
   },
   room_name: {
     type: String,
@@ -55,6 +56,7 @@ const roomSchema = new mongoose.Schema({
   },
   private_room: {
     type: Boolean,
+    password: String,
     required: false,
   },
   created_by: {

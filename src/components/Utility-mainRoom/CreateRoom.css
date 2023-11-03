@@ -13,8 +13,9 @@ form {
 }
 #visible_eye{
     position: absolute;
-    top:25%;
-    left:105%;
+    top: 11%;
+    left: 89%;
+    color: darkgray;
   }
 .form-wrapper {
   position: relative;
@@ -130,17 +131,16 @@ form {
   font-family: "Varela Round", sans-serif;
 }
 .content-container.private{
+  display:flex;
+  flex-direction: row;
   width:45%;
   padding:10px;
   align-self: center;
-  padding:15px;
+  align-items: center;
+  justify-content: center;
+  
 }
-#lightbulb{
-  position: absolute;
-  top:50px;
-  color:rgb(255, 255, 119);
 
-}
 .info-div {
      display: flex;
     flex-direction: column;
@@ -166,10 +166,14 @@ form {
   font-family: "Varela Round", sans-serif;
   cursor: pointer;
 }
+
 .category-container > select > option {
   color: black;
   font-family: "Varela Round", sans-serif;
+  font-size:45px;
+  min-width:200px;
 }
+
 .category-result {
   display: flex;
   flex-direction: column;
@@ -296,6 +300,7 @@ form {
 
 .private-room-inputs input {
   width: 45%;
+  padding-left:10px;
 }
 .private-room-inputs label {
   display: flex;
@@ -361,6 +366,7 @@ label {
   flex-direction: column;
 }
 .submit-button {
+  display:flex;
   width: 150px;
   height: 50px;
   border: 3px solid #1c2125; /* Border color */
@@ -381,8 +387,9 @@ label {
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  line-height: 50px;
   align-self: center;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   margin-top: 20px;
 }
@@ -413,6 +420,7 @@ label {
     border-radius: 10px;
     height: 86px;
   }
+ 
   .private-info {
     gap: 20px;
   }
@@ -434,22 +442,10 @@ label {
   .question-wrapper {
     width: 88%;
   }
-  #visible_eye{
-  position: absolute;
-  top: 30%;
-  left: 89%;
-  color: darkgray;
-  }
   .content-container.private{
     width:75%;
   }
-  #lightbulb{
-  position: absolute;
-  top:55px;
-  width:75%;
-  color:rgb(255, 255, 119);
 
-}
   .private-room-wrapper {
     justify-content: space-around;
     width: 100%;

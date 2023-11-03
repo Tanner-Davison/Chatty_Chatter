@@ -102,7 +102,6 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             className={"roomInput"}
             placeholder="Room #"
             onKeyDown={handleKeyDown}
-            value={room}
             onChange={roomChanger}
           />
           <button className={"buttonHeader"} type="submit" onClick={joinRoom}>

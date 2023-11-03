@@ -48,7 +48,39 @@ module.exports = {
         console.log(err)
     }
   },
-  createPrivate: async (req,res)=>{
-    
+  createPrivate: async(req,res)=>{
+    console.log(req.body)
+    const user = await User.findOne({
+      username: req.body.createdBy
+    })
+    if (!user) {
+      return res.status(404).send({message: 'user does not exist'})
+    } else {
+      const privateRoom = new Rooms({
+              room_number: req.body.room,
+              room_name: req.body.privateRoomName,
+              private_room: true,
+              created_by: req.body.createdBy,
+              room_category: req.body.category,
+              first_message: `Private room created on ${currentDate}.`,
+              messageHistory: {
+                message: `Room Created By ${req.body.createdBy} on ${currentDate}`,
+                sentBy: req.body.createdBy,
+                timestamp: currentDate,
+                imageUrl: req.body.imageUrl,
+                cloudinary_id: req.body.cloudinary,
+              },
+              users_in_room: [req.body.createdBy],
+      })
+      await privateRoom.save()
+      user.roomsCreated.push({
+				roomName: req.body.privateRoomName,
+				room: req.body.room,
+				private: true,
+				timestamp: currentDate,
+      });
+      await user.save();
+        res.status(200).send({message: 'private room created'})
+    }
   }
 };
