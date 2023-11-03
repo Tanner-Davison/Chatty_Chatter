@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
     {
       roomName: String,
       room: Number,
+      roomPassword: Number,
       private: Boolean,
       timestamp: String,
     },
@@ -48,16 +49,15 @@ const userSchema = new mongoose.Schema({
 const roomSchema = new mongoose.Schema({
   room_number: {
     type: Number,
-    required: false,
   },
   room_name: {
     type: String,
-    required: false,
   },
   private_room: {
     type: Boolean,
-    password: String,
-    required: false,
+  },
+  private_room_password: {
+    type: String,
   },
   created_by: {
     type: String,
@@ -65,7 +65,6 @@ const roomSchema = new mongoose.Schema({
   },
   room_category: {
     type: String,
-    required: false,
   },
   first_message: {
     type: String,

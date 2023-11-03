@@ -1,10 +1,13 @@
 const { User, Rooms } = require("./Schemas");
 const currentDate = new Date().toLocaleDateString(); 
+const bcrypt = require("bcrypt");
+const saltRounds = 5;
+
 module.exports = {
   createPublic: async (req, res) => {
     console.log('running');
     try{
-
+        
         const user = await User.findOne({
             username: req.body.createdBy
         });
@@ -14,7 +17,7 @@ module.exports = {
         if(existingRoom){
             return res.status(404).send({message: 'room already exists'})
         }
-        if(user){
+      if (user) {
             const room = new Rooms({
               room_number: req.body.room,
               room_name: req.body.publicRoomName,
@@ -48,7 +51,11 @@ module.exports = {
         console.log(err)
     }
   },
-  createPrivate: async(req,res)=>{
+  createPrivate: async (req, res) => {
+    const password = req.body.password;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
     console.log(req.body)
     const user = await User.findOne({
       username: req.body.createdBy
@@ -60,6 +67,7 @@ module.exports = {
               room_number: req.body.room,
               room_name: req.body.privateRoomName,
               private_room: true,
+              private_room_password: hashedPassword,
               created_by: req.body.createdBy,
               room_category: req.body.category,
               first_message: `Private room created on ${currentDate}.`,

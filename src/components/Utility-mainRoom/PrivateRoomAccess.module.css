@@ -1,0 +1,25 @@
+.private_room_main_wrapper{
+    position: relative;
+    display:flex;
+    flex-direction: column;
+}
+#align_self{
+    align-self:center;
+    justify-self: center;
+}
+#password_input{
+    display: flex;
+    position: relative;
+    gap:10px;
+    width: 80%;
+    padding-bottom:25px;
+    align-self: center;
+    justify-self: center;
+}
+#eye_ball{
+    position: relative;
+    top:5px;
+}
+#submit_button{
+    width:100px;
+}

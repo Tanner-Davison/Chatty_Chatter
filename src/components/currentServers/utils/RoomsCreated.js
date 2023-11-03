@@ -4,7 +4,7 @@ import styles from "./RoomsCreated.module.css";
 import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowRightTwoTone";
 import KeyboardDoubleArrowLeftTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowLeftTwoTone";
 import { Tilt } from "react-tilt";
-const RoomsCreated = ({ roomsCreated }) => {
+const RoomsCreated = ({ roomsCreated, handleClick }) => {
   
   const { userLoginInfo } = useContext(LoginContext);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,19 +80,20 @@ const RoomsCreated = ({ roomsCreated }) => {
 									: ""
 							} ${room.private ? styles.room_private : ""}`;
               return (
-								<Tilt options={defaultOptions}>
+								<Tilt
+									key={room._id}
+									options={defaultOptions}>
 									<div
-										key={room.id}
 										className={roomClass}
-										type='button'
+                    onClick={()=>handleClick(room.room)}
+                    
 										value={room.room}>
-				
-											<img
-												id={styles.room_owned_by_img}
-												src={userLoginInfo.imageUrl}
-												alt='owner'
-												height={40}
-											/>
+										<img
+											id={styles.room_owned_by_img}
+											src={userLoginInfo.imageUrl}
+											alt='owner'
+											height={40}
+										/>
 										<p>{room.roomName}</p>
 									</div>
 								</Tilt>

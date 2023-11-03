@@ -65,7 +65,7 @@ const CurrentServers = () => {
 
   return (
     <>
-      <Header socket={socket} />
+      <Header key={roomsJoined.id} socket={socket} />
       <div className={`room-container`}>
         {newUserToggle && <h1>Enter main room to get started!</h1>}
         <div
@@ -98,7 +98,7 @@ const CurrentServers = () => {
             );
           })}
       </div>
-      {<RoomsCreated roomsCreated={roomsCreated}/>}
+      {<RoomsCreated handleClick={handleRoomButtonClick} roomsCreated={roomsCreated}/>}
     </>
   );
 };

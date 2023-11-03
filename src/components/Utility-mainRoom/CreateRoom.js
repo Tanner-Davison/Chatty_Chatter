@@ -77,7 +77,8 @@ const CreateRoom = (props) => {
 		const newPrivateRoom = {
 			category,
 			room: privateRoomNum,
-			privateRoomName,
+      privateRoomName,
+      password,
 			createdBy: userLoginInfo.username,
 			timeStamp: currentTime,
 			imageUrl: userLoginInfo.imageUrl,
