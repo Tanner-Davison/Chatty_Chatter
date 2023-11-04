@@ -5,7 +5,8 @@ import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined";
-import RoomsCreated from './utils/RoomsCreated'
+import PublicRoomsCreated from './utils/PublicRoomsCreated'
+import PrivateRoomsCreated from "./utils/PrivateRoomsMade";
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } =
     useContext(LoginContext);
@@ -98,7 +99,18 @@ const CurrentServers = () => {
             );
           })}
       </div>
-      {<RoomsCreated handleClick={handleRoomButtonClick} roomsCreated={roomsCreated}/>}
+      {
+        <PublicRoomsCreated
+          handleClick={handleRoomButtonClick}
+          roomsCreated={roomsCreated}
+        />
+      }
+      {
+        <PrivateRoomsCreated
+          handleClick={handleRoomButtonClick}
+          roomsCreated={roomsCreated}
+        />
+      }
     </>
   );
 };

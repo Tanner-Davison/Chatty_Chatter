@@ -1,209 +1,334 @@
 .rooms_wrapper {
-	position: relative;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 25px;
-	background-color: #161a1d;
-	animation: gradientBackground 24s ease infinite;
-	padding: 10px 10px 10px 10px;
-	border: 2px solid #1c2125;
-	border-top: 4px inset #0d1115;
-	box-sizing: border-box;
-	border-radius: 39px;
-	box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
+  position: relative;
+ 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0px;
+  gap: 25px;
+  background: linear-gradient(
+    135deg,
+    #161a1d 0%,
+    #283644 25%,
+    #1e252b 50%,
+    #161a1d 100%
+  );
+  animation: gradientBackground 24s ease infinite;
+  padding: 10px;
+  padding-top: 55px;
+  border: 2px solid #1c2125;
+  border-top: 4px inset #1f262d;
+  box-sizing: border-box;
+  border-radius: 20px;
+  box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
 }
-#icon_left_right {
-	color: white;
-	&:hover {
-		transform: scale(1.5);
-	}
+#grid_view_icon {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  color: white;
+  font-size: 25px;
+  background-color: transparent;
 }
-.flex {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	min-width: 50%;
+#grid_view_icon:hover{
+	transform: scale(1.15);
 }
-.flex_row {
-	display: flex;
-	align-items: flex-end;
-	justify-content: flex-end;
-	gap: 100px;
-	padding-top: 10px;
-	align-self: center;
+.grid_view_wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: -moz-fit-content;
+	min-width:49vw;
+    flex-wrap: wrap;
+    padding: 15px;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px;
+    gap: 36px;
+    background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
+    animation: RoomsCreated_RoomsCreated_gradientBackground__CW4HO__79809 24s ease infinite;
+    padding: 48px;
+    padding-top: 40px;
+    border: 2px solid #1c2125;
+    border-top: 4px inset #1f262d;
+    box-sizing: border-box;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
 }
-#display_created_room_name {
-	color: white;
-	font-family: "Shantell Sans", cursive;
-	font-size: 25px;
+.rooms_wrapper p {
+  font-size: 17px;
+  color: rgb(255, 255, 255);
 }
 
+#icon_left_right {
+  color: white;
+  &:hover {
+    transform: scale(1.5);
+  }
+}
+.flex {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.flex_row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 25px;
+  padding-top: 10px;
+  align-self: center;
+}
+
+#display_created_room_name {
+  position: absolute;
+  display: flex;
+  top: -34px;
+  left: -5px;
+  align-self: flex-start;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  margin-left: 10px;
+  border-radius: 16px 16px 1px 2px;
+  font-size: 20px;
+  margin-left: 20px;
+  padding: 5px 10px;
+
+  border: 1px outset #000000;
+  background: linear-gradient(160deg, #282b30, #1d2123, #262a2e, #15181b);
+}
+.room_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 50vw;
+}
 #room_count {
-	display: flex;
-	color: white;
-	justify-self: flex-end;
-	padding: 0px 10px 0px 10px;
-	box-sizing: border-box;
-	border-radius: 25px;
-	font-family: "Shantell Sans", cursive;
+  color: white;
+  box-sizing: border-box;
+  font-family: cursive;
+  font-size: 14px;
 }
 
 .room_item_wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 725px;
-	gap: 100px;
-	overflow: hidden;
-	padding: 20px;
-	border-radius: 25px;
-	/* Metallic look */
-	background: linear-gradient(160deg, #1c1f22, #141719, #1c1f22, #161a1d);
-	border: 1px solid #1c1f22;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-		0 1px 1px rgba(0, 0, 0, 0.7), 0 2px 2px rgba(0, 0, 0, 0.2),
-		0 4px 4px rgba(0, 0, 0, 0.2), 0 8px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 725px;
+  gap: 75px;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 35px;
+  background: linear-gradient(160deg, #23262a, #1a1e20, #202327, #1e2327);
+  border: 1px solid #1c1f22;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 1px rgba(52, 51, 51, 0.7), 0 2px 2px rgba(55, 53, 53, 0.2),
+    0 4px 4px rgba(0, 0, 0, 0.2), 0 8px 8px rgba(0, 0, 0, 0.2);
 }
 .room_item {
-	animation: gradientBackground 24s ease infinite;
-	position: relative;
-	display: flex;
-	width: 100px;
-	height: 100px;
-  border-radius:50px;
-	border: 4px solid #1B5E20; /* Dark green border color */
+  animation: gradientBackground 24s ease infinite;
+  position: relative;
+  display: flex;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  border: 1px solid #020402;
   background: linear-gradient(
     135deg,
-    #1B5E20 0%, /* Dark green */
-    #145214 25%, /* Darker green */
-    #0E3A0E 50%, /* Even darker green */
-    #1B5E20 100% /* Dark green */
+    #1b5e20 0%,
+    #145214 25%,
+    #0e3a0e 50%,
+    #1b5e20 100%
   );
-  box-shadow: 
-    0 8px 16px rgba(0, 0, 0, 0.3), /* Slightly increased shadow */
-    0 12px 28px rgba(0, 0, 0, 0.4), /* Deeper shadow */
-    0 20px 50px rgba(0, 0, 0, 0.5), /* Even deeper shadow */
-    inset 0 -4px 12px #1B5E20, /* Inset shadow in dark green */
-    inset 0 4px 8px #145214; /* Inset shadow in darker green */
-  /* Add a reflective effect with some color retention */
-  background-image: 
-    linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent),
-    linear-gradient(135deg, #1B5E20 0%, #1B5E20 25%, #145214 25%, #145214 50%, #0E3A0E 50%, #0E3A0E 100%); /* Maintain color in the middle */
-  background-size: 40px 40px, 40px 40px, 100% 100%; /* Adjust the size of the reflection pattern */
-  /* You can further customize these styles as needed */
-	transition: all 0.3s ease-in-out;
-	align-items: center;
-	text-align: center;
-	justify-content: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
+    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #1b5e20,
+    inset 0 4px 8px #145214;
+
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      #1b5e20 0%,
+      #1b5e20 25%,
+      #145214 25%,
+      #145214 50%,
+      #0e3a0e 50%,
+      #0e3a0e 100%
+    );
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  transition: all 0.3s ease-in-out;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
 /* Keyframes and animation for sliding out to the left */
 @keyframes slideOutLeft {
-	from {
-		transform: translateX(0) rotate(360deg);
-	}
-	to {
-		transform: translateX(-800%);
-	}
+  from {
+    transform: translateX(0) rotate(360deg);
+  }
+  to {
+    transform: translateX(-800%);
+  }
 }
 
 /* Keyframes and animation for sliding in from the right */
 @keyframes slideInRight {
-	0% {
-		transform: translateX(800%) rotate(720deg);
-	}
-	100% {
-		transform: translateX(0) rotate(0) translateY(0);
-	}
+  0% {
+    transform: translateX(800%) rotate(720deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0) translateY(0);
+  }
 }
 
 /* Applying the slide out animation to .slideOut elements */
 .slideOut {
-	animation: slideOutLeft 600ms forwards;
+  animation: slideOutLeft 600ms forwards;
 }
 
 /* Applying the slide in animation to .slideIn elements */
 .slideIn {
-	animation: slideInRight 800ms forwards;
+  animation: slideInRight 800ms forwards;
 }
 .room_item:hover {
-	border-radius: 13px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
-		0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
-		inset 0 8px 16px #1c2125;
-	transition: all 0.4s ease-in-out;
+  border-radius: 32px;
+  border: 1px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
+    inset 0 8px 16px #1c2125;
+  transition: all 0.4s ease-in-out;
 }
 .room_item.room_private {
-  border: 2px solid #073B8B; /* Dark blue border color */
+  border: 2px solid #073b8b; /* Dark blue border color */
   background: linear-gradient(
     135deg,
-    #073B8B 0%, /* Dark blue */
-    #062E7A 25%, /* Darker blue */
-    #04214E 50%, /* Even darker blue */
-    #073B8B 100% /* Dark blue */
+    #073b8b 0%,
+    #062e7a 25%,
+    #04214e 50%,
+    #073b8b 100%
   );
-  box-shadow: 
-    0 8px 16px rgba(0, 0, 0, 0.3), /* Slightly increased shadow */
-    0 12px 28px rgba(0, 0, 0, 0.4), /* Deeper shadow */
-    0 20px 50px rgba(0, 0, 0, 0.5), /* Even deeper shadow */
-    inset 0 -4px 12px #073B8B, /* Inset shadow in dark blue */
-    inset 0 4px 8px #062E7A; /* Inset shadow in darker blue */
-  /* Add a reflective effect with some color retention */
-  background-image: 
-    linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent),
-    linear-gradient(135deg, #073B8B 0%, #073B8B 25%, #062E7A 25%, #062E7A 50%, #04214E 50%, #04214E 100%); /* Maintain color in the middle */
-  background-size: 40px 40px, 40px 40px, 100% 100%; /* Adjust the size of the reflection pattern */
-  /* You can further customize these styles as needed */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
+    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #073b8b,
+    inset 0 4px 8px #062e7a;
+
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      #073b8b 0%,
+      #073b8b 25%,
+      #062e7a 25%,
+      #062e7a 50%,
+      #04214e 50%,
+      #04214e 100%
+    ); 
+  background-size: 40px 40px, 40px 40px, 100% 100%; 
 }
-/* .room_item.room:hover {
-	border-radius: 13px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
-		0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
-		inset 0 8px 16px #1c2125;
-	transition: all 0.4s ease-in-out;
-} */
+.room_item.room_private:hover {
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
+    inset 0 8px 16px #1c2125;
+  transition: all 0.4s ease-in-out;
+}
 #room_owned_by_img {
-	position: absolute;
-	border-radius: 50px;
-	height: 35px;
-	top: -10px;
-	left: -10px;
+  position: absolute;
+  border-radius: 50px;
+  height: 35px;
+  top: -10px;
+  left: -10px;
 }
 
 @media only screen and (max-width: 600px) {
-	.rooms_wrapper {
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 1rem;
-	}
-	.flex {
-		position: relative;
-	}
-	.room_item_wrapper {
-		gap: 10px;
-		min-width: 350px;
-		padding: 15px;
-		align-items: flex-start;
-		min-height: 71px;
-	}
-	.room_item {
-		height: 70px;
-		width: 75px;
-	}
-	.room_item > p {
-		font-size: 10px;
-	}
-	#room_owned_by_img {
-		position: absolute;
-		border-radius: 50px;
-		height: 25px;
-		top: -5px;
-		left: -8px;
-	}
+  .rooms_wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .grid_view_wrapper {
+    min-width: 75vw;
+    min-height: 33px;
+    padding: 10px;
+    padding-top: 39px;
+    margin-top: 0px;
+  }
+  .flex {
+    position: relative;
+  }
+  .flex_row {
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  .room_item_wrapper {
+   gap: 10px;
+    min-width: 350px;
+    padding: 15px;
+    align-items: center;
+    min-height: 77px;
+    padding-top: 36px;
+  }
+  #display_created_room_name {
+    font-size: 15px;
+    left: -1px;
+    border-radius: 16px 16px 1px 2px;
+  }
+
+  .room_item {
+    height: 70px;
+    width: 75px;
+  }
+  .room_item > p {
+    font-size: 10px;
+  }
+  #room_owned_by_img {
+    position: absolute;
+    border-radius: 50px;
+    height: 25px;
+    top: -5px;
+    left: -8px;
+  }
 }

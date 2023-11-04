@@ -81,6 +81,7 @@ const MainRoom = () => {
     };
     socket.emit("send_message", data);
     setMessageRecieved((prev) => [...prev, data]);
+    setMessage('')
   };
 
   const deleteRoom = () => {
@@ -287,7 +288,7 @@ const MainRoom = () => {
 								Leave
 							</button>
 							<input
-								placeholder={message !== "" ? message : "Message..."}
+								placeholder={ "Message..."}
 								value={message}
 								onChange={(event) => {
 									console.log("event inside Onchange", event);

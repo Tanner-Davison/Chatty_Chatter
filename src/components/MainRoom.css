@@ -1,5 +1,6 @@
 .room-wrapper {
   display: flex;
+  height: 82vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -7,10 +8,13 @@
   padding-bottom: 20px;
 }
 
-p {
-  font-size: 17px;
-  color: white;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+
+.all-messages p {
+  font-size:17px;
+  color:#fcfafa;
+  font-weight: 500;
+  letter-spacing: .03rem;
+  font-family: sans-serif;
 }
 
 .message-content {
@@ -22,6 +26,7 @@ p {
   min-width: 130px;
   padding: 4px;
   margin: 0;
+  
 }
 
 .message-timestamp-left {
@@ -202,6 +207,11 @@ p {
   min-width: 151px;
   padding: 4px;
   margin: 0;
+  color:#fcfafa;
+  font-weight: 500;
+  letter-spacing: .03rem;
+  font-family: sans-serif;
+ 
 }
 
 .message-blue:after {
@@ -365,8 +375,8 @@ p {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 35%;
-  max-height: 600px; /* Set to your desired height */
+  width: 55vw;
+  min-height: 75vh; /* Set to your desired height */
   overflow-y: auto;
   scroll-behavior: smooth;
   background: linear-gradient(
@@ -551,9 +561,10 @@ h1 {
   }
 
   .all-messages {
-    display: flex;
+     display: flex;
     width: 90%;
-    max-height: 338px;
+    /* max-height: 60vh; */
+    min-height: 53vh;
     justify-self: flex-end;
     padding: 0px 10px 10px 10px;
   }
@@ -567,6 +578,7 @@ h1 {
     align-items: flex-start;
     width: 45%;
     margin-left: 20%;
+    padding-bottom: 14px;
   }
 
   .container.blue {
@@ -617,7 +629,9 @@ h1 {
     align-items: center;
     width: 100vw;
   }
-
+  .room-wrapper{
+    height:69vh
+  }
   .room-num-input-mainRoom {
     flex-direction: row;
     margin-bottom: 15px;
