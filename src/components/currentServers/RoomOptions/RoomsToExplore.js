@@ -114,6 +114,7 @@ const AllRoomsCreated = ({ roomsCreated, handleClick }) => {
               }}
             />
             {displayedRooms.map((room) => {
+              const imageURL = room.messageHistory[0].imageUrl;
               const isAnimatingOut = itemsToAnimateOut.has(room.id);
               const isAnimatingIn = itemsToAnimateIn.has(room.id);
               const roomClass = `${styles.room_item} ${
@@ -132,7 +133,7 @@ const AllRoomsCreated = ({ roomsCreated, handleClick }) => {
                     value={room.room}>
                     <img
                       id={styles.room_owned_by_img}
-                      src={userLoginInfo.imageUrl}
+                      src={imageURL}
                       alt="owner"
                       height={40}
                     />
