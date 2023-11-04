@@ -27,8 +27,8 @@ const CreateRoom = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const { userLoginInfo } = useContext(LoginContext);
   const categoryKeys = Object.keys(CategoryOptions);
-  const [errorState, setErrorState] = useState("");
-  const [hubNamePass,setHubNamePass] = useState(false)
+  const [errorState, setErrorState] = useState(false);
+  const [hubNamePass, setHubNamePass] = useState(false);
   const [password, setPassword] = useState("");
   const [category, setCategory] = useState("");
   const PORT = process.env.REACT_APP_PORT;
@@ -36,17 +36,35 @@ const CreateRoom = (props) => {
   const currentTime = getCurrentTime();
   let { room } = useParams();
   const myUsername = userLoginInfo.username;
-  const handleNameVerification =()=>{
-	if(publicRoomName.length> 1 && publicRoomName.length<15){
-		setHubNamePass(true);
-	}else{
-		setHubNamePass(false)
-	}
+
+
+  const handlePublicErrorState=(room, category, publicRoomName)=>{
+    if(room!== '' && category!== '' && publicRoomName!== ""){
+      return false;
+    }else{
+      return true;
+    }
   }
+  const handlePrivateErrorState = (category, privateRoomName, password) => {
+    if(category!== ''  && privateRoomName !== '' && password!==''){
+      return false;
+    }else{
+      return true;
+    }
+  };
+  const handleNameVerification = () => {
+    if (publicRoomName.length > 1 && publicRoomName.length < 20) {
+      setHubNamePass(true);
+    } else {
+      setHubNamePass(false);
+    }
+  };
   const handlePublicSubmit = async (event) => {
-    if (category === "") {
-      return setErrorState("invalid-category");
-    } else event.preventDefault();
+    event.preventDefault();
+    const isError = handlePublicErrorState(room, category, publicRoomName );
+    if(isError){
+      return setErrorState(true)
+    }
     const newPublicRoom = {
       category,
       room,
@@ -56,19 +74,17 @@ const CreateRoom = (props) => {
       imageUrl: userLoginInfo.imageUrl,
       cloudinary: userLoginInfo.cloudinary_id,
     };
-    console.log(newPublicRoom);
+
     axios
       .post(`${PORT}/new-room-creation`, newPublicRoom)
       .then((res) => {
         console.log("made it this fat lol");
         console.log(res.data.message);
         if (res.data.message === "room created") {
-          console.log("room created success");
           navigate(`/currentservers`);
         }
       })
       .catch((error) => {
-        console.log(error.message);
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
@@ -76,9 +92,13 @@ const CreateRoom = (props) => {
         console.log("at CreateRoom.js handle public submit <---");
       });
   };
-  const handlePrivateSubmit = (event) => {
+  const handlePrivateSubmit = async (event) => {
     event.preventDefault();
-    console.log(category);
+    const isError = handlePrivateErrorState(category, privateRoomName, password);
+    if(isError){
+      console.log('there is an error dude')
+      return setErrorState(true)
+    }
     const getRandomNum = () => {
       const randomFrac = Math.random();
       const randomNumber = Math.floor(randomFrac * 1000000) + 1000000;
@@ -219,7 +239,7 @@ const CreateRoom = (props) => {
                         name="Category"
                         id="category-list"
                         onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">--Please choose an option--</option>
+                        <option value="">--Select an option--</option>
                         {categoryKeys.map((key, id) => {
                           const keyValue = CategoryOptions[key];
                           return (
@@ -312,7 +332,7 @@ const CreateRoom = (props) => {
                   </div>
                 )}
                 {room !== "0" && (
-                  <div>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
                     <h3>
                       <span id={"logo-style-inline"}>Chatty Chatter </span>
                       <br></br>
@@ -356,7 +376,7 @@ const CreateRoom = (props) => {
                         name="Category"
                         id="category-list"
                         onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">--Please choose an option--</option>
+                        <option value="">--Select an option--</option>
                         {categoryKeys.map((key, id) => {
                           const keyValue = CategoryOptions[key];
                           return (
@@ -366,25 +386,24 @@ const CreateRoom = (props) => {
                           );
                         })}
                       </select>
-                      
-                        <label id={'hub-name'}htmlFor={"hub-name"}>
-                          hub name
-                          <input
-                            type="text"
-                            id={"hub-name"}
-                            placeholder={'"Name the public Hub"'}
-                            onChange={(e) => setPublicRoomName(e.target.value)}
-                            maxLength="20"
-                            required="true"
-                          />
-                          <Button
-                            variant="outlined"
-                            id={"verify_name_button"}
-                            onClick={handleNameVerification}>
-                            Verify
-                          </Button>
-                        </label>
-                      
+
+                      <label id={"hub-name"} htmlFor={"hub-name"}>
+                        hub name
+                        <input
+                          type="text"
+                          id={"hub-name"}
+                          placeholder={'"Name the public Hub"'}
+                          onChange={(e) => setPublicRoomName(e.target.value)}
+                          maxLength="20"
+                          required="true"
+                        />
+                        <Button
+                          variant="outlined"
+                          id={"verify_name_button"}
+                          onClick={handleNameVerification}>
+                          Verify
+                        </Button>
+                      </label>
                     </div>
                   </div>
                 )}

@@ -5,14 +5,32 @@ import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDou
 import KeyboardDoubleArrowLeftTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowLeftTwoTone";
 import { Tilt } from "react-tilt";
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
-const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
-  const publicMadeRooms = roomsCreated.filter((item) => item.private === false);
+import axios from 'axios'
+const AllRoomsCreated = ({ roomsCreated, handleClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
-  const [roomsPerPage, setRoomsPerPage] = useState(4)
+  const [roomsPerPage, setRoomsPerPage] = useState(4);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
   const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
+  const PORT = process.env.REACT_APP_PORT;
+  const [allRooms, setAllRooms] =useState([]);
+  const roomValues = roomsCreated.map((room)=> room.room)
+  const getRoomData = async () => {
+    try {
+      const response = await axios.get(`${PORT}/get_all_rooms`,{
+        params: {rooms: roomValues}
+      });
+      if (response.data) {
+        // Assuming the data is an array of rooms
+        const roomData = response.data;
+        setAllRooms(roomData);
+      }
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error(error);
+    }
+  };
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
     max: 25, // max tilt rotation (degrees)
@@ -24,9 +42,10 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     reset: true, // If the tilt effect has to be reset on exit.
     easing: "ease-out", // Easing on enter/exit.
   };
+
   const endIndex = Math.min(
     currentIndex + roomsPerPage,
-    publicMadeRooms.length
+    allRooms.length
   );
 
   const changeRooms = (direction) => {
@@ -37,19 +56,22 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
         if (direction === "left") {
           const newIndex = prevIndex - roomsPerPage;
           return newIndex < 0
-            ? publicMadeRooms.length - roomsPerPage
+            ? allRooms.length - roomsPerPage
             : newIndex;
         } else {
           const newIndex = prevIndex + roomsPerPage;
-          return newIndex >= publicMadeRooms.length ? 0 : newIndex;
+          return newIndex >= allRooms.length ? 0 : newIndex;
         }
       });
     }, 600); // match CSS sliding out
   };
-
+  useEffect(()=>{
+     getRoomData();
+     console.log(allRooms)
+  },[roomsCreated])
   useEffect(() => {
     const newItems = new Set(
-      publicMadeRooms
+      allRooms
         .slice(currentIndex, currentIndex + roomsPerPage)
         .map((room) => room.id)
     );
@@ -62,7 +84,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     return () => clearTimeout(timer);
   }, [currentIndex, roomsPerPage]);
 
-  const displayedRooms = publicMadeRooms.slice(
+  const displayedRooms = allRooms.slice(
     currentIndex,
     currentIndex + roomsPerPage
   );
@@ -72,7 +94,9 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>Owned public Hubs</span>
+            <span id={styles.display_created_room_name}>
+              All Room Hubs
+            </span>
           </div>
           <div
             className={
@@ -81,11 +105,11 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
             <GridViewRoundedIcon
               id={styles.grid_view_icon}
               onClick={() => {
-                setGridView((prev) => !prev)
-                if(roomsPerPage === 4){
-                  setRoomsPerPage(publicMadeRooms.length)
-                }else{
-                  setRoomsPerPage(4)
+                setGridView((prev) => !prev);
+                if (roomsPerPage === 4) {
+                  setRoomsPerPage(allRooms.length);
+                } else {
+                  setRoomsPerPage(4);
                 }
               }}
             />
@@ -98,7 +122,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   : isAnimatingIn
                   ? styles.slideIn
                   : ""
-              } ${room.private ? styles.room_private : ""}`;
+              } ${room.private_room ? styles.room_private : " "}`;
 
               return (
                 <Tilt key={room._id} options={defaultOptions}>
@@ -112,7 +136,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                       alt="owner"
                       height={40}
                     />
-                    <p>{room.roomName}</p>
+                    <p>{room.room_name}</p>
                   </div>
                 </Tilt>
               );
@@ -126,7 +150,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   onClick={() => changeRooms("left")}
                 />
                 <span id={styles.room_count}>
-                  {endIndex} of {publicMadeRooms.length}
+                  {endIndex} of {allRooms.length}
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}
@@ -141,4 +165,4 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
   );
 };
 
-export default PublicRoomsCreated;
+export default AllRoomsCreated;

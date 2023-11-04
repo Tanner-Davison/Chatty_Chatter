@@ -39,7 +39,9 @@
     display: flex;
     flex-direction: row;
     width: -moz-fit-content;
-	min-width:49vw;
+    max-width: 40vw;
+    min-width: 22vw;
+    max-height:34vh;
     flex-wrap: wrap;
     padding: 15px;
     align-items: center;
@@ -47,7 +49,7 @@
     margin: 10px 0px;
     gap: 36px;
     background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
-    animation: RoomsCreated_RoomsCreated_gradientBackground__CW4HO__79809 24s ease infinite;
+    animation: RoomsCreated_RoomsCreated_RoomsCreated_gradientBackground__CW4HO__79809__GEI9n 24s ease infinite;
     padding: 48px;
     padding-top: 40px;
     border: 2px solid #1c2125;
@@ -55,7 +57,10 @@
     box-sizing: border-box;
     border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
+    overflow: scroll;
+    scroll-behavior: auto;
 }
+
 .rooms_wrapper p {
   font-size: 17px;
   color: rgb(255, 255, 255);
@@ -289,11 +294,12 @@
     gap: 1rem;
   }
   .grid_view_wrapper {
-    min-width: 75vw;
-    min-height: 33px;
+    min-width: 88vw;
+    max-height: 37vh;
     padding: 10px;
     padding-top: 39px;
     margin-top: 0px;
+
   }
   .flex {
     position: relative;
