@@ -35,6 +35,7 @@ connectDB(MONGO_DB_KEY);
 app.get("/roomHistory/:room", EndpointHandler.roomHistory);
 app.get("/user_info/:username", EndpointHandler.userInfo);
 app.get("/api/users/:username/rooms", EndpointHandler.joinedRooms);
+app.get("/getAllRoomsUserCreated/:username",EndpointHandler.getAllCurrentUsersRoomsCreated);
 app.get("/availability/:numberValue", EndpointHandler.roomAvailable);
 app.get("/password_check", EndpointHandler.verifyPrivateRoomPassword);
 app.get("/get_all_rooms", EndpointHandler.getAllRooms);

@@ -7,8 +7,9 @@ import styles from "./RoomsCreated.module.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
 
-const RoomItem = ({
+const RoomHelper = ({
   room,
   roomClass,
   changeRooms,
@@ -35,7 +36,7 @@ const RoomItem = ({
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  console.log(room);
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -49,7 +50,7 @@ const RoomItem = ({
         className={roomClass}
         room={room}
         // onClick={() => handleClick(room.room)}
-        value={room.room}>
+        value={room.room_number}>
         <img
           id={styles.room_owned_by_img_expolore}
           src={imageURL}
@@ -58,14 +59,16 @@ const RoomItem = ({
         />
 
         <div className={styles.menu_wrapper}>
-          <Button
-            className={styles.menu_icon}
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}>
-            <MenuRoundedIcon id={styles.menu_icon} />
-          </Button>
+            <Button
+              className={styles.menu_icon}
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}>
+          <Tooltip title="Room Menu" placement="top">
+              <MenuRoundedIcon id={styles.menu_icon} />
+          </Tooltip>
+            </Button>
           <Menu
             className={styles.dropdown_list}
             anchorEl={anchorEl}
@@ -74,25 +77,34 @@ const RoomItem = ({
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>
-            <MenuItem onClick={()=>{
+            <MenuItem
+              onClick={() => {
                 handleClose();
-                navigate(`/profile/${room.created_by}`);}}>Creators Profile</MenuItem>
-            {!room.private_room && (
-              <MenuItem onClick={() =>{ 
-                handleClose();
-                return goToRoom(room.room_number)
+                navigate(`/profile/${room.created_by}`);
               }}>
+              Creators Profile
+            </MenuItem>
+            {!room.private_room && (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  return goToRoom(room.room_number);
+                }}>
                 Visit Room
               </MenuItem>
             )}
             {room.private_room && (
-              <MenuItem onClick={() => {
-                handleClose();
-                return goToRoom(room.room_number)}}>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  return goToRoom(room.room_number);
+                }}>
                 Request invite
               </MenuItem>
             )}
-            <MenuItem onClick={() => handleRemoveRoom(room)}>
+            <MenuItem onClick={() => {
+            handleRemoveRoom(room)
+            changeRooms("left")}}>
               Hide Room
             </MenuItem>
           </Menu>
@@ -112,4 +124,4 @@ const RoomItem = ({
     </Tilt>
   );
 };
-export default RoomItem;
+export default RoomHelper;

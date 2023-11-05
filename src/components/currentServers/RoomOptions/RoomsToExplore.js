@@ -120,7 +120,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
               } ${room.private_room ? styles.room_private : " "}`;
 
               return (
-                  <RoomItem room={room} roomClass={roomClass} changeRooms={changeRooms} imageURL={imageURL} setAllRooms={setAllRooms} goToRoom={handleClick}/>
+                  <RoomItem room={room} roomClass={roomClass} changeRooms={changeRooms} imageURL={imageURL} filterRooms={setAllRooms} goToRoom={handleClick}/>
               );
             })}
           </div>

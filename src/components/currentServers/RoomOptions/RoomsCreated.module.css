@@ -308,7 +308,8 @@ z-index: 39;
 color:white;
 }
 .display_joined_list:hover{
-  transform:scale(1.15)
+  transform:scale(1.15);
+  cursor: pointer;
 }
 #room_members{
   position: relative;
@@ -321,31 +322,22 @@ color:white;
   border-radius: 50px;
   height: 35px;
   width:40px;
-  top: -2px;
+  top: -12px;
   right: 10px;
 }
 .menu_wrapper svg{
   color:white;
 }
-.menu_icon{
-  position: absolute;
-  border-radius: 50px;
-  height: 35px;
-  width:40px;
-  top: -10px;
-  right: 10px;
-  color:white;
+#menu_icon{
+ color:rgb(255, 255, 255);
+ border:1px solid rgb(0, 0, 0);
+ padding:3px;
+ border-radius:50px;
+ background-color: rgb(198, 6, 6);
+ font-size:large;
 }
-.dropdown_list{
-  position: absolute;
-  top:4px;
-  display: flex;
-  color:white;
-  flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.17);
-  z-index: 49;
-  overflow-y: scroll;
-  align-items: flex-start;
+#menu_icon:hover{
+  transform:scale(1.15)
 }
 
 @media only screen and (max-width: 600px) {

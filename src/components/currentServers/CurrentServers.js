@@ -4,7 +4,7 @@ import { LoginContext } from "../contexts/LoginContext";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
-import { AllRoomsJoined } from "./AllRoomsJoined";
+import { AllRoomsJoined } from "./AllRoomsJoined.js";
 import PublicRoomsCreated from './RoomOptions/PublicRoomsCreated'
 import PrivateRoomsCreated from "./RoomOptions/PrivateRoomsMade";
 import RoomsToExplore from "./RoomOptions/RoomsToExplore";
@@ -34,7 +34,6 @@ const CurrentServers = () => {
       const allRooms = await AllRoomsJoined(
         doesUserExist ? doesUserExist : userLoginInfo.username
       );
-      console.log({rooms_created: allRooms.roomsCreated,rooms_joined: allRooms.roomsJoined}); // Debug log
       setRoomsJoined(allRooms.roomsJoined);
       setRoomsCreated(allRooms.roomsCreated);
       

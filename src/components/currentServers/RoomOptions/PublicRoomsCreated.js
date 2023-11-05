@@ -3,30 +3,23 @@ import { LoginContext } from "../../contexts/LoginContext";
 import styles from "./RoomsCreated.module.css";
 import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowRightTwoTone";
 import KeyboardDoubleArrowLeftTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowLeftTwoTone";
-import { Tilt } from "react-tilt";
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import CompressIcon from "@mui/icons-material/Compress";
 import Tooltip from "@mui/material/Tooltip";
-const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
-  const publicMadeRooms = roomsCreated.filter((item) => item.private === false);
+import RoomHelper from "./RoomHelper";
+import {getAllRoomsData} from '../AllRoomsJoined.js'
 
-  const { userLoginInfo } = useContext(LoginContext);
-  const [gridView, setGridView] = useState(false);
-  const [roomsPerPage, setRoomsPerPage] = useState(4);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
-  const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
-  const defaultOptions = {
-    reverse: true, // reverse the tilt direction
-    max: 25, // max tilt rotation (degrees)
-    perspective: 209, // Transform perspective, the lower the more extreme the tilt gets.
-    scale: 1.1, // 2 = 200%, 1.5 = 150%, etc..
-    speed: 800, // Speed of the enter/exit transition
-    transition: true, // Set a transition on enter/exit.
-    axis: null, // What axis should be disabled. Can be X or Y.
-    reset: true, // If the tilt effect has to be reset on exit.
-    easing: "ease-out", // Easing on enter/exit.
-  };
+const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
+  
+ 
+   const { userLoginInfo } = useContext(LoginContext);
+   const [gridView, setGridView] = useState(false);
+   const [roomsPerPage, setRoomsPerPage] = useState(4);
+   const [currentIndex, setCurrentIndex] = useState(0);
+   const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
+   const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
+   const [publicMadeRooms, setPublicMadeRooms] = useState([]);
+   const [noData,setNoData]=useState(false);
 
   const endIndex = Math.min(
     currentIndex + roomsPerPage,
@@ -79,13 +72,34 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     //eslint-disable-next-line
   }, [currentIndex, roomsPerPage]);
 
+ useEffect(()=>{
+  const fetchData = async()=>{
+    try{
+      const roomData = await getAllRoomsData(userLoginInfo.username);
+      if(roomData.roomsCreatedByUser.length<=0){
+        setNoData(true); 
+      }
+      console.log({LookHere: roomData})
+      const roomValue = roomData.roomsCreatedByUser.filter(
+        (room) => !room.private_room
+      );
+      console.log(publicMadeRooms)
+      setPublicMadeRooms(roomValue);
+      
+    }catch(error){
+      console.error("Error fetching data", error)
+      
+    } 
+  };
+  fetchData();
+ },[userLoginInfo.username, noData])
+
   const displayedRooms = publicMadeRooms.slice(
     currentIndex,
-    currentIndex + roomsPerPage
+    currentIndex + roomsPerPage 
   );
-
   return (
-    <>
+    <> 
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
@@ -95,11 +109,11 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
             className={
               !gridView ? styles.room_item_wrapper : styles.grid_view_wrapper
             }>
-             {gridView && (
+            {gridView && (
               <Tooltip title="View less" placement="left">
                 <CompressIcon
                   id={styles.grid_view_icon}
-                  onClick={(e)=>changePages(e)}
+                  onClick={(e) => changePages(e)}
                 />
               </Tooltip>
             )}
@@ -107,10 +121,15 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
               <Tooltip title="View all" placement="left">
                 <GridViewRoundedIcon
                   id={styles.grid_view_icon}
-                  onClick={(e)=>changePages(e)}
+                  onClick={(e) => changePages(e)}
                 />
               </Tooltip>
             )}
+            {
+              noData && (
+                <p style={{textAlign:'center'}}>Create a public hub to view this section</p>
+              )
+            }
             {displayedRooms.map((room) => {
               const isAnimatingOut = itemsToAnimateOut.has(room.id);
               const isAnimatingIn = itemsToAnimateIn.has(room.id);
@@ -121,22 +140,20 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   ? styles.slideIn
                   : ""
               } ${room.private ? styles.room_private : ""}`;
-
+        
               return (
-                <Tilt key={room._id} options={defaultOptions}>
-                  <div
-                    className={roomClass}
-                    onClick={() => handleClick(room.room)}
-                    value={room.room}>
-                    <img
-                      id={styles.room_owned_by_img}
-                      src={userLoginInfo.imageUrl}
-                      alt="owner"
-                      height={40}
-                    />
-                    <p>{room.roomName}</p>
-                  </div>
-                </Tilt>
+                <>
+                
+                  <RoomHelper
+                  key={publicMadeRooms._id}
+                    room={room}
+                    roomClass={roomClass}
+                    imageURL={userLoginInfo.imageUrl}
+                    filterRooms={setPublicMadeRooms}
+                    changeRooms={changeRooms}
+                    goToRoom={handleClick}
+                  />
+                </>
               );
             })}
           </div>
@@ -154,7 +171,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   id={styles.icon_left_right}
                   onClick={() => changeRooms("right")}
                 />
-              </>
+              </>  
             )}
           </div>
         </div>

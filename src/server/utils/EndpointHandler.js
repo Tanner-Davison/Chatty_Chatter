@@ -82,4 +82,22 @@ module.exports = {
       res.status(500).json({ error: "Database error" });
     }
   },
+  getAllCurrentUsersRoomsCreated: async(req,res)=>{
+      try {
+      const username = req.params.username;
+      console.log(username)
+      const userRoomList = await Rooms.find({ created_by: username });
+      if (!userRoomList) {
+        res.status(404).json({ message: "user list is not found" });
+      } else {
+        console.log(userRoomList)
+        res.json({
+          roomsCreatedByUser: userRoomList,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  
 };
