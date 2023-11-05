@@ -22,6 +22,7 @@
   box-sizing: border-box;
   border-radius: 20px;
   box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
+   
 }
 #grid_view_icon {
   position: absolute;
@@ -59,6 +60,7 @@
     box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
     overflow: scroll;
     scroll-behavior: auto;
+    z-index: 3;
 }
 
 .rooms_wrapper p {
@@ -134,6 +136,7 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 1px 1px rgba(52, 51, 51, 0.7), 0 2px 2px rgba(55, 53, 53, 0.2),
     0 4px 4px rgba(0, 0, 0, 0.2), 0 8px 8px rgba(0, 0, 0, 0.2);
+    z-index: 2;
 }
 .room_item {
   animation: gradientBackground 24s ease infinite;
@@ -188,6 +191,7 @@
   align-items: center;
   text-align: center;
   justify-content: center;
+   z-index: 3;
 }
 
 /* Keyframes and animation for sliding out to the left */
@@ -228,6 +232,7 @@
   transition: all 0.4s ease-in-out;
 }
 .room_item.room_private {
+  position: relative;
   border: 2px solid #073b8b; /* Dark blue border color */
   background: linear-gradient(
     135deg,
@@ -270,6 +275,7 @@
       #04214e 100%
     ); 
   background-size: 40px 40px, 40px 40px, 100% 100%; 
+   z-index: 3;
 }
 .room_item.room_private:hover {
   border-radius: 25px;
@@ -284,6 +290,62 @@
   height: 35px;
   top: -10px;
   left: -10px;
+}
+
+#room_owned_by_img_expolore{
+  position: absolute;
+  border-radius: 50px;
+  height: 35px;
+  width:40px;
+  top: -10px;
+  left: -10px;
+}
+.display_joined_list{
+position: absolute;
+display: flex;
+bottom:-1px;
+z-index: 39;
+color:white;
+}
+.display_joined_list:hover{
+  transform:scale(1.15)
+}
+#room_members{
+  position: relative;
+  display: flex;
+  text-align: center;
+  align-self:center;
+}
+.menu_wrapper{
+  position: absolute;
+  border-radius: 50px;
+  height: 35px;
+  width:40px;
+  top: -2px;
+  right: 10px;
+}
+.menu_wrapper svg{
+  color:white;
+}
+.menu_icon{
+  position: absolute;
+  border-radius: 50px;
+  height: 35px;
+  width:40px;
+  top: -10px;
+  right: 10px;
+  color:white;
+}
+.dropdown_list{
+  position: absolute;
+  top:4px;
+  display: flex;
+  color:white;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.17);
+  z-index: 49;
+  overflow-y: scroll;
+  align-items: flex-start;
 }
 
 @media only screen and (max-width: 600px) {

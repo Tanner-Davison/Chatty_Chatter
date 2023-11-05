@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined";
 import PublicRoomsCreated from './RoomOptions/PublicRoomsCreated'
 import PrivateRoomsCreated from "./RoomOptions/PrivateRoomsMade";
-import AllRoomsCreated from "./RoomOptions/RoomsToExplore";
+import RoomsToExplore from "./RoomOptions/RoomsToExplore";
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } =
     useContext(LoginContext);
@@ -54,7 +54,7 @@ const CurrentServers = () => {
     });
     sessionStorage.setItem("lastRoom", roomNumber.toString());
     return navigate(`/chatroom/${roomNumber}`);
-  };
+  }; 
 
   useEffect(() => {
   
@@ -113,7 +113,7 @@ const CurrentServers = () => {
         />
       }
       {
-        <AllRoomsCreated
+        <RoomsToExplore
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />
