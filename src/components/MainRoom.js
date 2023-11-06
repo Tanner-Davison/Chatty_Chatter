@@ -215,7 +215,7 @@ const MainRoom = () => {
           <div className="room_name">
             <h2>
               {lastRoom
-                ? "Room:" + lastRoom
+                ? roomData.room_name
                 : String.fromCodePoint(0x1f449) +
                   lastRoom +
                   " No Existing Room" +
