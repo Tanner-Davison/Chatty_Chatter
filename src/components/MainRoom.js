@@ -211,37 +211,38 @@ const MainRoom = () => {
 							const timestampParts = msg.timestamp.split(" ");
 							const datePart = timestampParts[0];
 							const timePart = timestampParts[1] + " " + timestampParts[2];
-
 							if (msg.sentBy === userLoginInfo.username) {
 								// Message sent by current user
 								let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
 								return (
-									<div
-										key={index}
-										className={"messagesContainer"}>
-										<div className={"container blue"}>
-											<div className={"message-timestamp-left"}>
-												<p>{currentTime}</p>
-											</div>
-											<div className={"message-blue"}>
-												<img
-													src={
-														userLoginInfo.imageUrl ||
-														userLoginInfo.cloudinary_id
-													}
-													loading='lazy'
-													className={"user-profile-pic blue"}
-													alt='Profile-Pic'
-													onClick={() =>
-														navigate(`/profile/${userLoginInfo.username}`)
-													}
-												/>
-												<p className={"message-content"}>{msg.message}</p>
-											</div>
-											<p className={"user"}>{userLoggedIn}</p>
-										</div>
-									</div>
-								);
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container blue"}>
+                      <div className={"message-timestamp-left"}>
+                        <p>
+                          {datePart}
+                          <br />
+                          {index !== 0 && timePart}
+                        </p>
+                      </div>
+                      <div className={"message-blue"}>
+                        <img
+                          src={
+                            userLoginInfo.imageUrl ||
+                            userLoginInfo.cloudinary_id
+                          }
+                          loading="lazy"
+                          className={"user-profile-pic blue"}
+                          alt="Profile-Pic"
+                          onClick={() =>
+                            navigate(`/profile/${userLoginInfo.username}`)
+                          }
+                        />
+                        <p className={"message-content"}>{msg.message}</p>
+                      </div>
+                      <p className={"user"}>{userLoggedIn}</p>
+                    </div>
+                  </div>
+                );
 							} else {
 								// Message received from another user
 								return (
@@ -253,7 +254,7 @@ const MainRoom = () => {
 												<p>
 													{datePart}
 													<br />
-													{timePart}
+													{index !== 0 && timePart}
 												</p>
 											</div>
 											<div className={"message-green"}>
@@ -291,7 +292,6 @@ const MainRoom = () => {
 								placeholder={ "Message..."}
 								value={message}
 								onChange={(event) => {
-									console.log("event inside Onchange", event);
 									setMessage(event.target.value);
 									handleIsTyping(event);
 								}}

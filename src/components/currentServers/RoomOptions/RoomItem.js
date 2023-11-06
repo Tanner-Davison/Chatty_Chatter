@@ -21,7 +21,7 @@ const RoomItem = ({
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
     max: 25, // max tilt rotation (degrees)
-    perspective: 1000, // Transform perspective, the lower the more extreme the tilt gets.
+    perspective: 700, // Transform perspective, the lower the more extreme the tilt gets.
     scale: 1.1, // 2 = 200%, 1.5 = 150%, etc..
     speed: 800, // Speed of the enter/exit transition
     transition: true, // Set a transition on enter/exit.
@@ -74,21 +74,28 @@ const RoomItem = ({
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>
-            <MenuItem onClick={()=>{
+            <MenuItem
+              onClick={() => {
                 handleClose();
-                navigate(`/profile/${room.created_by}`);}}>Creators Profile</MenuItem>
-            {!room.private_room && (
-              <MenuItem onClick={() =>{ 
-                handleClose();
-                return goToRoom(room.room_number)
+                navigate(`/profile/${room.created_by}`);
               }}>
+              Creators Profile
+            </MenuItem>
+            {!room.private_room && (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  return goToRoom(room.room_number);
+                }}>
                 Visit Room
               </MenuItem>
             )}
             {room.private_room && (
-              <MenuItem onClick={() => {
-                handleClose();
-                return goToRoom(room.room_number)}}>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  return goToRoom(room.room_number);
+                }}>
                 Request invite
               </MenuItem>
             )}
@@ -102,9 +109,10 @@ const RoomItem = ({
           className={styles.display_joined_list}
           onClick={() => SetDisplayAllUsers(!displayAllUsers)}
         />
-        {!displayAllUsers && <p id={styles.room_members}>{room.room_name}</p>}
+        {!displayAllUsers && <p className={styles.room_members}>{room.room_name}</p>}
+
         {displayAllUsers && (
-          <p id={styles.room_members}>
+          <p className={`${styles.room_members} ${styles._active}`}>
             {room.users_in_room.length + ` members`}
           </p>
         )}

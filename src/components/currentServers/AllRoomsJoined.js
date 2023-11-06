@@ -26,4 +26,21 @@ const getAllRoomsData = async (username) =>{
     return [];
   }
 }
-export { AllRoomsJoined , getAllRoomsData};
+const deleteOne = async(roomId, roomNumber)=>{
+if(!roomNumber){
+  return console.log('no room sent')
+}
+console.log(roomId, roomNumber)
+  try{
+    const deleteRequest = await axios.post(`${PORT}/deleteSingleRoom`, {
+      roomId: roomId,
+      roomNumber: roomNumber,
+    });
+    const response = deleteRequest.data.message;
+    
+  }catch(error){
+    console.log(error+ `In All rooms Joined`);
+    
+  }
+}
+export { AllRoomsJoined , getAllRoomsData, deleteOne};

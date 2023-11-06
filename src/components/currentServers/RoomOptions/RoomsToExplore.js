@@ -33,8 +33,6 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
       console.error(error);
     }
   };
- 
-
   const endIndex = Math.min(
     currentIndex + roomsPerPage,
     allRooms.length

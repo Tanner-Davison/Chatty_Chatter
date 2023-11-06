@@ -82,15 +82,15 @@ module.exports = {
       res.status(500).json({ error: "Database error" });
     }
   },
-  getAllCurrentUsersRoomsCreated: async(req,res)=>{
-      try {
+  getAllCurrentUsersRoomsCreated: async (req, res) => {
+    try {
       const username = req.params.username;
-      console.log(username)
+      console.log(username);
       const userRoomList = await Rooms.find({ created_by: username });
       if (!userRoomList) {
         res.status(404).json({ message: "user list is not found" });
       } else {
-        console.log(userRoomList)
+        console.log(userRoomList);
         res.json({
           roomsCreatedByUser: userRoomList,
         });
@@ -99,5 +99,23 @@ module.exports = {
       console.log(err);
     }
   },
-  
+  deleteSingleRoom: async (req, res) => {
+    console.log(req.body);
+    try {
+      const roomId = req.body.roomId;
+      const roomNumber = req.body.roomNumber;
+
+      const deletedRoom = await Rooms.findOneAndDelete({ _id: roomId });
+
+      if (deletedRoom) {
+        const result = await User.updateOne(
+          { "roomsCreated.room": roomNumber },
+          { $pull: { roomsCreated: { room: roomNumber } } }
+        );
+      } 
+    } catch (error) {
+      console.log(`error at deleteSingleRoom: ${error}`);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
 };

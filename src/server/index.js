@@ -43,6 +43,7 @@ app.post('/new-room-creation', RoomCreation.createPublic);
 app.post('/create-private-room', RoomCreation.createPrivate);
 app.post("/signup", LoginHelper.signUp);
 app.post("/login", LoginHelper.Login);
+app.post("/deleteSingleRoom", EndpointHandler.deleteSingleRoom);
 
 const io = new Server(server, {
   cors: {

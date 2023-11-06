@@ -146,12 +146,14 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                 
                   <RoomHelper
                   key={publicMadeRooms._id}
+                  loading={'lazy'}
                     room={room}
                     roomClass={roomClass}
                     imageURL={userLoginInfo.imageUrl}
                     filterRooms={setPublicMadeRooms}
                     changeRooms={changeRooms}
                     goToRoom={handleClick}
+                    roomData={setPublicMadeRooms}
                   />
                 </>
               );

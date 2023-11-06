@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
 	console.log(roomData)
     const PORT = process.env.REACT_APP_PORT;
-	const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [password, setPassword] = useState("");
     const [isError, setIsError] = useState(false)
 

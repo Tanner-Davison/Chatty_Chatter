@@ -39,7 +39,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
           return newIndex >= privateMadeRooms.length ? 0 : newIndex;
         }
       });
-    }, 600); // match CSS sliding out
+    }, 700); // match CSS sliding out
   };
   const changePages = (e) => {
     e.preventDefault();
@@ -147,6 +147,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                     filterRooms={setPrivateMadeRooms}
                     changeRooms={changeRooms}
                     goToRoom={handleClick}
+                    roomData={setPrivateMadeRooms}
                   />
                 </>
               );
