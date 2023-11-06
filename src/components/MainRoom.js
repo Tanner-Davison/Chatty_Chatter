@@ -11,7 +11,7 @@ import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
 import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
 import TypingComp from "./Utility-mainRoom/TypingComp";
 import PrivateRoomAccess from "./Utility-mainRoom/PrivateRoomAccess.js";
-
+import axios from 'axios';
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
     useContext(LoginContext);
@@ -30,7 +30,7 @@ const MainRoom = () => {
   const currentTime = getCurrentTimeJSX();
   const [roomIsEmpty, setRoomIsEmpty] = useState(false);
   const [isSocketConnected, setSocketConnected] = useState(false);
-  const [isPrivateRoom, setIsPrivateRoom]=useState(false)
+  const [isPrivateRoom, setIsPrivateRoom] = useState(false);
   const [loading, setLoading] = useState(false);
   const [typing, setTyping] = useState(false);
   const typingTimeoutId = useRef(null);
@@ -53,7 +53,29 @@ const MainRoom = () => {
     setLoading(true);
     const messages = await loadRoomHistory(room);
     setRoomData(messages.allRoomData);
-    setIsPrivateRoom(messages.private)
+    if (messages.allRoomData.private_room){
+      try {
+        const privateAccessExist = await axios.get(
+          `${PORT}/api/users/${userLoginInfo.username}/rooms`
+        );
+        const response = privateAccessExist.data.roomsJoined;
+        console.log(response);
+        const containsRoom = response.find(
+          (roomData) => parseInt(roomData.room) === parseInt(room)
+        );
+        if (containsRoom) {
+          console.log(containsRoom);
+          setIsPrivateRoom(false);
+        } else {
+          console.log(messages.allRoomData);
+          console.log("response is false", room);
+          console.log(containsRoom);
+          setIsPrivateRoom(true);
+        }
+      } catch (err) {
+        console.log(err + `error in joinRoom mainRoom function`);
+      }
+    }
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);
     setMessageRecieved(messages.messageHistory);
@@ -64,7 +86,7 @@ const MainRoom = () => {
   };
 
   const roomChanger = (event) => {
-    setRoom(event.target.value); 
+    setRoom(event.target.value);
   };
 
   const sendMessageFunc = () => {
@@ -81,7 +103,7 @@ const MainRoom = () => {
     };
     socket.emit("send_message", data);
     setMessageRecieved((prev) => [...prev, data]);
-    setMessage('')
+    setMessage("");
   };
 
   const deleteRoom = () => {
@@ -115,7 +137,7 @@ const MainRoom = () => {
         setMessageRecieved(data.messageHistory);
         setSocketConnected(true);
       };
-      
+
       if (socket.recovered) {
         console.log("Socket has recovered. Fetching room history...");
       } else {
@@ -180,49 +202,53 @@ const MainRoom = () => {
         messagesStartRef.current.scrollHeight;
     }
   }, [messageRecieved, typing]);
- 
+
   return (
-		<>
-			<Header
-				roomChanger={roomChanger}
-				room={room ? room : 1}
-				joinRoom={joinRoom}
-			/>
-			<div className='room-wrapper'>
-				<div
-					className={"all-messages"}
-					ref={messagesStartRef}>
-					<div className='room_name'>
-						<h2>
-							{lastRoom
-								? "Room:" + lastRoom
-								: String.fromCodePoint(0x1f449) +
-								  lastRoom +
-								  " No Existing Room" +
-								  String.fromCodePoint(0x1f448)}
-						</h2>
-					</div>
-          {isPrivateRoom &&
-            (<PrivateRoomAccess roomData={roomData} setIsPrivateRoom={setIsPrivateRoom} />)
-          }
-					{messageRecieved.length > 0 &&
-						!isPrivateRoom &&
-						messageRecieved.map((msg, index) => {
-							const timestampParts = msg.timestamp.split(" ");
-							const datePart = timestampParts[0];
-							const timePart = timestampParts[1] + " " + timestampParts[2];
-							if (msg.sentBy === userLoginInfo.username) {
-								// Message sent by current user
-								let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
-								return (
+    <>
+      <Header
+        roomChanger={roomChanger}
+        room={room ? room : 1}
+        joinRoom={joinRoom}
+      />
+      <div className="room-wrapper">
+        <div className={"all-messages"} ref={messagesStartRef}>
+          <div className="room_name">
+            <h2>
+              {lastRoom
+                ? "Room:" + lastRoom
+                : String.fromCodePoint(0x1f449) +
+                  lastRoom +
+                  " No Existing Room" +
+                  String.fromCodePoint(0x1f448)}
+            </h2>
+          </div>
+          {isPrivateRoom && (
+            <PrivateRoomAccess
+              roomData={roomData}
+              setIsPrivateRoom={setIsPrivateRoom}
+            />
+          )}
+          {messageRecieved.length > 0 &&
+            !isPrivateRoom &&
+            messageRecieved.map((msg, index) => {
+              const timestampParts = msg.timestamp.split(" ");
+              const datePart = timestampParts[0];
+              const timePart = timestampParts[1] + " " + timestampParts[2];
+              if (msg.sentBy === userLoginInfo.username) {
+                // Message sent by current user
+                let userLoggedIn = "@" + userLoginInfo.username.toUpperCase();
+                //BLUE USER MESSAGE
+                return (
                   <div key={index} className={"messagesContainer"}>
                     <div className={"container blue"}>
                       <div className={"message-timestamp-left"}>
-                        <p>
-                          {datePart}
-                          <br />
-                          {index !== 0 && timePart}
-                        </p>
+                        {index !== 0 && (
+                          <p>
+                            {datePart}
+                            <br />
+                            {timePart}
+                          </p>
+                        )}
                       </div>
                       <div className={"message-blue"}>
                         <img
@@ -243,98 +269,90 @@ const MainRoom = () => {
                     </div>
                   </div>
                 );
-							} else {
-								// Message received from another user
-								return (
-									<div
-										key={index}
-										className={"messagesContainer"}>
-										<div className={"container green"}>
-											<div className={"message-timestamp-right"}>
-												<p>
-													{datePart}
-													<br />
-													{index !== 0 && timePart}
-												</p>
-											</div>
-											<div className={"message-green"}>
-												<img
-													src={msg.imageUrl || msg.cloudinary_id}
-													loading='lazy'
-													className={"user-profile-pic green"}
-													alt='Profile-Pic'
-													onClick={() => navigate(`/profile/${msg.sentBy}`)}
-												/>
-												<p className={"message-content"}>{msg.message}</p>
-												<p className={"user green"}>
-													{msg.sentBy
-														? "@" + msg.sentBy.toUpperCase()
-														: "@" + msg.username.toUpperCase()}
-												</p>
-											</div>
-										</div>
-									</div>
-								);
-							}
-						})}
-					{roomIsEmpty && navigate(`/createroom/${room}`)}
-					{typing === true && <TypingComp typer={currentTyper.current} />}
-				</div>
-				{!isPrivateRoom && (
-					<>
-						<div className={"room-num-input-mainRoom"}>
-							<button
-								id={"leave-room-btn"}
-								onClick={leaveRoom}>
-								Leave
-							</button>
-							<input
-								placeholder={ "Message..."}
-								value={message}
-								onChange={(event) => {
-									setMessage(event.target.value);
-									handleIsTyping(event);
-								}}
-								maxLength='255'
-							/>
-							<button
-								className={"sendMsgBtn"}
-								onClick={sendMessageFunc}>
-								Send
-								<img
-									src={sendIcon}
-									alt={"icon-for-send"}></img>
-							</button>
-						</div>
-						<div className='leave-delete-button'>
-							<button onClick={deleteRoom}>Delete Room</button>
-						</div>
-					</>
-				)}
-			</div>
+              } else {
+                // GREEN USER MESSAGE
+                return (
+                  <div key={index} className={"messagesContainer"}>
+                    <div className={"container green"}>
+                      <div className={"message-timestamp-right"}>
+                        <p>
+                          {datePart}
+                          <br />
+                          {index !== 0 && timePart}
+                        </p>
+                      </div>
+                      <div className={"message-green"}>
+                        <img
+                          src={msg.imageUrl || msg.cloudinary_id}
+                          loading="lazy"
+                          className={"user-profile-pic green"}
+                          alt="Profile-Pic"
+                          onClick={() => navigate(`/profile/${msg.sentBy}`)}
+                        />
+                        <p className={"message-content"}>{msg.message}</p>
+                        <p className={"user green"}>
+                          {msg.sentBy
+                            ? "@" + msg.sentBy.toUpperCase()
+                            : "@" + msg.username.toUpperCase()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          {roomIsEmpty && navigate(`/createroom/${room}`)}
+          {typing === true && <TypingComp typer={currentTyper.current} />}
+        </div>
+        {!isPrivateRoom && (
+          <>
+            <div className={"room-num-input-mainRoom"}>
+              <button id={"leave-room-btn"} onClick={leaveRoom}>
+                Join Room 
+              </button>
+              <input
+                placeholder={"Message..."}
+                value={message}
+                onChange={(event) => {
+                  setMessage(event.target.value);
+                  handleIsTyping(event);
+                }}
+                maxLength="255"
+              />
+              <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
+                Send
+                <img src={sendIcon} alt={"icon-for-send"}></img>
+              </button>
+            </div>
+            <div className="leave-delete-button">
+              <button onClick={deleteRoom}>Delete Room</button>
+            </div>
+          </>
+        )}
+      </div>
 
-			{
-				<>
-					<div className={"status_container"}>
-						<h3 style={{ color: "white" }}>Status :</h3>
-						<button
-							type='button'
-							className={"statusBtn"}
-							onClick={() => {
-								joinRoom();
-							}}
-							style={
-								isSocketConnected
-									? { backgroundColor: "#323232" }
-									: { backgroundColor: "red", color: "#3691F0" }
-							}>
-							{isSocketConnected && "Connected"}
-							{!isSocketConnected && "DISCONNECTED"}
-						</button>
-					</div>
-				</>
-			}
-		</>
-	);
+      {
+        <>
+          <div className={"status_container"}>
+            <h3 style={{ color: "white" }}>Status :</h3>
+            <button
+              type="button"
+              className={"statusBtn"}
+              onClick={() => {
+                joinRoom();
+              }}
+              style={
+                isSocketConnected
+                  ? { backgroundColor: "#323232" }
+                  : { backgroundColor: "red", color: "#3691F0" }
+              }>
+              {isSocketConnected && "Connected"}
+              {!isSocketConnected && "DISCONNECTED"}
+            </button>
+          </div>
+        </>
+      }
+    </>
+  );
 };
 export default MainRoom;

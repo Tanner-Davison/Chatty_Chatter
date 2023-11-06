@@ -6,6 +6,8 @@ import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDou
 import KeyboardDoubleArrowLeftTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowLeftTwoTone";
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import RoomItem from "./RoomItem";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
@@ -16,7 +18,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const PORT = process.env.REACT_APP_PORT;
   const [allRooms, setAllRooms] =useState([]);
   const roomValues = roomsCreated.map((room)=> room.room)
-
+  const [displayPrivateRooms, setDisplayPrivateRooms]=useState(false)
 
   const getRoomData = async () => {
     try {
@@ -80,15 +82,39 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
     currentIndex,
     currentIndex + roomsPerPage
   );
-
+    const handleShowPublicRoomData =(event)=>{
+      event.preventDefault()
+      console.log('this is running show data');
+      setAllRooms((prev)=> prev.filter((room)=> room.private_room === false))
+      setDisplayPrivateRooms(true);
+    }
+    const handlePrivateVisibilityClick = async (event)=>{
+  
+      console.log('this is running');
+      const allIncludedRoomData = await getRoomData();
+      if(allIncludedRoomData){
+        setAllRooms(allIncludedRoomData)
+      }
+      setDisplayPrivateRooms(false)
+    }
   return (
     <>
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>
-              Explore Hubs
-            </span>
+            <span id={styles.display_created_room_name}>Explore Hubs</span>
+            {!displayPrivateRooms && (
+              <VisibilityOutlinedIcon
+                id={styles.private_rooms_visibility_icon}
+                onClick={(event) => handleShowPublicRoomData(event)}
+              />
+            )}
+            {displayPrivateRooms && (
+              <VisibilityOffOutlinedIcon
+                id={styles.private_rooms_visibility_icon}
+                onClick={(event)=>{handlePrivateVisibilityClick(event)}}
+              />
+            )}
           </div>
           <div
             className={
@@ -115,10 +141,17 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   : isAnimatingIn
                   ? styles.slideIn
                   : ""
-              } ${room.private_room ? styles.room_private : " "}`;
+              } ${room.private_room ? styles.room_public_private : " "}`;
 
               return (
-                  <RoomItem room={room} roomClass={roomClass} changeRooms={changeRooms} imageURL={imageURL} filterRooms={setAllRooms} goToRoom={handleClick}/>
+                <RoomItem
+                  room={room}
+                  roomClass={roomClass}
+                  changeRooms={changeRooms}
+                  imageURL={imageURL}
+                  filterRooms={setAllRooms}
+                  goToRoom={handleClick}
+                />
               );
             })}
           </div>

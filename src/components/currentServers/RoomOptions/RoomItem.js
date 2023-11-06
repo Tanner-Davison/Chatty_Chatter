@@ -7,7 +7,7 @@ import styles from "./RoomsCreated.module.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
+import LockSharpIcon from "@mui/icons-material/LockSharp";
 const RoomItem = ({
   room,
   roomClass,
@@ -33,22 +33,31 @@ const RoomItem = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    event.stopPropagation()
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation()
     setAnchorEl(null);
+
   };
-  const handleRemoveRoom = (roomToRemove) => {
-    handleClose();
+  const handleRemoveRoom = (event, roomToRemove) => {
+    event.stopPropagation();
+    handleClose(event);
     return filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
   };
+  const handleGoToRoom=(event, roomNumber)=>{
+    event.stopPropagation();
+    handleClose(event)
+    goToRoom(roomNumber)
+  }
   return (
     <Tilt key={room._id} options={defaultOptions}>
       <div
         className={roomClass}
         room={room}
-        // onClick={() => handleClick(room.room)}
+        onClick={(e)=>handleGoToRoom(e, room.room_number)}
         value={room.room}>
         <img
           id={styles.room_owned_by_img_expolore}
@@ -63,7 +72,7 @@ const RoomItem = ({
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}>
+            onClick={(e)=>handleClick(e)}>
             <MenuRoundedIcon id={styles.menu_icon} />
           </Button>
           <Menu
@@ -75,41 +84,46 @@ const RoomItem = ({
               "aria-labelledby": "basic-button",
             }}>
             <MenuItem
-              onClick={() => {
-                handleClose();
+              onClick={(e) => {
+                handleClose(e);
                 navigate(`/profile/${room.created_by}`);
               }}>
-              Creators Profile
+             Admins Profile
             </MenuItem>
             {!room.private_room && (
               <MenuItem
-                onClick={() => {
-                  handleClose();
-                  return goToRoom(room.room_number);
+                onClick={(e) => {
+                 handleGoToRoom(e, room.room_number)
                 }}>
                 Visit Room
               </MenuItem>
             )}
             {room.private_room && (
               <MenuItem
-                onClick={() => {
-                  handleClose();
+                onClick={(e) => {
+                  handleClose(e);
                   return goToRoom(room.room_number);
                 }}>
-                Request invite
+                Request Access
               </MenuItem>
             )}
-            <MenuItem onClick={() => handleRemoveRoom(room)}>
+            <MenuItem onClick={(e) => handleRemoveRoom(e,room)}>
               Hide Room
             </MenuItem>
           </Menu>
         </div>
-
-        <GroupIcon
-          className={styles.display_joined_list}
-          onClick={() => SetDisplayAllUsers(!displayAllUsers)}
-        />
-        {!displayAllUsers && <p className={styles.room_members}>{room.room_name}</p>}
+        {room.private_room && (
+          <LockSharpIcon className={styles.display_joined_list} />
+        )}
+        {!room.private_room && (
+          <GroupIcon
+            className={styles.display_joined_list}
+            onClick={() => SetDisplayAllUsers(!displayAllUsers)}
+          />
+        )}
+        {!displayAllUsers && (
+          <p className={styles.room_members}>{room.room_name}</p>
+        )}
 
         {displayAllUsers && (
           <p className={`${styles.room_members} ${styles._active}`}>

@@ -3,7 +3,7 @@ import { useState,useEffect,useContext, } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import "./Header.css";
 import searchGlass from './svgs/searchGlass.svg'
-const Header = ({ joinRoom, roomChanger, room, }) => {
+const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
   const [visible, setVisible] = useState(true);
@@ -12,8 +12,8 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
   const { mainAccess, setMainAccess, } =
     useContext(LoginContext);
 
-  const headerClickHandler = (e) =>{
-    e.preventDefault();
+  const headerClickHandler = () =>{
+   
     setMainAccess(true);
     joinRoom();
   }
@@ -112,7 +112,7 @@ const Header = ({ joinRoom, roomChanger, room, }) => {
             onKeyDown={handleKeyDown}
             onChange={roomChanger}
           />
-          <button className={"buttonHeader"} type="button" onClick={(e)=>headerClickHandler(e)}>
+          <button className={"buttonHeader"} type="button" onClick={headerClickHandler}>
             <img src={searchGlass} alt={"search hub"} />
             Search
           </button>

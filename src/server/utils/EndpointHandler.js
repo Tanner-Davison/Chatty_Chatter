@@ -1,5 +1,6 @@
 const {Rooms,User} = require("./Schemas");
 const bcrypt = require('bcrypt');
+const currentDate = new Date().toLocaleDateString(); 
 module.exports = {
   roomHistory: async (req, res) => {
     const room = await Rooms.findOne({ room_number: req.params.room });
@@ -55,11 +56,22 @@ module.exports = {
   },
 
   verifyPrivateRoomPassword: async (req, res) => {
-    const { password, room, roomPassword } = req.query;
+    const { password, room, roomPassword, username, roomName } = req.query;
     console.log(password, room, roomPassword);
+    const joinRoom = await User.findOne({username: username})
     const passwordMatch = await bcrypt.compare(password, roomPassword);
     if (passwordMatch) {
+       if(joinRoom){
+      joinRoom.roomsJoined.push({
+        room: room,
+        roomName:roomName,
+        timeStamp: currentDate,
+      })
+      await joinRoom.save();
       return res.status(200).send({ message: "success" });
+    }else if(!joinRoom){
+      return console.log('failed veryify private Password at joinroom does not exit check backend please')
+    }
     } else {
       return res.status(404).send({ message: "failed" });
     }

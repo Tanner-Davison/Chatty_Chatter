@@ -40,7 +40,7 @@ const RoomHelper = ({
   };
   console.log(room);
   const handleClose = (event) => {
-    event.stopPropagation();
+    event.stopPropagation()
     return setAnchorEl(null);
   };
   const handleRemoveRoom = (event, roomToRemove) => {
@@ -50,7 +50,7 @@ const RoomHelper = ({
     return filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
   };
   const handlegoToRoom = (event, roomToVisit) => {
-    handleClose(event);
+    
     return goToRoom(room.room_number);
   };
   const handleMenuOpen = (event) => {

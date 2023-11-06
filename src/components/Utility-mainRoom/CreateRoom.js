@@ -395,7 +395,7 @@ const CreateRoom = (props) => {
                           placeholder={'"Name the public Hub"'}
                           onChange={(e) => setPublicRoomName(e.target.value)}
                           maxLength="20"
-                          required="true"
+                          required={true}
                         />
                         <Button
                           variant="outlined"

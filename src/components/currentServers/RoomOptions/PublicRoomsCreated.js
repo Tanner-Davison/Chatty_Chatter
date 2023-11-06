@@ -103,7 +103,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>Owned public Hubs</span>
+            <span id={styles.display_created_room_name}>Created Public Hubs</span>
           </div>
           <div
             className={
