@@ -71,8 +71,9 @@ const RoomHelper = ({
       return roomData((prev)=> prev.filter((room)=> room._id!== room_id ))
   }
   return (
-    <Tilt key={room._id} options={defaultOptions}>
+    <Tilt options={defaultOptions}>
       <div
+        key={room._id}
         className={roomClass}
         room={room}
         onClick={() => goToRoom(room.room_number)}

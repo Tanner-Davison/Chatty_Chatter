@@ -12,10 +12,15 @@ import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
 import TypingComp from "./Utility-mainRoom/TypingComp";
 import PrivateRoomAccess from "./Utility-mainRoom/PrivateRoomAccess.js";
 import axios from 'axios';
+import useJoinedList from "./Utility-mainRoom/useJoinedList.js";
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+import IndeterminateCheckBoxOutlinedIcon from "@mui/icons-material/IndeterminateCheckBoxOutlined";
+import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
-    useContext(LoginContext);
-
+  useContext(LoginContext);
+  
+  const [clicked, setClicked] = useState(false);
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
   const [roomData, setRoomData] = useState([]);
@@ -35,6 +40,9 @@ const MainRoom = () => {
   const [typing, setTyping] = useState(false);
   const typingTimeoutId = useRef(null);
   const currentTyper = useRef(null);
+  const {addRoom ,error,joinedListResponse , setJoinedListResponse, removeRoom} = useJoinedList();
+  const [userJoinedListAlready, setUserJoineListdAlready] =useState(false)
+
   const navigate = useNavigate();
   const handleIsTyping = useIsTyping(
     socket,
@@ -88,8 +96,41 @@ const MainRoom = () => {
   const roomChanger = (event) => {
     setRoom(event.target.value);
   };
+  const handleJoinRoomBtn = async ()=>{
+    const addTheRoom = await addRoom(userLoginInfo.username, room, roomData.room_name);
+    if(addTheRoom){
+      return console.log(joinedListResponse)
+    }
+    if(error){
+      console.error(error)
+    }
+  }
+  const handleRemoveRoomBtn =async()=>{
+    const removeFromList = await removeRoom(userLoginInfo.username, room , roomData.room_name);
+    if(removeFromList){
+      console.log(joinedListResponse)
+    }
+    if(error){
+      console.error(error)
+    }
+  }
+  useEffect(() => {
 
+    if (joinedListResponse === "User has already joined this room."){
+      setUserJoineListdAlready(true)
+    }else{
+      setUserJoineListdAlready(false)
+    }
+      
+  }, [joinedListResponse, userJoinedListAlready, setJoinedListResponse]);
   const sendMessageFunc = () => {
+    setClicked(true);
+     setTimeout(() => {
+      setClicked(false);
+    }, 600);
+    if(message === ''){
+      return;
+    }
     const data = {
       message,
       room,
@@ -152,6 +193,7 @@ const MainRoom = () => {
     // Auto join room if main access is true
     if (mainAccess === true) {
       joinRoom();
+      handleJoinRoomBtn();
       setMainAccess(false);
     }
 
@@ -306,12 +348,10 @@ const MainRoom = () => {
         </div>
         {!isPrivateRoom && (
           <>
-            <div className={"room-num-input-mainRoom"}>
-              <button id={"leave-room-btn"} onClick={leaveRoom}>
-                Join Room 
-              </button>
+            <div className="send-input-wrapper">
               <input
                 placeholder={"Message..."}
+                id={"send_message_input"}
                 value={message}
                 onChange={(event) => {
                   setMessage(event.target.value);
@@ -319,13 +359,37 @@ const MainRoom = () => {
                 }}
                 maxLength="255"
               />
-              <button className={"sendMsgBtn"} onClick={sendMessageFunc}>
+              <button
+                className={`sendMsgBtn ${clicked ? "open" : ""}`}
+                onClick={sendMessageFunc}>
                 Send
-                <img src={sendIcon} alt={"icon-for-send"}></img>
+                <img
+                  src={sendIcon}
+                  className={` ${clicked ? "clicked" : ""}`}
+                  alt={"icon-for-send"}></img>
               </button>
             </div>
-            <div className="leave-delete-button">
-              <button onClick={deleteRoom}>Delete Room</button>
+            <div className={"helper_tools_wrapper"}>
+              <button id={"leave-room-btn"} onClick={leaveRoom}>
+                <ReplyRoundedIcon />
+                Back
+              </button>
+              {!userJoinedListAlready && (
+                <button
+                  className={"subscribe_to_room"}
+                  onClick={handleJoinRoomBtn}>
+                  <AddBoxOutlinedIcon />
+                  subscribe?
+                </button>
+              )}
+              {userJoinedListAlready && (
+                <button
+                  className={"subscribe_to_room _joined"}
+                  onClick={handleRemoveRoomBtn}>
+                  <IndeterminateCheckBoxOutlinedIcon />
+                  unsubscribe?
+                </button>
+              )}
             </div>
           </>
         )}
@@ -352,6 +416,9 @@ const MainRoom = () => {
           </div>
         </>
       }
+      <div className="leave-delete-button">
+        <button onClick={deleteRoom}>Delete Room</button>
+      </div>
     </>
   );
 };

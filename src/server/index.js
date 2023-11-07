@@ -43,6 +43,8 @@ app.post('/new-room-creation', RoomCreation.createPublic);
 app.post('/create-private-room', RoomCreation.createPrivate);
 app.post("/signup", LoginHelper.signUp);
 app.post("/login", LoginHelper.Login);
+app.post("/addRoomToUser", EndpointHandler.addRoomToUser);
+app.post("/removeJoinedRoom", EndpointHandler.removeJoinedRoom)
 app.post("/deleteSingleRoom", EndpointHandler.deleteSingleRoom);
 
 const io = new Server(server, {

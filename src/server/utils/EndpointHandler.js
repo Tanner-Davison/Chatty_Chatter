@@ -58,20 +58,22 @@ module.exports = {
   verifyPrivateRoomPassword: async (req, res) => {
     const { password, room, roomPassword, username, roomName } = req.query;
     console.log(password, room, roomPassword);
-    const joinRoom = await User.findOne({username: username})
+    const joinRoom = await User.findOne({ username: username });
     const passwordMatch = await bcrypt.compare(password, roomPassword);
     if (passwordMatch) {
-       if(joinRoom){
-      joinRoom.roomsJoined.push({
-        room: room,
-        roomName:roomName,
-        timeStamp: currentDate,
-      })
-      await joinRoom.save();
-      return res.status(200).send({ message: "success" });
-    }else if(!joinRoom){
-      return console.log('failed veryify private Password at joinroom does not exit check backend please')
-    }
+      if (joinRoom) {
+        joinRoom.roomsJoined.push({
+          room: room,
+          roomName: roomName,
+          timeStamp: currentDate,
+        });
+        await joinRoom.save();
+        return res.status(200).send({ message: "success" });
+      } else if (!joinRoom) {
+        return console.log(
+          "failed veryify private Password at joinroom does not exit check backend please"
+        );
+      }
     } else {
       return res.status(404).send({ message: "failed" });
     }
@@ -124,10 +126,93 @@ module.exports = {
           { "roomsCreated.room": roomNumber },
           { $pull: { roomsCreated: { room: roomNumber } } }
         );
-      } 
+      }
     } catch (error) {
       console.log(`error at deleteSingleRoom: ${error}`);
       res.status(500).json({ message: "Internal server error" });
     }
   },
+  addRoomToUser: async (req, res) => {
+    try {
+      const username = req.body.username;
+      const room = req.body.roomNumber;
+      const roomName = req.body.roomName;
+
+      if (username && room) {
+        const findUser = await User.findOne({ username: username });
+
+        if (!findUser) {
+          console.log("User not found.");
+          return res.status(404).send({ message: "User not found." });
+        }
+
+        const alreadyJoinedRoom = await User.findOne({'roomsJoined.room': room});
+
+        if (alreadyJoinedRoom) {
+          console.log("User has already joined this room.");
+          return res
+            .status(200)
+            .send({ message: "User has already joined this room." });
+        }
+        if(findUser){
+
+          findUser.roomsJoined.push({
+            room: room,
+            roomName: roomName,
+            timeStamp: currentDate,
+          });
+          await findUser.save();
+        }
+
+
+        console.log("User joined the room successfully.");
+        return res
+          .status(200)
+          .send({ message: "User joined the room successfully." });
+      } else {
+        console.log("Username or room number is missing in the request.");
+        return res
+          .status(400)
+          .send({
+            message: "Username or room number is missing in the request.",
+          });
+      }
+    } catch (error) {
+      console.log("Backend error at addRoomToUser in EndpointHandler:", error);
+      return res.status(500).send({ message: "Internal server error." });
+    }
+  },
+  removeJoinedRoom: async (req,res) =>{
+    const username = await req.body.username;
+    const room = await req.body.roomNumber;
+    const roomName = await req.body.roomName;
+
+    if(username && room && roomName){
+      try{
+        const user = await User.findOne({
+        'roomsJoined.room': room,
+      })
+      if(!user){
+        return res
+        .status(404)
+        .send({
+          message: 'user could not find applicable room to remove'
+        });
+      }else{
+          user.updateOne(
+            {'roomsJoined.room': room},
+            {$pull: {roomsJoined: {room:room}}})
+            await user.save()
+            return res
+            .status(200)
+            .send({
+              message: 'room was removed successfully'
+            })
+      }
+      }catch(err){
+        console.error(err)
+      }
+
+    }
+  }
 };

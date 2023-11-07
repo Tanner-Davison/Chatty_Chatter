@@ -145,6 +145,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
 
               return (
                 <RoomItem
+                  key={room._id}
                   room={room}
                   roomClass={roomClass}
                   changeRooms={changeRooms}

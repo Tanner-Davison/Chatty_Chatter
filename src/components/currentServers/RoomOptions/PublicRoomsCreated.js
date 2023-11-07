@@ -92,6 +92,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     } 
   };
   fetchData();
+  //eslint-disable-next-line
  },[userLoginInfo.username, noData])
 
   const displayedRooms = publicMadeRooms.slice(
@@ -145,7 +146,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                 <>
                 
                   <RoomHelper
-                  key={publicMadeRooms._id}
+                  key={room._id}
                   loading={'lazy'}
                     room={room}
                     roomClass={roomClass}
@@ -159,7 +160,8 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
               );
             })}
           </div>
-          <div className={styles.flex_row}>
+          <div 
+          className={styles.flex_row}>
             {!gridView && (
               <>
                 <KeyboardDoubleArrowLeftTwoToneIcon
