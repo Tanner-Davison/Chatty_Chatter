@@ -14,8 +14,14 @@ const PORT = process.env.REACT_APP_PORT;
                     roomNumber,
                     roomName,
                 });
-            const response = sendData.data.message
-            setJoinedListResponse(response);
+            const response = sendData.data
+            if(response.message){
+
+                setJoinedListResponse(response.message);
+            }else if(response.room){
+                console.log("did not receive a message body in return.");
+                
+            }
             console.log(joinedListResponse)
             return 
         }catch(err){

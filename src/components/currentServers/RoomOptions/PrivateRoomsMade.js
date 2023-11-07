@@ -144,6 +144,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                     room={room}
                     roomClass={roomClass}
                     imageURL={userLoginInfo.imageUrl}
+                    allRooms={roomsCreated}
                     filterRooms={setPrivateMadeRooms}
                     changeRooms={changeRooms}
                     goToRoom={handleClick}

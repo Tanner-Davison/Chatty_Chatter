@@ -42,12 +42,13 @@ const RoomItem = ({
     setAnchorEl(null);
 
   };
-  const handleRemoveRoom = (event, roomToRemove) => {
+  const handleRemoveRoom = async (event, roomToRemove) => {
     event.stopPropagation();
     handleClose(event);
-    return filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
+    await filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
+    return changeRooms('left')
   };
-  const handleGoToRoom=(event, roomNumber)=>{
+  const handleGoToRoom= (event, roomNumber)=>{
     event.stopPropagation();
     handleClose(event)
     goToRoom(roomNumber)
@@ -79,7 +80,7 @@ const RoomItem = ({
             className={styles.dropdown_list}
             anchorEl={anchorEl}
             open={open}
-            onClose={handleClose}
+            onClose={(e)=>handleClose(e)}
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>

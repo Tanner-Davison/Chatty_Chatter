@@ -152,6 +152,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   imageURL={imageURL}
                   filterRooms={setAllRooms}
                   goToRoom={handleClick}
+                  
                 />
               );
             })}

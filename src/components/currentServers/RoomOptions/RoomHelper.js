@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -15,6 +15,7 @@ const RoomHelper = ({
   changeRooms,
   imageURL,
   filterRooms,
+  setRoomsPerPage,
   goToRoom,
   roomData,
 }) => {
@@ -38,17 +39,20 @@ const RoomHelper = ({
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
-  console.log(room);
   const handleClose = (event) => {
     event.stopPropagation()
     return setAnchorEl(null);
   };
-  const handleRemoveRoom = (event, roomToRemove) => {
+  const handleRemoveRoom = async (event, roomToRemove) => {
     event.stopPropagation();
     handleClose(event);
-    changeRooms("left");
-    return filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
+     await filterRooms((prev) => prev.filter((room) => room.room_number !== roomToRemove));
+    changeRooms('left');
+    return
   };
+  const undo =(event)=>{
+    event.stopPropagation();
+  }
   const handlegoToRoom = (event, roomToVisit) => {
     
     return goToRoom(room.room_number);
@@ -70,6 +74,7 @@ const RoomHelper = ({
       deleteOne(room_id, roomNumber);
       return roomData((prev)=> prev.filter((room)=> room._id!== room_id ))
   }
+
   return (
     <Tilt options={defaultOptions}>
       <div

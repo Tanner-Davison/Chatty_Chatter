@@ -8,6 +8,8 @@ import CompressIcon from "@mui/icons-material/Compress";
 import Tooltip from "@mui/material/Tooltip";
 import RoomHelper from "./RoomHelper";
 import {getAllRoomsData} from '../AllRoomsJoined.js'
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
   
@@ -33,8 +35,8 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       setCurrentIndex((prevIndex) => {
         if (direction === "left") {
           const newIndex = prevIndex - roomsPerPage;
-          return newIndex < 0
-            ? publicMadeRooms.length - roomsPerPage
+          return newIndex <= 0
+            ? publicMadeRooms.length - roomsPerPage 
             : newIndex;
         } else {
           const newIndex = prevIndex + roomsPerPage;
@@ -79,13 +81,10 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       if(roomData.roomsCreatedByUser.length<=0){
         setNoData(true); 
       }
-      console.log({LookHere: roomData})
       const roomValue = roomData.roomsCreatedByUser.filter(
         (room) => !room.private_room
       );
-      console.log(publicMadeRooms)
       setPublicMadeRooms(roomValue);
-      
     }catch(error){
       console.error("Error fetching data", error)
       
@@ -155,6 +154,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                     changeRooms={changeRooms}
                     goToRoom={handleClick}
                     roomData={setPublicMadeRooms}
+                   
                   />
                 </>
               );
