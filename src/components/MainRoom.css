@@ -445,7 +445,7 @@ h1 {
   overflow: hidden;
   color: white;
   font-weight: 600;
-  padding: 3px 15px;
+  padding:3px 10px;
 }
 .sendMsgBtn:hover {
   background-position: 100% 100%;
@@ -453,7 +453,8 @@ h1 {
 }
 
 .clicked {
-  animation: slideAway .6s ease-out 0s 1;
+  animation: slideAway .8s ease-out 0s 1;
+  justify-self: center;
 }
 @keyframes slideAway {
   0% {
@@ -473,7 +474,7 @@ h1 {
     transform:translateX(-200%) 
   }
   90%{
-    transform:  rotateX(10deg);
+    transform:  rotateX(10deg) translate(33%)
   }
   100% {
     transform: translateX(0) rotateY(0);
@@ -722,7 +723,7 @@ h1 {
 
   .sendMsgBtn {
     height: fit-content;
-    padding: 5px 15px 5px 15px;
+    padding: 5px 35px 5px 10px;
   }
 
   .leave-delete-button {

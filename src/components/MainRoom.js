@@ -127,7 +127,7 @@ const MainRoom = () => {
     setClicked(true);
      setTimeout(() => {
       setClicked(false);
-    }, 600);
+    }, 800);
     if(message === ''){
       return;
     }
