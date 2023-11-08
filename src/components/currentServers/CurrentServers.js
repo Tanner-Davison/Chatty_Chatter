@@ -8,6 +8,7 @@ import { AllRoomsJoined } from "./AllRoomsJoined.js";
 import PublicRoomsCreated from './RoomOptions/PublicRoomsCreated'
 import PrivateRoomsCreated from "./RoomOptions/PrivateRoomsMade";
 import RoomsToExplore from "./RoomOptions/RoomsToExplore";
+import FollowingList from './RoomOptions/FollowingList.js'
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } =
     useContext(LoginContext);
@@ -70,21 +71,15 @@ const CurrentServers = () => {
           </button>
         </div>
 
-        {roomsJoined.length > 0 &&
-          roomsJoined.map((room) => {
-            const id = room._id;
-            
-            
-
-            return (
+        {
               <>
-                <roomsAdded 
-                key={id}
+                <FollowingList
+                key={roomsJoined._id}
                 handleCLick={handleRoomButtonClick}
-                roomsCreated={room}/>
+                roomsCreated={roomsJoined}
+                />
               </>
-            );
-          })}
+            }
       </div>
       {
         <PublicRoomsCreated

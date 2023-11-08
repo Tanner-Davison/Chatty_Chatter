@@ -7,11 +7,22 @@ const [error,setError] = useState(null);
 const [joinedListResponse, setJoinedListResponse ] = useState('')
 const PORT = process.env.REACT_APP_PORT;
 
+   const checkJoinedRoomList = async (username, roomToCheck) => {
+     try {
+       const response = await axios.get(`${PORT}/checkUsersJoinedList`, {
+         params: { username, roomToCheck }, // Use params to send data in the request
+       });
+       return response.data;
+     } catch (err) {
+       setError("found error in useJoinedList" + err);
+       return null; // or handle the error in an appropriate way
+     }
+   };
     const addRoom = async (username, roomNumber, roomName) =>{
         try{
             const sendData = await axios.post(`${PORT}/addRoomToUser`,{
-                    username,
-                    roomNumber,
+                    username, 
+                    roomNumber, 
                     roomName,
                 });
             const response = sendData.data
@@ -36,7 +47,7 @@ const PORT = process.env.REACT_APP_PORT;
                 roomNumber,
                 roomName,
             });
-            const response = sendData.data.message;
+            const response = await sendData.data.message;
             setJoinedListResponse(response)
             return;
         }catch(err){
@@ -46,9 +57,9 @@ const PORT = process.env.REACT_APP_PORT;
     useEffect(()=>{
 
         console.log(joinedListResponse);
+        console.log(error)
+    },[joinedListResponse, error])
 
-    },[joinedListResponse])
-
-    return {addRoom, error,removeRoom, setJoinedListResponse , joinedListResponse}
+    return {addRoom, error,removeRoom, setJoinedListResponse , joinedListResponse, checkJoinedRoomList}
 }
 export default useJoinedList;

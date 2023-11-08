@@ -11,15 +11,15 @@ import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
 import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
 import TypingComp from "./Utility-mainRoom/TypingComp";
 import PrivateRoomAccess from "./Utility-mainRoom/PrivateRoomAccess.js";
-import axios from 'axios';
+import axios from "axios";
 import useJoinedList from "./Utility-mainRoom/useJoinedList.js";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import IndeterminateCheckBoxOutlinedIcon from "@mui/icons-material/IndeterminateCheckBoxOutlined";
 import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
-  useContext(LoginContext);
-  
+    useContext(LoginContext);
+
   const [clicked, setClicked] = useState(false);
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);
@@ -40,8 +40,15 @@ const MainRoom = () => {
   const [typing, setTyping] = useState(false);
   const typingTimeoutId = useRef(null);
   const currentTyper = useRef(null);
-  const {addRoom ,error,joinedListResponse , setJoinedListResponse, removeRoom} = useJoinedList();
-  const [userJoinedListAlready, setUserJoineListdAlready] =useState(false)
+  const {
+    addRoom,
+    error,
+    joinedListResponse,
+    setJoinedListResponse,
+    removeRoom,
+    checkJoinedRoomList,
+  } = useJoinedList();
+  const [following, setFollowing] = useState(null);
 
   const navigate = useNavigate();
   const handleIsTyping = useIsTyping(
@@ -61,27 +68,44 @@ const MainRoom = () => {
     setLoading(true);
     const messages = await loadRoomHistory(room);
     setRoomData(messages.allRoomData);
-    if (messages.allRoomData.private_room){
+    if (messages.allRoomData.private_room) {
+      console.log(messages.allRoomData);
       try {
         const privateAccessExist = await axios.get(
           `${PORT}/api/users/${userLoginInfo.username}/rooms`
         );
         const response = privateAccessExist.data.roomsJoined;
-        console.log(response);
-        const containsRoom = response.find(
+        const listContainsRoom = response.find(
           (roomData) => parseInt(roomData.room) === parseInt(room)
         );
-        if (containsRoom) {
-          console.log(containsRoom);
+        if (listContainsRoom) {
           setIsPrivateRoom(false);
+          setFollowing(true)
         } else {
-          console.log(messages.allRoomData);
-          console.log("response is false", room);
-          console.log(containsRoom);
           setIsPrivateRoom(true);
         }
       } catch (err) {
         console.log(err + `error in joinRoom mainRoom function`);
+      }
+    }
+    if (messages.allRoomData.private_room === false) {
+      try {
+        const publicAccess = await axios.get(
+          `${PORT}/api/users/${userLoginInfo.username}/rooms`
+        );
+        const roomsJoinedList = await publicAccess.data.roomsJoined;
+        const isInJoinedList = await roomsJoinedList.find(
+          (room) => parseInt(roomData.room) === parseInt(room)
+        );
+        if (isInJoinedList) {
+          console.log("running in publicAccess");
+
+          setFollowing(true);
+        } else if (!isInJoinedList) {
+          setFollowing(false);
+        }
+      } catch (err) {
+        console.log(err + "mainRoom in JoinRoom() function for public access");
       }
     }
     sessionStorage.setItem("lastRoom", room.toString());
@@ -96,39 +120,55 @@ const MainRoom = () => {
   const roomChanger = (event) => {
     setRoom(event.target.value);
   };
-  const handleJoinRoomBtn = async ()=>{
-    const addTheRoom = await addRoom(userLoginInfo.username, room, roomData.room_name);
-    if(addTheRoom){
-      return console.log(joinedListResponse)
+  const handleJoinRoomBtn = async () => {
+    const addTheRoom = await addRoom(
+      userLoginInfo.username,
+      room,
+      roomData.room_name
+    );
+    if (addTheRoom) {
+      setJoinedListResponse(addTheRoom);
+      console.log("running in addTheRoom");
+      setFollowing(true);
+      return console.log(joinedListResponse);
     }
-    if(error){
-      console.error(error)
+    if (error) {
+      console.error(error);
     }
-  }
-  const handleRemoveRoomBtn =async()=>{
-    const removeFromList = await removeRoom(userLoginInfo.username, room , roomData.room_name);
-    if(removeFromList){
-      console.log(joinedListResponse)
+  };
+  const handleRemoveRoomBtn = async () => {
+    const removeFromList = await removeRoom(
+      userLoginInfo.username,
+      room,
+      roomData.room_name
+    );
+    if (removeFromList) {
+      console.log("this is running right here");
+      console.log(joinedListResponse);
+      setJoinedListResponse(removeFromList);
+      console.log("running in handeRemoveRoomBtn");
+      setFollowing(false);
     }
-    if(error){
-      console.error(error)
+    if (error) {
+      console.error(error);
     }
-  }
-  useEffect(() => {
+  };
+  const checkList = async () => {
+    console.log("this is running");
+    const response = await checkJoinedRoomList(
+      userLoginInfo.username,
+      roomData.room_name
+    );
+    setFollowing(response.data.message)
+      console.log(following)
+  };
 
-    if (joinedListResponse === "User has already joined this room."){
-      setUserJoineListdAlready(true)
-    }else{
-      setUserJoineListdAlready(false)
-    }
-      
-  }, [joinedListResponse, userJoinedListAlready, setJoinedListResponse]);
   const sendMessageFunc = () => {
     setClicked(true);
-     setTimeout(() => {
+    setTimeout(() => {
       setClicked(false);
     }, 800);
-    if(message === ''){
+    if (message === "") {
       return;
     }
     const data = {
@@ -161,6 +201,7 @@ const MainRoom = () => {
   };
   useEffect(() => {
     // Handle socket connection
+
     if (!socket) {
       setSocket(
         io.connect(`${PORT}`, {
@@ -171,7 +212,7 @@ const MainRoom = () => {
       );
       return setMainAccess(true);
     }
-
+    checkList();
     const handleSocketConnect = async () => {
       const fetchRoomHistoryData = async () => {
         const data = await loadRoomHistory(room);
@@ -193,7 +234,7 @@ const MainRoom = () => {
     // Auto join room if main access is true
     if (mainAccess === true) {
       joinRoom();
-      handleJoinRoomBtn();
+
       setMainAccess(false);
     }
 
@@ -244,7 +285,15 @@ const MainRoom = () => {
         messagesStartRef.current.scrollHeight;
     }
   }, [messageRecieved, typing]);
-
+  useEffect(() => {
+    if (joinedListResponse === "room was removed successfully") {
+      console.log("running in useEffect as false");
+      return setFollowing(false);
+    } else if (joinedListResponse === "User joined the room successfully.") {
+      console.log("running in useEffect as true");
+      return setFollowing(true);
+    }
+  }, [following, joinedListResponse]);
   return (
     <>
       <Header
@@ -374,20 +423,20 @@ const MainRoom = () => {
                 <ReplyRoundedIcon />
                 Back
               </button>
-              {!userJoinedListAlready && (
+              {!following && (
                 <button
                   className={"subscribe_to_room"}
-                  onClick={handleJoinRoomBtn}>
-                  <AddBoxOutlinedIcon />
-                  subscribe?
+                  onClick={() => handleJoinRoomBtn()}>
+                  <AddBoxOutlinedIcon id={"subscribe_btn"} />
+                  Subscribe
                 </button>
               )}
-              {userJoinedListAlready && (
+              {following && (
                 <button
                   className={"subscribe_to_room _joined"}
-                  onClick={handleRemoveRoomBtn}>
-                  <IndeterminateCheckBoxOutlinedIcon />
-                  unsubscribe?
+                  onClick={() => handleRemoveRoomBtn()}>
+                  <IndeterminateCheckBoxOutlinedIcon id={"unsubscribe_icon"} />
+                  Unsubscribe
                 </button>
               )}
             </div>
@@ -416,9 +465,9 @@ const MainRoom = () => {
           </div>
         </>
       }
-      <div className="leave-delete-button">
+      {/* <div className="leave-delete-button">
         <button onClick={deleteRoom}>Delete Room</button>
-      </div>
+      </div> */}
     </>
   );
 };

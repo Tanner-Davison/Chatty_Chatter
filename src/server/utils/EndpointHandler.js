@@ -132,6 +132,35 @@ module.exports = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+  checkUsersJoinedList: async (req,res)=>{
+    const username = req.query.username;
+    const roomToCheck = req.query.roomToCheck;
+    
+    if(username && roomToCheck){
+      try{
+        await User.findOne({username: username},
+          {'roomsJoined.room': roomToCheck})
+          .then((user)=>{
+            console.log('user Found in roomJoinedList ', user)
+            const filteredRooms = user.RoomsJoined.filter((room)=> Object.keys(room).length > 0)
+
+            if (!filteredRooms) {
+              console.log(user.roomsJoined + user.roomsJoined)
+            res.status(200).send({message: false})
+            }else if(filteredRooms){
+              
+              console.log(user.roomsJoined)
+              res
+              .status(200)
+              .send({message: true})
+            }
+          })
+          .catch(err => console.error(err + 'inside the .then .catch(block'))
+      }catch(err){
+        console.error(err + 'checkUsersJoinedList error in try catch block');
+      }
+    }
+  },
   addRoomToUser: async (req, res) => {
     try {
       const username = req.body.username;
@@ -199,10 +228,11 @@ module.exports = {
           message: 'user could not find applicable room to remove'
         });
       }else{
-          user.updateOne(
-            {'roomsJoined.room': room},
-            {$pull: {roomsJoined: {room:room}}})
-            await user.save()
+        await user.updateOne(
+          { $pull: { roomsJoined: { room: room } } },
+          { multi: true }
+        );
+        await user.save();
             return res
             .status(200)
             .send({

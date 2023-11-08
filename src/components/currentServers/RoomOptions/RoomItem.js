@@ -15,7 +15,7 @@ const RoomItem = ({
   imageURL,
   filterRooms,
   goToRoom,
-  setCurrentIndex
+  setCurrentIndex,
 }) => {
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const navigate = useNavigate();
@@ -34,38 +34,38 @@ const RoomItem = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setAnchorEl(null);
-
   };
-  const handleDisplayUsers =(event)=>{
-    event.stopPropagation()
+  const handleDisplayUsers = (event) => {
+    event.stopPropagation();
     SetDisplayAllUsers(!displayAllUsers);
-  }
+  };
   const handleRemoveRoom = async (event, roomToRemove) => {
     event.stopPropagation();
     handleClose(event);
     await filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
-    
-   
-   return
+    return;
   };
-  const handleGoToRoom= (event, roomNumber)=>{
+  const handleLockClick = (e) => {
+    e.stopPropagation();
+  };
+  const handleGoToRoom = (event, roomNumber) => {
     event.stopPropagation();
-    handleClose(event)
-    goToRoom(roomNumber)
-  }
+    handleClose(event);
+    goToRoom(roomNumber);
+  };
   return (
     <Tilt key={room._id} options={defaultOptions}>
       <div
         className={roomClass}
         room={room}
-        onClick={(e)=>handleGoToRoom(e, room.room_number)}
+        onClick={(e) => handleGoToRoom(e, room.room_number)}
         value={room.room}>
         <img
           id={styles.room_owned_by_img_expolore}
@@ -80,14 +80,14 @@ const RoomItem = ({
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
-            onClick={(e)=>handleClick(e)}>
+            onClick={(e) => handleClick(e)}>
             <MenuRoundedIcon id={styles.menu_icon} />
           </Button>
           <Menu
             className={styles.dropdown_list}
             anchorEl={anchorEl}
             open={open}
-            onClose={(e)=>handleClose(e)}
+            onClose={(e) => handleClose(e)}
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>
@@ -96,12 +96,12 @@ const RoomItem = ({
                 handleClose(e);
                 navigate(`/profile/${room.created_by}`);
               }}>
-             Admins Profile
+              Admins Profile
             </MenuItem>
             {!room.private_room && (
               <MenuItem
                 onClick={(e) => {
-                 handleGoToRoom(e, room.room_number)
+                  handleGoToRoom(e, room.room_number);
                 }}>
                 Visit Room
               </MenuItem>
@@ -115,13 +115,29 @@ const RoomItem = ({
                 Request Access
               </MenuItem>
             )}
-            <MenuItem onClick={(e) => handleRemoveRoom(e,room)}>
+            <MenuItem onClick={(e) => handleRemoveRoom(e, room)}>
               Hide Room
             </MenuItem>
           </Menu>
         </div>
+
         {room.private_room && (
-          <LockSharpIcon className={styles.display_joined_list} />
+          <>
+              <LockSharpIcon className={styles.display_joined_list}>
+            <Menu
+              className={styles.dropdown_list}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={(e) => handleClose(e)}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}>
+                <MenuItem
+                  onClick={(e) => {handleLockClick(e)}}>
+                </MenuItem>
+            </Menu>
+              </LockSharpIcon>
+          </>
         )}
         {!room.private_room && (
           <GroupIcon

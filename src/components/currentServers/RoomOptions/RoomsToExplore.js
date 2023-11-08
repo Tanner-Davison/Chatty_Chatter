@@ -157,7 +157,6 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   filterRooms={setAllRooms}
                   goToRoom={handleClick}
                   setCurrentIndex={setCurrentIndex}
-                  
                 />
               );
             })}
