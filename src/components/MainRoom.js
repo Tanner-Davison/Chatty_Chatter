@@ -79,6 +79,7 @@ const MainRoom = () => {
           (roomData) => parseInt(roomData.room) === parseInt(room)
         );
         if (listContainsRoom) {
+          console.log('this is running')
           setIsPrivateRoom(false);
           setFollowing(true)
         } else {
@@ -93,13 +94,11 @@ const MainRoom = () => {
         const publicAccess = await axios.get(
           `${PORT}/api/users/${userLoginInfo.username}/rooms`
         );
-        const roomsJoinedList = await publicAccess.data.roomsJoined;
-        const isInJoinedList = await roomsJoinedList.find(
-          (room) => parseInt(roomData.room) === parseInt(room)
+        const roomsJoinedList = publicAccess.data.roomsJoined;
+        const isInJoinedList = roomsJoinedList.find(
+          (roomToFind) => parseInt(roomData.room) === parseInt(roomToFind)
         );
         if (isInJoinedList) {
-          console.log("running in publicAccess");
-
           setFollowing(true);
         } else if (!isInJoinedList) {
           setFollowing(false);
@@ -107,7 +106,7 @@ const MainRoom = () => {
       } catch (err) {
         console.log(err + "mainRoom in JoinRoom() function for public access");
       }
-    }
+    } 
     sessionStorage.setItem("lastRoom", room.toString());
     setInroom(room);
     setMessageRecieved(messages.messageHistory);
@@ -128,6 +127,7 @@ const MainRoom = () => {
     );
     if (addTheRoom) {
       setJoinedListResponse(addTheRoom);
+      if(addTheRoom === 'User Joined the room successfully.'){}
       console.log("running in addTheRoom");
       setFollowing(true);
       return console.log(joinedListResponse);
@@ -153,15 +153,27 @@ const MainRoom = () => {
       console.error(error);
     }
   };
-  const checkList = async () => {
-    console.log("this is running");
-    const response = await checkJoinedRoomList(
-      userLoginInfo.username,
-      roomData.room_name
+const checkList = async () => {
+  try {
+    const response = await axios.get(
+      `${PORT}/api/users/${userLoginInfo.username}/rooms`
     );
-    setFollowing(response.data.message)
-      console.log(following)
-  };
+    const publicAccess = response.data.roomsJoined;
+    const listContainsRoom = publicAccess.find(
+      (roomData) => parseInt(roomData.room) === parseInt(room)
+    );
+
+    if (listContainsRoom) {
+      console.log("public list found room inside check list");
+      setFollowing(true);
+    } else {
+      setFollowing(false);
+    }
+  } catch (error) {
+    console.error("Error in checkList:", error);
+    // Handle the error as needed
+  }
+};
 
   const sendMessageFunc = () => {
     setClicked(true);
@@ -292,6 +304,11 @@ const MainRoom = () => {
     } else if (joinedListResponse === "User joined the room successfully.") {
       console.log("running in useEffect as true");
       return setFollowing(true);
+    }else if(joinedListResponse === ''){
+      checkList();
+    }
+    if(joinedListResponse === 'User has already joined this room.'){
+      setFollowing(true)
     }
   }, [following, joinedListResponse]);
   return (

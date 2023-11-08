@@ -132,32 +132,63 @@ module.exports = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  checkUsersJoinedList: async (req,res)=>{
+  checkUsersJoinedList: async (req, res) => {
     const username = req.query.username;
     const roomToCheck = req.query.roomToCheck;
-    
-    if(username && roomToCheck){
-      try{
-        await User.findOne({username: username},
-          {'roomsJoined.room': roomToCheck})
-          .then((user)=>{
-            console.log('user Found in roomJoinedList ', user)
-            const filteredRooms = user.RoomsJoined.filter((room)=> Object.keys(room).length > 0)
+
+    if (username && roomToCheck) {
+      try {
+        await User.findOne(
+          { username: username },
+          { "roomsJoined.room": roomToCheck }
+        )
+          .then((user) => {
+            console.log("user Found in roomJoinedList ", user);
+            const filteredRooms = user.RoomsJoined.filter(
+              (room) => Object.keys(room).length > 0
+            );
 
             if (!filteredRooms) {
-              console.log(user.roomsJoined + user.roomsJoined)
-            res.status(200).send({message: false})
-            }else if(filteredRooms){
-              
-              console.log(user.roomsJoined)
-              res
-              .status(200)
-              .send({message: true})
+              console.log(user.roomsJoined + user.roomsJoined);
+              res.status(200).send({ message: false });
+            } else if (filteredRooms) {
+              console.log(user.roomsJoined);
+              res.status(200).send({ message: true });
             }
           })
-          .catch(err => console.error(err + 'inside the .then .catch(block'))
-      }catch(err){
-        console.error(err + 'checkUsersJoinedList error in try catch block');
+          .catch((err) => console.error(err + "inside the .then .catch(block"));
+      } catch (err) {
+        console.error(err + "checkUsersJoinedList error in try catch block");
+      }
+    }
+  },
+  checkUsersJoinedListOnLoad: async (req, res) => {
+    const username = req.query.username;
+    const roomToCheck = req.query.roomToCheck;
+    const roomNumber = req.query.roomNumber;
+    if (username && roomToCheck) {
+      try {
+        await User.findOne(
+          { username: username },
+          { "roomsJoined.room_name": roomToCheck , 'roomsJoined.room': roomNumber }
+        )
+          .then((user) => {
+            console.log("user Found in roomJoinedList ", user);
+            const filteredRooms = user.RoomsJoined.filter(
+              (room) => Object.keys(room).length > 0
+            );
+
+            if (!filteredRooms) {
+              console.log(user.roomsJoined + user.roomsJoined);
+              res.status(200).send({ message: false });
+            } else if (filteredRooms) {
+              console.log(user.roomsJoined);
+              res.status(200).send({ message: true });
+            }
+          })
+          .catch((err) => console.error(err + "inside the .then .catch(block"));
+      } catch (err) {
+        console.error(err + "checkUsersJoinedList error in try catch block");
       }
     }
   },
@@ -175,7 +206,9 @@ module.exports = {
           return res.status(404).send({ message: "User not found." });
         }
 
-        const alreadyJoinedRoom = await User.findOne({'roomsJoined.room': room});
+        const alreadyJoinedRoom = await User.findOne({
+          "roomsJoined.room": room,
+        });
 
         if (alreadyJoinedRoom) {
           console.log("User has already joined this room.");
@@ -183,8 +216,7 @@ module.exports = {
             .status(200)
             .send({ message: "User has already joined this room." });
         }
-        if(findUser){
-
+        if (findUser) {
           findUser.roomsJoined.push({
             room: room,
             roomName: roomName,
@@ -192,57 +224,48 @@ module.exports = {
           });
           await findUser.save();
         }
-
-
         console.log("User joined the room successfully.");
         return res
           .status(200)
           .send({ message: "User joined the room successfully." });
       } else {
         console.log("Username or room number is missing in the request.");
-        return res
-          .status(400)
-          .send({
-            message: "Username or room number is missing in the request.",
-          });
+        return res.status(400).send({
+          message: "Username or room number is missing in the request.",
+        });
       }
     } catch (error) {
       console.log("Backend error at addRoomToUser in EndpointHandler:", error);
       return res.status(500).send({ message: "Internal server error." });
     }
   },
-  removeJoinedRoom: async (req,res) =>{
+  removeJoinedRoom: async (req, res) => {
     const username = await req.body.username;
     const room = await req.body.roomNumber;
     const roomName = await req.body.roomName;
 
-    if(username && room && roomName){
-      try{
+    if (username && room && roomName) {
+      try {
         const user = await User.findOne({
-        'roomsJoined.room': room,
-      })
-      if(!user){
-        return res
-        .status(404)
-        .send({
-          message: 'user could not find applicable room to remove'
+          "roomsJoined.room": room,
         });
-      }else{
-        await user.updateOne(
-          { $pull: { roomsJoined: { room: room } } },
-          { multi: true }
-        );
-        await user.save();
-            return res
-            .status(200)
-            .send({
-              message: 'room was removed successfully'
-            })
+        if (!user) {
+          return res.status(404).send({
+            message: "user could not find applicable room to remove",
+          });
+        } else {
+          await user.updateOne(
+            { $pull: { roomsJoined: { room: room } } },
+            { multi: true }
+          );
+          await user.save();
+          return res.status(200).send({
+            message: "room was removed successfully",
+          });
+        }
+      } catch (err) {
+        console.error(err);
       }
-      }catch(err){
-        console.error(err)
-      }
-
     }
-  }
+  },
 };

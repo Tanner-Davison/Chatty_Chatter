@@ -40,6 +40,7 @@ app.get("/availability/:numberValue", EndpointHandler.roomAvailable);
 app.get("/password_check/", EndpointHandler.verifyPrivateRoomPassword);
 app.get("/get_all_rooms", EndpointHandler.getAllRooms);
 app.get("/checkUsersJoinedList", EndpointHandler.checkUsersJoinedList);
+app.get("/checkUsersJoinedListOnLoad", EndpointHandler.checkUsersJoinedListOnLoad);
 app.post('/new-room-creation', RoomCreation.createPublic);
 app.post('/create-private-room', RoomCreation.createPrivate);
 app.post("/signup", LoginHelper.signUp);
