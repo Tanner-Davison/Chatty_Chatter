@@ -29,31 +29,25 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     setTimeout(() => {
       setItemsToAnimateOut(new Set());
       setCurrentIndex((prevIndex) => {
-        if (direction === "left") {
-          const newIndex = prevIndex - roomsPerPage;
-          return newIndex < 0
-            ? privateMadeRooms.length - roomsPerPage
-            : newIndex;
-        } else {
           const newIndex = prevIndex + roomsPerPage;
           return newIndex >= privateMadeRooms.length ? 0 : newIndex;
-        }
+       
       });
     }, 700); // match CSS sliding out
   };
-  const changePages = (e) => {
-    e.preventDefault();
-    if (roomsPerPage === 4) {
-      // Switching to full view
-      setRoomsPerPage(privateMadeRooms.length);
-      setGridView(true);
-      setCurrentIndex(0); // Set the currentIndex to the start
-    } else {
-      // Switching back to limited view
-      setRoomsPerPage(4);
-      setGridView(false);
-    }
-  };
+   const changePages = async (e, incoming) => {
+     e.preventDefault();
+     if (roomsPerPage === 4) {
+       // Switching to full view
+       setRoomsPerPage(privateMadeRooms.length);
+       setGridView(true);
+       setCurrentIndex(0); // Set the currentIndex to the start
+     } else {
+       // Switching back to limited view
+       setRoomsPerPage(4);
+       setGridView(false);
+     }
+   };
   useEffect(() => {
     const newItems = new Set(
       privateMadeRooms
@@ -68,7 +62,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
 
     return () => clearTimeout(timer);
     //eslint-disable-next-line
-  }, [currentIndex, roomsPerPage]);
+  }, [currentIndex, roomsPerPage, currentIndex]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +82,8 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       }
     };
     fetchData();
-  }, [userLoginInfo.username, noData]);
+    //es-lint-disable-next-line
+  }, [userLoginInfo.username, noData, itemsToAnimateOut]);
 
   const displayedRooms = privateMadeRooms.slice(
     currentIndex,

@@ -18,16 +18,6 @@ const CurrentServers = () => {
   const [newUserToggle, setNewUserToggle] = useState(true);
   const [roomsCreated, setRoomsCreated] = useState([]);
   const PORT = process.env.REACT_APP_PORT;
-  const colors = [
-    "#DD4124",
-    "#D65076",
-    "#45B8AC",
-    "#5B5EA6",
-    "#7FCDCD",
-    "#BC243C",
-    "#98B4D4",
-    "#FF6F61",
-  ];
 
   const displayRooms = async () => {
     if (doesUserExist) {
@@ -83,36 +73,36 @@ const CurrentServers = () => {
         {roomsJoined.length > 0 &&
           roomsJoined.map((room) => {
             const id = room._id;
-            const randomIndex = Math.floor(Math.random() * colors.length);
-            const randomColor = colors[randomIndex];
+            
+            
 
             return (
-              <div key={id}>
-                <button
-                  type="button"
-                  className={newUserToggle ? "room-item" : "room-item no-rooms"}
-                  style={{ backgroundColor: `${randomColor}` }}
-                  onClick={() => handleRoomButtonClick(room.room)}>
-                  {room.room}
-                </button>
-              </div>
+              <>
+                <roomsAdded 
+                key={id}
+                handleCLick={handleRoomButtonClick}
+                roomsCreated={room}/>
+              </>
             );
           })}
       </div>
       {
         <PublicRoomsCreated
+          key={roomsCreated._id}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />
       }
       {
         <PrivateRoomsCreated
+          key ={roomsCreated._id}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />
       }
       {
         <RoomsToExplore
+          key={roomsCreated._id}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />

@@ -15,6 +15,7 @@ const RoomItem = ({
   imageURL,
   filterRooms,
   goToRoom,
+  setCurrentIndex
 }) => {
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const navigate = useNavigate();
@@ -42,11 +43,17 @@ const RoomItem = ({
     setAnchorEl(null);
 
   };
+  const handleDisplayUsers =(event)=>{
+    event.stopPropagation()
+    SetDisplayAllUsers(!displayAllUsers);
+  }
   const handleRemoveRoom = async (event, roomToRemove) => {
     event.stopPropagation();
     handleClose(event);
     await filterRooms((prev) => prev.filter((room) => room !== roomToRemove));
-    return changeRooms('left')
+    
+   
+   return
   };
   const handleGoToRoom= (event, roomNumber)=>{
     event.stopPropagation();
@@ -119,7 +126,7 @@ const RoomItem = ({
         {!room.private_room && (
           <GroupIcon
             className={styles.display_joined_list}
-            onClick={() => SetDisplayAllUsers(!displayAllUsers)}
+            onClick={(e) => handleDisplayUsers(e)}
           />
         )}
         {!displayAllUsers && (

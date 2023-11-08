@@ -62,6 +62,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
     console.log(allRooms);
     //eslint-disable-next-line
   },[roomsCreated])
+  
   useEffect(() => {
     const newItems = new Set(
       allRooms
@@ -76,20 +77,23 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
 
     return () => clearTimeout(timer);
     //eslint-disable-next-line
-  }, [currentIndex, roomsPerPage]);
+  }, [currentIndex, roomsPerPage, allRooms]);
 
   const displayedRooms = allRooms.slice(
     currentIndex,
     currentIndex + roomsPerPage
   );
-    const handleShowPublicRoomData =(event)=>{
+    const handleShowPublicRoomData = async (event)=>{
+      console.log(currentIndex);
       event.preventDefault()
       console.log('this is running show data');
-      setAllRooms((prev)=> prev.filter((room)=> room.private_room === false))
+     
+      const newRoomData = await allRooms.filter((room)=> room.private_room === false);
+      setAllRooms(newRoomData)
       setDisplayPrivateRooms(true);
     }
     const handlePrivateVisibilityClick = async (event)=>{
-  
+      console.log(currentIndex)
       console.log('this is running');
       const allIncludedRoomData = await getRoomData();
       if(allIncludedRoomData){
@@ -152,6 +156,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   imageURL={imageURL}
                   filterRooms={setAllRooms}
                   goToRoom={handleClick}
+                  setCurrentIndex={setCurrentIndex}
                   
                 />
               );

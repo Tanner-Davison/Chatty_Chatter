@@ -50,9 +50,7 @@ const RoomHelper = ({
     changeRooms('left');
     return
   };
-  const undo =(event)=>{
-    event.stopPropagation();
-  }
+  
   const handlegoToRoom = (event, roomToVisit) => {
     
     return goToRoom(room.room_number);

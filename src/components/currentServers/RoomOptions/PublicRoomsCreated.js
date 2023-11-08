@@ -7,21 +7,19 @@ import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import CompressIcon from "@mui/icons-material/Compress";
 import Tooltip from "@mui/material/Tooltip";
 import RoomHelper from "./RoomHelper";
-import {getAllRoomsData} from '../AllRoomsJoined.js'
+import { getAllRoomsData } from "../AllRoomsJoined.js";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
-  
- 
-   const { userLoginInfo } = useContext(LoginContext);
-   const [gridView, setGridView] = useState(false);
-   const [roomsPerPage, setRoomsPerPage] = useState(4);
-   const [currentIndex, setCurrentIndex] = useState(0);
-   const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
-   const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
-   const [publicMadeRooms, setPublicMadeRooms] = useState([]);
-   const [noData,setNoData]=useState(false);
+  const { userLoginInfo } = useContext(LoginContext);
+  const [gridView, setGridView] = useState(false);
+  const [roomsPerPage, setRoomsPerPage] = useState(4);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
+  const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
+  const [publicMadeRooms, setPublicMadeRooms] = useState([]);
+  const [noData, setNoData] = useState(false);
 
   const endIndex = Math.min(
     currentIndex + roomsPerPage,
@@ -33,19 +31,13 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     setTimeout(() => {
       setItemsToAnimateOut(new Set());
       setCurrentIndex((prevIndex) => {
-        if (direction === "left") {
-          const newIndex = prevIndex - roomsPerPage;
-          return newIndex <= 0
-            ? publicMadeRooms.length - roomsPerPage 
-            : newIndex;
-        } else {
+      
           const newIndex = prevIndex + roomsPerPage;
           return newIndex >= publicMadeRooms.length ? 0 : newIndex;
-        }
       });
     }, 600); // match CSS sliding out
   };
-  const changePages = (e) => {
+  const changePages = async (e) => {
     e.preventDefault();
     if (roomsPerPage === 4) {
       // Switching to full view
@@ -72,38 +64,39 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
 
     return () => clearTimeout(timer);
     //eslint-disable-next-line
-  }, [currentIndex, roomsPerPage]);
+  }, [currentIndex, publicMadeRooms, itemsToAnimateOut]);
 
- useEffect(()=>{
-  const fetchData = async()=>{
-    try{
-      const roomData = await getAllRoomsData(userLoginInfo.username);
-      if(roomData.roomsCreatedByUser.length<=0){
-        setNoData(true); 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const roomData = await getAllRoomsData(userLoginInfo.username);
+        if (roomData.roomsCreatedByUser.length <= 0) {
+          setNoData(true);
+        }
+        const roomValue = roomData.roomsCreatedByUser.filter(
+          (room) => !room.private_room
+        );
+        setPublicMadeRooms(roomValue);
+      } catch (error) {
+        console.error("Error fetching data", error);
       }
-      const roomValue = roomData.roomsCreatedByUser.filter(
-        (room) => !room.private_room
-      );
-      setPublicMadeRooms(roomValue);
-    }catch(error){
-      console.error("Error fetching data", error)
-      
-    } 
-  };
-  fetchData();
-  //eslint-disable-next-line
- },[userLoginInfo.username, noData])
+    };
+    fetchData();
+    //eslint-disable-next-line
+  }, [userLoginInfo.username, noData]);
 
   const displayedRooms = publicMadeRooms.slice(
     currentIndex,
-    currentIndex + roomsPerPage 
+    currentIndex + roomsPerPage
   );
   return (
-    <> 
+    <>
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>Created Public Hubs</span>
+            <span id={styles.display_created_room_name}>
+              Created Public Hubs
+            </span>
           </div>
           <div
             className={
@@ -125,11 +118,11 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                 />
               </Tooltip>
             )}
-            {
-              noData && (
-                <p style={{textAlign:'center'}}>Create a public hub to view this section</p>
-              )
-            }
+            {noData && (
+              <p style={{ textAlign: "center" }}>
+                Create a public hub to view this section
+              </p>
+            )}
             {displayedRooms.map((room) => {
               const isAnimatingOut = itemsToAnimateOut.has(room.id);
               const isAnimatingIn = itemsToAnimateIn.has(room.id);
@@ -140,13 +133,12 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   ? styles.slideIn
                   : ""
               } ${room.private ? styles.room_private : ""}`;
-        
+
               return (
                 <>
-                
                   <RoomHelper
-                  key={room._id}
-                  loading={'lazy'}
+                    key={room._id}
+                    loading={"lazy"}
                     room={room}
                     roomClass={roomClass}
                     imageURL={userLoginInfo.imageUrl}
@@ -154,14 +146,12 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                     changeRooms={changeRooms}
                     goToRoom={handleClick}
                     roomData={setPublicMadeRooms}
-                   
                   />
                 </>
               );
             })}
           </div>
-          <div 
-          className={styles.flex_row}>
+          <div className={styles.flex_row}>
             {!gridView && (
               <>
                 <KeyboardDoubleArrowLeftTwoToneIcon
@@ -175,7 +165,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   id={styles.icon_left_right}
                   onClick={() => changeRooms("right")}
                 />
-              </>  
+              </>
             )}
           </div>
         </div>
