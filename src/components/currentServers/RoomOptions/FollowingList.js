@@ -134,7 +134,7 @@ const FollowingList = ({ roomsCreated, handleClick }) => {
               } ${room.private ? styles.room_private : ""}`;
 
               return (
-                <>
+                <div key={room._id}>
                   <RoomHelper
                     key={room._id}
                     loading={"lazy"}
@@ -146,7 +146,7 @@ const FollowingList = ({ roomsCreated, handleClick }) => {
                     goToRoom={handleClick}
                     roomData={setPublicMadeRooms}
                   />
-                </>
+                </div>
               );
             })}
           </div>

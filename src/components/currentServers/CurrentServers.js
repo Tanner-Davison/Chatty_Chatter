@@ -57,7 +57,10 @@ const CurrentServers = () => {
 
   return (
     <>
-      <Header key={roomsJoined.id} socket={socket} handleRoomButtonClick={handleRoomButtonClick}/>
+      <Header
+        socket={socket}
+        handleRoomButtonClick={handleRoomButtonClick}
+      />
       <div className={`room-container`}>
         {newUserToggle && <h1>Enter main room to get started!</h1>}
         <div
@@ -72,32 +75,32 @@ const CurrentServers = () => {
         </div>
 
         {
-              <>
-                <FollowingList
-                key={roomsJoined._id}
-                handleCLick={handleRoomButtonClick}
-                roomsCreated={roomsJoined}
-                />
-              </>
-            }
+          <>
+            <FollowingList
+              key={roomsJoined._id + "143"}
+              handleCLick={handleRoomButtonClick}
+              roomsCreated={roomsJoined}
+            />
+          </>
+        }
       </div>
       {
         <PublicRoomsCreated
-          key={roomsCreated._id}
+          key={roomsCreated._id + "16"}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />
       }
       {
         <PrivateRoomsCreated
-          key ={roomsCreated._id}
+          key={roomsCreated._id + "12"}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />
       }
       {
         <RoomsToExplore
-          key={roomsCreated._id}
+          key={roomsCreated._id + "1"}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
         />

@@ -38,12 +38,13 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     }, 600); // match CSS sliding out
   };
   const changePages = async (e) => {
-    e.preventDefault();
+    
     if (roomsPerPage === 4) {
       // Switching to full view
+      
+      setCurrentIndex(0); // Set the currentIndex to the start
       setRoomsPerPage(publicMadeRooms.length);
       setGridView(true);
-      setCurrentIndex(0); // Set the currentIndex to the start
     } else {
       // Switching back to limited view
       setRoomsPerPage(4);
@@ -84,14 +85,19 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     fetchData();
     //eslint-disable-next-line
   }, [userLoginInfo.username, noData]);
-
+  useEffect(()=> {
+    if(publicMadeRooms.length ===4){
+      console.log('this is running')
+      setCurrentIndex(0)
+    }
+  },[publicMadeRooms])
   const displayedRooms = publicMadeRooms.slice(
     currentIndex,
     currentIndex + roomsPerPage
   );
   return (
     <>
-      <div className={styles.rooms_wrapper}>
+      <div key={roomsCreated.id}className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
             <span id={styles.display_created_room_name}>
@@ -135,19 +141,18 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
               } ${room.private ? styles.room_private : ""}`;
 
               return (
-                <>
+                <div key={room._id}>
                   <RoomHelper
-                    key={room._id}
                     loading={"lazy"}
                     room={room}
                     roomClass={roomClass}
                     imageURL={userLoginInfo.imageUrl}
                     filterRooms={setPublicMadeRooms}
-                    changeRooms={changeRooms}
+                    changePages={changePages}
                     goToRoom={handleClick}
                     roomData={setPublicMadeRooms}
                   />
-                </>
+                </div>
               );
             })}
           </div>

@@ -35,7 +35,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       });
     }, 700); // match CSS sliding out
   };
-   const changePages = async (e, incoming) => {
+   const changePages = async (e) => {
      e.preventDefault();
      if (roomsPerPage === 4) {
        // Switching to full view
@@ -62,7 +62,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
 
     return () => clearTimeout(timer);
     //eslint-disable-next-line
-  }, [currentIndex, roomsPerPage, currentIndex]);
+  }, [currentIndex, privateMadeRooms, itemsToAnimateOut]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,13 +82,19 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       }
     };
     fetchData();
-    //es-lint-disable-next-line
-  }, [userLoginInfo.username, noData, itemsToAnimateOut]);
+    //eslint-disable-next-line
+  }, [userLoginInfo.username, noData]);
 
   const displayedRooms = privateMadeRooms.slice(
     currentIndex,
     currentIndex + roomsPerPage
   );
+  useEffect(() => {
+    if (privateMadeRooms.length === 4) {
+      console.log("this is running");
+      setCurrentIndex(0);
+    }
+  }, [privateMadeRooms]);
   return (
     <>
       <div className={styles.rooms_wrapper}>
@@ -133,19 +139,19 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
               } ${room.private_room ? styles.room_private : ""}`;
 
               return (
-                <>
+                <div key={room._id}>
                   <RoomHelper
-                    key={privateMadeRooms._id}
+                    loading={"lazy"}
                     room={room}
                     roomClass={roomClass}
                     imageURL={userLoginInfo.imageUrl}
                     allRooms={roomsCreated}
                     filterRooms={setPrivateMadeRooms}
-                    changeRooms={changeRooms}
+                    changePages={changePages}
                     goToRoom={handleClick}
                     roomData={setPrivateMadeRooms}
                   />
-                </>
+                </div>
               );
             })}
           </div>

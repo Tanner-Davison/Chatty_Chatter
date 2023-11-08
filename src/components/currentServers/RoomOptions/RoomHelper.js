@@ -12,7 +12,7 @@ import {deleteOne} from '../AllRoomsJoined.js'
 const RoomHelper = ({
   room,
   roomClass,
-  changeRooms,
+  changePages,
   imageURL,
   filterRooms,
   setRoomsPerPage,
@@ -44,10 +44,11 @@ const RoomHelper = ({
     return setAnchorEl(null);
   };
   const handleRemoveRoom = async (event, roomToRemove) => {
+
     event.stopPropagation();
+    await filterRooms((prev) => prev.filter((room) => room.room_number !== roomToRemove));
+    
     handleClose(event);
-     await filterRooms((prev) => prev.filter((room) => room.room_number !== roomToRemove));
-    changeRooms('left');
     return
   };
   
@@ -57,8 +58,9 @@ const RoomHelper = ({
   };
   const handleMenuOpen = (event) => {
     event.stopPropagation();
+    changePages()
+    navigate(`/profile/${room.created_by}`);
     handleClose(event);
-    return navigate(`/profile/${room.created_by}`);
   };
   const seeAllMembers =(event)=>{
     event.stopPropagation();
@@ -74,9 +76,8 @@ const RoomHelper = ({
   }
 
   return (
-    <Tilt options={defaultOptions}>
+    <Tilt key={room._id}options={defaultOptions}>
       <div
-        key={room._id}
         className={roomClass}
         room={room}
         onClick={() => goToRoom(room.room_number)}
@@ -111,8 +112,8 @@ const RoomHelper = ({
               View Profile
             </MenuItem>
             {!room.private_room && (
-              <MenuItem onClick={() => handlegoToRoom(room.room_number)}>
-                Visit Room
+              <MenuItem onClick={(e) => handleDeleteEvent(e, room._id, room.room_number)}>
+                Delete
               </MenuItem>
             )}
             {room.private_room && (

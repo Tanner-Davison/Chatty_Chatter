@@ -148,23 +148,25 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
               } ${room.private_room ? styles.room_public_private : " "}`;
 
               return (
-                <RoomItem
-                  key={room._id}
-                  room={room}
-                  roomClass={roomClass}
-                  changeRooms={changeRooms}
-                  imageURL={imageURL}
-                  filterRooms={setAllRooms}
-                  goToRoom={handleClick}
-                  setCurrentIndex={setCurrentIndex}
-                />
+                <div key ={room._id}>
+                  <RoomItem
+                    
+                    room={room}
+                    roomClass={roomClass}
+                    changeRooms={changeRooms}
+                    imageURL={imageURL}
+                    filterRooms={setAllRooms}
+                    goToRoom={handleClick}
+                    setCurrentIndex={setCurrentIndex}
+                  />
+                </div>
               );
             })}
           </div>
           <div className={styles.flex_row}>
             {!gridView && (
               <>
-                <KeyboardDoubleArrowLeftTwoToneIcon
+                <KeyboardDoubleArrowLeftTwoToneIcon 
                   id={styles.icon_left_right}
                   onClick={() => changeRooms("left")}
                 />
