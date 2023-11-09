@@ -84,7 +84,7 @@ const CurrentServers = () => {
           <>
             <SubscribedList
               key={roomsJoined._id}
-              handleCLick={handleRoomButtonClick}
+              handleRoomButtonClick={handleRoomButtonClick}
               roomsJoined={roomsJoined}
               username={userLoginInfo.username}
             />

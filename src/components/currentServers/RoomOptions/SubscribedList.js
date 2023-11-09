@@ -11,7 +11,7 @@ import { getAllRoomsData } from "../AllRoomsJoined.js";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
-const SubscribedList = ({ roomsJoined, handleClick }) => {
+const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
   const [roomsPerPage, setRoomsPerPage] = useState(4);
@@ -26,7 +26,6 @@ const SubscribedList = ({ roomsJoined, handleClick }) => {
     subscribedRooms.length
   );
 
- 
   const changeRooms = () => {
     setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
     setTimeout(() => {
@@ -54,8 +53,8 @@ const SubscribedList = ({ roomsJoined, handleClick }) => {
   }, [currentIndex, subscribedRooms, roomsPerPage]);
 
   useEffect(() => {
-      setSubscribedRooms(roomsJoined)
-}, [roomsJoined]);
+    setSubscribedRooms(roomsJoined);
+  }, [roomsJoined]);
 
   useEffect(() => {
     if (subscribedRooms.length === 4) {
@@ -135,7 +134,7 @@ const SubscribedList = ({ roomsJoined, handleClick }) => {
                     imageURL={userLoginInfo.imageUrl}
                     filterRooms={setSubscribedRooms}
                     changeRooms={changeRooms}
-                    goToRoom={handleClick}
+                    handleRoomButtonClick={handleRoomButtonClick}
                     roomData={subscribedRooms}
                   />
                 </div>

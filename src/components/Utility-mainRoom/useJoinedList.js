@@ -32,6 +32,9 @@ const PORT = process.env.REACT_APP_PORT;
      }
    };
     const addRoom = async (username, roomNumber, roomName) =>{
+      console.log(username)
+      console.log(roomNumber)
+      console.log(roomName)
         try{
             const sendData = await axios.post(`${PORT}/addRoomToUser`,{
                     username, 

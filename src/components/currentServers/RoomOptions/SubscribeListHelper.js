@@ -15,12 +15,11 @@ const SubscribeListHelper = ({
   changeRooms,
   imageURL,
   filterRooms,
-  setRoomsPerPage,
-  goToRoom,
-  roomData,
+  handleRoomButtonClick,
 }) => {
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const navigate = useNavigate();
+
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
     max: 25, // max tilt rotation (degrees)
@@ -35,14 +34,17 @@ const SubscribeListHelper = ({
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = (event) => {
     event.stopPropagation();
     return setAnchorEl(null);
   };
+
   const handleRemoveRoom = async (event, roomToRemove) => {
     event.stopPropagation();
     handleClose(event);
@@ -53,25 +55,30 @@ const SubscribeListHelper = ({
     return;
   };
 
-  const handlegoToRoom = (event, roomToVisit) => {
-    return goToRoom(room.room_number);
-  };
   const handleMenuOpen = (event) => {
     event.stopPropagation();
     handleClose(event);
     return navigate(`/profile/${room.created_by}`);
   };
+
   const seeAllMembers = (event) => {
     event.stopPropagation();
     return SetDisplayAllUsers(!displayAllUsers);
-  };
-  const handleDeleteEvent = (event, room_id, roomNumber) => {
+  }
+
+  const handleDeleteEvent = async (event, room_id, roomNumber) => {
     console.log(room_id);
     event.stopPropagation();
     event.preventDefault();
     handleClose(event);
-    TryDeleteOne(room_id, roomNumber);
-    return filterRooms((prev) => prev.filter((room) => room._id !== room_id));
+
+    try {
+      await TryDeleteOne(room_id, roomNumber);
+      filterRooms((prev) => prev.filter((room) => room._id !== room_id));
+    } catch (error) {
+      console.error("Error deleting room:", error);
+      // Handle or log the error as needed
+    }
   };
 
   return (
@@ -80,7 +87,7 @@ const SubscribeListHelper = ({
         key={room._id}
         className={roomClass}
         room={room}
-        onClick={() => goToRoom(room.room)}
+        onClick={() => handleRoomButtonClick(room.room)}
         value={room.room}>
         <img
           id={styles.room_owned_by_img_expolore}
@@ -112,18 +119,18 @@ const SubscribeListHelper = ({
               View Profile
             </MenuItem>
             {!room.private_room && (
-              <MenuItem onClick={() => handlegoToRoom(room.room_number)}>
+              <MenuItem onClick={() => handleRoomButtonClick(room.room)}>
                 Visit Room
               </MenuItem>
             )}
-            
-              <MenuItem
-                onClick={(event) =>
-                  handleDeleteEvent(event, room._id, room.room_number)
-                }>
-                Delete
-              </MenuItem>
-            
+
+            <MenuItem
+              onClick={(event) =>
+                handleDeleteEvent(event, room._id, room.room_number)
+              }>
+              Delete
+            </MenuItem>
+
             <MenuItem
               onClick={(event) => handleRemoveRoom(event, room.room_number)}>
               Hide Room

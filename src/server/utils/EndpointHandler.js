@@ -113,38 +113,45 @@ module.exports = {
       console.log(err);
     }
   },
- deleteSingleRoom: async (req, res) => {
-  try {
-    const { roomId, roomNumber } = req.body;
+  deleteSingleRoom: async (req, res) => {
+    try {
+      const { roomId, roomNumber } = req.body;
 
-    // Delete room from the Rooms collection
-    const deletedRoom = await Rooms.deleteOne({ room_number: roomNumber });
+      // Delete room from the Rooms collection
+      const deletedRoom = await Rooms.deleteOne({ room_number: roomNumber });
 
-    if (deletedRoom.deletedCount > 0) {
-      console.log('ROOM SUPPOSEDLY DELETED')
-      // Room was deleted successfully, continue with other logic
+      if (deletedRoom.deletedCount > 0) {
+        console.log("ROOM SUPPOSEDLY DELETED");
+        // Room was deleted successfully, continue with other logic
 
-      // Example: Delete the room from the User collection
-      const result = await User.updateOne(
-        { "roomsCreated.room": roomNumber },
-        { $pull: { roomsCreated: { room: roomNumber } } }
-      );
+        // Example: Delete the room from the User collection
+        const result = await User.updateOne(
+          { "roomsCreated.room": roomNumber },
+          { $pull: { roomsCreated: { room: roomNumber } } }
+        );
 
-      // Check if the user was updated successfully
-      if (result) {
-        return res.status(200).json({ message: 'Room was deleted and successfully removed from the user.' });
+        // Check if the user was updated successfully
+        if (result) {
+          return res
+            .status(200)
+            .json({
+              message:
+                "Room was deleted and successfully removed from the user.",
+            });
+        } else {
+          return res
+            .status(500)
+            .json({ message: "Room deleted, but user update failed." });
+        }
       } else {
-        return res.status(500).json({ message: 'Room deleted, but user update failed.' });
+        // Room not found or not deleted successfully
+        return res.status(404).json({ message: "Room not found." });
       }
-    } else {
-      // Room not found or not deleted successfully
-      return res.status(404).json({ message: 'Room not found.' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error." });
     }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Internal server error.' });
-  }
-},
+  },
   checkUsersJoinedList: async (req, res) => {
     const username = req.query.username;
     const roomToCheck = req.query.roomToCheck;
@@ -183,7 +190,10 @@ module.exports = {
       try {
         await User.findOne(
           { username: username },
-          { "roomsJoined.room_name": roomToCheck , 'roomsJoined.room': roomNumber }
+          {
+            "roomsJoined.room_name": roomToCheck,
+            "roomsJoined.room": roomNumber,
+          }
         )
           .then((user) => {
             console.log("user Found in roomJoinedList ", user);
@@ -219,10 +229,10 @@ module.exports = {
           return res.status(404).send({ message: "User not found." });
         }
 
-        const alreadyJoinedRoom = await User.findOne({
-          "roomsJoined.room": room,
-        });
-
+        const alreadyJoinedRoom = findUser.roomsJoined.find(
+          (joinedRoom) => joinedRoom.room === room
+        );
+        console.log(alreadyJoinedRoom);
         if (alreadyJoinedRoom) {
           console.log("User has already joined this room.");
           return res
@@ -253,32 +263,43 @@ module.exports = {
     }
   },
   removeJoinedRoom: async (req, res) => {
-    const username = await req.body.username;
-    const room = await req.body.roomNumber;
-    const roomName = await req.body.roomName;
+    const username = req.body.username;
+    const room = req.body.roomNumber;
+    const roomName = req.body.roomName;
 
     if (username && room && roomName) {
       try {
         const user = await User.findOne({
           "roomsJoined.room": room,
         });
+
         if (!user) {
           return res.status(404).send({
-            message: "user could not find applicable room to remove",
+            message: "User could not find applicable room to remove",
           });
         } else {
-          await user.updateOne(
-            { $pull: { roomsJoined: { room: room } } },
-            { multi: true }
+          // Remove the room from the user's roomsJoined array
+          user.roomsJoined = user.roomsJoined.filter(
+            (joinedRoom) => joinedRoom.room !== room
           );
+
           await user.save();
+
           return res.status(200).send({
-            message: "room was removed successfully",
+            message: "Room was removed successfully",
           });
         }
       } catch (err) {
         console.error(err);
+        return res.status(500).send({
+          message: "Internal server error.",
+        });
       }
+    } else {
+      return res.status(400).send({
+        message:
+          "Username, room number, or room name is missing in the request.",
+      });
     }
   },
 };
