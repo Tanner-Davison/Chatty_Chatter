@@ -17,8 +17,7 @@ app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use((req, res, next) => {
   console.log("Request body:", req.body);
-  console.log("Request files:", req.files); // For multiple file uploads
-  console.log("Request file:", req.file); // For single file upload
+  console.log("Response Data", res.data)
   next();
 });
 require("dotenv").config();
@@ -46,7 +45,7 @@ app.post('/create-private-room', RoomCreation.createPrivate);
 app.post("/signup", LoginHelper.signUp);
 app.post("/login", LoginHelper.Login);
 app.post("/addRoomToUser", EndpointHandler.addRoomToUser);
-app.post("/removeJoinedRoom", EndpointHandler.removeJoinedRoom)
+app.post("/removeJoinedRoom", EndpointHandler.removeJoinedRoom);
 app.post("/deleteSingleRoom", EndpointHandler.deleteSingleRoom);
 
 const io = new Server(server, {

@@ -8,8 +8,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
-import { deleteOne } from "../AllRoomsJoined.js";
-const FollowingListHelper = ({
+import { TryDeleteOne } from "../AllRoomsJoined.js";
+const SubscribeListHelper = ({
   room,
   roomClass,
   changeRooms,
@@ -70,8 +70,8 @@ const FollowingListHelper = ({
     event.stopPropagation();
     event.preventDefault();
     handleClose(event);
-    deleteOne(room_id, roomNumber);
-    return roomData((prev) => prev.filter((room) => room._id !== room_id));
+    TryDeleteOne(room_id, roomNumber);
+    return filterRooms((prev) => prev.filter((room) => room._id !== room_id));
   };
 
   return (
@@ -80,8 +80,8 @@ const FollowingListHelper = ({
         key={room._id}
         className={roomClass}
         room={room}
-        onClick={() => goToRoom(room.room_number)}
-        value={room.room_number}>
+        onClick={() => goToRoom(room.room)}
+        value={room.room}>
         <img
           id={styles.room_owned_by_img_expolore}
           src={imageURL}
@@ -116,14 +116,14 @@ const FollowingListHelper = ({
                 Visit Room
               </MenuItem>
             )}
-            {room.private_room && (
+            
               <MenuItem
                 onClick={(event) =>
                   handleDeleteEvent(event, room._id, room.room_number)
                 }>
                 Delete
               </MenuItem>
-            )}
+            
             <MenuItem
               onClick={(event) => handleRemoveRoom(event, room.room_number)}>
               Hide Room
@@ -136,7 +136,7 @@ const FollowingListHelper = ({
           onClick={(event) => seeAllMembers(event)}
         />
         {!displayAllUsers && (
-          <p className={styles.room_members}>{room.room_name}</p>
+          <p className={styles.room_members}>{room.roomName}</p>
         )}
         {displayAllUsers && (
           <p className={`${styles.room_members} ${styles._active} `}>
@@ -147,4 +147,4 @@ const FollowingListHelper = ({
     </Tilt>
   );
 };
-export default FollowingListHelper;
+export default SubscribeListHelper;

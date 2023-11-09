@@ -19,7 +19,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const [allRooms, setAllRooms] =useState([]);
   const roomValues = roomsCreated.map((room)=> room.room)
   const [displayPrivateRooms, setDisplayPrivateRooms]=useState(false)
-
+  const [listOfRooms, setListOfRooms] = useState('')
   const getRoomData = async () => {
     try {
       const response = await axios.get(`${PORT}/get_all_rooms`,{
@@ -29,6 +29,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
         // Assuming the data is an array of rooms
         const roomData = response.data;
         setAllRooms(roomData);
+        setListOfRooms(roomData)
       }
     } catch (error) {
       // Handle any errors that occur during the request
@@ -45,15 +46,8 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
     setTimeout(() => {
       setItemsToAnimateOut(new Set());
       setCurrentIndex((prevIndex) => {
-        if (direction === "left") {
-          const newIndex = prevIndex - roomsPerPage;
-          return newIndex < 0
-            ? allRooms.length - roomsPerPage
-            : newIndex;
-        } else {
           const newIndex = prevIndex + roomsPerPage;
           return newIndex >= allRooms.length ? 0 : newIndex;
-        }
       });
     }, 600); // match CSS sliding out
   };
@@ -66,41 +60,28 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   useEffect(() => {
     const newItems = new Set(
       allRooms
-        .slice(currentIndex, currentIndex + roomsPerPage)
-        .map((room) => room.id)
-    );
-    setItemsToAnimateIn(newItems);
-
-    const timer = setTimeout(() => {
-      setItemsToAnimateIn(new Set());
-    }, 800); // match css animation sliding in
-
-    return () => clearTimeout(timer);
-    //eslint-disable-next-line
-  }, [currentIndex, roomsPerPage, allRooms]);
-
-  const displayedRooms = allRooms.slice(
-    currentIndex,
-    currentIndex + roomsPerPage
-  );
-    const handleShowPublicRoomData = async (event)=>{
-      console.log(currentIndex);
-      event.preventDefault()
-      console.log('this is running show data');
-     
-      const newRoomData = await allRooms.filter((room)=> room.private_room === false);
+      .slice(currentIndex, currentIndex + roomsPerPage)
+      .map((room) => room.id)
+      );
+      setItemsToAnimateIn(newItems);
+   
+      //eslint-disable-next-line
+    }, [currentIndex, roomsPerPage, allRooms]);
+    
+    const handleShowPublicRoomData = ()=>{
+      setCurrentIndex(0)
+      const newRoomData = allRooms.filter((room)=> room.private_room === false);
       setAllRooms(newRoomData)
       setDisplayPrivateRooms(true);
     }
-    const handlePrivateVisibilityClick = async (event)=>{
-      console.log(currentIndex)
-      console.log('this is running');
-      const allIncludedRoomData = await getRoomData();
-      if(allIncludedRoomData){
-        setAllRooms(allIncludedRoomData)
-      }
+    const handlePrivateVisibilityClick =()=>{
+      setAllRooms(listOfRooms)
       setDisplayPrivateRooms(false)
     }
+    const displayedRooms = allRooms.slice(
+      currentIndex,
+      currentIndex + roomsPerPage
+    );
   return (
     <>
       <div className={styles.rooms_wrapper}>
@@ -129,6 +110,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
               onClick={() => {
                 setGridView((prev) => !prev);
                 if (roomsPerPage === 4) {
+                 setCurrentIndex(0)
                   setRoomsPerPage(allRooms.length);
                 } else {
                   setRoomsPerPage(4);
@@ -156,6 +138,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                     changeRooms={changeRooms}
                     imageURL={imageURL}
                     filterRooms={setAllRooms}
+                    allRooms={allRooms}
                     goToRoom={handleClick}
                     setCurrentIndex={setCurrentIndex}
                   />
@@ -171,7 +154,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   onClick={() => changeRooms("left")}
                 />
                 <span id={styles.room_count}>
-                  {endIndex} of {allRooms.length}
+                  {Math.ceil(endIndex/4)} of {Math.ceil(allRooms.length/4)}
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}

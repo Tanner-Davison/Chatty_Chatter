@@ -22,6 +22,7 @@
   box-sizing: border-box;
   border-radius: 20px;
   box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
+  z-index: 1;
 }
 #grid_view_icon {
   position: absolute;
@@ -40,9 +41,9 @@
   display: flex;
   flex-direction: row;
   width: -moz-fit-content;
-  max-width: 40vw;
-  min-width: 22vw;
-  max-height: 34vh;
+  max-width: 750px;
+  min-width: 24vw;
+  max-height: 95vh;
   flex-wrap: wrap;
   padding: 15px;
   align-items: center;
@@ -339,10 +340,10 @@
 #room_owned_by_img {
   position: absolute;
   border-radius: 50px;
-  height: 35px;
+  max-height: 35px;
+  min-width: 30px;
   top: -10px;
   left: -10px;
-  z-index: 100;
 }
 #private_rooms_visibility_icon {
   display: flex;
@@ -352,14 +353,15 @@
 }
 #room_owned_by_img_expolore {
   position: absolute;
+  display: flex;
   border-radius: 50px;
-  height: 35px;
-  width: 40px;
+  height: 35%;
+  width: 35%;
   top: -10px;
   left: -10px;
 }
 .display_joined_list {
-  animation: roomMembers 2s ease;
+  animation: roomMembers 1.5s ease;
   position: absolute;
   display: flex;
   bottom: -2px;
@@ -372,27 +374,6 @@
   color: rgb(0, 0, 0);
   overflow: hidden; /* Ensure content within the circle doesn't overflow */
 }
-.display_joined_list:hover {
-  transform: scale(1.15);
-  background-color: #000000;
-  color: white;
-  cursor: pointer;
-}
-.room_members {
-  animation: roomMembers 0.5s ease;
-  display: flex;
-  font-size: 95%;
-  color: white;
-  position: relative;
-  display: flex;
-  text-align: center;
-  align-self: center;
-  z-index: -1;
-}
-.room_members._active {
-  color: white;
-  transform: scale(1.12);
-}
 @keyframes roomMembers {
   0% {
     transform: translateY(-100px);
@@ -402,6 +383,93 @@
   }
   100% {
     transform: translateY(0px);
+  }
+}
+.display_joined_list:hover {
+  transform: scale(1.15);
+  background-color: #000000;
+  color: white;
+  cursor: pointer;
+}
+.room_members {
+  animation: dropUp 0.5s ease-in-out;
+  position: relative;
+  display: flex;
+  font-size: 95%;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  display: flex;
+  text-align: center;
+  align-self: center;
+  z-index: -1;
+}
+.room_members._active {
+  color: white;
+}
+.parent_of_diplayed_room_members {
+  animation: dropDown 0.6s ease-in-out;
+  position: relative;
+  height: 101%;
+  width: 101%;
+  border-radius: inherit;
+  background-color: black;
+  display: flex;
+  font-size: 95%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  display: flex;
+  text-align: center;
+  align-self: center;
+  z-index: -1;
+}
+
+#child_of_room_members {
+  position: relative;
+  display: flex;
+  max-height: 1px;
+  min-height: 1px;
+  top: -15px;
+}
+#number_span {
+  position: relative;
+  font-weight: 700;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: rgb(255, 217, 0);
+  background-color: black;
+  border: 2px solid black;
+
+  padding: 5px;
+  width: fit-content;
+}
+@keyframes dropDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  65% {
+    transform: translateY(-12%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes dropUp {
+  0% {
+    transform: translateY(150%);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  65% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 .menu_wrapper {
@@ -421,13 +489,18 @@
 #menu_icon {
   position: relative;
   color: rgb(255, 255, 255);
-  border: 1px solid rgb(0, 0, 0);
+  right: -9px;
   padding: 3px;
   border-radius: 50px;
-  border-bottom-left-radius: 6px;
-  background-color: rgba(198, 6, 6, 0.517);
-  font-size: large;
-  z-index: 1;
+  background-color: rgba(171, 54, 54, 0.612);
+  font-size: 145%;
+}
+#menu_icon > path {
+  position: relative;
+  display: flex;
+  height: 10px;
+  align-self: center;
+  justify-self: center;
 }
 #menu_icon:hover {
   transform: scale(1.15);
@@ -447,9 +520,10 @@
     padding-top: 39px;
     margin-top: 0px;
   }
-  .menu_icon {
-    left: 12px;
-    top: -5px;
+  #menu_icon {
+    font-size: 100%;
+    left: 11px;
+    
   }
   .flex {
     position: relative;
@@ -483,16 +557,20 @@
   #room_owned_by_img {
     position: absolute;
     border-radius: 50px;
-    height: 25px;
+
     top: -5px;
     left: -8px;
   }
+  .display_joined_list {
+    bottom: 0px;
+    max-width: 18px;
+    max-height: 18px;
+  }
+
   #room_owned_by_img_expolore {
     position: absolute;
     border-radius: 50px;
-    height: 29px;
-    width: 28px;
-    top: -15px;
+    top: -5px;
     left: 1px;
   }
 }

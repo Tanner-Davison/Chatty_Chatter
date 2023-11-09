@@ -52,7 +52,7 @@ const PORT = process.env.REACT_APP_PORT;
              setError("Error in AddRoom Helper: " + err);
         }
     }
-    const removeRoom = async(username,roomNumber, roomName) =>{
+    const removeRoom = async(username, roomNumber, roomName) =>{
         try{
             const sendData = await axios.post(`${PORT}/removeJoinedRoom`,
             {
@@ -62,7 +62,7 @@ const PORT = process.env.REACT_APP_PORT;
             });
             const response = await sendData.data.message;
             setJoinedListResponse(response)
-            return;
+            return response;
         }catch(err){
              setError("Error in removeRoom Helper: " + err);
         }

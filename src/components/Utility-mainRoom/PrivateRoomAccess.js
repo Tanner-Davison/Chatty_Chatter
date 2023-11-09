@@ -10,7 +10,6 @@ import { io } from "socket.io-client";
 const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
 	const { setMainAccess, setSocket, userLoginInfo } =
 	useContext(LoginContext);
-	console.log(roomData)
 	const navigate = useNavigate();
     const PORT = process.env.REACT_APP_PORT;
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -18,7 +17,6 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
     const [isError, setIsError] = useState(false)
 
     const handlePasswordSubmit = async() => {
-        console.log(roomData.private_room_password)
        
        if(password === null || roomData.private_room_password=== null || roomData.room_number=== null){
 		return
@@ -33,9 +31,8 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
                     }
             })
             .then((res) => {
-                console.log(res.data.message)
                 if (res.data.message === 'success') {
-                    console.log('niggas we made it ')
+                    console.log('Access Granted')
                     setIsError(false)
                     setIsPrivateRoom(false)
 					handlLoginSuccess(roomData.room_number)

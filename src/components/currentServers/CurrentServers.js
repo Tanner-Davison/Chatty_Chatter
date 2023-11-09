@@ -5,10 +5,11 @@ import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { AllRoomsJoined } from "./AllRoomsJoined.js";
-import PublicRoomsCreated from './RoomOptions/PublicRoomsCreated'
+import { getAllRoomsData } from "./AllRoomsJoined.js";
+import PublicRoomsCreated from "./RoomOptions/PublicRoomsCreated";
 import PrivateRoomsCreated from "./RoomOptions/PrivateRoomsMade";
 import RoomsToExplore from "./RoomOptions/RoomsToExplore";
-import FollowingList from './RoomOptions/FollowingList.js'
+import SubscribedList from "./RoomOptions/SubscribedList.js";
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } =
     useContext(LoginContext);
@@ -18,6 +19,7 @@ const CurrentServers = () => {
   const mainRoom = 1;
   const [newUserToggle, setNewUserToggle] = useState(true);
   const [roomsCreated, setRoomsCreated] = useState([]);
+  const [allRoomsData, setAllRoomsData] =useState([])
   const PORT = process.env.REACT_APP_PORT;
 
   const displayRooms = async () => {
@@ -26,15 +28,22 @@ const CurrentServers = () => {
         doesUserExist ? doesUserExist : userLoginInfo.username
       );
       setRoomsJoined(allRooms.roomsJoined);
+      console.log(allRooms.roomsJoined);
       setRoomsCreated(allRooms.roomsCreated);
-      
+
       console.log(allRooms.roomsJoined.length);
-      
+
       if (allRooms.roomsJoined.length > 0 || allRooms.roomsCreated.length > 0) {
         setNewUserToggle(false);
       }
     }
-  };
+  }; 
+  const getAllDataForRooms =async()=>{
+    const roomsData = await getAllRoomsData(doesUserExist? doesUserExist: userLoginInfo.username)
+   console.log(roomsData)
+      setAllRoomsData(roomsData)
+    
+  }
   const handleRoomButtonClick = (roomNumber) => {
     setMainAccess(true);
     setSocket(io.connect(`${PORT}`), {
@@ -44,23 +53,20 @@ const CurrentServers = () => {
     });
     sessionStorage.setItem("lastRoom", roomNumber.toString());
     return navigate(`/chatroom/${roomNumber}`);
-  }; 
+  };
 
   useEffect(() => {
-  
-
+    getAllDataForRooms();
     displayRooms();
     console.log(roomsJoined);
+    console.log(allRoomsData)
 
     // eslint-disable-next-line
   }, []);
 
   return (
     <>
-      <Header
-        socket={socket}
-        handleRoomButtonClick={handleRoomButtonClick}
-      />
+      <Header socket={socket} handleRoomButtonClick={handleRoomButtonClick} />
       <div className={`room-container`}>
         {newUserToggle && <h1>Enter main room to get started!</h1>}
         <div
@@ -76,10 +82,11 @@ const CurrentServers = () => {
 
         {
           <>
-            <FollowingList
-              key={roomsJoined._id + "143"}
+            <SubscribedList
+              key={roomsJoined._id}
               handleCLick={handleRoomButtonClick}
-              roomsCreated={roomsJoined}
+              roomsJoined={roomsJoined}
+              username={userLoginInfo.username}
             />
           </>
         }
@@ -89,6 +96,7 @@ const CurrentServers = () => {
           key={roomsCreated._id + "16"}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
+          allRoomsData={allRoomsData}
         />
       }
       {
@@ -96,6 +104,7 @@ const CurrentServers = () => {
           key={roomsCreated._id + "12"}
           handleClick={handleRoomButtonClick}
           roomsCreated={roomsCreated}
+          allRoomsData={allRoomsData}
         />
       }
       {

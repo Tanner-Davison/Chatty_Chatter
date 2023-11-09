@@ -8,7 +8,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
-import {deleteOne} from '../AllRoomsJoined.js'
+import { TryDeleteOne } from "../AllRoomsJoined.js";
+import useJoinedList from "../../Utility-mainRoom/useJoinedList.js";
 const RoomHelper = ({
   room,
   roomClass,
@@ -18,8 +19,16 @@ const RoomHelper = ({
   setRoomsPerPage,
   goToRoom,
   roomData,
+  allRoomsData,
+  username,
 }) => {
+  const {
+    removeRoom,
+    joinedListResponse,
+    setJoinedListResponse,
+  } = useJoinedList();
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
+  const [usersInRoom, setUsersInroom] = useState('')
   const navigate = useNavigate();
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
@@ -43,52 +52,79 @@ const RoomHelper = ({
     event.stopPropagation()
     return setAnchorEl(null);
   };
+
   const handleRemoveRoom = async (event, roomToRemove) => {
 
     event.stopPropagation();
-    await filterRooms((prev) => prev.filter((room) => room.room_number !== roomToRemove));
+    await filterRooms((prev) => prev.filter((room) => room.room !== roomToRemove));
     
     handleClose(event);
     return
   };
   
-  const handlegoToRoom = (event, roomToVisit) => {
-    
-    return goToRoom(room.room_number);
-  };
-  const handleMenuOpen = (event) => {
+  const handleViewProfile = (event) => {
     event.stopPropagation();
-    changePages()
-    navigate(`/profile/${room.created_by}`);
+    navigate(`/profile/${username}`);
     handleClose(event);
   };
-  const seeAllMembers =(event)=>{
+  const seeAllMembers = async (event, roomParam) => {
     event.stopPropagation();
-    return SetDisplayAllUsers(!displayAllUsers);
-  }
-  const handleDeleteEvent= (event, room_id,roomNumber)=>{
-    console.log(room_id)
+
+    // Assuming allRoomsData.roomsCreatedByUser is an array of room objects
+    const roomToMatch = allRoomsData.roomsCreatedByUser.find(
+      (room) => room.room_number === roomParam
+    );
+
+    if (roomToMatch) {
+      const numberOfUsers = roomToMatch.users_in_room.length;
+      console.log(numberOfUsers);
+      setUsersInroom(numberOfUsers); // Set the number of users in the state or wherever you need it
+      SetDisplayAllUsers(!displayAllUsers);
+    } else {
+      console.log("Room not found");
+    }
+  };
+   
+  const handleDeleteEvent = async (event, room_id, roomNumber) => {
     event.stopPropagation();
-    event.preventDefault();
-     handleClose(event);
-      deleteOne(room_id, roomNumber);
-      return roomData((prev)=> prev.filter((room)=> room._id!== room_id ))
-  }
+    console.log(room_id);
+    console.log(roomNumber);
+    console.log(roomData); // this is the room name
+    handleClose(event);
+
+    try {
+      // Delete the room
+      const deleteRoom = await TryDeleteOne(room_id, roomNumber);
+      const response = await deleteRoom;
+      if (response) {
+        console.log("Room deletion response:", response);
+      }
+
+      // Remove the room from the list
+      removeRoom(username,roomNumber,roomData)
+
+      // Update the state or perform other actions after successful deletion
+      filterRooms((prev) => prev.filter((room) => room._id !== room_id));
+    } catch (error) {
+      console.error("Error in handleDeleteEvent:", error);
+
+    }
+  };
+
 
   return (
-    <Tilt key={room._id}options={defaultOptions}>
+    <Tilt key={room._id} options={defaultOptions}>
       <div
         className={roomClass}
         room={room}
-        onClick={() => goToRoom(room.room_number)}
-        value={room.room_number}>
+        onClick={() => goToRoom(room.room)}
+        value={room.room}>
         <img
           id={styles.room_owned_by_img_expolore}
           src={imageURL}
           alt="owner"
           height={40}
         />
-
         <div className={styles.menu_wrapper}>
           <Button
             className={styles.menu_icon}
@@ -108,38 +144,42 @@ const RoomHelper = ({
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>
-            <MenuItem onClick={(event) => handleMenuOpen(event)}>
+            <MenuItem onClick={(event) => handleViewProfile(event)}>
               View Profile
             </MenuItem>
             {!room.private_room && (
-              <MenuItem onClick={(e) => handleDeleteEvent(e, room._id, room.room_number)}>
+              <MenuItem
+                onClick={(e) => handleDeleteEvent(e, room._id, room.room)}>
                 Delete
               </MenuItem>
             )}
             {room.private_room && (
               <MenuItem
-                onClick={(event) => handleDeleteEvent(event, room._id, room.room_number)
+                onClick={(event) =>
+                  handleDeleteEvent(event, room.room, room.room_number)
                 }>
-               Delete
+                Delete
               </MenuItem>
             )}
-            <MenuItem onClick={(event) => handleRemoveRoom(event, room.room_number)}>
+            <MenuItem onClick={(event) => handleRemoveRoom(event, room.room)}>
               Hide Room
             </MenuItem>
           </Menu>
         </div>
-
+       
         <GroupIcon
           className={styles.display_joined_list}
-          onClick={(event) => seeAllMembers(event)}
+          onClick={(event) => seeAllMembers(event, room.room)}
         />
         {!displayAllUsers && (
-            <p className={styles.room_members}>{room.room_name}</p>
-            )}
+          <p className={styles.room_members}>{room.roomName}</p>
+        )}
         {displayAllUsers && (
-          <p className={`${styles.room_members} ${styles._active} `}>
-          {room.users_in_room.length + ` members`}
-          </p>
+          <div
+            className={`${styles.parent_of_diplayed_room_members} ${styles._active}`}>
+            <span id={styles.number_span}>{usersInRoom}</span>
+            <p id={styles.child_of_room_members}>{` members`}</p>
+          </div>
         )}
       </div>
     </Tilt>

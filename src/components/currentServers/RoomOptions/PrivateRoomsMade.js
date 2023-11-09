@@ -9,7 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import RoomHelper from "./RoomHelper";
 import { getAllRoomsData } from "../AllRoomsJoined.js";
 
-const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
+const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
   const [roomsPerPage, setRoomsPerPage] = useState(4);
@@ -56,34 +56,13 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     );
     setItemsToAnimateIn(newItems);
 
-    const timer = setTimeout(() => {
-      setItemsToAnimateIn(new Set());
-    }, 800); // match css animation sliding in
-
-    return () => clearTimeout(timer);
+  
     //eslint-disable-next-line
-  }, [currentIndex, privateMadeRooms, itemsToAnimateOut]);
+  }, [currentIndex, privateMadeRooms, roomsPerPage]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const roomData = await getAllRoomsData(userLoginInfo.username);
-        if (roomData.roomsCreatedByUser.length <= 0) {
-          setNoData(true);
-        }
-        console.log({ LookHere: roomData });
-        const roomValue = roomData.roomsCreatedByUser.filter(
-          (room) => room.private_room === true
-        );
-        console.log(privateMadeRooms);
-        setPrivateMadeRooms(roomValue);
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    };
-    fetchData();
-    //eslint-disable-next-line
-  }, [userLoginInfo.username, noData]);
+    setPrivateMadeRooms(roomsCreated.filter((room)=>room.private !== false))
+  }, [roomsCreated]);
 
   const displayedRooms = privateMadeRooms.slice(
     currentIndex,
@@ -100,7 +79,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>Created Private Hubs</span>
+            <span id={styles.display_created_room_name}>Your Private Hubs</span>
           </div>
           <div
             className={
@@ -136,7 +115,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   : isAnimatingIn
                   ? styles.slideIn
                   : ""
-              } ${room.private_room ? styles.room_private : ""}`;
+              } ${ styles.room_private }`;
 
               return (
                 <div key={room._id}>
@@ -149,11 +128,13 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                     filterRooms={setPrivateMadeRooms}
                     changePages={changePages}
                     goToRoom={handleClick}
-                    roomData={setPrivateMadeRooms}
+                    roomData={room.roomName}
+                    allRoomsData={allRoomsData} 
+                    username={userLoginInfo.username}
                   />
                 </div>
               );
-            })}
+            })} 
           </div>
           <div className={styles.flex_row}>
             {!gridView && (
@@ -163,7 +144,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   onClick={() => changeRooms("left")}
                 />
                 <span id={styles.room_count}>
-                  {endIndex} of {privateMadeRooms.length}
+                  {Math.ceil(endIndex/4)} / {Math.ceil(privateMadeRooms.length/4)}
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}

@@ -434,8 +434,8 @@ h1 {
 .sendMsgBtn {
   position: relative;
   width: 100px;
-  min-height: 35px;
-  max-height: 35px;
+  min-height: 42px;
+  max-height: 42px;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -493,12 +493,12 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 35px;
+  min-height: 34px;
   gap: 5px;
   max-height: 20px;
   background-color: transparent;
   border: 2px solid rgb(12, 73, 116);
-  border-radius: 100px;
+  border-radius: 10px;
   color: white;
   font-weight: 600;
   padding: 3px 15px;
@@ -524,7 +524,7 @@ h1 {
 }
 .subscribe_to_room:hover {
   background-position: 100% 100%;
-  transform: scale(1.02);
+  transform: scale(1.05);
 }
 #subscribe_btn{
   animation: slideAway .8s ease-out 0s 1;

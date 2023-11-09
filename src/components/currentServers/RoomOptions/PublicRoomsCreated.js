@@ -11,7 +11,7 @@ import { getAllRoomsData } from "../AllRoomsJoined.js";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
-const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
+const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
   const [roomsPerPage, setRoomsPerPage] = useState(4);
@@ -26,65 +26,56 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
     publicMadeRooms.length
   );
 
-  const changeRooms = (direction) => {
-    setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
-    setTimeout(() => {
-      setItemsToAnimateOut(new Set());
-      setCurrentIndex((prevIndex) => {
-      
-          const newIndex = prevIndex + roomsPerPage;
-          return newIndex >= publicMadeRooms.length ? 0 : newIndex;
-      });
-    }, 600); // match CSS sliding out
-  };
-  const changePages = async (e) => {
-    
-    if (roomsPerPage === 4) {
-      // Switching to full view
-      
-      setCurrentIndex(0); // Set the currentIndex to the start
-      setRoomsPerPage(publicMadeRooms.length);
-      setGridView(true);
-    } else {
-      // Switching back to limited view
-      setRoomsPerPage(4);
-      setGridView(false);
-    }
-  };
-  useEffect(() => {
-    const newItems = new Set(
-      publicMadeRooms
-        .slice(currentIndex, currentIndex + roomsPerPage)
-        .map((room) => room.id)
-    );
-    setItemsToAnimateIn(newItems);
-
-    const timer = setTimeout(() => {
-      setItemsToAnimateIn(new Set());
-    }, 800); // match css animation sliding in
-
-    return () => clearTimeout(timer);
-    //eslint-disable-next-line
-  }, [currentIndex, publicMadeRooms, itemsToAnimateOut]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const roomData = await getAllRoomsData(userLoginInfo.username);
-        if (roomData.roomsCreatedByUser.length <= 0) {
-          setNoData(true);
-        }
-        const roomValue = roomData.roomsCreatedByUser.filter(
-          (room) => !room.private_room
-        );
-        setPublicMadeRooms(roomValue);
-      } catch (error) {
-        console.error("Error fetching data", error);
+const changeRooms = (direction) => {
+  setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
+  setTimeout(() => {
+    setItemsToAnimateOut(new Set());
+    setCurrentIndex((prevIndex) => {
+      const newIndex = prevIndex + roomsPerPage;
+      if(newIndex === 1){
+        return 0
       }
-    };
-    fetchData();
-    //eslint-disable-next-line
-  }, [userLoginInfo.username, noData]);
+      return newIndex >= publicMadeRooms.length ? 0 : newIndex;
+    });
+  }, 700); // match CSS sliding out
+};
+const changePages = async (e) => {
+  e.preventDefault();
+  if (roomsPerPage === 4) {
+    // Switching to full view
+    setRoomsPerPage(publicMadeRooms.length);
+    setGridView(true);
+    setCurrentIndex(0); // Set the currentIndex to the start
+  } else {
+    // Switching back to limited view
+    setRoomsPerPage(4);
+    setGridView(false);
+  }
+};
+ const itemsToAnimate = (newItems) => {
+    setItemsToAnimateIn(newItems);
+ };
+ 
+ useEffect(() => {
+  const slicedRooms = publicMadeRooms.slice(currentIndex, currentIndex + roomsPerPage);
+
+  const newItems = new Set(
+    slicedRooms.length === 1
+      ? [slicedRooms[0].id] // If there's only one item, use its id
+      : slicedRooms.map((room) => room.id)
+  );
+
+  itemsToAnimate(newItems)
+
+
+  //eslint-disable-next-line
+}, [currentIndex, publicMadeRooms, roomsPerPage]);
+
+
+  useEffect(() => {
+    setPublicMadeRooms(roomsCreated.filter((room => room.private !== true )))
+  }, [roomsCreated]);
+
   useEffect(()=> {
     if(publicMadeRooms.length ===4){
       console.log('this is running')
@@ -101,7 +92,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
         <div className={styles.flex}>
           <div className={styles.room_info}>
             <span id={styles.display_created_room_name}>
-              Created Public Hubs
+              Your Public Hubs
             </span>
           </div>
           <div
@@ -150,7 +141,9 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                     filterRooms={setPublicMadeRooms}
                     changePages={changePages}
                     goToRoom={handleClick}
-                    roomData={setPublicMadeRooms}
+                    roomData={room.roomName}
+                    allRoomsData={allRoomsData}
+                    username={userLoginInfo.username}
                   />
                 </div>
               );
@@ -164,7 +157,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick }) => {
                   onClick={() => changeRooms("left")}
                 />
                 <span id={styles.room_count}>
-                  {endIndex} of {publicMadeRooms.length}
+                  {Math.ceil(endIndex /4)} / {Math.ceil(publicMadeRooms.length /4)}
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}

@@ -26,21 +26,28 @@ const getAllRoomsData = async (username) =>{
     return [];
   }
 }
-const deleteOne = async(roomId, roomNumber)=>{
-if(!roomNumber){
-  return console.log('no room sent')
-}
-console.log(roomId, roomNumber)
-  try{
+const TryDeleteOne = async (roomId, roomNumber) => {
+  if (!roomNumber) {
+    console.error('No room number sent');
+    return;
+  }
+
+  console.log('Deleting room:', roomId, roomNumber);
+
+  try {
+    console.log(`${PORT}/deleteSingleRoom`);
     const deleteRequest = await axios.post(`${PORT}/deleteSingleRoom`, {
-      roomId: roomId,
-      roomNumber: roomNumber,
+      roomId,
+      roomNumber,
     });
+
     const response = deleteRequest.data.message;
-    
-  }catch(error){
-    console.log(error+ `In All rooms Joined`);
-    
+    console.log('Delete response:', response);
+    return response;
+  } catch (error) {
+    console.error('Error in deleteOne:', error);
+    // Throw the error if you want the calling function to handle it
+    throw error;
   }
 }
-export { AllRoomsJoined , getAllRoomsData, deleteOne};
+export { AllRoomsJoined , getAllRoomsData, TryDeleteOne};

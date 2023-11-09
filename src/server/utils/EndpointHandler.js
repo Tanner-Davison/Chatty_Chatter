@@ -113,25 +113,38 @@ module.exports = {
       console.log(err);
     }
   },
-  deleteSingleRoom: async (req, res) => {
-    console.log(req.body);
-    try {
-      const roomId = req.body.roomId;
-      const roomNumber = req.body.roomNumber;
+ deleteSingleRoom: async (req, res) => {
+  try {
+    const { roomId, roomNumber } = req.body;
 
-      const deletedRoom = await Rooms.findOneAndDelete({ _id: roomId });
+    // Delete room from the Rooms collection
+    const deletedRoom = await Rooms.deleteOne({ room_number: roomNumber });
 
-      if (deletedRoom) {
-        const result = await User.updateOne(
-          { "roomsCreated.room": roomNumber },
-          { $pull: { roomsCreated: { room: roomNumber } } }
-        );
+    if (deletedRoom.deletedCount > 0) {
+      console.log('ROOM SUPPOSEDLY DELETED')
+      // Room was deleted successfully, continue with other logic
+
+      // Example: Delete the room from the User collection
+      const result = await User.updateOne(
+        { "roomsCreated.room": roomNumber },
+        { $pull: { roomsCreated: { room: roomNumber } } }
+      );
+
+      // Check if the user was updated successfully
+      if (result) {
+        return res.status(200).json({ message: 'Room was deleted and successfully removed from the user.' });
+      } else {
+        return res.status(500).json({ message: 'Room deleted, but user update failed.' });
       }
-    } catch (error) {
-      console.log(`error at deleteSingleRoom: ${error}`);
-      res.status(500).json({ message: "Internal server error" });
+    } else {
+      // Room not found or not deleted successfully
+      return res.status(404).json({ message: 'Room not found.' });
     }
-  },
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
+},
   checkUsersJoinedList: async (req, res) => {
     const username = req.query.username;
     const roomToCheck = req.query.roomToCheck;

@@ -12,6 +12,7 @@ const RoomItem = ({
   room,
   roomClass,
   changeRooms,
+  allRooms,
   imageURL,
   filterRooms,
   goToRoom,
@@ -44,7 +45,9 @@ const RoomItem = ({
   };
   const handleDisplayUsers = (event) => {
     event.stopPropagation();
+    
     SetDisplayAllUsers(!displayAllUsers);
+  
   };
   const handleRemoveRoom = async (event, roomToRemove) => {
     event.stopPropagation();
@@ -123,20 +126,21 @@ const RoomItem = ({
 
         {room.private_room && (
           <>
-              <LockSharpIcon className={styles.display_joined_list}>
-            <Menu
-              className={styles.dropdown_list}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={(e) => handleClose(e)}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}>
+            <LockSharpIcon className={styles.display_joined_list}>
+              <Menu
+                className={styles.dropdown_list}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={(e) => handleClose(e)}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}>
                 <MenuItem
-                  onClick={(e) => {handleLockClick(e)}}>
-                </MenuItem>
-            </Menu>
-              </LockSharpIcon>
+                  onClick={(e) => {
+                    handleLockClick(e);
+                  }}></MenuItem>
+              </Menu>
+            </LockSharpIcon>
           </>
         )}
         {!room.private_room && (
@@ -150,9 +154,11 @@ const RoomItem = ({
         )}
 
         {displayAllUsers && (
-          <p className={`${styles.room_members} ${styles._active}`}>
-            {room.users_in_room.length + ` members`}
-          </p>
+          <div
+            className={`${styles.parent_of_diplayed_room_members} ${styles._active}`}>
+            <span id={styles.number_span}>{room.users_in_room.length}</span>
+            <p id={styles.child_of_room_members}>{` members`}</p>
+          </div>
         )}
       </div>
     </Tilt>
