@@ -59,7 +59,12 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   useEffect(() => {
     if (subscribedRooms.length === 4) {
       console.log("this is running");
-      setCurrentIndex(0);
+      return setCurrentIndex(0);
+      
+    }else if(subscribedRooms.length === 0 || null){
+      return setNoData(true)
+    }else{
+      return setNoData(false)
     }
   }, [subscribedRooms]);
   const displayedRooms = subscribedRooms.slice(
@@ -68,7 +73,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   );
   return (
     <>
-      <div key={subscribedRooms.id} className={styles.rooms_wrapper}>
+      <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
             <span id={styles.display_created_room_name}>Subscribed Hubs </span>
@@ -110,8 +115,8 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
               </Tooltip>
             )}
             {noData && (
-              <p style={{ textAlign: "center" }}>
-                Create a public hub to view this section
+              <p id={styles.no_data_info}>
+                Subscribe to a hub to view it here
               </p>
             )}
             {displayedRooms.map((room) => {

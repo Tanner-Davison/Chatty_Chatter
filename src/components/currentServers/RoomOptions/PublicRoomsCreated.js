@@ -71,15 +71,18 @@ const changePages = async (e) => {
   //eslint-disable-next-line
 }, [currentIndex, publicMadeRooms, roomsPerPage]);
 
-
   useEffect(() => {
     setPublicMadeRooms(roomsCreated.filter((room => room.private !== true )))
   }, [roomsCreated]);
 
   useEffect(()=> {
-    if(publicMadeRooms.length ===4){
+    if(publicMadeRooms.length === 4){
       console.log('this is running')
       setCurrentIndex(0)
+    }else if(publicMadeRooms.length === 0 || null){
+      setNoData(true)
+    }else{
+      setNoData(false)
     }
   },[publicMadeRooms])
   const displayedRooms = publicMadeRooms.slice(
@@ -88,7 +91,7 @@ const changePages = async (e) => {
   );
   return (
     <>
-      <div key={roomsCreated.id}className={styles.rooms_wrapper}>
+      <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
             <span id={styles.display_created_room_name}>
@@ -99,6 +102,9 @@ const changePages = async (e) => {
             className={
               !gridView ? styles.room_item_wrapper : styles.grid_view_wrapper
             }>
+              {noData && (
+                <p></p>
+              )}
             {gridView && (
               <Tooltip title="View less" placement="left">
                 <CompressIcon
@@ -116,8 +122,8 @@ const changePages = async (e) => {
               </Tooltip>
             )}
             {noData && (
-              <p style={{ textAlign: "center" }}>
-                Create a public hub to view this section
+              <p id={styles.no_data_info}>
+                Create a public hub to view this section 
               </p>
             )}
             {displayedRooms.map((room) => {

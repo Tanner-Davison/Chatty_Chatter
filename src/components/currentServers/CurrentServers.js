@@ -91,29 +91,31 @@ const CurrentServers = () => {
           </>
         }
       </div>
-      {
-        <PublicRoomsCreated
-          key={roomsCreated._id + "16"}
-          handleClick={handleRoomButtonClick}
-          roomsCreated={roomsCreated}
-          allRoomsData={allRoomsData}
-        />
-      }
-      {
-        <PrivateRoomsCreated
-          key={roomsCreated._id + "12"}
-          handleClick={handleRoomButtonClick}
-          roomsCreated={roomsCreated}
-          allRoomsData={allRoomsData}
-        />
-      }
-      {
-        <RoomsToExplore
-          key={roomsCreated._id + "1"}
-          handleClick={handleRoomButtonClick}
-          roomsCreated={roomsCreated}
-        />
-      }
+      <div >
+        {
+          <PublicRoomsCreated
+            key={roomsCreated._id + "16"}
+            handleClick={handleRoomButtonClick}
+            roomsCreated={roomsCreated}
+            allRoomsData={allRoomsData}
+          />
+        }
+        {
+          <PrivateRoomsCreated
+            key={roomsCreated._id + "12"}
+            handleClick={handleRoomButtonClick}
+            roomsCreated={roomsCreated}
+            allRoomsData={allRoomsData}
+          />
+        }
+        {
+          <RoomsToExplore
+            key={roomsCreated._id + "1"}
+            handleClick={handleRoomButtonClick}
+            roomsCreated={roomsCreated}
+          />
+        }
+      </div>
     </>
   );
 };

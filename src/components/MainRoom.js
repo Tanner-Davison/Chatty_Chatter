@@ -318,7 +318,7 @@ const checkList = async () => {
         room={room ? room : 1}
         joinRoom={joinRoom}
       />
-      <div className="room-wrapper">
+      <div className="room-wrapper-main-room">
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
             <h2>

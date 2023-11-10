@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import LockSharpIcon from "@mui/icons-material/LockSharp";
+import Tooltip from "@mui/material/Tooltip";
 const RoomItem = ({
   room,
   roomClass,
@@ -76,54 +77,55 @@ const RoomItem = ({
           alt="owner"
           height={40}
         />
+        <Tooltip title="Hub Menu" placement="top">
+          <div className={styles.menu_wrapper}>
+            <Button
+              className={styles.menu_icon}
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={(e) => handleClick(e)}>
+              <MenuRoundedIcon id={styles.menu_icon} />
+            </Button>
 
-        <div className={styles.menu_wrapper}>
-          <Button
-            className={styles.menu_icon}
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={(e) => handleClick(e)}>
-            <MenuRoundedIcon id={styles.menu_icon} />
-          </Button>
-          <Menu
-            className={styles.dropdown_list}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={(e) => handleClose(e)}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}>
-            <MenuItem
-              onClick={(e) => {
-                handleClose(e);
-                navigate(`/profile/${room.created_by}`);
+            <Menu
+              className={styles.dropdown_list}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={(e) => handleClose(e)}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
               }}>
-              Admins Profile
-            </MenuItem>
-            {!room.private_room && (
-              <MenuItem
-                onClick={(e) => {
-                  handleGoToRoom(e, room.room_number);
-                }}>
-                Visit Room
-              </MenuItem>
-            )}
-            {room.private_room && (
               <MenuItem
                 onClick={(e) => {
                   handleClose(e);
-                  return goToRoom(room.room_number);
+                  navigate(`/profile/${room.created_by}`);
                 }}>
-                Request Access
+                Admins Profile
               </MenuItem>
-            )}
-            <MenuItem onClick={(e) => handleRemoveRoom(e, room)}>
-              Hide Room
-            </MenuItem>
-          </Menu>
-        </div>
-
+              {!room.private_room && (
+                <MenuItem
+                  onClick={(e) => {
+                    handleGoToRoom(e, room.room_number);
+                  }}>
+                  Visit Room
+                </MenuItem>
+              )}
+              {room.private_room && (
+                <MenuItem
+                  onClick={(e) => {
+                    handleClose(e);
+                    return goToRoom(room.room_number);
+                  }}>
+                  Request Access
+                </MenuItem>
+              )}
+              <MenuItem onClick={(e) => handleRemoveRoom(e, room)}>
+                Hide Room
+              </MenuItem>
+            </Menu>
+          </div>
+        </Tooltip>
         {room.private_room && (
           <>
             <LockSharpIcon className={styles.display_joined_list}>

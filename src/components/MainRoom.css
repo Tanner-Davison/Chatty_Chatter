@@ -1,11 +1,11 @@
-.room-wrapper {
+.room-wrapper-main-room {
   display: flex;
-  height: 82vh;
+  height:auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #161a1d;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 }
 
 .all-messages p {

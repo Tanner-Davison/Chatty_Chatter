@@ -24,8 +24,6 @@ const RoomHelper = ({
 }) => {
   const {
     removeRoom,
-    joinedListResponse,
-    setJoinedListResponse,
   } = useJoinedList();
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const [usersInRoom, setUsersInroom] = useState('')
@@ -132,7 +130,7 @@ const RoomHelper = ({
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}>
-            <Tooltip title="Room Menu" placement="top">
+            <Tooltip title="Hub Menu" placement="top">
               <MenuRoundedIcon id={styles.menu_icon} />
             </Tooltip>
           </Button>

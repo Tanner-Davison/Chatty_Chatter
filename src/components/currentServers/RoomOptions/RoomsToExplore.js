@@ -87,19 +87,23 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>Explore Hubs</span>
-            {!displayPrivateRooms && (
-              <VisibilityOutlinedIcon
-                id={styles.private_rooms_visibility_icon}
-                onClick={(event) => handleShowPublicRoomData(event)}
-              />
-            )}
-            {displayPrivateRooms && (
-              <VisibilityOffOutlinedIcon
-                id={styles.private_rooms_visibility_icon}
-                onClick={(event)=>{handlePrivateVisibilityClick(event)}}
-              />
-            )}
+            <span id={styles.display_created_room_name}>
+              {!displayPrivateRooms && (
+                <VisibilityOutlinedIcon
+                  id={styles.private_rooms_visibility_icon}
+                  onClick={(event) => handleShowPublicRoomData(event)}
+                />
+              )}
+              {displayPrivateRooms && (
+                <VisibilityOffOutlinedIcon
+                  id={styles.private_rooms_visibility_icon}
+                  onClick={(event) => {
+                    handlePrivateVisibilityClick(event);
+                  }}
+                />
+              )}
+              Explore Hubs
+            </span>
           </div>
           <div
             className={
@@ -110,7 +114,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
               onClick={() => {
                 setGridView((prev) => !prev);
                 if (roomsPerPage === 4) {
-                 setCurrentIndex(0)
+                  setCurrentIndex(0);
                   setRoomsPerPage(allRooms.length);
                 } else {
                   setRoomsPerPage(4);
@@ -130,9 +134,8 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
               } ${room.private_room ? styles.room_public_private : " "}`;
 
               return (
-                <div key ={room._id}>
+                <div key={room._id}>
                   <RoomItem
-                    
                     room={room}
                     roomClass={roomClass}
                     changeRooms={changeRooms}
@@ -149,12 +152,12 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
           <div className={styles.flex_row}>
             {!gridView && (
               <>
-                <KeyboardDoubleArrowLeftTwoToneIcon 
+                <KeyboardDoubleArrowLeftTwoToneIcon
                   id={styles.icon_left_right}
                   onClick={() => changeRooms("left")}
                 />
                 <span id={styles.room_count}>
-                  {Math.ceil(endIndex/4)} of {Math.ceil(allRooms.length/4)}
+                  {Math.ceil(endIndex / 4)} of {Math.ceil(allRooms.length / 4)}
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}

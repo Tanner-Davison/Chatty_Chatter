@@ -31,7 +31,6 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
       setCurrentIndex((prevIndex) => {
           const newIndex = prevIndex + roomsPerPage;
           return newIndex >= privateMadeRooms.length ? 0 : newIndex;
-       
       });
     }, 700); // match CSS sliding out
   };
@@ -72,6 +71,10 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
     if (privateMadeRooms.length === 4) {
       console.log("this is running");
       setCurrentIndex(0);
+    }else if(privateMadeRooms.length === 0 || null){
+      setNoData(true)
+    }else{
+      setNoData(false)
     }
   }, [privateMadeRooms]);
   return (
@@ -102,8 +105,8 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
               </Tooltip>
             )}
             {noData && (
-              <p style={{ textAlign: "center" }}>
-                Create a public hub to view this section
+              <p id={styles.no_data_info}>
+                You can manage your Private Hubs here
               </p>
             )}
             {displayedRooms.map((room) => {

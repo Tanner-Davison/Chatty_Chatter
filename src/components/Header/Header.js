@@ -3,17 +3,18 @@ import { useState,useEffect,useContext, } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import "./Header.css";
 import searchGlass from './svgs/searchGlass.svg'
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
   const [visible, setVisible] = useState(true);
+  const [menuOpen, setMenuOpen]=useState(false)
   const location = useLocation();
   const navigate = useNavigate();
-  const { mainAccess, setMainAccess, } =
+  const { mainAccess, setMainAccess,userLoginInfo } =
     useContext(LoginContext);
 
   const headerClickHandler = () =>{
-   
     setMainAccess(true);
     joinRoom();
   }
@@ -52,72 +53,96 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
           ? "headerContainer home"
           : "headerContainer other"
       }>
-      
+      <div className={"logo-wrapper"}>
+        <div className={"logo_and_menu_button_wrapper"}>
+          <button
+            className={"menu_header_wrapper"}
+            onClick={() => setMenuOpen(!menuOpen)}>
+            <MenuRoundedIcon />
+          </button>
           <h1 className={"logo-font"}>Chatty Chatter</h1>
-     
-      <ul className={"navLinks"}>
-        {usernameLocal && (
-          <>
-            <li>
-              <Link to={`/profile/${usernameLocal}`}>
-                <h2
-                  className={getLinkStyle(
-                    `/profile/${usernameLocal.split("@")[0]}`
-                  )}>
-                  Profile
-                </h2>
-              </Link>
-            </li>
-            <br></br>
-            <span id={"span-id"} style={{ color: "white" }}>
-              {" "}
-              |{" "}
-            </span>
-            <li>
-              <Link to={`/currentservers`}>
-                <h2 className={getLinkStyle("/currentservers")}>All Rooms</h2>
-              </Link>
-            </li>
-            <br></br>
-            <span id={"span-id"} style={{ color: "white" }}>
-              |
-            </span>
-            <li>
-              <Link to={`/createroom/${0}`}>
-                <h2 className={getLinkStyle(`/createroom/${Number}`)}>
-                  Create-Hub
-                </h2>
-              </Link>
-            </li>
-            <br></br>
-            <span id={"span-id"} style={{ color: "white" }}>
-              |
-            </span>
-            <button
-              type="button"
-              id={"logout_button"}
-              onClick={() => logoutHandler()}>
-              Logout
-            </button>
-          </>
+        </div>
+        {menuOpen && (
+          <ul className={"navLinks"}>
+            {usernameLocal && (
+              <>
+                <li>
+                  <Link to={`/profile/${usernameLocal}`}>
+                    <h2
+                      className={getLinkStyle(
+                        `/profile/${usernameLocal.split("@")[0]}`
+                      )}>
+                      Profile
+                    </h2>
+                  </Link>
+                </li>
+                <br></br>
+                <span id={"span-id"} style={{ color: "white" }}>
+                  {" "}
+                  |{" "}
+                </span>
+                <li>
+                  <Link to={`/currentservers`}>
+                    <h2 className={getLinkStyle("/currentservers")}>
+                      Chat-Hubs
+                    </h2>
+                  </Link>
+                </li>
+                <br></br>
+                <span id={"span-id"} style={{ color: "white" }}>
+                  |
+                </span>
+                <li>
+                  <Link to={`/createroom/${0}`}>
+                    <h2 className={getLinkStyle(`/createroom/${Number}`)}>
+                      New Chat-Hub
+                    </h2>
+                  </Link>
+                </li>
+                <br></br>
+                <span id={"span-id"} style={{ color: "white" }}>
+                  |
+                </span>
+              </>
+            )}
+          </ul>
         )}
-      </ul>
-      {usernameLocal && currentLocation.includes("chatroom") && (
+      </div>
+      {usernameLocal && currentLocation.includes("chatroom") && !menuOpen && (
         <div className={"create_room_container"}>
-          <h2 style={{ color: "white" }}>Hub Finder</h2>
+          <h2 style={{ color: "white", textWrap: "nowrap" }}>Hub Finder</h2>
           <input
-            type='number'
+            type="number"
             className={"roomInput"}
             placeholder="Room #"
             onKeyDown={handleKeyDown}
             onChange={roomChanger}
           />
-          <button className={"buttonHeader"} type="button" onClick={headerClickHandler}>
+          <button
+            className={"buttonHeader"}
+            type="button"
+            onClick={headerClickHandler}>
             <img src={searchGlass} alt={"search hub"} />
             Search
           </button>
         </div>
       )}
+      <div className={"logout_wrapper"}>
+        <div id={"logout-bottom-container"}>
+          <Link to={`/profile/${usernameLocal}`}>
+            <img
+              src={userLoginInfo.imageUrl}
+              alt={"header-profile-pic"}
+              className={"header_profile_pic"}></img>
+          </Link>
+          <button
+            type="button"
+            id={"logout_button"}
+            onClick={() => logoutHandler()}>
+            Logout
+          </button>
+        </div>
+      </div>
       {visible && usernameLocal && !currentLocation.includes("chatroom") && (
         <div className={"visible_login_success"}>
           <p id="loggedIn">Logged in as: </p>

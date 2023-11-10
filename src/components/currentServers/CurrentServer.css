@@ -12,18 +12,24 @@
   background-color: #161a1d;
   animation: gradientBackground 24s ease infinite;
   font-family: "Shantell Sans", cursive;
+  
 }
 .room-container > h1 {
   color: white;
   align-self: center;
 }
-
+.all_hubs_wrapper{
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
 .main-room-wrapper {
   display: flex;
   flex-direction: column;
   outline: 4px solid blue;
   align-self: center;
   align-items: center;
+  
   justify-content: center;
   width: 50%;
 }
