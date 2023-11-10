@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: row;
   flex-grow: inherit;
-  flex-wrap: wrap;
+  flex-wrap:nowrap;
   gap: 1rem;
   width: auto;
   align-items: center;
