@@ -4,6 +4,7 @@ import { LoginContext } from "../contexts/LoginContext";
 import "./Header.css";
 import searchGlass from './svgs/searchGlass.svg'
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
@@ -101,11 +102,13 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
                   |
                 </span>
                 <li>
-                  <Link to={`/createroom/${0}`}>
-                    <h2 className={getLinkStyle(`/createroom/${Number}`)}>
-                      New Chat-Hub
-                    </h2>
-                  </Link>
+                    <Link to={`/createroom/${0}`}>
+                      <h2 className={getLinkStyle(`/createroom/${Number}`)}>
+                        Add-Hub 
+                  <AddCommentOutlinedIcon className={"add-hub-icon"}/>
+                 
+                      </h2>
+                    </Link>
                 </li>
                 <br></br>
                 <span id={"span-id"} style={{ color: "white" }}>
@@ -135,31 +138,30 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
           </button>
         </div>
       )}
-      {usernameLocal && ( 
-
-      <div className={"logout_wrapper"}>
-        <div id={"logout-bottom-container"}>
-          <Link to={`/profile/${usernameLocal}`}>
-            <img
-              src={userLoginInfo.imageUrl}
-              alt={"header-profile-pic"}
-              className={"header_profile_pic"}></img>
-          </Link>
-          <button
-            type="button"
-            id={"logout_button"}
-            onClick={() => logoutHandler()}>
-            Logout
-          </button>
+      {usernameLocal && (
+        <div className={"logout_wrapper"}>
+          <div id={"logout-bottom-container"}>
+            <Link to={`/profile/${usernameLocal}`}>
+              <img
+                src={userLoginInfo.imageUrl}
+                alt={"header-profile-pic"}
+                className={"header_profile_pic"}></img>
+            </Link>
+            <button
+              type="button"
+              id={"logout_button"}
+              onClick={() => logoutHandler()}>
+              Logout
+            </button>
+          </div>
         </div>
-      </div>
       )}
-      {visible && usernameLocal && !currentLocation.includes("chatroom") && (
+      {/* {visible && usernameLocal && !currentLocation.includes("chatroom") && (
         <div className={"visible_login_success"}>
           <p id="loggedIn">Logged in as: </p>
           <p style={{ color: "white" }}>{"@" + usernameLocal}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

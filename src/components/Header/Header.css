@@ -9,7 +9,13 @@
   background-color: black;
   width: auto;
 }
-
+.add-hub-icon{
+  color: palegreen;
+ align-self: center;
+ justify-self: center;
+  margin-left:5px;
+  font-weight: 700px;
+}
 .create_room_container {
   display: flex;
   flex-direction: row;
@@ -49,19 +55,21 @@
   padding-left: 10px;
 }
 .menu_header_wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+ 
   color: white;
   height: 10%;
 
   font-size: 25px;
   background-color: transparent;
-  border-radius: 8px;
- 
+  border:none;
+  box-sizing: border-box;
+  transition: transform .2s ease-in-out;
 }
 .menu_header_wrapper:hover{
-  transform:scale(1.03);
+  transform:scale(1.5);
+  flex:1;
   cursor: pointer;
 }
 .logo_and_menu_button_wrapper {
@@ -83,6 +91,7 @@
     transform: rotateY(0);
   }
 }
+
 #logout-bottom-container {
   display: flex;
   align-items: center;
@@ -178,6 +187,7 @@
     border: 2px inset black;
   }
 }
+
 .navLinks {
   position: relative;
   display: flex;
@@ -188,9 +198,10 @@
   align-items: center;
   justify-content: center;
   list-style-type: none;
+  
 }
 .navLinks > li {
-  animation: slideFromLeft .4s ease-out 0s 1;
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -278,27 +289,35 @@
 }
 .linkInactive {
   display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 22px;
   white-space: nowrap;
   min-width: -moz-fit-content;
   min-width: fit-content;
   text-overflow: ellipsis;
+  transition: transform .2s ease-in
 }
 .linkActive {
   display: flex;
   white-space: nowrap;
+   align-items: center;
+  justify-content: center;
   min-width: fit-content;
   text-overflow: ellipsis;
-  color: rgb(15, 207, 255);
+  color:#4BE227;
+
   &:hover {
-    color: rgb(8, 178, 246);
+   align-self: center;
+   justify-self: center;
     scale: 1;
   }
 }
 .linkInactive:hover {
-  color: rgb(241, 255, 240);
+  color: rgb(248, 248, 248);
+  transform: scale(1.09)
 }
 
 @media only screen and (max-width: 600px) {
@@ -403,7 +422,7 @@
     border-radius: 50px;
   }
   .navLinks {
-    animation: slideFromTop 1s ease-out 0s 1;
+   
     flex-direction: column;
     position: relative;
     gap: 0px;

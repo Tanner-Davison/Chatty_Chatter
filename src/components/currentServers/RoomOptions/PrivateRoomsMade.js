@@ -17,7 +17,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
   const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
   const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
   const [privateMadeRooms, setPrivateMadeRooms] = useState([]);
-  const [noData, setNoData] = useState(false);
+  const [noData, setNoData] = useState(true);
 
   const endIndex = Math.min(
     currentIndex + roomsPerPage,
@@ -68,9 +68,12 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
     currentIndex + roomsPerPage
   );
   useEffect(() => {
-    if (privateMadeRooms.length <= 4) {
+    if (privateMadeRooms.length === 4) {
       console.log("this is running");
       setCurrentIndex(0);
+      
+    }else if(privateMadeRooms.length <4 && privateMadeRooms>=1){
+      setNoData(false)
     }else if(privateMadeRooms.length === 0 || null){
       setNoData(true)
     }else{
@@ -88,6 +91,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
             className={
               !gridView ? styles.room_item_wrapper : styles.grid_view_wrapper
             }>
+            
             {gridView && (
               <Tooltip title="View less" placement="left">
                 <CompressIcon

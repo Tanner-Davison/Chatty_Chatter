@@ -57,13 +57,15 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   }, [roomsJoined]);
 
   useEffect(() => {
-    if (subscribedRooms.length <= 4) {
+    if (subscribedRooms.length === 0 || null) {
+      setNoData(true);
+    }else{
+      setNoData(false)
+    }
+    if (subscribedRooms.length === 4) {
       console.log("this is running");
       setCurrentIndex(0);
-    } else if (subscribedRooms.length === 0 || null) {
-      setNoData(true);
-    } else {
-      setNoData(false);
+      setNoData(false)
     }
   }, [subscribedRooms]);
   const displayedRooms = subscribedRooms.slice(

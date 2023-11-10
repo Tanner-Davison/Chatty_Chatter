@@ -412,6 +412,15 @@ const checkList = async () => {
           {roomIsEmpty && navigate(`/createroom/${room}`)}
           {typing === true && <TypingComp typer={currentTyper.current} />}
         </div>
+     
+        {isPrivateRoom && (
+          <div className={"helper_tools_wrapper"}>
+            <button id={"leave-room-btn"} onClick={leaveRoom}>
+              <ReplyRoundedIcon id={"back-button"} />
+              Back
+            </button>
+          </div>
+        )}
         {!isPrivateRoom && (
           <>
             <div className="send-input-wrapper">
@@ -437,7 +446,7 @@ const checkList = async () => {
             </div>
             <div className={"helper_tools_wrapper"}>
               <button id={"leave-room-btn"} onClick={leaveRoom}>
-                <ReplyRoundedIcon id={'back-button'} />
+                <ReplyRoundedIcon id={"back-button"} />
                 Back
               </button>
               {!following && (

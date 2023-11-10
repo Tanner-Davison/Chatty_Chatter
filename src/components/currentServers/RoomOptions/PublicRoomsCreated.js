@@ -76,14 +76,16 @@ const changePages = async (e) => {
   }, [roomsCreated]);
 
   useEffect(()=> {
-    if(publicMadeRooms.length <= 4){
-      console.log('this is running')
-      setCurrentIndex(0)
-    }else if(publicMadeRooms.length === 0 || null){
-      setNoData(true)
-    }else{
-      setNoData(false)
-    }
+   if (publicMadeRooms.length === 4) {
+     console.log("this is running");
+     setCurrentIndex(0);
+   } else if (publicMadeRooms.length < 4 && publicMadeRooms >= 1) {
+     setNoData(false);
+   } else if (publicMadeRooms.length === 0 || null) {
+     setNoData(true);
+   } else {
+     setNoData(false);
+   }
   },[publicMadeRooms])
   const displayedRooms = publicMadeRooms.slice(
     currentIndex,

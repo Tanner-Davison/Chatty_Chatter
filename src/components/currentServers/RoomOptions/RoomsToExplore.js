@@ -100,7 +100,8 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   }}
                 />
               )}
-              Explore Hubs
+              
+              Explore Hubs{' '} <em> Private & Public</em>
             </span>
           </div>
           <div

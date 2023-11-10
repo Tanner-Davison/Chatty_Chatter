@@ -4,10 +4,12 @@
     flex-direction: column;
     max-width:80%;
     min-width:75%;
+    
     align-self: center;
+    justify-self: center;
     text-align: center;
-    padding: 10pxpx;
-    top:25%;
+    padding: 10px;
+    top:225px;
         border: 2px solid #1c2125;
     border-top: 4px inset #1f262d;
     box-sizing: border-box;
@@ -35,4 +37,10 @@
 }
 #submit_button{
     width:100px;
+}
+
+@media only screen and (max-width: 600px){
+    .private_room_main_wrapper{
+        top:100px
+    }
 }
