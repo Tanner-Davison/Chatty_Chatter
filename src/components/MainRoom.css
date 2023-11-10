@@ -1,6 +1,6 @@
 .room-wrapper-main-room {
   display: flex;
-  height:auto;
+  height: auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -425,11 +425,10 @@ h1 {
   width: 100%;
   min-height: 40px;
   max-height: 40px;
-  border-radius:5px;
-  
+  border-radius: 5px;
 }
-#send_message_input::placeholder{
-  padding-left:10px;
+#send_message_input::placeholder {
+  padding-left: 10px;
 }
 .sendMsgBtn {
   position: relative;
@@ -445,39 +444,39 @@ h1 {
   overflow: hidden;
   color: white;
   font-weight: 600;
-  padding:3px 10px;
-  
-   transition: transform 0.3s ease-in-out;
+  padding: 3px 10px;
+
+  transition: transform 0.3s ease-in-out;
 }
 .sendMsgBtn:hover {
   background-position: 100% 100%;
-  border-color:#03fd42;
+  border-color: #03fd42;
   transform: scale(1.05);
 }
 
 .clicked {
-  animation: slideAway .8s ease-out 0s 1;
+  animation: slideAway 0.8s ease-out 0s 1;
   justify-self: center;
 }
 @keyframes slideAway {
   0% {
     transform: translateX(0) rotateX(0);
-    
   }
   25% {
-    transform: translateX(100%)rotateX(80deg);
+    transform: translateX(100%) rotateX(80deg);
   }
   40% {
     transform: translateX(200%);
   }
-  42%{
-    height: 0px; width: 0px
+  42% {
+    height: 0px;
+    width: 0px;
   }
-  60%{
-    transform:translateX(-200%) 
+  60% {
+    transform: translateX(-200%);
   }
-  90%{
-    transform:  rotateX(10deg) translate(33%)
+  90% {
+    transform: rotateX(10deg) translate(33%);
   }
   100% {
     transform: translateX(0) rotateY(0);
@@ -493,32 +492,38 @@ h1 {
   gap: 10px;
 }
 #leave-room-btn {
+   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 34px;
+  box-sizing: border-box;
   gap: 5px;
-  max-height: 20px;
   background-color: transparent;
   border: 2px solid rgb(12, 73, 116);
   border-radius: 10px;
   color: white;
   font-weight: 600;
   padding: 3px 15px;
-  width: fit-content;
+  min-width: 150px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  text-align: center;
+  justify-content: center;
+  z-index: 3;
 }
 #leave-room-btn:hover {
+  border-color: #32c056;
   background-position: 100% 100%;
   transform: scale(1.05);
 }
-#leave-room-btn:hover>#back-button{
-color:#03fd42;
+#leave-room-btn:hover > #back-button {
+  color: #03fd42;
 }
-#back-button{
-  color:#32C056;
+#back-button {
+  color: #32c056;
 }
-#back-button:hover{
-  color:#1bef50;
+#back-button:hover {
+  color: #1bef50;
 }
 .subscribe_to_room {
   position: relative;
@@ -533,41 +538,39 @@ color:#03fd42;
   color: white;
   font-weight: 600;
   padding: 3px 15px;
-  min-width:150px;
+  min-width: 150px;
   overflow: hidden;
-   transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
   text-align: center;
   justify-content: center;
   z-index: 3;
 }
 .subscribe_to_room:hover {
   background-position: 100% 100%;
-  border-color:#32C056;
+  border-color: #32c056;
   transform: scale(1.05);
   border-width: 1px;
-  
 }
-.subscribe_to_room:hover> #subscribe_btn{
- color:rgb(12, 237, 87);
+.subscribe_to_room:hover > #subscribe_btn {
+  color: rgb(12, 237, 87);
 }
-#subscribe_btn{
-  animation: slideAway .8s ease-out 0s 1;
-  color:rgba(12, 237, 87, 0.63);
+#subscribe_btn {
+  animation: slideAway 0.8s ease-out 0s 1;
+  color: rgba(12, 237, 87, 0.63);
 }
 .subscribe_to_room._joined {
   border: 2px solid rgb(12, 73, 116);
   box-sizing: border-box;
   width: fit-content;
 }
-.subscribe_to_room._joined:hover{
-  border-color:red;
- 
+.subscribe_to_room._joined:hover {
+  border-color: red;
 }
 
-#unsubscribe_icon{
-  animation: slideAway .8s ease-out 0s 1;
-    color: red;
-  }
+#unsubscribe_icon {
+  animation: slideAway 0.8s ease-out 0s 1;
+  color: red;
+}
 .leave-delete-button {
   display: flex;
   position: relative;
@@ -767,8 +770,9 @@ color:#03fd42;
   .leave-delete-button {
     padding-top: 0px;
   }
- 
-  
+  .send-input-wrapper{
+    min-width: 91vw;
+  }
   .leave-delete-button button {
     bottom: -60px;
   }
