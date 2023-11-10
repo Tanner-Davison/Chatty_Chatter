@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 
 const loadRoomHistory = async (room) => {
   try {

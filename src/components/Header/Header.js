@@ -8,7 +8,7 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
   const [visible, setVisible] = useState(true);
-  const [menuOpen, setMenuOpen]=useState(false)
+  const [menuOpen, setMenuOpen]=useState(true)
   const location = useLocation();
   const navigate = useNavigate();
   const { mainAccess, setMainAccess,userLoginInfo } =
@@ -49,6 +49,8 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
   useEffect(()=>{
     if(location.pathname.includes('/currentservers')){
       setMenuOpen(true)
+    }else if(location.pathname.includes('/chatroom')){
+      setMenuOpen(false)
     }
     //eslint-disable-next-line
   },[])

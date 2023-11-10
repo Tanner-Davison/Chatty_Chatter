@@ -113,8 +113,8 @@
   border: 2px solid rgb(12, 144, 237);
   border-radius: 100px;
   padding: 3px 15px;
+  width: auto;
   align-items: center;
-  justify-content: center;
   font-size: 1rem;
   cursor: pointer;
   font-weight: 800;
@@ -331,7 +331,7 @@
     flex-direction: column;
     display: flex;
     position: relative;
-    width: 80%;
+    width: 45%;
     gap: 0.5rem;
     max-width: 22rem rem;
     /* min-width: auto; */
