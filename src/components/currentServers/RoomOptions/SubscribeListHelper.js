@@ -9,6 +9,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import { TryDeleteOne } from "../AllRoomsJoined.js";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 const SubscribeListHelper = ({
   room,
   roomClass,
@@ -16,6 +17,7 @@ const SubscribeListHelper = ({
   imageURL,
   filterRooms,
   handleRoomButtonClick,
+  pin,
 }) => {
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const navigate = useNavigate();
@@ -89,12 +91,14 @@ const SubscribeListHelper = ({
         room={room}
         onClick={() => handleRoomButtonClick(room.room)}
         value={room.room}>
-        <img
-          id={styles.room_owned_by_img_expolore}
-          src={imageURL}
-          alt="owner"
-          height={40}
-        />
+        <div className={styles.check_mark}>
+          <CheckCircleOutlineOutlinedIcon
+            id={styles.checked}
+            src={imageURL}
+            alt="owner"
+            height={40}
+          />
+        </div>
 
         <div className={styles.menu_wrapper}>
           <Button

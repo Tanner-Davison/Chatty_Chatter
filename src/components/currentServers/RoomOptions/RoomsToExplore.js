@@ -8,6 +8,7 @@ import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import RoomItem from "./RoomItem";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+
 const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);

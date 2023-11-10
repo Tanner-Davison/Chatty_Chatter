@@ -10,7 +10,7 @@ import SubscribeListHelper from "./SubscribeListHelper.js";
 import { getAllRoomsData } from "../AllRoomsJoined.js";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-
+import pin from './assets/pin.png'
 const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
@@ -73,6 +73,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   return (
     <>
       <div className={styles.rooms_wrapper}>
+        
         <div className={styles.flex}>
           <div className={styles.room_info}>
             <span id={styles.display_created_room_name}>Subscribed Hubs </span>
@@ -138,6 +139,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
                     changeRooms={changeRooms}
                     handleRoomButtonClick={handleRoomButtonClick}
                     roomData={subscribedRooms}
+                    pin={pin}
                   />
                 </div>
               );

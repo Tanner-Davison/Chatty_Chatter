@@ -201,10 +201,10 @@
 @keyframes slideFromLeft {
 
 0%{
-  transform: translateX(-300px);
+  transform: translateY(300px);
 }
   100% {
-   transform: translateX(0);
+   transform: translateY(0);
   }
 }
 .navLinks a {

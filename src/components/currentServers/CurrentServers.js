@@ -90,8 +90,8 @@ const CurrentServers = () => {
             />
           </>
         }
-      </div>
-      <div >
+      
+      
         {
           <PublicRoomsCreated
             key={roomsCreated._id + "16"}
@@ -116,6 +116,8 @@ const CurrentServers = () => {
           />
         }
       </div>
+    
+
     </>
   );
 };
