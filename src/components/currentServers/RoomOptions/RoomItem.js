@@ -21,16 +21,25 @@ const RoomItem = ({
 }) => {
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const navigate = useNavigate();
+  function easeOutElastic(x){
+    const c4 = (2 * Math.PI) / 3;
+
+    return x === 0
+      ? 0
+      : x === 1
+      ? 1
+      : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+  }
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
     max: 25, // max tilt rotation (degrees)
     perspective: 700, // Transform perspective, the lower the more extreme the tilt gets.
-    scale: 1.1, // 2 = 200%, 1.5 = 150%, etc..
+    scale: 1.08, // 2 = 200%, 1.5 = 150%, etc..
     speed: 800, // Speed of the enter/exit transition
     transition: true, // Set a transition on enter/exit.
     axis: null, // What axis should be disabled. Can be X or Y.
     reset: true, // If the tilt effect has to be reset on exit.
-    easing: "ease-out", // Easing on enter/exit.
+    easing: easeOutElastic(200), // Easing on enter/exit.
   };
 
   const [anchorEl, setAnchorEl] = useState(null);

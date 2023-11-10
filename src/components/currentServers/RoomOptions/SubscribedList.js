@@ -57,14 +57,13 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   }, [roomsJoined]);
 
   useEffect(() => {
-    if (subscribedRooms.length === 4) {
+    if (subscribedRooms.length <= 4) {
       console.log("this is running");
-      return setCurrentIndex(0);
-      
-    }else if(subscribedRooms.length === 0 || null){
-      return setNoData(true)
-    }else{
-      return setNoData(false)
+      setCurrentIndex(0);
+    } else if (subscribedRooms.length === 0 || null) {
+      setNoData(true);
+    } else {
+      setNoData(false);
     }
   }, [subscribedRooms]);
   const displayedRooms = subscribedRooms.slice(
@@ -115,20 +114,19 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
               </Tooltip>
             )}
             {noData && (
-              <p id={styles.no_data_info}>
-                Subscribe to a hub to view it here
-              </p>
+              <p id={styles.no_data_info}>Subscribe to a hub to view it here</p>
             )}
             {displayedRooms.map((room) => {
+              
               const isAnimatingOut = itemsToAnimateOut.has(room.id);
               const isAnimatingIn = itemsToAnimateIn.has(room.id);
-              const roomClass = `${styles.room_item} ${
+              const roomClass = `${styles.room_item_subscribe} ${
                 isAnimatingOut
                   ? styles.slideOut
                   : isAnimatingIn
                   ? styles.slideIn
                   : ""
-              } ${room.private ? styles.room_private : ""}`;
+              }`;
 
               return (
                 <div key={room._id}>
@@ -151,7 +149,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
               <>
                 <KeyboardDoubleArrowLeftTwoToneIcon
                   id={styles.icon_left_right}
-                  onClick={() => changeRooms()}
+                  onClick={() => changeRooms("left")}
                 />
                 <span id={styles.room_count}>
                   {Math.ceil(endIndex / 4)} /{" "}
@@ -159,7 +157,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}
-                  onClick={() => changeRooms()}
+                  onClick={() => changeRooms("right")}
                 />
               </>
             )}

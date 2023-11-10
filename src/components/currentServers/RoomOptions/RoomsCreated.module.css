@@ -122,6 +122,7 @@
   align-items: flex-end;
   max-width: 50vw;
 }
+
 #room_count {
   color: white;
   box-sizing: border-box;
@@ -145,6 +146,74 @@
     0 1px 1px rgba(52, 51, 51, 0.7), 0 2px 2px rgba(55, 53, 53, 0.2),
     0 4px 4px rgba(0, 0, 0, 0.2), 0 8px 8px rgba(0, 0, 0, 0.2);
   z-index: 2;
+}
+.room_item_subscribe {
+  animation: gradientBackground 24s ease infinite;
+  position: relative;
+  display: flex;
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+  border-radius: 50px;
+  border: 1px solid #020402;
+  background: linear-gradient(
+    135deg,
+    #2196f3 0%,  
+    #ff4081 25%, 
+    #3f51b5 50%, 
+    #2196f3 100% 
+  );
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
+    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #000000;
+
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      #2196f3 0%,  
+      #2196f3 25%, 
+      #ff4040 25%, 
+      #ff4040 50%, 
+      #3f51b5 50%, 
+      #3f51b5 100% 
+    );
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  transition: all 0.3s ease-in-out;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+
+
+.room_item_subscribe:hover {
+  
+  border-radius: 32px;
+  cursor: default;
+  border: 1px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
+    inset 0 8px 16px #1c2125;
+  transition: all .3s ease-in-out;
 }
 .room_item {
   animation: gradientBackground 24s ease infinite;
@@ -202,6 +271,16 @@
   justify-content: center;
   z-index: 3;
 }
+.room_item:hover {
+  
+  border-radius: 32px;
+  cursor: default;
+  border: 1px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
+    inset 0 8px 16px #1c2125;
+  transition: all .3s ease-in-out;
+}
 
 /* Keyframes and animation for sliding out to the left */
 @keyframes slideOutLeft {
@@ -234,15 +313,6 @@
 }
 .dropdown_list:hover {
   background-color: rgba(0, 0, 0, 0.182);
-}
-.room_item:hover {
-  border-radius: 32px;
-  cursor: default;
-  border: 1px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
-    0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
-    inset 0 8px 16px #1c2125;
-  transition: all 0.4s ease-in-out;
 }
 .room_item.room_private {
   position: relative;
@@ -340,7 +410,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
     0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
     inset 0 8px 16px #1c2125;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 #room_owned_by_img {
   position: absolute;

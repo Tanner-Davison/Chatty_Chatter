@@ -29,7 +29,7 @@ const SubscribeListHelper = ({
     transition: true, // Set a transition on enter/exit.
     axis: null, // What axis should be disabled. Can be X or Y.
     reset: true, // If the tilt effect has to be reset on exit.
-    easing: "ease-out", // Easing on enter/exit.
+    easing: "none", // Easing on enter/exit.
   };
 
   const [anchorEl, setAnchorEl] = useState(null);

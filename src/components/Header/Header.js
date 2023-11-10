@@ -37,6 +37,7 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
        return () => {
          clearTimeout(timer);
        };
+       //eslint-disable-next-line
     },[room])
   
   const getLinkStyle = (path) => {
@@ -45,7 +46,12 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
     }
     return path === location.pathname ? "linkActive" : "linkInactive";
   };
-
+  useEffect(()=>{
+    if(location.pathname.includes('/currentservers')){
+      setMenuOpen(true)
+    }
+    //eslint-disable-next-line
+  },[])
   return (
     <div
       className={
@@ -55,12 +61,12 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
       }>
       <div className={"logo-wrapper"}>
         <div className={"logo_and_menu_button_wrapper"}>
+          <h1 className={"logo-font"}>Chatty Chatter</h1>
           <button
             className={"menu_header_wrapper"}
             onClick={() => setMenuOpen(!menuOpen)}>
             <MenuRoundedIcon />
           </button>
-          <h1 className={"logo-font"}>Chatty Chatter</h1>
         </div>
         {menuOpen && (
           <ul className={"navLinks"}>
@@ -127,6 +133,8 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
           </button>
         </div>
       )}
+      {usernameLocal && ( 
+
       <div className={"logout_wrapper"}>
         <div id={"logout-bottom-container"}>
           <Link to={`/profile/${usernameLocal}`}>
@@ -143,6 +151,7 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
           </button>
         </div>
       </div>
+      )}
       {visible && usernameLocal && !currentLocation.includes("chatroom") && (
         <div className={"visible_login_success"}>
           <p id="loggedIn">Logged in as: </p>

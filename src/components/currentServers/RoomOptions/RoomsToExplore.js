@@ -131,7 +131,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   : isAnimatingIn
                   ? styles.slideIn
                   : ""
-              } ${room.private_room ? styles.room_public_private : " "}`;
+              } ${styles.room_public_subscribed}`;
 
               return (
                 <div key={room._id}>

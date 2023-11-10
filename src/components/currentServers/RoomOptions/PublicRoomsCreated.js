@@ -76,7 +76,7 @@ const changePages = async (e) => {
   }, [roomsCreated]);
 
   useEffect(()=> {
-    if(publicMadeRooms.length === 4){
+    if(publicMadeRooms.length <= 4){
       console.log('this is running')
       setCurrentIndex(0)
     }else if(publicMadeRooms.length === 0 || null){
