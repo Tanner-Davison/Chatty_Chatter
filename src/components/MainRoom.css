@@ -446,9 +446,12 @@ h1 {
   color: white;
   font-weight: 600;
   padding:3px 10px;
+  
+   transition: transform 0.3s ease-in-out;
 }
 .sendMsgBtn:hover {
   background-position: 100% 100%;
+  border-color:#03fd42;
   transform: scale(1.05);
 }
 
@@ -508,7 +511,17 @@ h1 {
   background-position: 100% 100%;
   transform: scale(1.05);
 }
+#leave-room-btn:hover>#back-button{
+color:#03fd42;
+}
+#back-button{
+  color:#32C056;
+}
+#back-button:hover{
+  color:#1bef50;
+}
 .subscribe_to_room {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -521,19 +534,36 @@ h1 {
   font-weight: 600;
   padding: 3px 15px;
   min-width:150px;
+  overflow: hidden;
+   transition: transform 0.3s ease-in-out;
+  text-align: center;
+  justify-content: center;
+  z-index: 3;
 }
 .subscribe_to_room:hover {
   background-position: 100% 100%;
+  border-color:#32C056;
   transform: scale(1.05);
+  border-width: 1px;
+  
+}
+.subscribe_to_room:hover> #subscribe_btn{
+ color:rgb(12, 237, 87);
 }
 #subscribe_btn{
   animation: slideAway .8s ease-out 0s 1;
-  color:rgba(12, 237, 87, 0.511);
+  color:rgba(12, 237, 87, 0.63);
 }
 .subscribe_to_room._joined {
   border: 2px solid rgb(12, 73, 116);
+  box-sizing: border-box;
   width: fit-content;
 }
+.subscribe_to_room._joined:hover{
+  border-color:red;
+ 
+}
+
 #unsubscribe_icon{
   animation: slideAway .8s ease-out 0s 1;
     color: red;

@@ -437,7 +437,7 @@ const checkList = async () => {
             </div>
             <div className={"helper_tools_wrapper"}>
               <button id={"leave-room-btn"} onClick={leaveRoom}>
-                <ReplyRoundedIcon />
+                <ReplyRoundedIcon id={'back-button'} />
                 Back
               </button>
               {!following && (
@@ -461,27 +461,26 @@ const checkList = async () => {
         )}
       </div>
 
-      {
-        <>
-          <div className={"status_container"}>
-            <h3 style={{ color: "white" }}>Status :</h3>
-            <button
-              type="button"
-              className={"statusBtn"}
-              onClick={() => {
-                joinRoom();
-              }}
-              style={
-                isSocketConnected
-                  ? { backgroundColor: "#323232" }
-                  : { backgroundColor: "red", color: "#3691F0" }
-              }>
-              {isSocketConnected && "Connected"}
-              {!isSocketConnected && "DISCONNECTED"}
-            </button>
-          </div>
-        </>
-      }
+      {}
+      <>
+        <div className={"status_container"}>
+          <h3 style={{ color: "white" }}>Status :</h3>
+          <button
+            type="button"
+            className={"statusBtn"}
+            onClick={() => {
+              joinRoom();
+            }}
+            style={
+              isSocketConnected
+                ? { backgroundColor: "#323232" }
+                : { backgroundColor: "red", color: "#3691F0" }
+            }>
+            {isSocketConnected && "Connected"}
+            {!isSocketConnected && "DISCONNECTED"}
+          </button>
+        </div>
+      </>
       <div className="leave-delete-button">
         <button onClick={deleteRoom}>Delete Room</button>
       </div>
