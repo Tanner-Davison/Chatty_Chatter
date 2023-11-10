@@ -117,7 +117,6 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
               <p id={styles.no_data_info}>Subscribe to a hub to view it here</p>
             )}
             {displayedRooms.map((room) => {
-              
               const isAnimatingOut = itemsToAnimateOut.has(room.id);
               const isAnimatingIn = itemsToAnimateIn.has(room.id);
               const roomClass = `${styles.room_item_subscribe} ${

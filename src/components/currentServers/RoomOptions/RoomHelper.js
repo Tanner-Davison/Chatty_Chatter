@@ -22,11 +22,9 @@ const RoomHelper = ({
   allRoomsData,
   username,
 }) => {
-  const {
-    removeRoom,
-  } = useJoinedList();
+  const { removeRoom } = useJoinedList();
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
-  const [usersInRoom, setUsersInroom] = useState('')
+  const [usersInRoom, setUsersInroom] = useState("");
   const navigate = useNavigate();
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
@@ -47,19 +45,20 @@ const RoomHelper = ({
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     return setAnchorEl(null);
   };
 
   const handleRemoveRoom = async (event, roomToRemove) => {
-
     event.stopPropagation();
-    await filterRooms((prev) => prev.filter((room) => room.room !== roomToRemove));
-    
+    await filterRooms((prev) =>
+      prev.filter((room) => room.room !== roomToRemove)
+    );
+
     handleClose(event);
-    return
+    return;
   };
-  
+
   const handleViewProfile = (event) => {
     event.stopPropagation();
     navigate(`/profile/${username}`);
@@ -82,7 +81,7 @@ const RoomHelper = ({
       console.log("Room not found");
     }
   };
-   
+
   const handleDeleteEvent = async (event, room_id, roomNumber) => {
     event.stopPropagation();
     console.log(room_id);
@@ -99,16 +98,14 @@ const RoomHelper = ({
       }
 
       // Remove the room from the list
-      removeRoom(username,roomNumber,roomData)
+      removeRoom(username, roomNumber, roomData);
 
       // Update the state or perform other actions after successful deletion
       filterRooms((prev) => prev.filter((room) => room._id !== room_id));
     } catch (error) {
       console.error("Error in handleDeleteEvent:", error);
-
     }
   };
-
 
   return (
     <Tilt key={room._id} options={defaultOptions}>
@@ -164,7 +161,7 @@ const RoomHelper = ({
             </MenuItem>
           </Menu>
         </div>
-       
+
         <GroupIcon
           className={styles.display_joined_list}
           onClick={(event) => seeAllMembers(event, room.room)}

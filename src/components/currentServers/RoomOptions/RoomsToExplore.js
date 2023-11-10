@@ -1,13 +1,13 @@
 import { useContext, useState, useEffect } from "react";
 import { LoginContext } from "../../contexts/LoginContext";
 import styles from "./RoomsCreated.module.css";
-import axios from 'axios'
+import axios from "axios";
 import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowRightTwoTone";
 import KeyboardDoubleArrowLeftTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowLeftTwoTone";
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import RoomItem from "./RoomItem";
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
@@ -16,72 +16,69 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const [itemsToAnimateOut, setItemsToAnimateOut] = useState(new Set());
   const [itemsToAnimateIn, setItemsToAnimateIn] = useState(new Set());
   const PORT = process.env.REACT_APP_PORT;
-  const [allRooms, setAllRooms] =useState([]);
-  const roomValues = roomsCreated.map((room)=> room.room)
-  const [displayPrivateRooms, setDisplayPrivateRooms]=useState(false)
-  const [listOfRooms, setListOfRooms] = useState('')
+  const [allRooms, setAllRooms] = useState([]);
+  const roomValues = roomsCreated.map((room) => room.room);
+  const [displayPrivateRooms, setDisplayPrivateRooms] = useState(false);
+  const [listOfRooms, setListOfRooms] = useState("");
   const getRoomData = async () => {
     try {
-      const response = await axios.get(`${PORT}/get_all_rooms`,{
-        params: {rooms: roomValues}
+      const response = await axios.get(`${PORT}/get_all_rooms`, {
+        params: { rooms: roomValues },
       });
       if (response.data) {
         // Assuming the data is an array of rooms
         const roomData = response.data;
         setAllRooms(roomData);
-        setListOfRooms(roomData)
+        setListOfRooms(roomData);
       }
     } catch (error) {
       // Handle any errors that occur during the request
       console.error(error);
     }
   };
-  const endIndex = Math.min(
-    currentIndex + roomsPerPage,
-    allRooms.length
-  );
+  const endIndex = Math.min(currentIndex + roomsPerPage, allRooms.length);
 
   const changeRooms = (direction) => {
     setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
     setTimeout(() => {
       setItemsToAnimateOut(new Set());
       setCurrentIndex((prevIndex) => {
-          const newIndex = prevIndex + roomsPerPage;
-          return newIndex >= allRooms.length ? 0 : newIndex;
+        const newIndex = prevIndex + roomsPerPage;
+        return newIndex >= allRooms.length ? 0 : newIndex;
       });
     }, 600); // match CSS sliding out
   };
-  useEffect(()=>{
+  useEffect(() => {
     getRoomData();
     console.log(allRooms);
     //eslint-disable-next-line
-  },[roomsCreated])
-  
+  }, [roomsCreated]);
+
   useEffect(() => {
     const newItems = new Set(
       allRooms
-      .slice(currentIndex, currentIndex + roomsPerPage)
-      .map((room) => room.id)
-      );
-      setItemsToAnimateIn(newItems);
-   
-      //eslint-disable-next-line
-    }, [currentIndex, roomsPerPage, allRooms]);
-    
-    const handleShowPublicRoomData = ()=>{
-      setCurrentIndex(0)
-      const newRoomData = allRooms.filter((room)=> room.private_room === false);
-      setAllRooms(newRoomData)
-      setDisplayPrivateRooms(true);
-    }
-    const handlePrivateVisibilityClick =()=>{
-      setAllRooms(listOfRooms)
-      setDisplayPrivateRooms(false)
-    }
-    const displayedRooms = allRooms.slice(
-      currentIndex,
-      currentIndex + roomsPerPage
+        .slice(currentIndex, currentIndex + roomsPerPage)
+        .map((room) => room.id)
     );
+    setItemsToAnimateIn(newItems);
+
+    //eslint-disable-next-line
+  }, [currentIndex, roomsPerPage, allRooms]);
+
+  const handleShowPublicRoomData = () => {
+    setCurrentIndex(0);
+    const newRoomData = allRooms.filter((room) => room.private_room === false);
+    setAllRooms(newRoomData);
+    setDisplayPrivateRooms(true);
+  };
+  const handlePrivateVisibilityClick = () => {
+    setAllRooms(listOfRooms);
+    setDisplayPrivateRooms(false);
+  };
+  const displayedRooms = allRooms.slice(
+    currentIndex,
+    currentIndex + roomsPerPage
+  );
   return (
     <>
       <div className={styles.rooms_wrapper}>

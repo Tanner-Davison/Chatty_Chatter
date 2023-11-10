@@ -64,7 +64,7 @@ const SubscribeListHelper = ({
   const seeAllMembers = (event) => {
     event.stopPropagation();
     return SetDisplayAllUsers(!displayAllUsers);
-  }
+  };
 
   const handleDeleteEvent = async (event, room_id, roomNumber) => {
     console.log(room_id);
