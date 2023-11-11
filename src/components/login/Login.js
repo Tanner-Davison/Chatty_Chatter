@@ -164,6 +164,14 @@ const Login = () => {
 
                 <div className={"welcomeContainer"}>
                   <article>
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}>
+                      Welcome ,
+                    </span>
                     Where the chatter gets chatty! Build your own chat hubs, set
                     up your unique profile, and add your friends. Dive in, and
                     let <span id={"inline-font-change"}>Chatty-Chatter</span>{" "}
@@ -216,6 +224,7 @@ const Login = () => {
                           )}
                           <label htmlFor="username-id"> Username</label>
                           <input
+                            id={"login-input"}
                             type="text"
                             onKeyDown={handleKeyDown}
                             className={"usernameInput"}
@@ -231,6 +240,7 @@ const Login = () => {
                         <div className={"input-box-container"}>
                           <label htmlFor="password-id"> Password</label>
                           <input
+                            id={"login-input"}
                             type="text"
                             name={"passwordInput"}
                             onKeyDown={handleKeyDown}
@@ -246,6 +256,7 @@ const Login = () => {
                         <div className={"uploaded_div"}>
                           <label htmlFor="fileUpload">Upload Photo</label>
                           <input
+                            id={"login-input"}
                             className={"photo-upload_buttons"}
                             type="file"
                             accept="image/png, image/jpeg"
@@ -264,7 +275,7 @@ const Login = () => {
                         style={
                           image
                             ? {
-                                animation: "imageExistAnimation 2s ease-in-out",
+                                animation: "imageExistAnimation .8s ease-in-out",
                               }
                             : {}
                         }
@@ -315,6 +326,7 @@ const Login = () => {
                         <div className={"input-box-container"}>
                           <label htmlFor="username-id"> Username </label>
                           <input
+                            id={"login-input"}
                             type="text"
                             name={"usernameInput"}
                             onKeyDown={handleKeyDown}
@@ -329,6 +341,7 @@ const Login = () => {
                         <div className={"input-box-container"}>
                           <label htmlFor="password-id"> Password </label>
                           <input
+                            id={"login-input"}
                             type="text"
                             onKeyDown={handleKeyDown}
                             name={"passwordInput"}

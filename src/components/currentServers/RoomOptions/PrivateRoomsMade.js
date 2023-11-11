@@ -36,15 +36,15 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
   };
    const changePages = async (e) => {
      e.preventDefault();
+     setGridView((prev)=> !prev)
      if (roomsPerPage === 4) {
        // Switching to full view
        setRoomsPerPage(privateMadeRooms.length);
-       setGridView(true);
        setCurrentIndex(0); // Set the currentIndex to the start
+       
      } else {
        // Switching back to limited view
        setRoomsPerPage(4);
-       setGridView(false);
      }
    };
   useEffect(() => {
@@ -71,6 +71,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
     if (privateMadeRooms.length === 4) {
       console.log("this is running");
       setCurrentIndex(0);
+      setNoData(false)
       
     }else if(privateMadeRooms.length <4 && privateMadeRooms>=1){
       setNoData(false)

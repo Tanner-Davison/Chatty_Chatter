@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { LoginContext } from "../../contexts/LoginContext.js";
 import { useNavigate } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -9,6 +10,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import { TryDeleteOne } from "../AllRoomsJoined.js";
+import useJoinedList from "../../Utility-mainRoom/useJoinedList.js";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 const SubscribeListHelper = ({
   room,
@@ -18,8 +20,18 @@ const SubscribeListHelper = ({
   filterRooms,
   handleRoomButtonClick,
   roomData,
+  roomName,
+  setCurrentIndex,
   pin,
 }) => {
+  const {
+    addRoom,
+    error,
+    joinedListResponse,
+    setJoinedListResponse,
+    removeRoom,
+  } = useJoinedList();
+  const { userLoginInfo } = useContext(LoginContext);
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
   const navigate = useNavigate();
 
@@ -37,6 +49,26 @@ const SubscribeListHelper = ({
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const handleUnsubscribe = async (event) => {
+    console.log(roomData);
+    event.stopPropagation();
+    const removeFromList = await removeRoom(
+      userLoginInfo.username,
+      room.room,
+      roomName
+    );
+    if (removeFromList) {
+      setJoinedListResponse(removeFromList);
+      console.log(roomData, "hereee");
+      filterRooms((prev) => prev.filter((room) => room.roomName !== roomName));
+      setCurrentIndex(0);
+
+      handleClose(event);
+    }
+    if (error) {
+      console.error(error);
+    }
+  };
 
   const handleClick = (event) => {
     event.stopPropagation();
@@ -52,9 +84,9 @@ const SubscribeListHelper = ({
     event.stopPropagation();
     handleClose(event);
     await filterRooms((prev) =>
-      prev.filter((room) => room.room_number !== roomToRemove)
+    prev.filter((room) => room.room !== roomToRemove)
     );
-    changeRooms("left");
+
     return;
   };
 
@@ -83,7 +115,7 @@ const SubscribeListHelper = ({
       // Handle or log the error as needed
     }
   };
- 
+
   return (
     <Tilt options={defaultOptions}>
       <div
@@ -129,15 +161,12 @@ const SubscribeListHelper = ({
               </MenuItem>
             )}
 
-            <MenuItem
-              onClick={(event) =>
-                handleDeleteEvent(event, room._id, room.room_number)
-              }>
-              Delete
+            <MenuItem onClick={(event) => handleUnsubscribe(event)}>
+              Unsubscribe
             </MenuItem>
 
             <MenuItem
-              onClick={(event) => handleRemoveRoom(event, room.room_number)}>
+              onClick={(event) => handleRemoveRoom(event, room.room)}>
               Hide Room
             </MenuItem>
           </Menu>

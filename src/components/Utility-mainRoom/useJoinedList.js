@@ -56,6 +56,7 @@ const PORT = process.env.REACT_APP_PORT;
         }
     }
     const removeRoom = async(username, roomNumber, roomName) =>{
+      console.log(username,roomNumber,roomName)
         try{
             const sendData = await axios.post(`${PORT}/removeJoinedRoom`,
             {
@@ -64,6 +65,7 @@ const PORT = process.env.REACT_APP_PORT;
                 roomName,
             });
             const response = await sendData.data.message;
+            console.log(response)
             setJoinedListResponse(response)
             return response;
         }catch(err){

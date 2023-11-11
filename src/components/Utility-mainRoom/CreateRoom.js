@@ -86,6 +86,7 @@ const CreateRoom = (props) => {
       })
       .catch((error) => {
         if (error.response) {
+          setErrorState(true)
           console.log(error.response.data);
           console.log(error.response.status);
         }
@@ -394,7 +395,7 @@ const CreateRoom = (props) => {
                           id={"hub-name"}
                           placeholder={'"Name the public Hub"'}
                           onChange={(e) => setPublicRoomName(e.target.value)}
-                          maxLength="20"
+                          maxLength="24"
                           required={true}
                         />
                         <Button

@@ -96,7 +96,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 10px;
+  gap: 19px;
   padding-right: 10px;
   width: auto;
 }
@@ -263,14 +263,31 @@
     transform: translateX(0);
   }
 }
+.text_field_parent{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+   max-width: 159px;
+  min-width: 100px;
+  align-items: flex-start;
+  z-index: 1;
+}
+#textFieldIcon{
+  position: absolute;
+  color:black;
+  z-index: 3;
+}
 .roomInput {
+  position: relative;
   margin: 0;
   border-radius: 7px;
   height: 25px;
+  padding-left:30px;
   align-self: center;
-  max-width: 159px;
-  min-width: 100px;
+  
+  z-index: 2;
 }
+
 .visible_login_success {
   position: absolute;
   top: 90vh;

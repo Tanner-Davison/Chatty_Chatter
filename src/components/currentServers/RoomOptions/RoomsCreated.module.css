@@ -1,6 +1,6 @@
 .rooms_wrapper {
   position: relative;
-  max-width: 90vw;
+  max-width: 95vw;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -15,8 +15,10 @@
     #161a1d 100%
   );
   height: auto;
+  min-width: 80vw;
   animation: gradientBackground 24s ease infinite;
-  padding: 10px;
+  padding: 35px;
+  padding-bottom: 10px;
   padding-top: 55px;
   border: 2px solid #1c2125;
   border-top: 4px inset #1f262d;
@@ -114,6 +116,23 @@
   border: 1px outset #000000;
   background: linear-gradient(160deg, #282b30, #1d2123, #262a2e, #15181b);
 }
+#all_rooms_room_name {
+  position: absolute;
+  display: flex;
+  top: -39px;
+  left: 25px;
+  min-width: 350px;
+  align-self: flex-start;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  margin-left: 10px;
+  border-radius: 16px 16px 1px 2px;
+  font-size: 20px;
+  margin-left: 20px;
+  padding: 5px 10px;
+  border: 1px outset #000000;
+  background: linear-gradient(160deg, #282b30, #1d2123, #262a2e, #15181b);
+}
 .room_info {
   display: flex;
   flex-direction: row;
@@ -127,7 +146,7 @@
   box-sizing: border-box;
   font-family: "Shantell Sans", cursive;
   font-size: 14px;
-  font-weight:800
+  font-weight: 800;
 }
 
 .room_item_wrapper {
@@ -135,11 +154,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 90vw;
-  max-width: 90vw;
+  min-width: 80vw;
+  max-width: 90%;
   gap: 45px;
-  overflow: hidden;
-  padding: 20px;
+  overflow: scroll;
+  padding: 25px;
   border-radius: 35px;
   background: linear-gradient(160deg, #23262a, #1a1e20, #202327, #1e2327);
   border: 1px solid #1c1f22;
@@ -147,60 +166,59 @@
     0 1px 1px rgba(52, 51, 51, 0.7), 0 2px 2px rgba(55, 53, 53, 0.2),
     0 4px 4px rgba(0, 0, 0, 0.2), 0 8px 8px rgba(0, 0, 0, 0.2);
   z-index: 2;
+  transition: min-width width height max-width 1s ease-in-out;
 }
 .room_item_subscribe {
-  animation: gradientBackground 24s ease infinite;
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 7em;
   height: 7em;
   box-sizing: border-box;
-  border-radius: 50px;
-  border: 1px solid #020402;
+  border-radius: 10px;
+  border: 2px solid #22864c;
   background: linear-gradient(
     135deg,
-    #2196f3 0%,
-    #ff4081 25%,
-    #3f51b5 50%,
-    #2196f3 100%
+    #145a32 0%,
+    #1f8b4c 25%,
+    #145a32 50%,
+    #145a32 100%
   );
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
-    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #000000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.6),
+    0 20px 50px rgba(0, 0, 0, 0.8);
 
   background-image: linear-gradient(
       45deg,
-      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      #2196f3 0%,
-      #2196f3 25%,
-      #ff4040 25%,
-      #ff4040 50%,
-      #3f51b5 50%,
-      #3f51b5 100%
+      #000000 0%,
+      #000000 25%,
+      #e74c3c 25%,
+      #e74c3c 50%,
+      #3498db 50%,
+      #3498db 100%
     );
   background-size: 40px 40px, 40px 40px, 100% 100%;
   transition: all 0.3s ease-in-out;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
   z-index: 3;
 }
 
@@ -214,60 +232,64 @@
   transition: all 0.3s ease-in-out;
 }
 .room_item {
-  animation: gradientBackground 24s ease infinite;
   position: relative;
   display: flex;
-  width: 8em;
-  height: 8em;
+  align-items: center;
+  justify-content: center;
+  width: 7em;
+  height: 7em;
   box-sizing: border-box;
-  border-radius: 70px;
-  border: 1px solid #020402;
+  border-radius: 10px;
+  border: 2px solid #2ecc71;
   background: linear-gradient(
     135deg,
-    #1b5e20 0%,
-    #145214 25%,
-    #0e3a0e 50%,
-    #1b5e20 100%
+    #145a32 0%,
+    #1f8b4c 25%,
+    #145a32 50%,
+    #145a32 100%
   );
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
-    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #1b5e20,
-    inset 0 4px 8px #145214;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.6),
+    0 20px 50px rgba(0, 0, 0, 0.8);
 
   background-image: linear-gradient(
       45deg,
-      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      #1b5e20 0%,
-      #1b5e20 25%,
-      #145214 25%,
-      #145214 50%,
-      #0e3a0e 50%,
-      #0e3a0e 100%
+      #145a32 0%,
+      #145a32 25%,
+      #1f6f43 25%,
+      #185734 50%,
+      #145230 50%,
+      #0a3f23 100%
     );
   background-size: 40px 40px, 40px 40px, 100% 100%;
   transition: all 0.3s ease-in-out;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
   z-index: 3;
+}
+
+.room_item.room_public_private_green::before {
+  content: "\1F512";
+  font-size: 2em;
+  color: #ecf0f1;
+  position: absolute;
 }
 .room_item:hover {
   border-radius: 32px;
@@ -279,32 +301,28 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Keyframes and animation for sliding out to the left */
 @keyframes slideOutLeft {
   from {
     transform: translateX(0) rotate(360deg);
   }
   to {
-    transform: translateX(-800%);
+    transform: translateX(-1000%);
   }
 }
 
-/* Keyframes and animation for sliding in from the right */
 @keyframes slideInRight {
   0% {
-    transform: translateX(800%) rotate(720deg);
+    transform: translateX(800%) rotate(360deg);
   }
   100% {
     transform: translateX(0) rotate(0) translateY(0);
   }
 }
 
-/* Applying the slide out animation to .slideOut elements */
 .slideOut {
   animation: slideOutLeft 600ms forwards;
 }
 
-/* Applying the slide in animation to .slideIn elements */
 .slideIn {
   animation: slideInRight 800ms forwards;
 }
@@ -313,100 +331,123 @@
 }
 .room_item.room_private {
   position: relative;
-  border: 2px solid #073b8b; /* Dark blue border color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7em;
+  height: 7em;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 2px solid #1b3554;
   background: linear-gradient(
     135deg,
-    #073b8b 0%,
-    #062e7a 25%,
-    #04214e 50%,
-    #073b8b 100%
+    #192a56 0%,
+    #273c75 25%,
+    #192a56 50%,
+    #192a56 100%
   );
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
-    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #073b8b,
-    inset 0 4px 8px #062e7a;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.6),
+    0 20px 50px rgba(0, 0, 0, 0.8);
 
   background-image: linear-gradient(
       45deg,
-      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      #073b8b 0%,
-      #073b8b 25%,
-      #062e7a 25%,
-      #062e7a 50%,
-      #04214e 50%,
-      #04214e 100%
+      #192a56 0%,
+      #192a56 25%,
+      #ff6b6b 25%,
+      #ff6b6b 50%,
+      #3498db 50%,
+      #3498db 100%
     );
   background-size: 40px 40px, 40px 40px, 100% 100%;
+  transition: all 0.3s ease-in-out;
   z-index: 3;
 }
-.room_public_private {
+.room_item.room_private,
+.room_item.room_public_private {
   position: relative;
-  border: 2px solid #000; /* Black border color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7em;
+  height: 7em;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 2px solid #4a90e2;
   background: linear-gradient(
     135deg,
-    #000 0%,
-    #666 25%,
-    /* Dark gray */ #888 50%,
-    /* Light gray */ #000 100%
+    #192a56 0%,
+    #273c75 25%,
+    #192a56 50%,
+    #192a56 100%
   );
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4),
-    0 20px 50px rgba(0, 0, 0, 0.5), inset 0 -4px 12px #000, inset 0 4px 8px #000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.6),
+    0 20px 50px rgba(0, 0, 0, 0.8);
 
   background-image: linear-gradient(
       45deg,
-      rgba(183, 181, 181, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(103, 18, 18, 0.2) 50%,
-      rgba(0, 0, 0, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      rgba(0, 0, 0, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 25%,
       transparent 25%,
       transparent 50%,
-      rgba(73, 53, 53, 0.2) 50%,
-      rgba(214, 206, 206, 0.2) 75%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
       transparent 75%,
       transparent
     ),
     linear-gradient(
       135deg,
-      #000 0%,
-      #000 25%,
-      #000 25%,
-      #000 50%,
-      #000 50%,
-      #423e3e 100%
+      #192a56 0%,
+      #192a56 25%,
+
+      #2e7eb4 50%,
+      #245a7e 100%
     );
   background-size: 40px 40px, 40px 40px, 100% 100%;
+  transition: all 0.3s ease-in-out;
   z-index: 3;
+}
+
+.room_item.room_public_private::before {
+  content: "\1F512";
+  font-size: 2em;
+  color: #ecf0f1;
+  position: absolute;
 }
 .room_item.room_private:hover {
   border-radius: 25px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(0, 0, 0, 0.5),
     0 10px 20px rgba(0, 0, 0, 0.5), inset 0 -8px 16px #0d1115,
     inset 0 8px 16px #1c2125;
+  border: none;
   transition: all 0.2s ease-in-out;
 }
 #room_owned_by_img {
@@ -431,24 +472,27 @@
   border-radius: 50px;
   height: 35%;
   width: 35%;
-  top: -10px;
-  left: -10px;
+  top: -5px;
+  left: -7px;
 }
-.css-i4bv87-MuiSvgIcon-root{
-  font-size:50px;
+.css-i4bv87-MuiSvgIcon-root {
+  font-size: 50px;
 }
-.check_mark{
-position: absolute;
+.check_mark {
+  position: absolute;
   display: flex;
   border-radius: 50px;
-  top:1px;
+  top: 1px;
   left: -10px;
-  color:green;
+  color: green;
   background-color: transparent;
 }
-#checked{
-  font-size:30px;
+#checked {
+  font-size: 36px;
+  position: absolute;
   fill: rgb(20, 226, 58);
+  top: -4px;
+  left: 7px;
 }
 .display_joined_list {
   animation: roomMembers 1.5s ease;
@@ -459,10 +503,10 @@ position: absolute;
 
   background-color: rgba(255, 255, 255, 0.271);
   padding: 2px;
-  right: -4px;
+  right: 1px;
   border-radius: 50px;
   color: rgb(0, 0, 0);
-  overflow: hidden; /* Ensure content within the circle doesn't overflow */
+  overflow: hidden;
 }
 @keyframes roomMembers {
   0% {
@@ -577,13 +621,13 @@ position: absolute;
   z-index: 1;
 }
 #menu_icon {
-     position: relative;
-    color: rgb(255, 255, 255);
-    right: 3px;
-    padding: 3px;
-    border-radius: 50px;
-    background-color: rgba(171, 54, 54, 0.612);
-    font-size: 26px;
+  position: relative;
+  color: rgb(255, 255, 255);
+  right: 3px;
+  padding: 3px;
+  border-radius: 50px;
+  background-color: rgba(171, 54, 54, 0.612);
+  font-size: 26px;
 }
 #menu_icon > path {
   position: relative;
@@ -601,7 +645,7 @@ position: absolute;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 95vw;
     gap: 1rem;
   }
   .grid_view_wrapper {
@@ -611,13 +655,14 @@ position: absolute;
     padding-top: 39px;
     margin-top: 0px;
   }
-  #checked{
-    font-size: 22px
+  #checked {
+    font-size: 22px;
+    top: -3px;
   }
   #menu_icon {
     font-size: 100%;
     left: 11px;
-    top:5px;
+    top: 5px;
     font-size: 16px;
   }
   .flex {
@@ -629,29 +674,46 @@ position: absolute;
     justify-content: center;
   }
   .room_item_wrapper {
-    gap: 25px;
+   gap: 16px;
     padding: 15px;
+    overflow: scroll;
     align-items: center;
-    min-height: 98px;
-        min-width: 58vw;
+    min-width: 89vw;
+    max-width: -17%;
     padding-top: 36px;
+    z-index: 5;
   }
   #display_created_room_name {
     font-size: 15px;
     left: -1px;
     border-radius: 16px 16px 1px 2px;
   }
-
+  #all_rooms_room_name {
+    font-size: 14px;
+    min-width: fit-content;
+    flex-wrap: nowrap;
+    top: -32px;
+    left: 17px;
+    border-radius: 16px 16px 1px 2px;
+  }
+  .room_item.room_public_private {
+    height: 4.5em;
+    width: 4.5em;
+  }
+  .room_item.room_private {
+    height: 5em;
+    width: 5em;
+  }
   .room_item {
-   height: 77px;
-    width: 81px;
+    height: 5em;
+    width: 5em;
   }
   .room_item > p {
     font-size: 10px;
   }
   .room_item_subscribe {
-    height: 70px;
-    width: 75px;
+    height: 5em;
+    width: 5em;
   }
   #room_owned_by_img {
     position: absolute;

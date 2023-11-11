@@ -10,7 +10,7 @@ import SubscribeListHelper from "./SubscribeListHelper.js";
 import { getAllRoomsData } from "../AllRoomsJoined.js";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import pin from './assets/pin.png'
+import pin from "./assets/pin.png";
 const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
@@ -26,16 +26,16 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
     subscribedRooms.length
   );
 
-  const changeRooms = () => {
-    setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
-    setTimeout(() => {
-      setItemsToAnimateOut(new Set());
-      setCurrentIndex((prevIndex) => {
-        const newIndex = prevIndex + roomsPerPage;
-        return newIndex >= subscribedRooms.length ? 0 : newIndex;
-      });
-    }, 600); // match CSS sliding out
-  };
+ const changeRooms = (e) => {
+   e.preventDefault();
+   setItemsToAnimateOut(new Set(displayedRooms.map((room) => room.id)));
+   setTimeout(() => {
+     setItemsToAnimateOut(new Set());
+     setCurrentIndex(
+       (prevIndex) => (prevIndex + roomsPerPage) % subscribedRooms.length
+     );
+   }, 600); // match CSS sliding out
+ };
   useEffect(() => {
     const newItems = new Set(
       subscribedRooms
@@ -59,15 +59,15 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   useEffect(() => {
     if (subscribedRooms.length === 0 || null) {
       setNoData(true);
-    }else{
-      setNoData(false)
+    } else {
+      setNoData(false);
     }
     if (subscribedRooms.length === 4) {
       console.log("this is running");
       setCurrentIndex(0);
-      setNoData(false)
+      setNoData(false);
     }
-  }, [subscribedRooms]);
+  }, [currentIndex,subscribedRooms, roomsPerPage]);
   const displayedRooms = subscribedRooms.slice(
     currentIndex,
     currentIndex + roomsPerPage
@@ -75,7 +75,6 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
   return (
     <>
       <div className={styles.rooms_wrapper}>
-        
         <div className={styles.flex}>
           <div className={styles.room_info}>
             <span id={styles.display_created_room_name}>Subscribed Hubs </span>
@@ -90,7 +89,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
                   id={styles.grid_view_icon}
                   onClick={() => {
                     setGridView((prev) => !prev);
-                    if (roomsPerPage === 4) {
+                    if (roomsPerPage <= 4) {
                       setCurrentIndex(0);
                       setRoomsPerPage(subscribedRooms.length);
                     } else {
@@ -139,7 +138,9 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
                     imageURL={userLoginInfo.imageUrl}
                     filterRooms={setSubscribedRooms}
                     changeRooms={changeRooms}
+                    setCurrentIndex={setCurrentIndex}
                     handleRoomButtonClick={handleRoomButtonClick}
+                    roomName={room.roomName}
                     roomData={subscribedRooms}
                     pin={pin}
                   />
@@ -152,7 +153,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
               <>
                 <KeyboardDoubleArrowLeftTwoToneIcon
                   id={styles.icon_left_right}
-                  onClick={() => changeRooms("left")}
+                  onClick={changeRooms}
                 />
                 <span id={styles.room_count}>
                   {Math.ceil(endIndex / 4)} /{" "}
@@ -160,7 +161,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
                 </span>
                 <KeyboardDoubleArrowRightTwoToneIcon
                   id={styles.icon_left_right}
-                  onClick={() => changeRooms("right")}
+                  onClick={(e) => changeRooms(e)}
                 />
               </>
             )}

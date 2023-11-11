@@ -28,6 +28,7 @@ const MainRoom = () => {
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
   const [inRoom, setInroom] = useState(initialRoom);
+  const [searchName, setSearchName] = useState('');
   const sessionImage = sessionStorage.getItem("image-url");
   const sessionCloudinary_id = sessionStorage.getItem("cloudinary_id");
   const messagesStartRef = useRef(null);
@@ -46,7 +47,6 @@ const MainRoom = () => {
     joinedListResponse,
     setJoinedListResponse,
     removeRoom,
-    checkJoinedRoomList,
   } = useJoinedList();
   const [following, setFollowing] = useState(null);
 
@@ -57,13 +57,44 @@ const MainRoom = () => {
     room,
     typingTimeoutId
   );
-
+  const getSearchResults = async () => {
+    console.log('running wa')
+    try {
+      const response = await axios.get(
+        `${PORT}/searchByNameFinder/${searchName}`
+      );
+      console.log("pussies");
+      setMainAccess(true);
+      setSearchName('')
+      return response.data;
+    } catch (error) {
+      console.error("Error in getSearchResults:", error);
+      // Handle the error (return a default value, show a message, etc.)
+      return null;
+    }
+  };
   const joinRoom = async () => {
+   console.log(typeof searchName)
+    if(searchName !== ''){
+      const searchRoomData = await getSearchResults();
+      if(searchRoomData){
+        const stringRoom = searchRoomData.room_number;
+        const stringMessages = searchRoomData.messageHistory;
+
+        setRoom(stringRoom)
+        setSearchName('')
+        setMessageRecieved(stringMessages)
+        console.log('this is working bitches')
+        return navigate(`/chatroom/${stringRoom}`)
+      }
+    }
     socket.emit("join_room", {
       room,
+      searchName,
       username: userLoginInfo.username,
       message,
     });
+    
     navigate(`/chatroom/${room}`);
     setLoading(true);
     const messages = await loadRoomHistory(room);
@@ -115,9 +146,12 @@ const MainRoom = () => {
       setRoomIsEmpty(true);
     }
   };
-
+  const roomNameChanger =(event)=>{
+    console.log('running')
+    setSearchName(event.target.value)
+  }
   const roomChanger = (event) => {
-    setRoom(event.target.value);
+    setRoom(event.target.value); 
   };
   const handleJoinRoomBtn = async () => {
     const addTheRoom = await addRoom(
@@ -257,7 +291,11 @@ const checkList = async () => {
       setSocketConnected(false);
       setMainAccess(true);
     });
-
+     socket.on("receive_data", async (roomFoundData) => {
+       console.log("socket found data");
+       setRoomData(roomFoundData);
+       setRoom(roomFoundData.room_number);
+     });
     socket.on("receive_message", async (data) => {
       if (data.room !== room) return;
       setTyping(false);
@@ -287,10 +325,11 @@ const checkList = async () => {
       socket.off("receive_message");
       socket.off("disconnect");
       socket.off("sender_is_typing", useIsTyping);
+      socket.off("receiveData",joinRoom);
     };
     //eslint-disable-next-line
-  }, [socket, messageRecieved, isSocketConnected, typing]);
-
+  }, [socket, messageRecieved, isSocketConnected, typing, room,]);
+  
   useEffect(() => {
     if (messagesStartRef.current) {
       messagesStartRef.current.scrollTop =
@@ -311,12 +350,18 @@ const checkList = async () => {
       setFollowing(true)
     }
   }, [following, joinedListResponse]);
+  useEffect(()=>{
+    console.log(searchName)
+    console.log(room);
+    
+  },[searchName])
   return (
     <>
       <Header
         roomChanger={roomChanger}
         room={room ? room : 1}
         joinRoom={joinRoom}
+        roomNameChanger={roomNameChanger}
       />
       <div className="room-wrapper-main-room">
         <div className={"all-messages"} ref={messagesStartRef}>
@@ -417,7 +462,7 @@ const checkList = async () => {
           <div className={"helper_tools_wrapper"}>
             <button id={"leave-room-btn"} onClick={leaveRoom}>
               <ReplyRoundedIcon id={"back-button"} />
-              Back
+              Chat-Hubs
             </button>
           </div>
         )}
@@ -447,7 +492,7 @@ const checkList = async () => {
             <div className={"helper_tools_wrapper"}>
               <button id={"leave-room-btn"} onClick={leaveRoom}>
                 <ReplyRoundedIcon id={"back-button"} />
-                Back
+                Chat-Hubs
               </button>
               {!following && (
                 <button

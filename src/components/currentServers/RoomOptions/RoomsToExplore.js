@@ -85,7 +85,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
       <div className={styles.rooms_wrapper}>
         <div className={styles.flex}>
           <div className={styles.room_info}>
-            <span id={styles.display_created_room_name}>
+            <span id={styles.all_rooms_room_name}>
               {!displayPrivateRooms && (
                 <VisibilityOutlinedIcon
                   id={styles.private_rooms_visibility_icon}
@@ -101,7 +101,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                 />
               )}
               
-              Explore Hubs{' '} <em> Private & Public</em>
+              Explore Hubs{' '} <em style={{marginLeft:'10px'}}> Private & Public</em>
             </span>
           </div>
           <div
@@ -130,7 +130,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
                   : isAnimatingIn
                   ? styles.slideIn
                   : ""
-              } ${styles.room_public_subscribed}`;
+              } ${room.private_room ? styles.room_public_private: ''}`;
 
               return (
                 <div key={room._id}>

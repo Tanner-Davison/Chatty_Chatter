@@ -80,7 +80,7 @@ module.exports = {
   },
   getAllRooms: async (req, res) => {
     const rooms = req.query.rooms;
-
+    console.log('ALLLLL ROOOOMMMSSSS', rooms)
     // Ensure rooms is an array
     if (!Array.isArray(rooms)) {
       return res.status(400).json({ error: "Invalid query parameter" });

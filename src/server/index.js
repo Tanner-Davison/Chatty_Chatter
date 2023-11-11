@@ -36,6 +36,7 @@ app.get("/user_info/:username", EndpointHandler.userInfo);
 app.get("/api/users/:username/rooms", EndpointHandler.joinedRooms);
 app.get("/getAllRoomsUserCreated/:username",EndpointHandler.getAllCurrentUsersRoomsCreated);
 app.get("/availability/:numberValue", EndpointHandler.roomAvailable);
+app.get("/searchByNameFinder/:searchName", dbController.searchByRoomName)
 app.get("/password_check/", EndpointHandler.verifyPrivateRoomPassword);
 app.get("/get_all_rooms", EndpointHandler.getAllRooms);
 app.get("/checkUsersJoinedList", EndpointHandler.checkUsersJoinedList);
@@ -69,10 +70,12 @@ io.on("connection", (socket) => {
   );
 
   socket.on("join_room", async (data) => {
+
     const userExist = await dbController.findUserAndRoom(data);
+    console.log('JOIN ROOM DATA')
     const inRoomPrev = userExist.inRoomPrev;
     const roomHasMessages = userExist.hasMessages;
-
+    console.log(data , 'console.logging here')
     if (!userExist) {
       return console.log("No user found.");
     }

@@ -19,7 +19,7 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
     const handlePasswordSubmit = async() => {
        
        if(password === null || roomData.private_room_password=== null || roomData.room_number=== null){
-		return
+		return setIsError(true)
 	   }
         axios.get(`${PORT}/password_check/`, {
             params: {
@@ -57,51 +57,59 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
          reconnectionDelay: 2000,
        });
        sessionStorage.setItem("lastRoom", room);
-      
      }; 
+	 const handleOnChange =(e)=>{
+		if(password === '' || null){
+			setIsError(false)
+		}
+		setPassword(e.target.value)
+	 }
 	return (
-		<div className={styles.private_room_main_wrapper}>
-			<p id={styles.align_self}>This room requires a password</p>
-			<label
-				id={styles.password_input}
-				htmlFor={"passwordInput"}>
-				{isPasswordVisible ? (
-					<Visibility
-						id={styles.eye_ball}
-						onClick={() => setIsPasswordVisible(false)}
-					/>
-				) : (
-					<VisibilityOff
-						id={styles.eye_ball}
-						onClick={() => setIsPasswordVisible(true)}
-					/>
-				)}
+    <div
+      className={`${styles.private_room_main_wrapper} ${
+        isError ? styles.errorClass : ""
+      }`}>
+      <p id={styles.align_self}>Password Required </p>
+      <label id={styles.password_input} htmlFor={"passwordInput"}>
+        {isPasswordVisible ? (
+          <Visibility
+            id={styles.eye_ball}
+            onClick={() => setIsPasswordVisible(false)}
+            style={isError ? { color: "crimson" } : { color: "white" }}
+          />
+        ) : (
+          <VisibilityOff
+            id={styles.eye_ball}
+            onClick={() => setIsPasswordVisible(true)}
+            style={isError ? { color: "maroon" } : { color: "white" }}
+          />
+        )}
 
-				<input
-					type={isPasswordVisible ? "text" : "password"}
-					onChange={(e) => setPassword(e.target.value)}
-					placeholder=' enter password'
-					id={"passwordInput"}
-				/>
-				{!isError && (
-					<Button
-						variant='outlined'
-						id={styles.submit_button}
-						onClick={handlePasswordSubmit}>
-						Enter
-					</Button>
-				)}
-				{isError && (
-					<Button
-                        variant='outlined'
-                        id={styles.submit_button}
-						color='error'
-						onClick={handlePasswordSubmit}>
-						Invalid
-					</Button>
-				)}
-			</label>
-		</div>
-	);
+        <input
+          type={isPasswordVisible ? "text" : "password"}
+          onChange={(e) => handleOnChange(e)}
+          placeholder=" enter password"
+          id={"passwordInput"}
+        />
+        {!isError && (
+          <Button
+            variant="outlined"
+            id={styles.submit_button}
+            onClick={handlePasswordSubmit}>
+            Enter
+          </Button>
+        )}
+        {isError && (
+          <Button
+            variant="outlined"
+            id={styles.submit_button}
+            color="error"
+            onClick={handlePasswordSubmit}>
+            Invalid
+          </Button>
+        )}
+      </label>
+    </div>
+  );
 };
 export default PrivateRoomAccess;

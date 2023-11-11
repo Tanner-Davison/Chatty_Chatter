@@ -41,10 +41,10 @@ const changeRooms = (direction) => {
 };
 const changePages = async (e) => {
   e.preventDefault();
-  if (roomsPerPage === 4) {
+  if (roomsPerPage <= 4) {
     // Switching to full view
-    setRoomsPerPage(publicMadeRooms.length);
-    setGridView(true);
+    setGridView((prev) => !prev);
+   
     setCurrentIndex(0); // Set the currentIndex to the start
   } else {
     // Switching back to limited view
@@ -79,6 +79,7 @@ const changePages = async (e) => {
    if (publicMadeRooms.length === 4) {
      console.log("this is running");
      setCurrentIndex(0);
+     setNoData(false)
    } else if (publicMadeRooms.length < 4 && publicMadeRooms >= 1) {
      setNoData(false);
    } else if (publicMadeRooms.length === 0 || null) {

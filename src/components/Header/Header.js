@@ -5,20 +5,20 @@ import "./Header.css";
 import searchGlass from './svgs/searchGlass.svg'
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
-const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
+import NumbersIcon from "@mui/icons-material/Numbers";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import { yellow } from "@mui/material/colors";
+const Header = ({ joinRoom, roomChanger,roomNameChanger, room, handleMainButtonClick }) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
-  const [visible, setVisible] = useState(true);
+
   const [menuOpen, setMenuOpen]=useState(true)
   const location = useLocation();
   const navigate = useNavigate();
-  const { mainAccess, setMainAccess,userLoginInfo } =
+  const [searchByName, setSearchByName] = useState(true)
+  const {userLoginInfo } =
     useContext(LoginContext);
 
-  const headerClickHandler = () =>{
-    setMainAccess(true);
-    joinRoom();
-  }
    const handleKeyDown = (event) => {
      if (event.keyCode === 32) {
        event.preventDefault();
@@ -30,16 +30,7 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
     
     navigate("/");
   };
-    useEffect(()=>{
-      console.log(currentLocation);
-      const timer = setTimeout(()=>{
-        setVisible(false);
-      },5000);
-       return () => {
-         clearTimeout(timer);
-       };
-       //eslint-disable-next-line
-    },[room])
+    
   
   const getLinkStyle = (path) => {
     if (path.includes('/createroom') && location.pathname.includes('/createroom')) {
@@ -65,11 +56,13 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
       <div className={"logo-wrapper"}>
         <div className={"logo_and_menu_button_wrapper"}>
           <h1 className={"logo-font"}>Chatty Chatter</h1>
+          {usernameLocal && (
           <button
             className={"menu_header_wrapper"}
             onClick={() => setMenuOpen(!menuOpen)}>
             <MenuRoundedIcon />
           </button>
+          )}
         </div>
         {menuOpen && (
           <ul className={"navLinks"}>
@@ -102,13 +95,12 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
                   |
                 </span>
                 <li>
-                    <Link to={`/createroom/${0}`}>
-                      <h2 className={getLinkStyle(`/createroom/${Number}`)}>
-                        Add-Hub 
-                  <AddCommentOutlinedIcon className={"add-hub-icon"}/>
-                 
-                      </h2>
-                    </Link>
+                  <Link to={`/createroom/${0}`}>
+                    <h2 className={getLinkStyle(`/createroom/${Number}`)}>
+                      Add-Hub
+                      <AddCommentOutlinedIcon className={"add-hub-icon"} />
+                    </h2>
+                  </Link>
                 </li>
                 <br></br>
                 <span id={"span-id"} style={{ color: "white" }}>
@@ -122,17 +114,45 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
       {usernameLocal && currentLocation.includes("chatroom") && !menuOpen && (
         <div className={"create_room_container"}>
           <h2 style={{ color: "white", textWrap: "nowrap" }}>Hub Finder</h2>
-          <input
-            type="number"
-            className={"roomInput"}
-            placeholder="Room #"
-            onKeyDown={handleKeyDown}
-            onChange={roomChanger}
-          />
+
+          {searchByName && (
+            <>
+              <div className={"text_field_parent"}>
+                <input
+                  type="text"
+                  className={"roomInput"}
+                  placeholder='"Room Name"'
+                 
+                  onChange={roomNameChanger}
+                />
+                <TextFieldsIcon
+                  id={"textFieldIcon"}
+                  onClick={() => setSearchByName(false)}
+                  style={{ color: "orangered" }}
+                />
+              </div>
+            </>
+          )}
+          {!searchByName && (
+            <div className={"text_field_parent"}>
+              <input
+                type="number"
+                className={"roomInput"}
+                placeholder="Room #"
+                onKeyDown={handleKeyDown}
+                onChange={roomChanger}
+              />
+              <NumbersIcon
+                id={"textFieldIcon"}
+                onClick={() => setSearchByName(true)}
+                style={{ color: "#0C90ED" }}
+              />
+            </div>
+          )}
           <button
             className={"buttonHeader"}
             type="button"
-            onClick={headerClickHandler}>
+            onClick={() => joinRoom()}>
             <img src={searchGlass} alt={"search hub"} />
             Search
           </button>
@@ -156,12 +176,7 @@ const Header = ({ joinRoom, roomChanger, room, handleMainButtonClick }) => {
           </div>
         </div>
       )}
-      {/* {visible && usernameLocal && !currentLocation.includes("chatroom") && (
-        <div className={"visible_login_success"}>
-          <p id="loggedIn">Logged in as: </p>
-          <p style={{ color: "white" }}>{"@" + usernameLocal}</p>
-        </div>
-      )} */}
+      
     </div>
   );
 };

@@ -6,7 +6,7 @@ h2 {
     color:white;
 }
 #inline-font-change{
-    color:red;
+    color:rgb(35, 150, 232)
     
 }
 form{
@@ -43,6 +43,7 @@ form{
   display: flex;
   align-items: center;
   align-self: center;
+
   justify-content: flex-start;
   flex-direction: column;
   width: 100%;
@@ -51,7 +52,7 @@ perspective: 1000px;
   gap: 10%;
   
   /* Adding styling to match the chat room */
-  background: linear-gradient(45deg, #161a1d, #2e353b, #3a434a); /* Dark background */
+     background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
   box-shadow: 
     0 4px 8px rgba(255, 255, 255, 0.1),  /* Slight white tint */
     0 8px 16px rgba(255, 255, 255, 0.1),  /* Slight white tint */
@@ -68,19 +69,20 @@ perspective: 1000px;
     align-self: center;
     justify-self: center;
     justify-content: center;
-    background-color: var(--parent-background-color);
+        background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
+   border: 2px solid #1c2125;
+    border-top: 4px inset #1f262d;
     border-radius: 15px;
-    border: 5px solid rgb(0, 0, 0);
     border-style:inset groove;
     flex-wrap:nowrap;
-    padding: 0px 20px 10px;
+    padding: 17px 20px 10px 20px;
     box-sizing: border-box;
     gap: 10px;
     max-height: 300px;
     max-width: 500px;
     overflow: hidden;
-    transition: max-height 8s  ease-out;
-    padding-bottom: 20px;
+    transition: max-height 2s  ease-out;
+    margin-bottom: 20px;
     
 }
 .error-message> p{
@@ -114,68 +116,42 @@ perspective: 1000px;
     display: flex;
     
 }
-
+ #login-input{
+    border-radius:10px;
+ }
 .image-previewer.image-exist {
-    position: relative;
+   position: relative;
     width: 100px;
     height: 100px;
     display: flex;
-    border-radius: 25px;
-    border: 4px solid #000000;
-    border-style: groove ridge groove ridge;
+    border-radius: 40px;
+    border: -3px ridge #20262D;
+    /* border-style: groove ridge groove ridge; */
     padding: 2px;
-    box-shadow: 0px 0px 100px 5px #817a7a;
-   animation: imageExistAnimation 2s ease-in-out;
+    /* border: 1px solid #1c1f22; */
+    animation: imageExistAnimation .04s ease-in-out;
     background-color: rgb(0, 0, 0);
 }
 @keyframes imageExistAnimation {
     0% {
-        transform: translateY(0);
-    }
-
-    16% {
-        transform: translateY(-100px);
-    }
-
-    28% {
-        transform: translateY(-50px);
-    }
-
-    44% {
-        transform: translateY(-75px);
-    }
-
-    59% {
-        transform: translateY(-65px);
-    }
-
-    73% {
-        transform: translateY(-70px);
-    }
-
-    88% {
-        transform: translateY(-68px);
-    }
-
-    94% {
-        transform: translateY(-150px); /* Bounce back up */
+        transform: translateY(-400%);
     }
 
     100% {
-        transform: translateY(-70px); /* Final position */
+        transform: translateY(0); /* Final position */
     }
 }
 #image-self{
     border-radius:35px;
-    border: 4px black;
-    border-style: ridge solid ;
+       
+    
     box-sizing: border-box;
 }
 
 
 
 .create_user.error-css{
-    border: 5px solid red;
+    border: 2px solid red;
     box-sizing: border-box;
     
 }
@@ -203,7 +179,7 @@ perspective: 1000px;
     display: flex;
     overflow: visible;
     background-color: transparent;
-    margin-bottom:3%;
+    margin-bottom: 3%;
     align-items: flex-start;
     justify-content: center;
     flex-direction: row;
@@ -244,22 +220,19 @@ perspective: 1000px;
 }
 
 .login-button-wrapper{
-    position: relative;
-    display:flex;
+       position: relative;
+    display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content:center;
-    gap:20%;
-    top:-25px;
+    justify-content: center;
+    gap: 20%;
+    top: 4px;
 }
-.login-button-wrapper> #closeBtn{
-border:5px solid snow;
-box-sizing: border-box;
-}
+
 
 .login-button-wrapper.home{
     position: relative;
-    top:10%;
+    top:15%;
 }
 .welcomeContainer {
   position: relative;
@@ -267,28 +240,27 @@ box-sizing: border-box;
   flex-direction: column;
   max-width: 450px;
   align-items: center;
-  background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+      background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
   bottom: 10%;
   transition: transform 2s ease;
   color: white;
 
   /* Multi-layer borders for 3D effect */
  
-  box-shadow: 
-    0 0 0 10px #888, 
-    0 0 0 15px #aaa, 
-    0 0 0 20px #ccc,
-    0 0 0 25px #eee;
-
+box-shadow: 0px 2px 3px rgba(22, 108, 150, 0.3);
+    border: 2px solid #1c2125;
+    border-top: 4px inset #1f262d;
+    box-sizing: border-box;
   /* Border radius for rounded but not a full circle */
-  border-radius: 49px
+  border-radius: 20px;
 }
 fieldset{
+    background: linear-gradient(160deg, #23262a, #1a1e20, #202327, #1e2327);
     border-color:black;
-    border-width: 1px 2px 6px 6px;
+    border-width: 1px 2px 3px 3px;
     border-radius:35px;
-    padding: 0px 20px;
-    border-style: inset inset groove outset ;
+   padding: 8px 40px;
+    border-style: ridge  ;
     box-sizing: border-box;
     
 }
@@ -327,7 +299,7 @@ article{
     margin-top:10px;
 }
 .input-box-container:focus-within> input{
-    outline:5px solid purple;
+    outline:3px solid rgb(42, 40, 40);
     outline-offset: -2px;
 }
 .input-box-container.failed> input{
@@ -335,7 +307,7 @@ article{
 }
 input {
     margin:0;
-    border-radius: 9px;
+    border-radius: 6px;
     height: 30px;
     align-self: center;
     width: 100%;
@@ -353,12 +325,12 @@ label{
 }
 
 .file_upload:focus-within input::file-selector-button{
-    outline:4px solid purple;
+    outline:2px solid rgb(37, 37, 39);
     outline-offset: -2px;
         
 }
  #upload:focus{
-    outline:4px solid purple;
+    outline:4px solid rgb(83, 168, 176);
     outline-offset: -2px;
 }
 #upload{
@@ -388,7 +360,7 @@ input::file-selector-button{
 }
 input::file-selector-button:hover{
      transform: scale(1.04);
-     background-color: plum;
+     
      border:2px solid black;
      box-sizing: border-box;
 }
@@ -400,34 +372,33 @@ input::file-selector-button:hover{
     padding:7px;
 }
 
-#closeBtn{
-  align-items: center;
-  justify-content: center;
-  outline: none;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  border-radius:12px;
-  transition-property: background-color,border-color,color,box-shadow,filter;
-  transition-duration: .3s;
-  border: 1px solid transparent;
-  letter-spacing: 2px;
-  min-width: 100px;
-  text-transform: uppercase;
-  white-space: normal;
-  font-weight: 700;
-  text-align: center;
-  padding: 5px 10px;
-  color: #fff;
-  background-color: #ea4335;
-  height: 48px;
-  &:hover{
-  transform: scale(1.09);
-  background-color: #03de57;
-  }
+#closeBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: 5px;
+    background: linear-gradient(160deg, #313438, #25292c, #2b3239, #29313a);
+    border-color: black;
+    border-width: 1px 2px 3px 3px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    padding: 10px 15px;
+    min-width: 150px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+    justify-content: center;
+    z-index: 3;
 }
-#closeBtn:focus-within{         
-    border:4px solid rgb(0, 229, 255);               
+
+#closeBtn:hover{
+     background-position: 100% 100%;
+  border-color: #393232;
+  transform: scale(1.05);
+  border-width: 1px;
 }
 .login-failed {
   position: relative;
@@ -447,8 +418,21 @@ input::file-selector-button:hover{
     .welcomeContainer{
         width:350px;
     }
+    
+element.style {
+}
+.error-message {
+      left: 10%;
+}
 element.style {
     gap: 15px;
+}
+.login-button-wrapper{
+gap:10px;
+}
+.login-button-wrapper.home{
+    position: relative;
+    top: 19%;
 }
 .titleChatty {
     position: relative;
@@ -464,7 +448,7 @@ element.style {
     box-sizing: border-box;
     gap:5px;
     z-index: 1;
-    outline:4px solid red;
+    
 }
 #chatty{
     position: relative;
@@ -472,6 +456,12 @@ element.style {
     font-size:3em;
 }
 article{
-    min-width:291px
+    display: inline ;
+    align-content: center;
+    min-width: 64vw;
+    font-size: 17px;
+}
+fieldset{
+    padding: 8px 14px;
 }
 }

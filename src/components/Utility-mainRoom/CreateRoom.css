@@ -158,24 +158,24 @@ form {
   justify-content: space-between;
 }
 .category-container > select {
-  color: rgb(3, 95, 126);
-  background-color: whitesmoke;
-  border:2px outset gray;
-  text-align: center;
-  border-radius: 10px;
-  height: 30px;
-  font-family: "Varela Round", sans-serif;
-  cursor: pointer;
-  overflow-y: hidden;
-  padding-left:10px;
-  padding-right:10px;
+    color: rgb(3, 95, 126);
+    background-color: whitesmoke;
+    border: 2px outset gray;
+    text-align: center;
+    border-radius: 6px;
+    height: 37px;
+    font-family: "Varela Round", sans-serif;
+    cursor: pointer;
+    overflow-y: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .category-container > select > option {
   background-color: gray;
   color: white;
   font-family: "Varela Round", sans-serif;
-  font-size:10px;
+  font-size:14px;
 }
 
 .category-result {
@@ -285,7 +285,7 @@ form {
 .private-wrapper {
   display: flex;
   flex-direction: column;
-  outline: 5px solid green;
+ 
 }
 .private-wrapper p{
   font-size: 15px;
@@ -336,7 +336,7 @@ form {
   position: relative;
   display:flex;
   flex-direction: column;
-  width:50%;
+width:72%;
   align-items: center;
   justify-content: center;
 }
@@ -415,7 +415,7 @@ label {
     #1a1f23 100%
   ); /* Gradient background */
   background-size: 200% 200%;
-  border-radius: 25px;
+  border-radius: 5px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 10px 24px rgba(0, 0, 0, 0.2),
     0 16px 40px rgba(0, 0, 0, 0.2), inset 0 -4px 12px #0d1115,
     inset 0 4px 8px #1c2125; /* Shadows for 3D effect */
@@ -437,9 +437,9 @@ label {
   background: linear-gradient(
     135deg,
     #ff8c22 0%,
-    #ffc085 25%,
-    #ffa555 50%,
-    #ff8c22 100%
+    #c97527 25%,
+    #c17c41 50%,
+    #b06824 100%
   );
   border: 3px solid #ff8c22; /* Updated Border color to match new color scheme */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 10px 24px rgba(0, 0, 0, 0.2),
@@ -478,6 +478,9 @@ label {
     margin: 10px;
     align-items: center;
     justify-content: flex-start;
+  }
+  #hub-name{
+    width:85%;
   }
   .content-container{
     min-width:75vw;

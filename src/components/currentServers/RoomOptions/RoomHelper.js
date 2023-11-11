@@ -67,7 +67,7 @@ const RoomHelper = ({
   const seeAllMembers = async (event, roomParam) => {
     event.stopPropagation();
 
-    // Assuming allRoomsData.roomsCreatedByUser is an array of room objects
+    
     const roomToMatch = allRoomsData.roomsCreatedByUser.find(
       (room) => room.room_number === roomParam
     );
@@ -75,7 +75,7 @@ const RoomHelper = ({
     if (roomToMatch) {
       const numberOfUsers = roomToMatch.users_in_room.length;
       console.log(numberOfUsers);
-      setUsersInroom(numberOfUsers); // Set the number of users in the state or wherever you need it
+      setUsersInroom(numberOfUsers); 
       SetDisplayAllUsers(!displayAllUsers);
     } else {
       console.log("Room not found");
@@ -86,21 +86,21 @@ const RoomHelper = ({
     event.stopPropagation();
     console.log(room_id);
     console.log(roomNumber);
-    console.log(roomData); // this is the room name
+    console.log(roomData); 
     handleClose(event);
 
     try {
-      // Delete the room
+      
       const deleteRoom = await TryDeleteOne(room_id, roomNumber);
       const response = await deleteRoom;
       if (response) {
         console.log("Room deletion response:", response);
       }
 
-      // Remove the room from the list
+      
       removeRoom(username, roomNumber, roomData);
 
-      // Update the state or perform other actions after successful deletion
+    
       filterRooms((prev) => prev.filter((room) => room._id !== room_id));
     } catch (error) {
       console.error("Error in handleDeleteEvent:", error);
