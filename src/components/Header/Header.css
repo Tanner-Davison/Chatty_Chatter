@@ -367,7 +367,7 @@
     flex-direction: column;
     display: flex;
     position: relative;
-    width: 45%;
+    width: 75vw;
     gap: 0.5rem;
     max-width: 22rem rem;
     /* min-width: auto; */
