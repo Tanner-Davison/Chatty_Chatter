@@ -101,20 +101,7 @@ const SubscribeListHelper = ({
     return SetDisplayAllUsers(!displayAllUsers);
   };
 
-  const handleDeleteEvent = async (event, room_id, roomNumber) => {
-    console.log(room_id);
-    event.stopPropagation();
-    event.preventDefault();
-    handleClose(event);
-
-    try {
-      await TryDeleteOne(room_id, roomNumber);
-      filterRooms((prev) => prev.filter((room) => room._id !== room_id));
-    } catch (error) {
-      console.error("Error deleting room:", error);
-      // Handle or log the error as needed
-    }
-  };
+ 
 
   return (
     <Tilt options={defaultOptions}>

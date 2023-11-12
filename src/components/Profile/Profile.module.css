@@ -1,26 +1,30 @@
 .profile_main_container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
-  width: 99vw;
-  height: auto;
-  margin-left: 1px;
-  margin-top: 1rem;
-  padding-top: 3rem;
-  outline: 4px solid red;
-  flex-direction: column;
-  flex-wrap: wrap;
-  overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    width: 99vw;
+    /* min-height: 35vw; */
+    /* max-height: 35vw; */
+    margin-left: 1px;
+    margin-top: 1rem;
+    margin-bottom: -52px;
+    padding-top: 3rem;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow: hidden;
 }
+
 .profile_content {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  outline-offset: 1rem;
-  gap: 20px;
+position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    outline-offset: 1rem;
+    gap: 20px;
+    z-index: 200;
 }
 .profile_form_wrapper {
   position: relative;
@@ -31,25 +35,31 @@
 
   background-color: rgb(0, 0, 0);
   height: fit-content;
-  width: 60vw;
+  width: 90vw;
   z-index: 159;
 }
 form {
+  animation: dropDown .5s ease;
   position: relative !important;
   display: flex !important;
   border-radius: 20px;
   flex-direction: column;
-  background: linear-gradient(
-    135deg,
-    #1d2226 0%,
-    #1e2832 25%,
-    #1a2025 50%,
-    #20272d 100%
-  ) !important;
+    flex-direction: column;
+    background: linear-gradient( 135deg, #1b2e3d 0%, #273747 25%, #2a4256 50%, #20272d 100% ) !important;
   align-items: flex-start;
   justify-content: space-around;
   height: fit-content;
+  margin-bottom:100px;
   width: 100%;
+  transition: transform 1s ease-in-out;
+}
+@keyframes dropDown {
+  0%{
+    transform:translateY(-300%)
+  }
+  100%{
+    transform:translateY(0)
+  }
 }
 textarea {
   position: relative;
@@ -68,13 +78,14 @@ textarea {
 
   /* Optional: 3D border to add a pop */
   border: 2px inset #000000;
+  border-top: 3px outset #2d4256;
   box-sizing: border-box;
   border-radius: 12px;
   margin-top: 10px;
   resize: none; /* This property disables textarea resizing */
 }
 textarea::placeholder {
-  color: rgba(255, 255, 255, 0.603);
+  color: rgba(191, 187, 187, 0.603);
   font-family: "Varela Round", sans-serif;
 }
 .about_me_wrapper {
@@ -94,16 +105,15 @@ textarea::placeholder {
   width: 42vw;
   color: white;
   background-color: #060606;
- 
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
 }
-#spanIcons{
-display:flex;
-gap:5px;
-align-items: center;
-justify-content: center;
-font-size: 20px;                 
+#spanIcons {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
 }
 label {
   display: flex;
@@ -173,22 +183,22 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap:10px;
+      width: 28%;
+  gap: 10px;
   border-radius: 15px;
   padding: 15px;
 }
-.labelInputs{
- font-size: 10px;
+.labelInputs {
+  font-size: 10px;
 }
-.proffessionInput{
-  height:20px;
-  
+.proffessionInput {
+  height: 20px;
 }
-.proffessionInput>input{
-  padding-left:10px;
+.proffessionInput > input {
+  padding-left: 10px;
 }
-.occupation_education_input{
-  height: 10px;;
+.occupation_education_input {
+  height: 10px;
 }
 #profile_pic {
   position: relative;
@@ -199,7 +209,7 @@ p {
   box-shadow: 0px 5px 5px 2px rgb(15, 14, 14);
   box-sizing: border-box;
 }
-.educationSection{
+.educationSection {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -208,6 +218,7 @@ p {
   position: relative;
   height: 16rem;
 }
+
 .gradient_border {
   --border-width: 10px;
   position: relative;
@@ -248,6 +259,24 @@ p {
     animation: moveGradient 4s alternate infinite;
   }
 }
+.profile_wrapper_image_icon{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f7e9b;
+  align-items: center;
+  width:30vw;
+  border-radius: 25px;
+  padding-bottom:25px;
+  padding-top:25px;
+}
+#switchIcon{
+margin-bottom: 10px;
+color:white;
+}
+#switchIcon:hover{
+  transform:scale(1.5)
+}
 #username_switch_wrapper {
   position: relative;
   display: flex;
@@ -256,6 +285,9 @@ p {
   align-self: center;
   justify-content: center;
 }
+.is_editing_dots {
+  position: absolute;
+}
 #button_svg_toggle {
   position: relative;
   height: 50px;
@@ -263,11 +295,11 @@ p {
   opacity: 25%;
   z-index: 1;
   transform: rotate(90deg);
-  transition: transform 0.4s, opacity 0.3s;
+ 
 }
 #button_svg_toggle:hover {
-  transform: scale(1.09);
-  transform: rotate(0deg);
+ 
+  
   opacity: 100%;
 }
 
@@ -284,8 +316,16 @@ p {
     justify-content: center;
     gap: 10px;
   }
+  #button_svg_toggle {
+  opacity: 50%;
+  }
   form {
     position: relative !important;
+    width: 92vw;
+  }
+  .profile_wrapper_image_icon{
+    width:70vw;
+    padding:20px 10px;
   }
   textarea {
     position: relative;
@@ -302,11 +342,12 @@ p {
   }
   #username_switch-wrapper {
     align-self: center;
+    
   }
   .regular_border {
     align-self: center;
   }
-  .occupation_education{
+  .occupation_education {
     width: 258px;
     padding: 19px;
     align-items: center;

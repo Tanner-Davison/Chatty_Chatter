@@ -267,22 +267,23 @@ const CreateRoom = (props) => {
                     </label>
                     <div className={"private-room-inputs"}>
                       <label htmlFor={"room-password"}>
-                        Custom Key:
-                        <input
-                          type={isPasswordVisible ? "text" : "password"}
-                          id={"room-password"}
-                          value={password}
-                          placeholder=" Enter password"
-                          autoComplete="off"
-                          onChange={handleInputChange}
-                          onKeyDown={handleKeyPress}
-                        />
-                        <VisibilityTwoToneIcon
-                          id={"visible_eye"}
-                          onClick={() =>
-                            setIsPasswordVisible(!isPasswordVisible)
-                          }
-                        />
+                          Custom Key:
+                        <span id={"room_visible"}>
+                          <input
+                            type={isPasswordVisible ? "text" : "password"}
+                            id={"room-password"}
+                            value={password}
+                            placeholder=" Enter password"
+                            autoComplete="off"
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyPress}
+                          />
+                          <VisibilityTwoToneIcon
+                            onClick={() =>
+                              setIsPasswordVisible(!isPasswordVisible)
+                            }
+                          />
+                        </span>
                       </label>
                       <button
                         type="button"

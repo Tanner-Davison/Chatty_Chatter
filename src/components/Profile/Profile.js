@@ -8,6 +8,11 @@ import styles from "./Profile.module.css";
 import SwitchOn from "./svgs/SwitchOn.svg";
 import SwitchOff from "./svgs/SwitchOff.svg";
 import axios from "axios";
+import DotsComp from "./profilesections/dotsComp";
+import ProfilePage from "./profilesections/ProfilePage";
+import Switch from "@mui/material/Switch";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
@@ -18,6 +23,7 @@ const Profile = () => {
   const [profession, setProfession]=useState('')
   const [education, setEducation] = useState("");
   const [profileBio, setProfileBio] = useState("");
+  const [allUserData, setAllUserData]=useState('')
   const { username } = useParams();
   const location = useLocation();
   const [customProfileData, setCustomProfileData] = useState(false);
@@ -40,6 +46,7 @@ const Profile = () => {
         setCustomProfileData(false);
       }else{
         setCustomProfileData(true)
+        setAllUserData(userData)
       }
       setUserDataExists(true);
       console.log(userData.profilePic);
@@ -55,7 +62,7 @@ const Profile = () => {
       return;
     }
   };
-
+const label = { inputProps: { "aria-label": "Switch demo" } };
   const handleFormSubmit = async () => {
     const params = {
       profession,
@@ -66,33 +73,34 @@ const Profile = () => {
     const response = await axios
       .post(`${PORT}/updateUserProfile`, params)
       .then((res) => {
-        const success = res.success;
-        if(success){
-          getData();
-          console.log('we did it!');
-          setCustomProfileData(!customProfileData);
-          setUserDataExists(true)
-        }
+        const {success} = res;
+          if(success){
+            getData();
+            console.log('we did it!');
+            setCustomProfileData(!customProfileData);
+            setUserDataExists(true)
+          }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-const editYourProfile =async()=>{
+const editYourProfile =async(e)=>{
+  e.preventDefault()
   console.log('customProfileData',customProfileData);
   console.log('switchToggle',switchToggle);
   console.log('isEditing',isEditing);
-  
-  if(username === userLoginInfo.username){
+
     setCustomProfileData(!customProfileData)
     setSwitchToggle(!switchToggle);
-    setIsEditing(!isEditing)
-
-  }else{
-    setSwitchToggle(!switchToggle)
-  }
+    setIsEditing(true)
 }
-  
+  const closeEditYourProfile=()=>{
+    setCustomProfileData((prev)=>!prev)
+    setSwitchToggle(!switchToggle);
+    setIsEditing(false);
+    return;
+  }
   useEffect(()=>{
     console.log("URL changed:", location.pathname);
 
@@ -119,44 +127,60 @@ const editYourProfile =async()=>{
       <Header />
       <div className={styles.profile_main_container}>
         {!userDataExists && <div>Loading ...</div>}
+            <div className={styles.profile_wrapper_image_icon}>
         <div className={styles.profile_content}>
           <div className={"wrapper"}>
             <div
               className={
-                switchToggle
-                  ? `${styles.gradient_border}`
-                  : `${styles.regular_border}`
+                
+              `${styles.regular_border}`
               }>
-              <img
-                id={styles.profile_pic}
-                src={userInfo.profile_pic.url}
-                alt={"profile_pic"}
-                loading="lazy"
-              />
-            </div>
-          </div>
-          <div id={styles.username_switch_wrapper}>
-            <h2>@{userInfo.username.toUpperCase()}</h2>
-            {personalProfile && (
-              <>
                 <img
+                  id={styles.profile_pic}
+                  src={userInfo.profile_pic.url}
+                  alt={"profile_pic"}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div id={styles.username_switch_wrapper}>
+              <h2>@{userInfo.username.toUpperCase()}</h2>
+              {personalProfile && !isEditing && (
+                <>
+                  <ModeEditOutlinedIcon
+                    {...label}
+                    checked={isEditing}
+                    onClick={(e) => editYourProfile(e)}
+                    id={styles.switchIcon}
+                  />
+                </>
+              )}
+              {personalProfile && isEditing && (
+                <>
+                  <DriveFileRenameOutlineOutlinedIcon
+                    {...label}
+                    checked={isEditing}
+                    onClick={(e) => closeEditYourProfile(e)}
+                    id={styles.switchIcon}
+                  />
+                </>
+              )}
+
+              {!personalProfile && (
+                <Switch
                   src={!switchToggle ? SwitchOn : SwitchOff}
-                  onClick={editYourProfile}
-                  id={styles.button_svg_toggle}
+                  onClick={() => setSwitchToggle(!switchToggle)}
+                  id={styles.switchIcon}
                   alt="Description"
                 />
-                {isEditing && <p>..editing</p>}
-              </>
-            )}
-            {!personalProfile && (
-              <img
-                src={!switchToggle ? SwitchOn : SwitchOff}
-                onClick={() => setSwitchToggle(!switchToggle)}
-                id={styles.button_svg_toggle}
-                alt="Description"
-              />
-            )}
+              )}
+            </div>
           </div>
+          {isEditing && personalProfile && (
+            <DotsComp
+              className={styles.is_editing_dots}
+              typer={userLoginInfo.username}></DotsComp>
+          )}
         </div>
         {personalProfile && !customProfileData && (
           <>
@@ -169,6 +193,13 @@ const editYourProfile =async()=>{
           </>
         )}
       </div>
+      {!isEditing && (
+        <div className={styles.profile_main_container_body}>
+          <div className={styles.aboutPerson}>
+            <ProfilePage userData={allUserData} />
+          </div>
+        </div>
+      )}
     </>
   );
 };

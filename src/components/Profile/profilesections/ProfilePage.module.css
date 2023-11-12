@@ -1,0 +1,112 @@
+.aboutYouWrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+.profile_main_container_body {
+  justify-content: f;
+  position: relative;
+  display: flex;
+
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 50px;
+  width: 99vw;
+  min-height: 84vw;
+  margin-left: 1px;
+  margin-top: 1rem;
+  padding-top: 3rem;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.profile_info_wrapper{
+     animation: dropUp .5s ease;
+       display: flex;
+    flex-direction: column;
+    width: 90vw;
+    align-self: center;
+    border-radius: 27px;
+    background-color: #313131;
+    padding-bottom: 50px;
+     transition: transform 1s ease-in-out;
+}
+@keyframes dropUp {
+  0%{
+    transform:translateY(300%)
+  }
+  100%{
+    transform:translateY(0)
+  }
+}
+.bio {
+    position: relative;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+   
+    border-radius: 41px;
+
+    padding: 32px;
+    border: 2px solid black;
+    font-style: italic;
+    background: rgb(33 32 32);
+    text-align: center;
+    text-wrap: wrap;
+    box-shadow: 1px 1px 15px #020202;
+    word-wrap: break-word;
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    box-sizing: border-box;
+    border: 3px groove black;
+}
+.bio_wrapper{
+    display: flex;
+    flex-direction: column;
+       width: 79vw;
+    text-align: center;
+    align-self:center;
+    align-items: flex-start;
+}
+
+.bio>p{
+    align-self: center;
+}
+#flex {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+#friends_count {
+  font-size: 19px;
+}
+
+@media only screen and (max-width: 600px) {
+  .aboutYouWrapper {
+    gap: 0px;
+    font-size: 13px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .bio {
+    min-width: 80vw;
+  }
+  #flex {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+  }
+  #flex > h2 {
+    font-size: 25px;
+    margin-bottom: -5px;
+  }
+}

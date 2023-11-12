@@ -269,6 +269,11 @@ position: relative;
   justify-content: center;
   gap: 5px;
 }
+#room_visible{
+  display: flex;
+  flex-direction: row;
+  gap:5px;
+}
 #search-for-avail-room-button {
   padding-top: 2px;
   background: linear-gradient(
@@ -307,7 +312,7 @@ position: relative;
 }
 
 .private-room-inputs input {
-  width: 45%;
+  width: 25vw;
   padding-left:10px;
 }
 .private-room-inputs label {

@@ -18,7 +18,7 @@ const Header = ({
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
 
-  const [menuOpen, setMenuOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchByName, setSearchByName] = useState(true);
@@ -49,13 +49,15 @@ const Header = ({
       return path === location.pathname ? "linkActive" : "linkInactive";
   };
   useEffect(() => {
+    
+    setMenuOpen(false)
     if (location.pathname.includes("/currentservers")) {
       setMenuOpen(true);
     } else if (location.pathname.includes("/chatroom")) {
       setMenuOpen(false);
     }
     //eslint-disable-next-line
-  }, []);
+  }, [location.pathname]);
   return (
 
     <>
