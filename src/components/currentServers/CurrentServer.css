@@ -14,6 +14,11 @@
  
   
 }
+#header_in_current_servers{
+  position: absolute;
+  top:-3px;
+      font-family: "Berkshire Swash", serif;
+}
 .room-container > h1 {
   color: white;
   align-self: center;
@@ -51,20 +56,23 @@
 
 /* Add a pseudo-element for a decorative circle */
 .main-room-button {
-    width: 200px;
+     position: relative;
     height: auto;
-    /* border: 3px ridge #04040445; */
+    display: flex;
+    gap: 10px;
     color: white;
-    background: #00000073;
+    padding:5px;
+    background: transparent;
     background-size: 200% 200%;
     animation: gradientBackground 24s ease infinite;
     border-radius: 18px;
     transition: all 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
-    display: flex;
+    top: 10ppx;
+    top: 14px;
     justify-content: center;
-    width: 50%;
+    min-width:300px;
     align-items: center;
     font-size: 1.5em;
     font-weight: bold;
@@ -90,8 +98,8 @@
   transform: scale(1.1); /* Slightly scaled down */
   border-radius: 2px; /* Less rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5),
-    /* Lighter shadow */ 0 6px 12px rgba(0, 0, 0, 0.5),
-    /* Lighter shadow */ 0 10px 20px rgba(0, 0, 0, 0.5);
+    0 6px 12px rgba(0, 0, 0, 0.5),
+    0 8px 15px rgba(0, 0, 0, 0.5);
 
   transition: all 0.4s ease-in-out; /* Faster transition */
 }

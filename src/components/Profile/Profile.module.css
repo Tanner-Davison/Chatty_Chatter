@@ -133,32 +133,32 @@ label {
   border-radius: 15px;
 }
 #about_me_button {
-  position: relative;
-  display: flex;
-  height: 30px;
-  align-items: center;
-  justify-content: center;
-  justify-self: center;
-  box-sizing: border-box;
-  gap: 5px;
-  background-color: black;
-  border: 2px solid rgb(33, 33, 33);
-  border-radius: 6px;
-  color: white;
-  font-weight: 600;
-  padding: 3px 15px;
-  min-width: 150px;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-  text-align: center;
-  justify-content: center;
-  z-index: 3;
+ position: relative;
+    display: flex;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    box-sizing: border-box;
+    gap: 5px;
+    background-color: transparent;
+    border: 1px solid rgb(52 126 156);
+    border-radius: 6px;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 3px 15px;
+    min-width: 150px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+    justify-content: center;
+    z-index: 3;
 }
 #about_me_button:hover {
   background-position: 100% 100%;
-  border-color: #5d5b5b;
-  transform: scale(0.95);
-  border-width: 1px;
+  border-color: #18db18;
+  transform: scale(6.95);
+  border-width: 3px;
 }
 p {
   color: white;
@@ -329,7 +329,7 @@ color:white;
   }
   textarea {
     position: relative;
-    width: 95%;
+   width: 78vw;
     height: auto;
   }
   .profile_content {

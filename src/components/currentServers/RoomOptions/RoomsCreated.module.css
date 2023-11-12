@@ -333,57 +333,21 @@
   background-color: rgba(0, 0, 0, 0.182);
 }
 .room_item.room_private {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 7em;
-  height: 7em;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border: 2px solid #1b3554;
-  background: linear-gradient(
-    135deg,
-    #192a56 0%,
-    #273c75 25%,
-    #192a56 50%,
-    #192a56 100%
-  );
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.6),
-    0 20px 50px rgba(0, 0, 0, 0.8);
-
-  background-image: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.1) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0.1) 75%,
-      transparent 75%,
-      transparent
-    ),
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0.1) 75%,
-      transparent 75%,
-      transparent
-    ),
-    linear-gradient(
-      135deg,
-      #192a56 0%,
-      #192a56 25%,
-      #ff6b6b 25%,
-      #ff6b6b 50%,
-      #3498db 50%,
-      #3498db 100%
-    );
-  background-size: 40px 40px, 40px 40px, 100% 100%;
-  transition: all 0.3s ease-in-out;
-  z-index: 3;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7em;
+    height: 7em;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 2px solid #0a294d;
+    background: linear-gradient( 135deg, #192a56 0%, #3f5cac 25%, #192a56 50%, #03060e 100% );
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.6), 0 20px 50px rgba(0, 0, 0, 0.8);
+    background-image: linear-gradient( 45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent ), linear-gradient( 135deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent ), linear-gradient( 135deg, #192a56 0%, #192a56 25%, #2e7eb4 50%, #245a7e 100% );
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+    transition: all 0.3s ease-in-out;
+    z-index: 3;
 }
 .room_item.room_private,
 .room_item.room_public_private {
@@ -395,7 +359,7 @@
   height: 7em;
   box-sizing: border-box;
   border-radius: 10px;
-  border: 2px solid #4a90e2;
+  border: 2px solid #012248;
   background: linear-gradient(
     135deg,
     #192a56 0%,
@@ -555,6 +519,7 @@
   font-size: 95%;
   flex-direction: column;
   align-items: center;
+  gap:8px;
   justify-content: center;
   color: white;
   display: flex;

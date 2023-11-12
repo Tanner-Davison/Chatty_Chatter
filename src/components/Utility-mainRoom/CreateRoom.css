@@ -270,8 +270,12 @@ position: relative;
   gap: 5px;
 }
 #room_visible{
+  position: relative;
   display: flex;
   flex-direction: row;
+  align-self: center;
+  justify-self: center;
+  left:10px;
   gap:5px;
 }
 #search-for-avail-room-button {
@@ -312,8 +316,8 @@ position: relative;
 }
 
 .private-room-inputs input {
-  width: 25vw;
-  padding-left:10px;
+      min-width: 40vw;
+    padding-left: 10px;
 }
 .private-room-inputs label {
   display: flex;
@@ -393,7 +397,7 @@ label {
   align-items: center;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  width: auto;
+  
   box-sizing: border-box;
 }
 /* .private-info {

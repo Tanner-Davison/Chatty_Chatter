@@ -61,7 +61,7 @@
   display: flex;
   opacity: 1;
   position: absolute;
-  top: 8%;
+  top: 20%;
   bottom: -20%;
   color: white;
   align-items: center;
@@ -79,8 +79,8 @@
   opacity: 1;
   font-size: 0.85em;
   font-weight: bold;
-  left: 0%;
-  top: 5%;
+  left: 5%;
+  top: 35%;
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -273,7 +273,9 @@
 .container:hover > .message-green {
   transform: translateX(100px);
 }
-
+.container:hover .message-timestamp-right {
+  transform: translateX(-25%);
+}
 .container.blue {
   position: relative;
   display: flex;
@@ -294,7 +296,7 @@
 
 .container.green .user.green {
   position: absolute;
-  bottom: -40px;
+  bottom: -23px;
   left: 8px;
   right: 100%;
   font-size: 0.85em;
@@ -345,7 +347,7 @@
   width: -moz-fit-content;
   width: fit-content;
   margin-right: 25px;
-
+  top: 5px;
   transition: opacity 1, transform 1s;
   z-index: 50;
 }
@@ -365,7 +367,8 @@
   height: fit-content;
   border-radius: 25px;
   background-color: transparent;
-  padding: 10px;
+
+  padding: 4px;
 }
 
 .all-messages {
@@ -492,7 +495,7 @@ h1 {
   gap: 10px;
 }
 #leave-room-btn {
-   position: relative;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -682,8 +685,8 @@ h1 {
   .all-messages {
     display: flex;
     width: 90%;
-    /* max-height: 60vh; */
-    min-height: 53vh;
+    max-height: 47vh;
+    min-height: 52vh;
     justify-self: flex-end;
     padding: 0px 10px 10px 10px;
   }
@@ -696,7 +699,7 @@ h1 {
     display: flex;
     align-items: flex-start;
     width: 45%;
-    margin-left: 20%;
+    margin-left: 3%;
     padding-bottom: 14px;
   }
 
@@ -714,7 +717,7 @@ h1 {
   }
 
   .container:hover .message-green {
-    transform: translateX(50px);
+    transform: translateX(100px);
   }
 
   .container:hover .message-blue {
@@ -728,7 +731,7 @@ h1 {
 
   .container:hover .message-timestamp-right {
     position: absolute;
-    left: -33%;
+    left: -1%;
   }
 
   .user-profile-pic {
@@ -740,7 +743,10 @@ h1 {
 
     margin-left: 9px;
   }
-
+  .container.blue > .user {
+    left: 38px;
+    top: 6px;
+  }
   .roomWrapper {
     border-radius: 25px;
     padding: 10px;
@@ -770,7 +776,7 @@ h1 {
   .leave-delete-button {
     padding-top: 0px;
   }
-  .send-input-wrapper{
+  .send-input-wrapper {
     min-width: 91vw;
   }
   .leave-delete-button button {

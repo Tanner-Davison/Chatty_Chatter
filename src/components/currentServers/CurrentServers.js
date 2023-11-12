@@ -75,6 +75,7 @@ const CurrentServers = () => {
           }></div>
 
         <div className={"room_item_wrapper"}>
+          <h1 id={'header_in_current_servers'}>Chatty Chatter</h1>
           {newUserToggle && (
             <em id={'new_user_server_message'}>
               Create A hub to unlock the features!
