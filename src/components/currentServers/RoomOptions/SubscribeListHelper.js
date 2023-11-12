@@ -90,12 +90,6 @@ const SubscribeListHelper = ({
     return;
   };
 
-  const handleMenuOpen = (event) => {
-    event.stopPropagation();
-    handleClose(event);
-    return navigate(`/profile/${room.created_by}`);
-  };
-
   const seeAllMembers = (event) => {
     event.stopPropagation();
     return SetDisplayAllUsers(!displayAllUsers);
@@ -139,9 +133,7 @@ const SubscribeListHelper = ({
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>
-            <MenuItem onClick={(event) => handleMenuOpen(event)}>
-              View Profile
-            </MenuItem>
+            
             {!room.private_room && (
               <MenuItem onClick={() => handleRoomButtonClick(room.room)}>
                 Visit Room
