@@ -29,8 +29,8 @@
 
 .message-timestamp-left {
   display: none;
-  opacity: 0;
-  transition: transform 0.4s, opacity 3s;
+  opacity: 0%;
+  transition: transform 1s, opacity 3s;
 }
 
 .message-timestamp-left > p {
@@ -58,8 +58,9 @@
 }
 
 .container:hover > .message-timestamp-left {
+  animation: appearFromRight .4s ease-in-out;
   display: flex;
-  opacity: 1;
+  opacity: 100%;
   position: absolute;
   top: 20%;
   bottom: -20%;
@@ -71,12 +72,30 @@
   height: fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  transition:opacity 2s ease;
+}
+@keyframes appearFromRight {
+  0%{
+    transform:translateX(200%)
+  }
+  100%{
+    transform:translateX(0)
+  }
+}
+@keyframes appear {
+  0%{
+    transform:translateX(-200%)
+  }
+  100%{
+    transform:translateX(-27%)
+  }
 }
 
 .container:hover .message-timestamp-right {
+   animation: appear .4s ease-in-out;
   position: absolute;
   display: flex;
-  opacity: 1;
+  opacity: 100%;
   font-size: 0.85em;
   font-weight: bold;
   left: 5%;
@@ -376,9 +395,10 @@
     display: flex;
     flex-direction: column;
     /* width: 55vw; */
-    min-height: 75vh;
+    max-height: 75vh;
     min-width: 551px;
-    overflow-y: hidden;
+    overflow-y: scroll;
+    overflow-X:hidden ;
     scroll-behavior: smooth;
     background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
     background-size: 200% 200%;
