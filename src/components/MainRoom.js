@@ -535,9 +535,9 @@ const checkList = async () => {
           </button>
         </div>
       </>
-      <div className="leave-delete-button">
+      {/* <div className="leave-delete-button">
         <button onClick={deleteRoom}>Delete Room</button>
-      </div>
+      </div> */}
     </>
   );
 };
