@@ -80,7 +80,7 @@ module.exports = {
   },
   getAllRooms: async (req, res) => {
     const rooms = req.query.rooms;
-    console.log('ALLLLL ROOOOMMMSSSS', rooms)
+    console.log("ALLLLL ROOOOMMMSSSS", rooms);
     // Ensure rooms is an array
     if (!Array.isArray(rooms)) {
       return res.status(400).json({ error: "Invalid query parameter" });
@@ -132,12 +132,9 @@ module.exports = {
 
         // Check if the user was updated successfully
         if (result) {
-          return res
-            .status(200)
-            .json({
-              message:
-                "Room was deleted and successfully removed from the user.",
-            });
+          return res.status(200).json({
+            message: "Room was deleted and successfully removed from the user.",
+          });
         } else {
           return res
             .status(500)
@@ -302,31 +299,54 @@ module.exports = {
       });
     }
   },
- updateProfileVariables: async (req, res) => {
-  const { profession, education, username, profileBio } = req.body;
+  updateProfileVariables: async (req, res) => {
+    const { profession, education, username, profileBio } = req.body;
 
-  try {
-    // Check if the user exists
-    const user = await User.findOne({ username: username });
+    try {
+      // Check if the user exists
+      const user = await User.findOne({ username: username });
 
-    if (!user) {
-      // User not found
-      return res.status(404).send({ error: 'User not found.' });
+      if (!user) {
+        // User not found
+        return res.status(404).send({ error: "User not found." });
+      }
+
+      const id = user._id;
+
+      // Update multiple fields in the user profile
+      await User.updateOne(
+        { _id: id },
+        { $set: { profession, education, profileBio } }
+      );
+
+      return res.status(200).send({ success: true });
+    } catch (err) {
+      // Log the error for debugging
+      console.error("Error updating profile:", err);
+
+      // Send a more meaningful error response
+      return res.status(500).send({ error: "Internal server error." });
     }
+  },
 
-    const id = user._id;
+  addFriend: async (req, res) => {
+    const { username, friend } = req.body;
 
-    // Update multiple fields in the user profile
-    await User.updateOne({ _id: id }, { $set: { profession, education, profileBio } });
+    try {
+      console.log("Request Body:", req.body);
 
-    return res.status(200).send({ success: true });
-  } catch (err) {
-    // Log the error for debugging
-    console.error('Error updating profile:', err);
+      await User.updateOne(
+        { username: username },
+        { $push: { friends: friend } }
+      );
 
-    // Send a more meaningful error response
-    return res.status(500).send({ error: 'Internal server error.' });
-  }
-}
-
+      console.log("Friend added successfully");
+      return res.status(200).send({ success: true });
+    } catch (err) {
+      console.error("Error in addFriend:", err);
+      return res
+        .status(500)
+        .send({ message: "Error in addFriend on server", err });
+    }
+  },
 };

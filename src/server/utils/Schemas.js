@@ -40,8 +40,7 @@ const userSchema = new mongoose.Schema({
   ],
   friends: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      String,
     },
   ],
   profileBio :{

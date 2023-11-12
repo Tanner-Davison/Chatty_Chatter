@@ -277,6 +277,20 @@ color:white;
 #switchIcon:hover{
   transform:scale(1.5)
 }
+#switchIcon_green{
+  margin-bottom: 10px;
+color:white;
+transition: transform .3s ease-in
+}
+#switchIcon_green:hover{
+transform:scale(1.6);
+cursor: pointer;
+outline:4px transparent black;
+box-sizing: border-box;
+border-radius: 8px;
+background-color: transparent;
+
+}
 #username_switch_wrapper {
   position: relative;
   display: flex;

@@ -13,6 +13,7 @@ import ProfilePage from "./profilesections/ProfilePage";
 import Switch from "@mui/material/Switch";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
@@ -32,7 +33,26 @@ const Profile = () => {
     username: "",
     profile_pic: "",
   });
-
+  const addFriend= async()=>{
+    
+    const params={
+      username:userLoginInfo.username,
+      friend: username,
+    }
+        await axios.post(`${PORT}/addFriend`, params)
+        .then((res)=>{
+          const {success} = res;
+          if(success){
+            console.log('friend was added ')
+          }else{
+            console.log('getting an error');
+            
+          }
+        }).catch((err)=>{
+          console.log(err)
+        })
+   
+  }
   const getData = async (username) => {
    
     const data = await LoadProfileRoom(username);
@@ -109,9 +129,7 @@ const editYourProfile =async(e)=>{
   },[location.pathname])
   useEffect(() => {
    
-    if(isEditing){
-      return;
-    }
+ 
     if (userLoginInfo.username === username) {
       setPersonalProfile(true);
       !userDataExists ? getData(username) : console.log(userInfo);
@@ -127,14 +145,10 @@ const editYourProfile =async(e)=>{
       <Header />
       <div className={styles.profile_main_container}>
         {!userDataExists && <div>Loading ...</div>}
-            <div className={styles.profile_wrapper_image_icon}>
-        <div className={styles.profile_content}>
-          <div className={"wrapper"}>
-            <div
-              className={
-                
-              `${styles.regular_border}`
-              }>
+        <div className={styles.profile_wrapper_image_icon}>
+          <div className={styles.profile_content}>
+            <div className={"wrapper"}>
+              <div className={`${styles.regular_border}`}>
                 <img
                   id={styles.profile_pic}
                   src={userInfo.profile_pic.url}
@@ -167,15 +181,18 @@ const editYourProfile =async(e)=>{
               )}
 
               {!personalProfile && (
-                <Switch
-                  src={!switchToggle ? SwitchOn : SwitchOff}
-                  onClick={() => setSwitchToggle(!switchToggle)}
-                  id={styles.switchIcon}
-                  alt="Description"
-                />
+                <>
+                  <PersonAddIcon
+                    
+                    onClick={() => addFriend()}
+                    id={styles.switchIcon_green}
+                    alt="Description"
+                  />
+                </>
               )}
             </div>
           </div>
+
           {isEditing && personalProfile && (
             <DotsComp
               className={styles.is_editing_dots}

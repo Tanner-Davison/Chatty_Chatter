@@ -21,15 +21,15 @@ const AboutMe = ({ setEducation, setProfileBio, handleFormSubmit, setProfession 
               maxLength={255}></textarea>
           </label>
           <div className={styles.occupation_education}>
-            <label htmlFor="desireInput">
+            <label htmlFor="desireInput" style={{ gap: "10px" }}>
               <span id={styles.spanIcons}>
-                <WorkRoundedIcon /> Proffesion
+                <WorkRoundedIcon /> Profession
               </span>
               <input
                 id={"radioInput"}
-                require={'false'}
+                require={"false"}
                 className={styles.proffesion_input}
-                onChange={(e)=>setProfession(e.target.value)}
+                onChange={(e) => setProfession(e.target.value)}
                 type="text"
                 maxLength={25}
                 placeholder=" ex:) Developer ..."
@@ -52,7 +52,7 @@ const AboutMe = ({ setEducation, setProfileBio, handleFormSubmit, setProfession 
                   id={"radioInput"}
                   require={false}
                   name={"education"}
-                  value={'highschool'}
+                  value={"highschool"}
                   className={styles.occupation_education_input}
                   onChange={(e) => setEducation(e.target.value)}
                   type="radio"
@@ -65,7 +65,7 @@ const AboutMe = ({ setEducation, setProfileBio, handleFormSubmit, setProfession 
                 <input
                   id={"radioInput"}
                   name={"education"}
-                  value={'2+ years'}
+                  value={"2+ years"}
                   onChange={(e) => setEducation(e.target.value)}
                   require={false}
                   className={styles.occupation_education_input}
@@ -80,7 +80,7 @@ const AboutMe = ({ setEducation, setProfileBio, handleFormSubmit, setProfession 
                   id={"desireInput"}
                   onChange={(e) => setEducation(e.target.value)}
                   require={false}
-                  value={'4+ years'}
+                  value={"4+ years"}
                   name={"education"}
                   className={styles.occupation_education_input}
                   type="radio"
