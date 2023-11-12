@@ -36,23 +36,21 @@ const userSchema = new mongoose.Schema({
       private: Boolean,
       timestamp: String,
     },
-    
   ],
   friends: [
     {
-      String,
+      type: String,
     },
   ],
-  profileBio :{
-      String,
-    },
-    education: {
-      String,
-    },
-    profession:{
-      String,
-    },
-  
+  profileBio: {
+    String,
+  },
+  education: {
+    String,
+  },
+  profession: {
+    String,
+  },
 });
 
 const roomSchema = new mongoose.Schema({

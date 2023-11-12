@@ -328,20 +328,40 @@ module.exports = {
       return res.status(500).send({ error: "Internal server error." });
     }
   },
+  checkIfAlreadyFriend:async(req,res)=>{
+    const {username, friend} = req.body;
+    try{
+        const userFriendList = await User.findOne({username:username});
 
+        if(userFriendList.friends.includes(friend)){
+          return res.status(200).send(true)
+        }else{
+          return res.status(200).send(false)
+        }
+
+    }catch(err){
+      return res.status(400).send(err) 
+      
+    }
+  },
   addFriend: async (req, res) => {
     const { username, friend } = req.body;
 
     try {
       console.log("Request Body:", req.body);
+      const userFriendList = await User.findOne({username:username});
+      if(userFriendList){
+        if( userFriendList.friends.includes(friend)){
+          await User.updateOne({username:username}, {$pull:{friends:friend}});
+          return res.status(200).send({message: 'friend removed'})
+        }else{
+            await User.updateOne({ username: username }, { $push: { friends: friend } });
 
-      await User.updateOne(
-        { username: username },
-        { $push: { friends: friend } }
-      );
-
-      console.log("Friend added successfully");
-      return res.status(200).send({ success: true });
+            console.log("Friend added successfully");
+            return res.status(200).send({ success: true });
+        }
+      }
+     
     } catch (err) {
       console.error("Error in addFriend:", err);
       return res

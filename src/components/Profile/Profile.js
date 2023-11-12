@@ -1,4 +1,4 @@
-import { useParams, useNavigate,useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import { useEffect, useState, useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
@@ -13,60 +13,84 @@ import ProfilePage from "./profilesections/ProfilePage";
 import Switch from "@mui/material/Switch";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
   const [switchToggle, setSwitchToggle] = useState(false);
-  const [userDataExists, setUserDataExists] = useState('');
+  const [userDataExists, setUserDataExists] = useState("");
   const [personalProfile, setPersonalProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [profession, setProfession]=useState('')
+  const [profession, setProfession] = useState("");
   const [education, setEducation] = useState("");
   const [profileBio, setProfileBio] = useState("");
-  const [allUserData, setAllUserData]=useState('')
+  const [friendAdded, setFriendAdded] = useState(false);
+  const [allUserData, setAllUserData] = useState("");
   const { username } = useParams();
   const location = useLocation();
   const [customProfileData, setCustomProfileData] = useState(false);
   const PORT = process.env.REACT_APP_PORT;
+  
   const [userInfo, setUserInfo] = useState({
     username: "",
     profile_pic: "",
   });
-  const addFriend= async()=>{
-    
-    const params={
-      username:userLoginInfo.username,
+  const addFriend = async () => {
+    const params = {
+      username: userLoginInfo.username,
       friend: username,
-    }
-        await axios.post(`${PORT}/addFriend`, params)
-        .then((res)=>{
-          const {success} = res;
-          if(success){
-            console.log('friend was added ')
-          }else{
-            console.log('getting an error');
-            
-          }
-        }).catch((err)=>{
-          console.log(err)
-        })
-   
-  }
+    };
+    await axios
+      .post(`${PORT}/addFriend`, params)
+      .then((res) => {
+        console.log(res);
+        const { success } = res.data;
+        if (success) {
+          console.log("friend was added ");
+          setFriendAdded(true);
+        } else {
+          console.log("friend removed");
+          setFriendAdded(false)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const getData = async (username) => {
-   
-    const data = await LoadProfileRoom(username);
+    const searchByUsername = username===userLoginInfo.username ? userLoginInfo.username : username; 
+    const data = await LoadProfileRoom(searchByUsername);
     const userData = data;
-    if (userData) {
-      if(!userData){
-        return console.log('no user found in PROFILE Component');
-        
+    if (userData && username !== userLoginInfo.username) {
+        const params = {
+          username: userLoginInfo.username,
+          friend: username,
+        };
+         await axios
+          .post(`${PORT}/checkIfFriends`, params)
+          .then((res) => {console.log(res)
+          if(res.data === true){
+            setFriendAdded(true)
+          }else if(res.data === false){
+            setFriendAdded(false)
+          }})
+          .catch((err) => {
+            console.log(err);
+          });
+      if (!userData) {
+        return console.log("no user found in PROFILE Component");
       }
       if (!userData.profileBio) {
         setCustomProfileData(false);
-      }else{
-        setCustomProfileData(true)
-        setAllUserData(userData)
+        setSwitchToggle(false)
+        setAllUserData(false)
+      } else {
+        console.log(userData);
+
+        setCustomProfileData(false);
+        setAllUserData(userData);
       }
       setUserDataExists(true);
       console.log(userData.profilePic);
@@ -75,14 +99,13 @@ const Profile = () => {
         profile_pic: userData.profilePic,
         userPageInfo: userData.profileContent,
       });
-     
     } else {
       console.log("no data");
       setUserDataExists(false);
       return;
     }
   };
-const label = { inputProps: { "aria-label": "Switch demo" } };
+  const label = { inputProps: { "aria-label": "Switch demo" } };
   const handleFormSubmit = async () => {
     const params = {
       profession,
@@ -93,53 +116,53 @@ const label = { inputProps: { "aria-label": "Switch demo" } };
     const response = await axios
       .post(`${PORT}/updateUserProfile`, params)
       .then((res) => {
-        const {success} = res;
-          if(success){
-            getData();
-            console.log('we did it!');
-            setCustomProfileData(!customProfileData);
-            setUserDataExists(true)
-          }
+        const { success } = res;
+        if (success) {
+          getData();
+          console.log("we did it!");
+          setCustomProfileData(!customProfileData);
+          setUserDataExists(true);
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-const editYourProfile =async(e)=>{
-  e.preventDefault()
-  console.log('customProfileData',customProfileData);
-  console.log('switchToggle',switchToggle);
-  console.log('isEditing',isEditing);
+  const editYourProfile = async (e) => {
+    e.preventDefault();
+    console.log("customProfileData", customProfileData);
+    console.log("switchToggle", switchToggle);
+    console.log("isEditing", isEditing);
 
-    setCustomProfileData(!customProfileData)
+    setCustomProfileData(!customProfileData);
     setSwitchToggle(!switchToggle);
-    setIsEditing(true)
-}
-  const closeEditYourProfile=()=>{
-    setCustomProfileData((prev)=>!prev)
+    setIsEditing(true);
+  };
+  const closeEditYourProfile = () => {
+    setCustomProfileData((prev) => !prev);
     setSwitchToggle(!switchToggle);
     setIsEditing(false);
     return;
-  }
-  useEffect(()=>{
-    console.log("URL changed:", location.pathname);
-
-    getData(username)
-
-  },[location.pathname])
-  useEffect(() => {
-   
- 
-    if (userLoginInfo.username === username) {
-      setPersonalProfile(true);
-      !userDataExists ? getData(username) : console.log(userInfo);
-    } else {
-      setPersonalProfile(false);
-      !userDataExists ? getData(username) : console.log(userInfo);
+  };
+ useEffect(() => {
+   console.log("URL changed:", location.pathname);
+    if(userDataExists === false){
+      getData(username);
     }
+   getData(username);
+ }, [location.pathname]);
+ useEffect(() => {
+   if (userLoginInfo.username === username) {
+   
+     setUserDataExists(false)
+     !userDataExists ? getData(username) : console.log(userInfo);
+   } else {
+     setPersonalProfile(false);
+     !userDataExists ? getData(username) : console.log(userInfo);
+   }
 
-    // eslint-disable-next-line
-  }, [personalProfile, userLoginInfo.username,getData]);
+   // eslint-disable-next-line
+ }, [personalProfile, userLoginInfo.username, getData]);
   return (
     <>
       <Header />
@@ -151,7 +174,7 @@ const editYourProfile =async(e)=>{
               <div className={`${styles.regular_border}`}>
                 <img
                   id={styles.profile_pic}
-                  src={userInfo.profile_pic.url}
+                  src={username === userLoginInfo.username ? userLoginInfo.imageUrl : userInfo.profile_pic.url}
                   alt={"profile_pic"}
                   loading="lazy"
                 />
@@ -180,14 +203,32 @@ const editYourProfile =async(e)=>{
                 </>
               )}
 
-              {!personalProfile && (
+              {!personalProfile && !friendAdded && (
                 <>
-                  <PersonAddIcon
-                    
+                  <button
                     onClick={() => addFriend()}
-                    id={styles.switchIcon_green}
-                    alt="Description"
-                  />
+                    type="button"
+                    className={styles.friend_wrapper}>
+                    <PersonAddIcon
+                      id={styles.switchIcon_add}
+                      alt="Description"
+                    />
+                    <p>Add friend</p>
+                  </button>
+                </>
+              )}
+              {!personalProfile && friendAdded && (
+                <>
+                  <button
+                    onClick={() => addFriend()}
+                    type="button"
+                    className={`${styles.friend_wrapper} ${styles.remove}`}>
+                    <p>unfriend</p>
+                    <PersonRemoveIcon
+                      id={styles.switchIcon_remove}
+                      alt="Description"
+                    />
+                  </button>
                 </>
               )}
             </div>

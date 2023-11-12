@@ -50,6 +50,7 @@ app.post("/removeJoinedRoom", EndpointHandler.removeJoinedRoom);
 app.post("/deleteSingleRoom", EndpointHandler.deleteSingleRoom);
 app.post("/updateUserProfile", EndpointHandler.updateProfileVariables);
 app.post("/addFriend", EndpointHandler.addFriend);
+app.post("/checkIfFriends", EndpointHandler.checkIfAlreadyFriend);
 
 const io = new Server(server, {
   cors: {
