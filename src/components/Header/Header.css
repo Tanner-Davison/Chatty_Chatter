@@ -34,15 +34,15 @@
 }
 .header_profile_pic {
   display: flex;
-  border: 3px groove black;
+ 
   animation: loadIn 0.9s ease-in-out;
   box-sizing: border-box;
   width: 50px;
   height: 50px;
-  border-radius: 50px;
+  border-radius:15px;
 }
 .header_profile_pic:hover {
-  transform: scale(1.08);
+  transform: scale(1.04);
   cursor:pointer;
   box-sizing: border-box;
 }

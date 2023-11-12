@@ -73,15 +73,16 @@ const CurrentServers = () => {
           className={
             newUserToggle ? `main-room-wrapper new-user` : "main-room-wrapper"
           }>
+          
+        </div>
+
+        <div className={'room_item_wrapper'}>{
+          <>
           <button
             className={"main-room-button"}
             onClick={() => handleRoomButtonClick(mainRoom)}>
             <p> Public - Room </p>
           </button>
-        </div>
-
-        {
-          <>
             <SubscribedList
               key={roomsJoined._id}
               handleRoomButtonClick={handleRoomButtonClick}
@@ -115,6 +116,7 @@ const CurrentServers = () => {
             roomsCreated={roomsCreated}
           />
         }
+        </div>
       </div>
     
 

@@ -91,7 +91,29 @@
   font-size: 55px; /* Adjust the font size as needed */
   /* Other styles */
 }
-
+.room_item_wrapper{
+       position: relative;
+    max-width: 95vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 10px 0px;
+    gap: 25px;
+    background: linear-gradient( 135deg, #161a1d 0%, #283644 25%, #1e252b 50%, #161a1d 100% );
+    height: auto;
+    min-width: 80vw;
+    animation: RoomsCreated_gradientBackground__vCXgf 24s ease infinite;
+    padding: 35px;
+    padding-bottom: 10px;
+    padding-top: 55px;
+    border: 2px solid #1c2125;
+    border-top: 4px inset #1f262d;
+    box-sizing: border-box;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(22, 108, 150, 0.3);
+    z-index: 1;
+}
 @media only screen and (max-width: 600px) {
   .room-container > h1 {
     font-size: 20px;

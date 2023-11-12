@@ -1,51 +1,61 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState,useEffect,useContext, } from "react";
+import { useState, useEffect, useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import "./Header.css";
-import searchGlass from './svgs/searchGlass.svg'
+import searchGlass from "./svgs/searchGlass.svg";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import { yellow } from "@mui/material/colors";
-const Header = ({ joinRoom, roomChanger,roomNameChanger, room, handleMainButtonClick }) => {
+const Header = ({
+  joinRoom,
+  roomChanger,
+  roomNameChanger,
+  room,
+  handleMainButtonClick,
+}) => {
   const usernameLocal = JSON.parse(sessionStorage.getItem("username"));
   const currentLocation = window.location.href.toString();
 
-  const [menuOpen, setMenuOpen]=useState(true)
+  const [menuOpen, setMenuOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchByName, setSearchByName] = useState(true)
-  const {userLoginInfo } =
-    useContext(LoginContext);
+  const [searchByName, setSearchByName] = useState(true);
+  const { userLoginInfo } = useContext(LoginContext);
 
-   const handleKeyDown = (event) => {
-     if (event.keyCode === 32) {
-       event.preventDefault();
-     }
-   };
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 32) {
+      event.preventDefault();
+    }
+  };
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
-    
+
     navigate("/");
   };
-    
-  
+
   const getLinkStyle = (path) => {
-    if (path.includes('/createroom') && location.pathname.includes('/createroom')) {
-      return 'linkActive'
-    }
-    return path === location.pathname ? "linkActive" : "linkInactive";
+    if (
+      path.includes("/createroom") &&
+      location.pathname.includes("/createroom")
+    ) {
+      return "linkActive";
+    } else if (
+      path.includes(`/profile/${usernameLocal}`) ||
+      path.includes("/currentservers")
+    )
+      return path === location.pathname ? "linkActive" : "linkInactive";
   };
-  useEffect(()=>{
-    if(location.pathname.includes('/currentservers')){
-      setMenuOpen(true)
-    }else if(location.pathname.includes('/chatroom')){
-      setMenuOpen(false)
+  useEffect(() => {
+    if (location.pathname.includes("/currentservers")) {
+      setMenuOpen(true);
+    } else if (location.pathname.includes("/chatroom")) {
+      setMenuOpen(false);
     }
     //eslint-disable-next-line
-  },[])
+  }, []);
   return (
     <div
       className={
@@ -57,11 +67,11 @@ const Header = ({ joinRoom, roomChanger,roomNameChanger, room, handleMainButtonC
         <div className={"logo_and_menu_button_wrapper"}>
           <h1 className={"logo-font"}>Chatty Chatter</h1>
           {usernameLocal && (
-          <button
-            className={"menu_header_wrapper"}
-            onClick={() => setMenuOpen(!menuOpen)}>
-            <MenuRoundedIcon />
-          </button>
+            <button
+              className={"menu_header_wrapper"}
+              onClick={() => setMenuOpen(!menuOpen)}>
+              <MenuRoundedIcon />
+            </button>
           )}
         </div>
         {menuOpen && (
@@ -122,7 +132,6 @@ const Header = ({ joinRoom, roomChanger,roomNameChanger, room, handleMainButtonC
                   type="text"
                   className={"roomInput"}
                   placeholder='"Room Name"'
-                 
                   onChange={roomNameChanger}
                 />
                 <TextFieldsIcon
@@ -176,7 +185,6 @@ const Header = ({ joinRoom, roomChanger,roomNameChanger, room, handleMainButtonC
           </div>
         </div>
       )}
-      
     </div>
   );
 };
