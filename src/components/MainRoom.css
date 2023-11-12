@@ -676,10 +676,12 @@ h1 {
   }
 
   .all-messages {
-    display: flex;
-    width: 90%;
-    max-height: 47vh;
-    min-height: 52vh;
+     display: flex;
+    width: -1%;
+    max-height: 38vh;
+    min-width: 92vw;
+    /* max-width: 104vw; */
+    min-height: 59vh;
     justify-self: flex-end;
     padding: 0px 10px 10px 10px;
   }
@@ -770,7 +772,7 @@ h1 {
     padding-top: 0px;
   }
   .send-input-wrapper {
-    min-width: 91vw;
+    min-width: 81vw;
   }
   .leave-delete-button button {
     bottom: -60px;
@@ -784,7 +786,7 @@ h1 {
   .status_container {
     position: absolute;
     display: flex;
-    bottom: 0px;
+    bottom: -114px;
     left: 25%;
   }
 }

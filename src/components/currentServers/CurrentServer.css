@@ -82,6 +82,8 @@
   color:green;
 }
 #new_user_server_message{
+  position: relative;
+  top:20px;
       font-size: 25px;
     color: orangered;
     padding:5px;
