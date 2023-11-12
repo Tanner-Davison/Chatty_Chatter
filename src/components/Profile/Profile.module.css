@@ -157,7 +157,7 @@ label {
 #about_me_button:hover {
   background-position: 100% 100%;
   border-color: #18db18;
-  transform: scale(6.95);
+  transform: scale(1.2);
   border-width: 3px;
 }
 p {

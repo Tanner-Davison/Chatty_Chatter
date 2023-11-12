@@ -14,7 +14,7 @@ import Switch from "@mui/material/Switch";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
@@ -25,71 +25,49 @@ const Profile = () => {
   const [profession, setProfession] = useState("");
   const [education, setEducation] = useState("");
   const [profileBio, setProfileBio] = useState("");
-  const [friendAdded, setFriendAdded] = useState(false);
   const [allUserData, setAllUserData] = useState("");
+  const [friendAdded, setFriendAdded] = useState(false);
   const { username } = useParams();
   const location = useLocation();
   const [customProfileData, setCustomProfileData] = useState(false);
   const PORT = process.env.REACT_APP_PORT;
-  
   const [userInfo, setUserInfo] = useState({
     username: "",
     profile_pic: "",
   });
-  const addFriend = async () => {
-    const params = {
-      username: userLoginInfo.username,
-      friend: username,
-    };
-    await axios
-      .post(`${PORT}/addFriend`, params)
-      .then((res) => {
-        console.log(res);
-        const { success } = res.data;
-        if (success) {
-          console.log("friend was added ");
-          setFriendAdded(true);
-        } else {
-          console.log("friend removed");
-          setFriendAdded(false)
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+const addFriend = async () => {
+  const params = {
+    username: userLoginInfo.username,
+    friend: username,
   };
-
+  await axios
+    .post(`${PORT}/addFriend`, params)
+    .then((res) => {
+      console.log(res);
+      const { success } = res.data;
+      if (success) {
+        console.log("friend was added ");
+        setFriendAdded(true);
+      } else {
+        console.log("friend removed");
+        setFriendAdded(false);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
   const getData = async (username) => {
-    const searchByUsername = username===userLoginInfo.username ? userLoginInfo.username : username; 
-    const data = await LoadProfileRoom(searchByUsername);
+    const data = await LoadProfileRoom(username);
     const userData = data;
-    if (userData && username !== userLoginInfo.username) {
-        const params = {
-          username: userLoginInfo.username,
-          friend: username,
-        };
-         await axios
-          .post(`${PORT}/checkIfFriends`, params)
-          .then((res) => {console.log(res)
-          if(res.data === true){
-            setFriendAdded(true)
-          }else if(res.data === false){
-            setFriendAdded(false)
-          }})
-          .catch((err) => {
-            console.log(err);
-          });
+    if (userData) {
       if (!userData) {
         return console.log("no user found in PROFILE Component");
       }
       if (!userData.profileBio) {
         setCustomProfileData(false);
-        setSwitchToggle(false)
-        setAllUserData(false)
       } else {
-        console.log(userData);
-
-        setCustomProfileData(false);
+        setCustomProfileData(true);
         setAllUserData(userData);
       }
       setUserDataExists(true);
@@ -144,25 +122,22 @@ const Profile = () => {
     setIsEditing(false);
     return;
   };
- useEffect(() => {
-   console.log("URL changed:", location.pathname);
-    if(userDataExists === false){
-      getData(username);
-    }
-   getData(username);
- }, [location.pathname]);
- useEffect(() => {
-   if (userLoginInfo.username === username) {
-   
-     setUserDataExists(false)
-     !userDataExists ? getData(username) : console.log(userInfo);
-   } else {
-     setPersonalProfile(false);
-     !userDataExists ? getData(username) : console.log(userInfo);
-   }
+  useEffect(() => {
+    console.log("URL changed:", location.pathname);
 
-   // eslint-disable-next-line
- }, [personalProfile, userLoginInfo.username, getData]);
+    getData(username);
+  }, [location.pathname]);
+  useEffect(() => {
+    if (userLoginInfo.username === username) {
+      setPersonalProfile(true);
+      !userDataExists ? getData(username) : console.log(userInfo);
+    } else {
+      setPersonalProfile(false);
+      !userDataExists ? getData(username) : console.log(userInfo);
+    }
+
+    // eslint-disable-next-line
+  }, [personalProfile, userLoginInfo.username, getData]);
   return (
     <>
       <Header />
@@ -174,7 +149,7 @@ const Profile = () => {
               <div className={`${styles.regular_border}`}>
                 <img
                   id={styles.profile_pic}
-                  src={username === userLoginInfo.username ? userLoginInfo.imageUrl : userInfo.profile_pic.url}
+                  src={userInfo.profile_pic.url}
                   alt={"profile_pic"}
                   loading="lazy"
                 />
