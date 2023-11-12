@@ -44,6 +44,16 @@ const userSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  profileBio :{
+      String,
+    },
+    education: {
+      String,
+    },
+    profession:{
+      String,
+    },
+  
 });
 
 const roomSchema = new mongoose.Schema({

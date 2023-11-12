@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import { useEffect, useState, useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
@@ -7,29 +7,39 @@ import AboutMe from "./profilesections/AboutMe";
 import styles from "./Profile.module.css";
 import SwitchOn from "./svgs/SwitchOn.svg";
 import SwitchOff from "./svgs/SwitchOff.svg";
-
+import axios from "axios";
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
   const [switchToggle, setSwitchToggle] = useState(false);
-  const [userDataExists, setUserDataExists] = useState(false);
+  const [userDataExists, setUserDataExists] = useState('');
   const [personalProfile, setPersonalProfile] = useState(null);
-  const [aboutMe, setAboutMe] =useState('')
-  const [education, setEducation]=useState('')
-  const [profileBio, setProfileBio]=useState('')
+  const [isEditing, setIsEditing] = useState(false);
+  const [profession, setProfession]=useState('')
+  const [education, setEducation] = useState("");
+  const [profileBio, setProfileBio] = useState("");
   const { username } = useParams();
-  const [customProfileData, setCustomProfileData] = useState("");
+  const location = useLocation();
+  const [customProfileData, setCustomProfileData] = useState(false);
+  const PORT = process.env.REACT_APP_PORT;
   const [userInfo, setUserInfo] = useState({
     username: "",
     profile_pic: "",
   });
 
   const getData = async (username) => {
+   
     const data = await LoadProfileRoom(username);
-    const userData = await data;
+    const userData = data;
     if (userData) {
-      if (!userData.profilePublicData) {
-        setCustomProfileData(null);
+      if(!userData){
+        return console.log('no user found in PROFILE Component');
+        
+      }
+      if (!userData.profileBio) {
+        setCustomProfileData(false);
+      }else{
+        setCustomProfileData(true)
       }
       setUserDataExists(true);
       console.log(userData.profilePic);
@@ -38,18 +48,62 @@ const Profile = () => {
         profile_pic: userData.profilePic,
         userPageInfo: userData.profileContent,
       });
-      console.log(userData);
+     
     } else {
       console.log("no data");
       setUserDataExists(false);
       return;
     }
   };
-  useEffect(() => {
-    getData(username);
-  }, [navigate, username]);
+
+  const handleFormSubmit = async () => {
+    const params = {
+      profession,
+      education,
+      profileBio,
+      username: userLoginInfo.username,
+    };
+    const response = await axios
+      .post(`${PORT}/updateUserProfile`, params)
+      .then((res) => {
+        const success = res.success;
+        if(success){
+          getData();
+          console.log('we did it!');
+          setCustomProfileData(!customProfileData);
+          setUserDataExists(true)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+const editYourProfile =async()=>{
+  console.log('customProfileData',customProfileData);
+  console.log('switchToggle',switchToggle);
+  console.log('isEditing',isEditing);
   
+  if(username === userLoginInfo.username){
+    setCustomProfileData(!customProfileData)
+    setSwitchToggle(!switchToggle);
+    setIsEditing(!isEditing)
+
+  }else{
+    setSwitchToggle(!switchToggle)
+  }
+}
+  
+  useEffect(()=>{
+    console.log("URL changed:", location.pathname);
+
+    getData(username)
+
+  },[location.pathname])
   useEffect(() => {
+   
+    if(isEditing){
+      return;
+    }
     if (userLoginInfo.username === username) {
       setPersonalProfile(true);
       !userDataExists ? getData(username) : console.log(userInfo);
@@ -59,7 +113,7 @@ const Profile = () => {
     }
 
     // eslint-disable-next-line
-  }, [personalProfile, userLoginInfo.username]);
+  }, [personalProfile, userLoginInfo.username,getData]);
   return (
     <>
       <Header />
@@ -83,19 +137,35 @@ const Profile = () => {
           </div>
           <div id={styles.username_switch_wrapper}>
             <h2>@{userInfo.username.toUpperCase()}</h2>
-            <img
-              src={!switchToggle ? SwitchOn : SwitchOff}
-              onClick={() => setSwitchToggle(!switchToggle)}
-              id={styles.button_svg_toggle}
-              alt="Description"
-            />
+            {personalProfile && (
+              <>
+                <img
+                  src={!switchToggle ? SwitchOn : SwitchOff}
+                  onClick={editYourProfile}
+                  id={styles.button_svg_toggle}
+                  alt="Description"
+                />
+                {isEditing && <p>..editing</p>}
+              </>
+            )}
+            {!personalProfile && (
+              <img
+                src={!switchToggle ? SwitchOn : SwitchOff}
+                onClick={() => setSwitchToggle(!switchToggle)}
+                id={styles.button_svg_toggle}
+                alt="Description"
+              />
+            )}
           </div>
         </div>
         {personalProfile && !customProfileData && (
           <>
-            <AboutMe 
-            setEducation={setEducation} 
-            setProfileBio={setProfileBio}/>
+            <AboutMe
+              setEducation={setEducation}
+              setProfileBio={setProfileBio}
+              setProfession={setProfession}
+              handleFormSubmit={handleFormSubmit}
+            />
           </>
         )}
       </div>

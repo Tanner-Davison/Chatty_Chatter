@@ -31,7 +31,7 @@
 
   background-color: rgb(0, 0, 0);
   height: fit-content;
-  width: 90vw;
+  width: 60vw;
   z-index: 159;
 }
 form {
@@ -289,7 +289,7 @@ p {
   }
   textarea {
     position: relative;
-    width: 81vw;
+    width: 95%;
     height: auto;
   }
   .profile_content {

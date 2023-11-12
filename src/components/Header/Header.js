@@ -57,6 +57,12 @@ const Header = ({
     //eslint-disable-next-line
   }, []);
   return (
+
+    <>
+    {
+      usernameLocal &&(
+
+        
     <div
       className={
         currentLocation === "http://localhost:3000/"
@@ -66,13 +72,12 @@ const Header = ({
       <div className={"logo-wrapper"}>
         <div className={"logo_and_menu_button_wrapper"}>
           <h1 className={"logo-font"}>Chatty Chatter</h1>
-          {usernameLocal && (
             <button
               className={"menu_header_wrapper"}
               onClick={() => setMenuOpen(!menuOpen)}>
               <MenuRoundedIcon />
             </button>
-          )}
+          
         </div>
         {menuOpen && (
           <ul className={"navLinks"}>
@@ -186,6 +191,10 @@ const Header = ({
         </div>
       )}
     </div>
+    
+    )
+     }
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import styles from "../Profile.module.css";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
-const AboutMe = ({setEducation, setProfileBio}) => {
+const AboutMe = ({ setEducation, setProfileBio, handleFormSubmit, setProfession }) => {
   return (
     <div className={styles.profile_form_wrapper}>
       <form id={styles.profile_form}>
@@ -16,7 +16,7 @@ const AboutMe = ({setEducation, setProfileBio}) => {
               id="aboutme"
               className={styles.about_me}
               onChange={(e) => setProfileBio(e.target.value)}
-              placeholder="I work as a software engineer for adobe ..."
+              placeholder=" I work as a software engineer @ adobe ..."
               rows="7"
               maxLength={255}></textarea>
           </label>
@@ -27,8 +27,9 @@ const AboutMe = ({setEducation, setProfileBio}) => {
               </span>
               <input
                 id={"radioInput"}
-                require={false}
+                require={'false'}
                 className={styles.proffesion_input}
+                onChange={(e)=>setProfession(e.target.value)}
                 type="text"
                 maxLength={25}
                 placeholder=" ex:) Developer ..."
@@ -51,6 +52,7 @@ const AboutMe = ({setEducation, setProfileBio}) => {
                   id={"radioInput"}
                   require={false}
                   name={"education"}
+                  value={'highschool'}
                   className={styles.occupation_education_input}
                   onChange={(e) => setEducation(e.target.value)}
                   type="radio"
@@ -63,6 +65,7 @@ const AboutMe = ({setEducation, setProfileBio}) => {
                 <input
                   id={"radioInput"}
                   name={"education"}
+                  value={'2+ years'}
                   onChange={(e) => setEducation(e.target.value)}
                   require={false}
                   className={styles.occupation_education_input}
@@ -77,6 +80,7 @@ const AboutMe = ({setEducation, setProfileBio}) => {
                   id={"desireInput"}
                   onChange={(e) => setEducation(e.target.value)}
                   require={false}
+                  value={'4+ years'}
                   name={"education"}
                   className={styles.occupation_education_input}
                   type="radio"
@@ -85,7 +89,10 @@ const AboutMe = ({setEducation, setProfileBio}) => {
                 />
               </label>
             </div>
-            <button type={"submit"} id={styles.about_me_button}>
+            <button
+              type={"submit"}
+              id={styles.about_me_button}
+              onClick={handleFormSubmit}>
               Submit
             </button>
           </div>

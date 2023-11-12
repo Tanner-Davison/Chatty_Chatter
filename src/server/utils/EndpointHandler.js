@@ -302,4 +302,31 @@ module.exports = {
       });
     }
   },
+ updateProfileVariables: async (req, res) => {
+  const { profession, education, username, profileBio } = req.body;
+
+  try {
+    // Check if the user exists
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+      // User not found
+      return res.status(404).send({ error: 'User not found.' });
+    }
+
+    const id = user._id;
+
+    // Update multiple fields in the user profile
+    await User.updateOne({ _id: id }, { $set: { profession, education, profileBio } });
+
+    return res.status(200).send({ success: true });
+  } catch (err) {
+    // Log the error for debugging
+    console.error('Error updating profile:', err);
+
+    // Send a more meaningful error response
+    return res.status(500).send({ error: 'Internal server error.' });
+  }
+}
+
 };

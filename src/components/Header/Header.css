@@ -356,10 +356,10 @@
     max-height: 50px;
     height: fit-content;
     margin: 0px;
-    border-radius: 25px;
+    border-radius: 12px;
     border: 2px ridge silver;
     align-items: center;
-    justify-content: flex-start;
+       justify-content: center;
   }
 
   .create_room_container {

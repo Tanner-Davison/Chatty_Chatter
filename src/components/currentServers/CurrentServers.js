@@ -10,6 +10,7 @@ import PublicRoomsCreated from "./RoomOptions/PublicRoomsCreated";
 import PrivateRoomsCreated from "./RoomOptions/PrivateRoomsMade";
 import RoomsToExplore from "./RoomOptions/RoomsToExplore";
 import SubscribedList from "./RoomOptions/SubscribedList.js";
+import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 const CurrentServers = () => {
   const { setMainAccess, setSocket, socket, userLoginInfo } =
     useContext(LoginContext);
@@ -68,58 +69,59 @@ const CurrentServers = () => {
     <>
       <Header socket={socket} handleRoomButtonClick={handleRoomButtonClick} />
       <div className={`room-container`}>
-        {newUserToggle && <h1>Enter main room to get started!</h1>}
         <div
           className={
             newUserToggle ? `main-room-wrapper new-user` : "main-room-wrapper"
-          }>
-          
-        </div>
+          }></div>
 
-        <div className={'room_item_wrapper'}>{
-          <>
-          <button
-            className={"main-room-button"}
-            onClick={() => handleRoomButtonClick(mainRoom)}>
-            <p> Public - Room </p>
-          </button>
-            <SubscribedList
-              key={roomsJoined._id}
-              handleRoomButtonClick={handleRoomButtonClick}
-              roomsJoined={roomsJoined}
-              username={userLoginInfo.username}
+        <div className={"room_item_wrapper"}>
+          {newUserToggle && (
+            <em id={'new_user_server_message'}>
+              Create A hub to unlock the features!
+            </em>
+          )}
+          {
+            <>
+              <button
+                className={"main-room-button"}
+                onClick={() => handleRoomButtonClick(mainRoom)}>
+                <span><ForumRoundedIcon/> </span> 
+                <br></br> <p>Community-hub</p>
+              </button>
+              <SubscribedList
+                key={roomsJoined._id}
+                handleRoomButtonClick={handleRoomButtonClick}
+                roomsJoined={roomsJoined}
+                username={userLoginInfo.username}
+              />
+            </>
+          }
+
+          {
+            <PublicRoomsCreated
+              key={roomsCreated._id + "16"}
+              handleClick={handleRoomButtonClick}
+              roomsCreated={roomsCreated}
+              allRoomsData={allRoomsData}
             />
-          </>
-        }
-      
-      
-        {
-          <PublicRoomsCreated
-            key={roomsCreated._id + "16"}
-            handleClick={handleRoomButtonClick}
-            roomsCreated={roomsCreated}
-            allRoomsData={allRoomsData}
-          />
-        }
-        {
-          <PrivateRoomsCreated
-            key={roomsCreated._id + "12"}
-            handleClick={handleRoomButtonClick}
-            roomsCreated={roomsCreated}
-            allRoomsData={allRoomsData}
-          />
-        }
-        {
-          <RoomsToExplore
-            key={roomsCreated._id + "1"}
-            handleClick={handleRoomButtonClick}
-            roomsCreated={roomsCreated}
-          />
-        }
+          }
+          {
+            <PrivateRoomsCreated
+              key={roomsCreated._id + "12"}
+              handleClick={handleRoomButtonClick}
+              roomsCreated={roomsCreated}
+              allRoomsData={allRoomsData}
+            />
+          }
+          {
+            <RoomsToExplore
+              key={roomsCreated._id + "1"}
+              handleClick={handleRoomButtonClick}
+              roomsCreated={roomsCreated}
+            />
+          }
         </div>
       </div>
-    
-
     </>
   );
 };
