@@ -1,12 +1,12 @@
 .room-wrapper-main-room {
-  display: flex;
-  height: auto;
-  flex-direction: column;
-  align-items: center;
-  min-height:84vh;
-  justify-content: center;
-  background-color: #161a1d;
-  padding-bottom: 50px;
+      display: flex;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    min-height: 84vh;
+    justify-content: flex-start;
+    background-color: #161a1d;
+    padding-bottom: 50px;
 }
 
 .all-messages p {
@@ -398,7 +398,8 @@
     /* width: 55vw; */
     max-height: 75vh;
     min-width: 551px;
-        min-height: 59vh;
+        
+        min-height: 75vh;
     overflow-y: scroll;
     overflow-X:hidden ;
     scroll-behavior: smooth;
@@ -700,10 +701,10 @@ h1 {
   .all-messages {
      display: flex;
     width: -1%;
-    max-height: 38vh;
+    min-height: 64vh;
+    max-height: 67vh;
     min-width: 92vw;
     /* max-width: 104vw; */
-    min-height: 59vh;
     justify-self: flex-end;
     padding: 0px 10px 10px 10px;
   }

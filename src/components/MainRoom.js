@@ -366,7 +366,7 @@ const checkList = async () => {
       <div className="room-wrapper-main-room">
         <div className={"all-messages"} ref={messagesStartRef}>
           <div className="room_name">
-            <h2>
+            <h2 style={{textTransform:'capitalize'}}>
               {lastRoom
                 ? roomData.room_name
                 : String.fromCodePoint(0x1f449) +
@@ -377,6 +377,7 @@ const checkList = async () => {
           </div>
           {isPrivateRoom && (
             <PrivateRoomAccess
+              style={{textTransform:'capitalize'}}
               roomData={roomData}
               setIsPrivateRoom={setIsPrivateRoom}
             />

@@ -35,28 +35,28 @@ const Profile = () => {
     username: "",
     profile_pic: "",
   });
-const addFriend = async () => {
-  const params = {
-    username: userLoginInfo.username,
-    friend: username,
+  const addFriend = async () => {
+    const params = {
+      username: userLoginInfo.username,
+      friend: username,
+    };
+    await axios
+      .post(`${PORT}/addFriend`, params)
+      .then((res) => {
+        console.log(res);
+        const { success } = res.data;
+        if (success) {
+          console.log("friend was added ");
+          setFriendAdded(true);
+        } else {
+          console.log("friend removed");
+          setFriendAdded(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  await axios
-    .post(`${PORT}/addFriend`, params)
-    .then((res) => {
-      console.log(res);
-      const { success } = res.data;
-      if (success) {
-        console.log("friend was added ");
-        setFriendAdded(true);
-      } else {
-        console.log("friend removed");
-        setFriendAdded(false);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
   const getData = async (username) => {
     const data = await LoadProfileRoom(username);
     const userData = data;
