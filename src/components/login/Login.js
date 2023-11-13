@@ -93,28 +93,32 @@ const Login = () => {
   };
   const handleLoginSuccess = async (event) => {
     event.preventDefault();
-    setUsername(username.toLowerCase());
-    try {
-      const findUser = await axios.post(`http://localhost:3001/login`, {
-        username: username.toLowerCase(),
-        password: password,
-      });
-      const userExist = await findUser.data;
-      if (userExist.username === username.toLowerCase()) {
-        const storedUsername = userExist.username;
-        console.log(userExist.profilePic.url);
-        setLoginFailed(false);
-        sessionStorage.setItem("active_user", JSON.stringify(userExist));
-        sessionStorage.setItem("username", JSON.stringify(storedUsername));
-        createUserInfo();
-        submitHandler();
-      } else {
+    if(!username || !password){
+    return setErrorCss('error-css')
+    }
+      setUsername(username.toLowerCase());
+      try {
+        const findUser = await axios.post(`http://localhost:3001/login`, {
+          username: username.toLowerCase(),
+          password: password,
+        });
+        const userExist = await findUser.data;
+        if (userExist.username === username.toLowerCase()) {
+          const storedUsername = userExist.username;
+          console.log(userExist.profilePic.url);
+          setLoginFailed(false);
+          sessionStorage.setItem("active_user", JSON.stringify(userExist));
+          sessionStorage.setItem("username", JSON.stringify(storedUsername));
+          createUserInfo();
+          submitHandler();
+        } else {
+          setLoginFailed(true);
+        }
+      } catch (error) {
+        console.error(`error @ LOGIN--> HandleLoginSuccess`);
         setLoginFailed(true);
       }
-    } catch (error) {
-      console.error(`error @ LOGIN--> HandleLoginSuccess`);
-      setLoginFailed(true);
-    }
+   
   };
   const submitHandler = () => {
     navigate("/currentservers");
@@ -140,7 +144,7 @@ const Login = () => {
       setErrorCss("");
       setResError("");
     }
-  }, [loginFailed]);
+  }, [loginFailed, errorCss]);
   useEffect(() => {
     image && console.log(image);
     //eslint-disable-next-line
@@ -189,7 +193,7 @@ const Login = () => {
                       <button
                         id={"closeBtn"}
                         type="button"
-                        onClick={loginmodal}>
+                        onClick={()=>{setErrorCss('');setResError(''); setLoginFailed(false);loginmodal()}}>
                         Login
                       </button>
                     </div>
@@ -234,20 +238,21 @@ const Login = () => {
                               setLoginFailed(false);
                               setResError(null);
                             }}
-                            id="username-id"
+                           
                           />
                         </div>
                         <div className={"input-box-container"}>
                           <label htmlFor="password-id"> Password</label>
                           <input
                             id={"login-input"}
+                            required={'true'}
                             type="text"
                             name={"passwordInput"}
                             onKeyDown={handleKeyDown}
                             onChange={(event) => {
                               setPassword(event.target.value);
                             }}
-                            id="password-id"
+                           
                           />
                         </div>
                       </div>
@@ -335,7 +340,7 @@ const Login = () => {
                               setUsername(event.target.value);
                               setLoginFailed(false);
                             }}
-                            id="username-id"
+                           
                           />
                         </div>
                         <div className={"input-box-container"}>
@@ -348,7 +353,7 @@ const Login = () => {
                             onChange={(event) => {
                               setPassword(event.target.value);
                             }}
-                            id="password-id"
+                           
                           />
                         </div>
                       </div>
@@ -360,7 +365,7 @@ const Login = () => {
                         )}
                     </div>
                     <div className={"login-button-wrapper"}>
-                      <button id="closeBtn" type="button" onClick={loginmodal}>
+                      <button id="closeBtn" type="button" onClick={()=>{setErrorCss('');setResError(''); setLoginFailed(false); loginmodal()}}>
                         close
                       </button>
                       <button

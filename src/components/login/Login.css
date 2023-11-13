@@ -77,11 +77,12 @@ h2 {
     margin-bottom: 20px;
 }
 .error-message > p {
-  position: relative;
-  bottom: -10px;
-  color: rgb(247, 143, 7);
-  font-weight: 700;
-  align-self: flex-end;
+   position: relative;
+    bottom: -49px;
+    left: -17px;
+    color: rgb(247, 143, 7);
+    font-weight: 700;
+    align-self: flex-end;
 }
 .error-message {
   position: absolute;
@@ -389,10 +390,11 @@ input::file-selector-button:hover {
   display: flex;
   background-color: snow;
   border-radius: 10px;
+  border:1px inset ;
   color: red;
   padding: 10px;
-  font-weight: 700;
-  box-shadow: 0px 0px 10px 3px red;
+  font-weight: 600;
+
 }
 @media only screen and (max-width: 600px) {
   .speach-bubble {

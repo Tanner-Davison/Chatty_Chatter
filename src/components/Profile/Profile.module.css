@@ -1,5 +1,5 @@
 .profile_main_container {
-    position: relative;
+ position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -8,7 +8,7 @@
     /* min-height: 35vw; */
     /* max-height: 35vw; */
     margin-left: 1px;
-    margin-top: 1rem;
+    margin-top: -2rem;
     margin-bottom: -52px;
     padding-top: 3rem;
     flex-direction: column;

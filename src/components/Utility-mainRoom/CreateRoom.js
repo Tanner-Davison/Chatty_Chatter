@@ -216,7 +216,9 @@ const CreateRoom = (props) => {
                         style={{ color: "rgb(255, 255, 119)" }}
                       />
                       <p>
-                        Private rooms are Locked to the public by a custom key.
+                        Private rooms are password protected.
+                        <br></br> <br></br>
+                        duplicate room names are allowed.
                       </p>
                     </slot>
                   </slot>
