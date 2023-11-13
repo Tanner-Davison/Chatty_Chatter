@@ -398,6 +398,7 @@
     /* width: 55vw; */
     max-height: 75vh;
     min-width: 551px;
+        min-height: 59vh;
     overflow-y: scroll;
     overflow-X:hidden ;
     scroll-behavior: smooth;

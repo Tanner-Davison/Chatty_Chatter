@@ -49,7 +49,7 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
         
         }
 		 const handlLoginSuccess = (room,event) => {
-		
+      
        setMainAccess(true);
        setSocket(io.connect(`${PORT}`), {
          reconnection: true,

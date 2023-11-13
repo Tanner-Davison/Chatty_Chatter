@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext,useEffect } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import searchGlass from "./svgs/searchGlass.svg";
 import CategoryOptions from "./categoryOptions";
@@ -35,6 +35,7 @@ const CreateRoom = (props) => {
   const navigate = useNavigate();
   const currentTime = getCurrentTime();
   let { room } = useParams();
+
   const myUsername = userLoginInfo.username;
 
 
@@ -46,17 +47,23 @@ const CreateRoom = (props) => {
     }
   }
   const handlePrivateErrorState = (category, privateRoomName, password) => {
-    if(category!== ''  && privateRoomName !== '' && password!==''){
+    if(category !== ''  && privateRoomName !== '' && password !==''){
       return false;
     }else{
       return true;
     }
   };
   const handleNameVerification = () => {
+    
     if (publicRoomName.length > 1 && publicRoomName.length < 20) {
       setHubNamePass(true);
+      setErrorState(false)
     } else {
       setHubNamePass(false);
+      setErrorState(true)
+    }
+    if(category === ''){
+      setErrorState(true)
     }
   };
   const handlePublicSubmit = async (event) => {
@@ -149,6 +156,11 @@ const CreateRoom = (props) => {
       setIsPasswordVisible(!isPasswordVisible);
     }
   };
+  useEffect(()=>{
+    if(publicRoomName === ''){
+      setHubNamePass(false);
+    }
+  },[publicRoomName])
   return (
     <>
       <Header />
@@ -235,13 +247,22 @@ const CreateRoom = (props) => {
                           src={dropdown}
                           alt={"dropdown-icon"}
                         />{" "}
-                        <label htmlFor="category-list">Category</label>{" "}
+                        <label
+                          htmlFor="category-list"
+                          className={"private-room-inputs error"}>
+                          Category
+                        </label>{" "}
                         <img src={dropdown} alt={"dropdown-icon"} />
                       </div>
                       <select
                         name="Category"
-                        id="category-list"
-                        onChange={(e) => setCategory(e.target.value)}>
+                        className={
+                          errorState ? "category-list error" : "category-list"
+                        }
+                        onChange={(e) => {
+                          setErrorState(false);
+                          setCategory(e.target.value);
+                        }}>
                         <option value="">--Select an option--</option>
                         {categoryKeys.map((key, id) => {
                           const keyValue = CategoryOptions[key];
@@ -256,20 +277,36 @@ const CreateRoom = (props) => {
                         })}
                       </select>
                     </div>
-                    <label htmlFor={"name"}>
+                    <label
+                      htmlFor={"name"}
+                      className={
+                        errorState
+                          ? "private-room-inputs error"
+                          : "private-room-inputs"
+                      }>
                       {" "}
                       Room Name:
                       <input
                         type="text"
                         id="name"
                         placeholder="Enter room name"
-                        onChange={(e) => setPrivateRoomName(e.target.value)}
+                        onChange={(e) => {
+                          setErrorState(false);
+                          setPrivateRoomName(
+                            e.target.value.toLocaleLowerCase()
+                          );
+                        }}
                         value={privateRoomName}
                       />
                     </label>
-                    <div className={"private-room-inputs"}>
+                    <div
+                      className={
+                        errorState
+                          ? "private-room-inputs error"
+                          : "private-room-inputs"
+                      }>
                       <label htmlFor={"room-password"}>
-                          Custom Key:
+                        Custom Key:
                         <span id={"room_visible"}>
                           <input
                             type={isPasswordVisible ? "text" : "password"}
@@ -277,7 +314,10 @@ const CreateRoom = (props) => {
                             value={password}
                             placeholder=" Enter password"
                             autoComplete="off"
-                            onChange={handleInputChange}
+                            onChange={() => {
+                              setErrorState(false);
+                              handleInputChange();
+                            }}
                             onKeyDown={handleKeyPress}
                           />
                           <VisibilityTwoToneIcon
@@ -318,7 +358,10 @@ const CreateRoom = (props) => {
                         <input
                           type="number"
                           value={searchValue}
-                          onChange={(e) => setSearchValue(e.target.value)}
+                          onChange={(e) => {
+                            setErrorState(false);
+                            setSearchValue(e.target.value);
+                          }}
                           placeholder="Public number search(#)"
                         />
                         <button
@@ -378,8 +421,9 @@ const CreateRoom = (props) => {
                       </div>
                       <select
                         name="Category"
-                        id="category-list"
-                        onChange={(e) => setCategory(e.target.value)}>
+                        id={errorState ? 'errorPublicId':'category-list'}
+                        className={errorState ? "errorPublic" : ""}
+                        onChange={(e) => {setErrorState(false); setCategory(e.target.value)}}>
                         <option value="">--Select an option--</option>
                         {categoryKeys.map((key, id) => {
                           const keyValue = CategoryOptions[key];
@@ -396,8 +440,13 @@ const CreateRoom = (props) => {
                         <input
                           type="text"
                           id={"hub-name"}
+                          className={errorState ? "errorPublic" : ""}
                           placeholder={'"Name the public Hub"'}
-                          onChange={(e) => setPublicRoomName(e.target.value)}
+                          onChange={(e) =>
+                            {setErrorState(false); setPublicRoomName(
+                              e.target.value.toLocaleLowerCase()
+                            )}
+                          }
                           maxLength="24"
                           required={true}
                         />

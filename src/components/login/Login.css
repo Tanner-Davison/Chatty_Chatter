@@ -97,12 +97,12 @@ h2 {
   z-index: 1;
 }
 .create_user.image-added {
-  max-height: 600px;
+  max-height: 650px;
 }
 .image-previewer {
   position: relative;
-  height: 100px;
-  width: 100px;
+  height: auto;
+  width: auto;
   display: flex;
 }
 #login-input {
@@ -110,8 +110,8 @@ h2 {
 }
 .image-previewer.image-exist {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: auto;
+  height: auto;
   display: flex;
   border-radius: 40px;
   border: -3px ridge #20262d;

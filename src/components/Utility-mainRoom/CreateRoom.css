@@ -166,6 +166,15 @@ display: flex;
   justify-self: center;
   align-items: center;
 }
+#errorPublicId{
+  border:2px solid red;
+}
+.errorPublic{
+  border:2px solid red;
+}
+.category-list.error{
+  border:2px solid red;
+}
 .category-container {
   display: flex;
   flex-direction: column;
@@ -329,6 +338,12 @@ display: flex;
 .private-room-inputs input {
   min-width: 40vw;
   padding-left: 10px;
+}
+ .name.error{
+  border:2px solid red;
+}
+.private-room-inputs.error input{
+  border:2px solid red;
 }
 .private-room-inputs label {
   display: flex;

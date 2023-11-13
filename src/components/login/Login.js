@@ -292,7 +292,7 @@ const Login = () => {
                             src={URL.createObjectURL(image)}
                             alt={"img-previewer"}
                             height={100}
-                            width={100}></img>
+                            ></img>
                         )}
                       </div>
                     </div>
