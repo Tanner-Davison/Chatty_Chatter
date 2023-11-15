@@ -314,11 +314,11 @@ const CreateRoom = (props) => {
                             value={password}
                             placeholder=" Enter password"
                             autoComplete="off"
-                            onChange={() => {
+                            onChange={(e) => {
                               setErrorState(false);
-                              handleInputChange();
+                              handleInputChange(e);
                             }}
-                            onKeyDown={handleKeyPress}
+                            onKeyDown={(e)=>handleKeyPress(e)}
                           />
                           <VisibilityTwoToneIcon
                             onClick={() =>
