@@ -24,12 +24,7 @@ require("dotenv").config();
 const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
 const PORT_ = process.env.PORT_;
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: "https://main--dancing-quokka-6b5001.netlify.app",
-    methods: ["GET", "POST", "DELETE"],
-  })
-);
+
 // Create Server
 const server = http.createServer(app);
 
@@ -59,7 +54,7 @@ app.post("/checkIfFriends", EndpointHandler.checkIfAlreadyFriend);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://main--dancing-quokka-6b5001.netlify.app",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "DELETE"],
   },
   reconnection: true,
