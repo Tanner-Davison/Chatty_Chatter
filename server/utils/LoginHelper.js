@@ -6,7 +6,7 @@ const authenticateUser = require("./auth");
 require("dotenv").config();
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 const CLOUDINARY_SECRET = process.env.CLOUDINARY_SECRET;
-const MONGO_DB_KEY = process.env.MONGO_DB_KEY;
+const DATABASE_URL = process.env.DATABASE_URL;
 const bcrypt = require("bcrypt");
 const saltRounds = 5;
 const storage = new CloudinaryStorage({
@@ -17,8 +17,8 @@ const storage = new CloudinaryStorage({
   },
 });
 const parser = multer({ storage: storage });
-const connectDB = require("./db");
-connectDB(MONGO_DB_KEY);
+const connectDB = require("../db");
+connectDB(DATABASE_URL);
 cloudinary.config({
   cloud_name: "dezclgtpg",
   api_key: CLOUDINARY_API_KEY,
