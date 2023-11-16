@@ -54,7 +54,7 @@ app.post("/checkIfFriends", EndpointHandler.checkIfAlreadyFriend);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://technotes-api.onrender.com",
     methods: ["GET", "POST", "DELETE"],
   },
   reconnection: true,
