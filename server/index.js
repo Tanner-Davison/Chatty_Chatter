@@ -20,7 +20,11 @@ mongoose.set("debug", true);
 const DATABASE_URL = process.env.DATABASE_URL;
 const PORT = process.env.PORT;
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(
+  cors({
+    origin: "https://protected-retreat-97985-3868e60ef0db.herokuapp.com/",
+  })
+);
 app.use(express.json());
 app.use((req, res, next) => {
   console.log("Request body:", req.body);
