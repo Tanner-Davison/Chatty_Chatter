@@ -317,6 +317,7 @@ const CreateRoom = (props) => {
                             onChange={(e) => {
                               setErrorState(false);
                               handleInputChange(e);
+                              
                             }}
                             onKeyDown={(e)=>handleKeyPress(e)}
                           />
