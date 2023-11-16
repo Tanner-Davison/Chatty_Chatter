@@ -1,5 +1,4 @@
-import { useContext, useState, useEffect } from "react";
-import { LoginContext } from "../../contexts/LoginContext";
+import {  useState, useEffect } from "react";
 import styles from "./RoomsCreated.module.css";
 import axios from "axios";
 import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowRightTwoTone";
@@ -10,7 +9,6 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 const RoomsToExplore = ({ roomsCreated, handleClick }) => {
-  const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
   const [roomsPerPage, setRoomsPerPage] = useState(4);
   const [currentIndex, setCurrentIndex] = useState(0);

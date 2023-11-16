@@ -7,7 +7,6 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
-import { yellow } from "@mui/material/colors";
 const Header = ({
   joinRoom,
   roomChanger,

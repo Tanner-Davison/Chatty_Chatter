@@ -7,7 +7,6 @@ import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import CompressIcon from "@mui/icons-material/Compress";
 import Tooltip from "@mui/material/Tooltip";
 import RoomHelper from "./RoomHelper";
-import { getAllRoomsData } from "../AllRoomsJoined.js";
 
 const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
   const { userLoginInfo } = useContext(LoginContext);

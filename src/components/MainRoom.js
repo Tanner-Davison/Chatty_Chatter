@@ -27,17 +27,14 @@ const MainRoom = () => {
   const lastRoom = sessionStorage.getItem("lastRoom");
   const initialRoom = lastRoom ? parseInt(lastRoom, 10) : 1;
   const [room, setRoom] = useState(initialRoom);
-  const [inRoom, setInroom] = useState(initialRoom);
   const [searchName, setSearchName] = useState('');
   const sessionImage = sessionStorage.getItem("image-url");
   const sessionCloudinary_id = sessionStorage.getItem("cloudinary_id");
   const messagesStartRef = useRef(null);
   const PORT = process.env.REACT_APP_PORT;
-  const currentTime = getCurrentTimeJSX();
   const [roomIsEmpty, setRoomIsEmpty] = useState(false);
   const [isSocketConnected, setSocketConnected] = useState(false);
   const [isPrivateRoom, setIsPrivateRoom] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [typing, setTyping] = useState(false);
   const typingTimeoutId = useRef(null);
   const currentTyper = useRef(null);
@@ -96,7 +93,6 @@ const MainRoom = () => {
     });
     
     navigate(`/chatroom/${room}`);
-    setLoading(true);
     const messages = await loadRoomHistory(room);
     setRoomData(messages.allRoomData);
     if (messages.allRoomData.private_room) {
@@ -139,9 +135,7 @@ const MainRoom = () => {
       }
     } 
     sessionStorage.setItem("lastRoom", room.toString());
-    setInroom(room);
     setMessageRecieved(messages.messageHistory);
-    setLoading(false);
     if (messages.messageHistory.length <= 0) {
       setRoomIsEmpty(true);
     }
@@ -233,12 +227,12 @@ const checkList = async () => {
     setMessage("");
   };
 
-  const deleteRoom = () => {
-    setMainAccess(true);
-    socket.emit("deleteRoom", { room, username: userLoginInfo.username });
-    socket.off("join_room", room);
-    navigate("/currentServers");
-  };
+  // const deleteRoom = () => {
+  //   setMainAccess(true);
+  //   socket.emit("deleteRoom", { room, username: userLoginInfo.username });
+  //   socket.off("join_room", room);
+  //   navigate("/currentServers");
+  // };
 
   const leaveRoom = () => {
     socket.emit("leaveroom", room);
@@ -353,7 +347,7 @@ const checkList = async () => {
   useEffect(()=>{
     console.log(searchName)
     console.log(room);
-    
+    //eslint-disable-next-line
   },[searchName])
   return (
     <>

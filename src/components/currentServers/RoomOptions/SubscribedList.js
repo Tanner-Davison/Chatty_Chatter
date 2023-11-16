@@ -7,9 +7,6 @@ import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import CompressIcon from "@mui/icons-material/Compress";
 import Tooltip from "@mui/material/Tooltip";
 import SubscribeListHelper from "./SubscribeListHelper.js";
-import { getAllRoomsData } from "../AllRoomsJoined.js";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import pin from "./assets/pin.png";
 const SubscribedList = ({ roomsJoined, handleRoomButtonClick, allRoomsData }) => {
   const { userLoginInfo } = useContext(LoginContext);

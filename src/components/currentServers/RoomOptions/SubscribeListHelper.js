@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import { LoginContext } from "../../contexts/LoginContext.js";
-import { useNavigate } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { Tilt } from "react-tilt";
@@ -25,11 +24,7 @@ const SubscribeListHelper = ({
   setCurrentIndex,
   pin,
 }) => {
-  const {
-    error,
-    setJoinedListResponse,
-    removeRoom,
-  } = useJoinedList();
+  const { error, setJoinedListResponse, removeRoom } = useJoinedList();
   const { userLoginInfo } = useContext(LoginContext);
   const PORT = process.env.REACT_APP_PORT;
   const [roomLength, setRoomLength] = useState("");
@@ -121,6 +116,7 @@ const SubscribeListHelper = ({
 
   useEffect(() => {
     getRoomData();
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -185,7 +181,9 @@ const SubscribeListHelper = ({
 
         {displayAllUsers && (
           <p className={`${styles.room_members} ${styles._active}`}>
-            {roomLength }<br></br>{roomLength === 1 ? 'User': 'Users'}
+            {roomLength}
+            <br></br>
+            {roomLength === 1 ? "User" : "Users"}
           </p>
         )}
       </div>

@@ -4,13 +4,11 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { io } from "socket.io-client";
 const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
 	const { setMainAccess, setSocket, userLoginInfo } =
 	useContext(LoginContext);
-	const navigate = useNavigate();
     const PORT = process.env.REACT_APP_PORT;
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [password, setPassword] = useState("");

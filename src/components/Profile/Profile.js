@@ -1,15 +1,12 @@
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import { useEffect, useState, useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import { LoadProfileRoom } from "./LoadProfileRoom";
 import AboutMe from "./profilesections/AboutMe";
 import styles from "./Profile.module.css";
-import SwitchOn from "./svgs/SwitchOn.svg";
-import SwitchOff from "./svgs/SwitchOff.svg";
 import axios from "axios";
 import DotsComp from "./profilesections/dotsComp";
-import Switch from "@mui/material/Switch";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -17,7 +14,6 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import ProfilePage from "./profilesections/profilePage.js";
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
-  const navigate = useNavigate();
   const [switchToggle, setSwitchToggle] = useState(false);
   const [userDataExists, setUserDataExists] = useState("");
   const [personalProfile, setPersonalProfile] = useState(null);
@@ -91,7 +87,7 @@ const Profile = () => {
       profileBio,
       username: userLoginInfo.username,
     };
-    const response = await axios
+    await axios
       .post(`${PORT}/updateUserProfile`, params)
       .then((res) => {
         const { success } = res;
@@ -126,6 +122,7 @@ const Profile = () => {
     console.log("URL changed:", location.pathname);
 
     getData(username);
+    //eslint-disable-next-line
   }, [location.pathname]);
   useEffect(() => {
     if (userLoginInfo.username === username) {

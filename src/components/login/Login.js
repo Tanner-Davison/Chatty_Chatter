@@ -4,7 +4,6 @@ import { LoginContext } from "../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import axios from "axios";
-import speachBubble from "./svgs/speachBubble.svg";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 

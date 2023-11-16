@@ -21,7 +21,6 @@ import Button from "@mui/material/Button";
 const CreateRoom = (props) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [privateRoom, setPrivateRoom] = useState(false);
-  const [roomTaken, setRoomTaken] = useState(Boolean);
   const [privateRoomName, setPrivateRoomName] = useState("");
   const [publicRoomName, setPublicRoomName] = useState("");
   const [searchValue, setSearchValue] = useState("");
@@ -139,9 +138,12 @@ const CreateRoom = (props) => {
       `${PORT}/availability/${numberValue}`
     );
     if (roomAvailable.data.room === true) {
-      setRoomTaken(true);
+      // setRoomTaken(true);
+      console.log('room taken');
+      
     } else if (roomAvailable.data.room === false) {
-      setRoomTaken(false);
+      console.log('roomAvailable');
+      
       navigate(`/createroom/${numberValue}`);
     }
   };
