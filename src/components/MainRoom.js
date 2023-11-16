@@ -3,7 +3,7 @@ import { LoginContext } from "./contexts/LoginContext";
 import "./MainRoom.css";
 import "../App.css";
 import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
-import getCurrentTime, { getCurrentTimeJSX } from "./Utility-mainRoom/getTime";
+import getCurrentTime from "./Utility-mainRoom/getTime";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
@@ -343,6 +343,7 @@ const checkList = async () => {
     if(joinedListResponse === 'User has already joined this room.'){
       setFollowing(true)
     }
+    //eslint-disable-next-line
   }, [following, joinedListResponse]);
   useEffect(()=>{
     console.log(searchName)
