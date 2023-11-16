@@ -9,7 +9,7 @@ import SwitchOn from "./svgs/SwitchOn.svg";
 import SwitchOff from "./svgs/SwitchOff.svg";
 import axios from "axios";
 import DotsComp from "./profilesections/dotsComp";
-import ProfilePage from "./profilesections/ProfilePage";
+import ProfilePage from "./profilesections/ProfilePage.js";
 import Switch from "@mui/material/Switch";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
