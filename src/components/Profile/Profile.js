@@ -9,12 +9,12 @@ import SwitchOn from "./svgs/SwitchOn.svg";
 import SwitchOff from "./svgs/SwitchOff.svg";
 import axios from "axios";
 import DotsComp from "./profilesections/dotsComp";
-import ProfilePage from "./profilesections/ProfilePage.js";
 import Switch from "@mui/material/Switch";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import ProfilePage from "./profilesections/profilePage.js";
 const Profile = () => {
   const { userLoginInfo } = useContext(LoginContext);
   const navigate = useNavigate();
