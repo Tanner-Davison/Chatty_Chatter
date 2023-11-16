@@ -54,7 +54,7 @@ app.post("/checkIfFriends", EndpointHandler.checkIfAlreadyFriend);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://main--dancing-quokka-6b5001.netlify.app/",
     methods: ["GET", "POST", "DELETE"],
   },
   reconnection: true,
@@ -115,7 +115,8 @@ io.on("connection", (socket) => {
 
    socket.on("send_message", async (data) => {
      try {
-       const addedMessageToUser = await dbController.updateUsersMessage(data);
+      
+       await dbController.updateUsersMessage(data);
        let room = await dbController.findRoom(data.room);
 
        if (!room) {
