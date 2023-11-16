@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { Tilt } from "react-tilt";
+import axios from "axios";
 import styles from "./RoomsCreated.module.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
-import { TryDeleteOne } from "../AllRoomsJoined.js";
 import useJoinedList from "../../Utility-mainRoom/useJoinedList.js";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 const SubscribeListHelper = ({
@@ -21,19 +21,19 @@ const SubscribeListHelper = ({
   handleRoomButtonClick,
   roomData,
   roomName,
+
   setCurrentIndex,
   pin,
 }) => {
   const {
-    addRoom,
     error,
-    joinedListResponse,
     setJoinedListResponse,
     removeRoom,
   } = useJoinedList();
   const { userLoginInfo } = useContext(LoginContext);
+  const PORT = process.env.REACT_APP_PORT;
+  const [roomLength, setRoomLength] = useState("");
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
-  const navigate = useNavigate();
 
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
@@ -69,7 +69,31 @@ const SubscribeListHelper = ({
       console.error(error);
     }
   };
-
+  const getRoomData = async () => {
+    const roomToSend = [995664];
+    try {
+      const response = await axios.get(`${PORT}/get_all_rooms`, {
+        params: { rooms: roomToSend },
+      });
+      if (response.data) {
+        console.log(response.data);
+        const roomData = response.data;
+        const filteredRoom = roomData.filter(
+          (rooms) => rooms.room_number === room.room
+        );
+        if (filteredRoom) {
+          console.log(filteredRoom);
+          const singleRoom = filteredRoom[0];
+          setRoomLength(singleRoom.users_in_room.length);
+          return;
+        }
+        return console.log("no data");
+      }
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error(error);
+    }
+  };
   const handleClick = (event) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
@@ -84,7 +108,7 @@ const SubscribeListHelper = ({
     event.stopPropagation();
     handleClose(event);
     await filterRooms((prev) =>
-    prev.filter((room) => room.room !== roomToRemove)
+      prev.filter((room) => room.room !== roomToRemove)
     );
 
     return;
@@ -95,7 +119,9 @@ const SubscribeListHelper = ({
     return SetDisplayAllUsers(!displayAllUsers);
   };
 
- 
+  useEffect(() => {
+    getRoomData();
+  }, []);
 
   return (
     <Tilt options={defaultOptions}>
@@ -133,7 +159,6 @@ const SubscribeListHelper = ({
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}>
-            
             {!room.private_room && (
               <MenuItem onClick={() => handleRoomButtonClick(room.room)}>
                 Visit Room
@@ -144,8 +169,7 @@ const SubscribeListHelper = ({
               Unsubscribe
             </MenuItem>
 
-            <MenuItem
-              onClick={(event) => handleRemoveRoom(event, room.room)}>
+            <MenuItem onClick={(event) => handleRemoveRoom(event, room.room)}>
               Hide Room
             </MenuItem>
           </Menu>
@@ -158,9 +182,10 @@ const SubscribeListHelper = ({
         {!displayAllUsers && (
           <p className={styles.room_members}>{room.roomName}</p>
         )}
+
         {displayAllUsers && (
-          <p className={`${styles.room_members} ${styles._active} `}>
-            {room.users_in_room.length + ` members`}
+          <p className={`${styles.room_members} ${styles._active}`}>
+            {roomLength }<br></br>{roomLength === 1 ? 'User': 'Users'}
           </p>
         )}
       </div>

@@ -314,9 +314,9 @@ const CreateRoom = (props) => {
                             value={password}
                             placeholder=" Enter password"
                             autoComplete="off"
-                            onChange={() => {
+                            onChange={(event) => {
                               setErrorState(false);
-                              handleInputChange();
+                              handleInputChange(event);
                             }}
                             onKeyDown={handleKeyPress}
                           />

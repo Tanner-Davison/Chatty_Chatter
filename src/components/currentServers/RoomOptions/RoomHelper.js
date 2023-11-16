@@ -173,7 +173,7 @@ const RoomHelper = ({
           <div
             className={`${styles.parent_of_diplayed_room_members} ${styles._active}`}>
             <span id={styles.number_span}>{usersInRoom}</span>
-            <p id={styles.child_of_room_members}>{` members`}</p>
+            <p id={styles.child_of_room_members}>{usersInRoom === 1 ? `member`:'members'}</p>
           </div>
         )}
       </div>

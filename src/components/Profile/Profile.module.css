@@ -15,7 +15,14 @@
     flex-wrap: wrap;
     overflow: hidden;
 }
-
+#password-span{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left:-25px;
+  gap:10px;
+}
 .profile_content {
 position: relative;
     display: flex;
@@ -297,40 +304,44 @@ background-color: transparent;
 
 }
 .friend_wrapper.remove{
-  border-color: red;
-   position: relative;
-  display:flex;
-  gap:10px;
-  overflow: hidden;
-  background-color: transparent;
-  border-radius:10px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: row;
-  max-width: 150px;
-  transition:transform .3s ease-in;
+position: relative;
+    display: flex;
+    gap: 10px;
+    height: 45px;
+    padding: 15px;
+    overflow: hidden;
+    background-color: #3983a1;
+    border-radius: 18px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: row;
+    min-width: 100px;
+    border: 3px groove rgb(60 172 196);
+    transition:  transform 1s ease-in-out,border-radius .3s ease-in-out, min-width .5s ease-out;
 }
 .friend_wrapper{
   
-  position: relative;
-  display:flex;
-  gap:10px;
-  height: 35px;
-  overflow: hidden;
-  background-color: transparent;
-  border-radius:10px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: row;
-  min-width: 200px;
-  border: 3px groove rgb(34, 202, 34);
-  transition:transform .3s ease-in-out;
+position: relative;
+    display: flex;
+    gap: 10px;
+    height: 45px;
+    padding: 15px;
+    overflow: hidden;
+    background-color: #3983a1;
+    border-radius: 18px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: row;
+    min-width: 100px;
+    border: 3px groove rgb(60 172 196);
+    transition:  transform 1s ease-in-out,border-radius .3s ease-in-out, min-width .5s ease-out;
   
 }
 .friend_wrapper:hover{
  
+  border-radius:2px;
   cursor:pointer;
 }
 @keyframes unfriend {

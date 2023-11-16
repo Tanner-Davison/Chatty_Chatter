@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import axios from "axios";
 import speachBubble from "./svgs/speachBubble.svg";
-
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const { createUserInfo, setLoginPortalToggle } = useContext(LoginContext);
@@ -21,6 +22,8 @@ const Login = () => {
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
   const [parentBackgroundColor, setParentBackgroundColor] = useState("gray");
   const [resError, setResError] = useState(null);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleSignUp = () => {
@@ -38,6 +41,9 @@ const Login = () => {
 
   const handleCreateUser = async (event) => {
     event.preventDefault();
+    if(!username || !password){
+      return setLoginFailed(true)
+    }
     if (username.length > 1) {
       setUsername(username.toLowerCase());
     } else {
@@ -82,7 +88,7 @@ const Login = () => {
             console.log("Status code:", error.response?.status);
 
             setParentBackgroundColor("gray");
-            setResError("Username taken. please login or change name.");
+            setResError(true);
             setErrorCss("error-css");
             return;
           }
@@ -94,7 +100,8 @@ const Login = () => {
   const handleLoginSuccess = async (event) => {
     event.preventDefault();
     if(!username || !password){
-    return setErrorCss('error-css')
+    return setLoginFailed(true)
+    
     }
       setUsername(username.toLowerCase());
       try {
@@ -113,6 +120,7 @@ const Login = () => {
           submitHandler();
         } else {
           setLoginFailed(true);
+          setResError(true)
         }
       } catch (error) {
         console.error(`error @ LOGIN--> HandleLoginSuccess`);
@@ -147,6 +155,8 @@ const Login = () => {
   }, [loginFailed, errorCss]);
   useEffect(() => {
     image && console.log(image);
+    console.log(resError);
+    
     //eslint-disable-next-line
   }, []);
   return (
@@ -193,7 +203,9 @@ const Login = () => {
                       <button
                         id={"closeBtn"}
                         type="button"
-                        onClick={()=>{setErrorCss('');setResError(''); setLoginFailed(false);loginmodal()}}>
+                        onClick={() => {
+                          loginmodal();
+                        }}>
                         Login
                       </button>
                     </div>
@@ -238,22 +250,36 @@ const Login = () => {
                               setLoginFailed(false);
                               setResError(null);
                             }}
-                           
                           />
                         </div>
                         <div className={"input-box-container"}>
-                          <label htmlFor="password-id"> Password</label>
-                          <input
-                            id={"login-input"}
-                            required={'true'}
-                            type="text"
-                            name={"passwordInput"}
-                            onKeyDown={handleKeyDown}
-                            onChange={(event) => {
-                              setPassword(event.target.value);
-                            }}
-                           
-                          />
+                          <label htmlFor="password-id" id={"login-input"}>
+                            Password
+                            <span id={"password-span"}>
+                              {!passwordVisible && (
+                                <VisibilityOff
+                                  id={"visibility"}
+                                  onClick={() => setPasswordVisible(true)}
+                                />
+                              )}
+                              {passwordVisible && (
+                                <Visibility
+                                  id={"visibility"}
+                                  onClick={() => setPasswordVisible(false)}
+                                />
+                              )}{" "}
+                              <input
+                                id={"login-input"}
+                                required={"true"}
+                                type={passwordVisible ? "text" : "password"}
+                                name={"passwordInput"}
+                                onKeyDown={handleKeyDown}
+                                onChange={(event) => {
+                                  setPassword(event.target.value);
+                                }}
+                              />
+                            </span>
+                          </label>
                         </div>
                       </div>
 
@@ -280,7 +306,8 @@ const Login = () => {
                         style={
                           image
                             ? {
-                                animation: "imageExistAnimation .8s ease-in-out",
+                                animation:
+                                  "imageExistAnimation .8s ease-in-out",
                               }
                             : {}
                         }
@@ -291,8 +318,7 @@ const Login = () => {
                             loading={"lazy"}
                             src={URL.createObjectURL(image)}
                             alt={"img-previewer"}
-                            height={100}
-                            ></img>
+                            height={100}></img>
                         )}
                       </div>
                     </div>
@@ -303,7 +329,7 @@ const Login = () => {
                       <button
                         id="closeBtn"
                         type="button"
-                        onClick={toggleSignUp}>
+                        onClick={()=>{setLoginFailed(false); toggleSignUp()}}>
                         Back
                       </button>
                       <button
@@ -340,21 +366,36 @@ const Login = () => {
                               setUsername(event.target.value);
                               setLoginFailed(false);
                             }}
-                           
                           />
                         </div>
                         <div className={"input-box-container"}>
-                          <label htmlFor="password-id"> Password </label>
-                          <input
-                            id={"login-input"}
-                            type="text"
-                            onKeyDown={handleKeyDown}
-                            name={"passwordInput"}
-                            onChange={(event) => {
-                              setPassword(event.target.value);
-                            }}
-                           
-                          />
+                          <label htmlFor="password-id" id={"login-input"}>
+                            Password
+                            <span id={"password-span"}>
+                              {!passwordVisible && (
+                                <VisibilityOff
+                                  id={"visibility"}
+                                  onClick={() => setPasswordVisible(true)}
+                                />
+                              )}
+                              {passwordVisible && (
+                                <Visibility
+                                  id={"visibility"}
+                                  onClick={() => setPasswordVisible(false)}
+                                />
+                              )}{" "}
+                              <input
+                                id={"login-input"}
+                                required={"true"}
+                                type={passwordVisible ? "text" : "password"}
+                                name={"passwordInput"}
+                                onKeyDown={handleKeyDown}
+                                onChange={(event) => {
+                                  setPassword(event.target.value);
+                                }}
+                              />
+                            </span>
+                          </label>
                         </div>
                       </div>
                       {loginFailed &&
@@ -365,7 +406,15 @@ const Login = () => {
                         )}
                     </div>
                     <div className={"login-button-wrapper"}>
-                      <button id="closeBtn" type="button" onClick={()=>{setErrorCss('');setResError(''); setLoginFailed(false); loginmodal()}}>
+                      <button
+                        id="closeBtn"
+                        type="button"
+                        onClick={() => {
+                          setErrorCss("");
+                          setResError("");
+                          setLoginFailed(false);
+                          loginmodal();
+                        }}>
                         close
                       </button>
                       <button

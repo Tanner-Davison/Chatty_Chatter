@@ -11,7 +11,7 @@ import { getAllRoomsData } from "../AllRoomsJoined.js";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import pin from "./assets/pin.png";
-const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
+const SubscribedList = ({ roomsJoined, handleRoomButtonClick, allRoomsData }) => {
   const { userLoginInfo } = useContext(LoginContext);
   const [gridView, setGridView] = useState(false);
   const [roomsPerPage, setRoomsPerPage] = useState(4);
@@ -130,6 +130,7 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
               }`;
 
               return (
+              
                 <div key={room._id}>
                   <SubscribeListHelper
                     loading={"lazy"}
@@ -142,7 +143,9 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick }) => {
                     handleRoomButtonClick={handleRoomButtonClick}
                     roomName={room.roomName}
                     roomData={subscribedRooms}
+                    
                     pin={pin}
+                 
                   />
                 </div>
               );
