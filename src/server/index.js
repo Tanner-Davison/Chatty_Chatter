@@ -54,7 +54,7 @@ app.post("/checkIfFriends", EndpointHandler.checkIfAlreadyFriend);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://main--dancing-quokka-6b5001.netlify.app/",
+    origin: "https://main--dancing-quokka-6b5001.netlify.app",
     methods: ["GET", "POST", "DELETE"],
   },
   reconnection: true,
