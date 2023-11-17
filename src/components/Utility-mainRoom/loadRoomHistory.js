@@ -1,4 +1,4 @@
-const PORT = '';
+const PORT = process.env.PORT;
 const loadRoomHistory = async (room) => {
   try {
     console.log(room);
