@@ -55,12 +55,10 @@ const MainRoom = () => {
     typingTimeoutId
   );
   const getSearchResults = async () => {
-    console.log('running wa')
     try {
       const response = await axios.get(
         `${PORT}/searchByNameFinder/${searchName}`
       );
-      console.log("pussies");
       setMainAccess(true);
       setSearchName('')
       return response.data;
@@ -71,7 +69,7 @@ const MainRoom = () => {
     }
   };
   const joinRoom = async () => {
-   console.log(typeof searchName)
+ 
     if(searchName !== ''){
       const searchRoomData = await getSearchResults();
       if(searchRoomData){
@@ -81,7 +79,6 @@ const MainRoom = () => {
         setRoom(stringRoom)
         setSearchName('')
         setMessageRecieved(stringMessages)
-        console.log('this is working bitches')
         return navigate(`/chatroom/${stringRoom}`)
       }
     }
@@ -96,7 +93,6 @@ const MainRoom = () => {
     const messages = await loadRoomHistory(room);
     setRoomData(messages.allRoomData);
     if (messages.allRoomData.private_room) {
-      console.log(messages.allRoomData);
       try {
         const privateAccessExist = await axios.get(
           `${PORT}/api/users/${userLoginInfo.username}/rooms`
@@ -106,7 +102,6 @@ const MainRoom = () => {
           (roomData) => parseInt(roomData.room) === parseInt(room)
         );
         if (listContainsRoom) {
-          console.log('this is running')
           setIsPrivateRoom(false);
           setFollowing(true)
         } else {
@@ -141,7 +136,6 @@ const MainRoom = () => {
     }
   };
   const roomNameChanger =(event)=>{
-    console.log('running')
     setSearchName(event.target.value)
   }
   const roomChanger = (event) => {
@@ -156,9 +150,8 @@ const MainRoom = () => {
     if (addTheRoom) {
       setJoinedListResponse(addTheRoom);
       if(addTheRoom === 'User Joined the room successfully.'){}
-      console.log("running in addTheRoom");
       setFollowing(true);
-      return console.log(joinedListResponse);
+      return;
     }
     if (error) {
       console.error(error);
@@ -171,10 +164,7 @@ const MainRoom = () => {
       roomData.room_name
     );
     if (removeFromList) {
-      console.log("this is running right here");
-      console.log(joinedListResponse);
       setJoinedListResponse(removeFromList);
-      console.log("running in handeRemoveRoomBtn");
       setFollowing(false);
     }
     if (error) {
@@ -192,7 +182,7 @@ const checkList = async () => {
     );
 
     if (listContainsRoom) {
-      console.log("public list found room inside check list");
+      
       setFollowing(true);
     } else {
       setFollowing(false);
@@ -259,13 +249,6 @@ const checkList = async () => {
         setMessageRecieved(data.messageHistory);
         setSocketConnected(true);
       };
-
-      if (socket.recovered) {
-        console.log("Socket has recovered. Fetching room history...");
-      } else {
-        console.log("New or unrecoverable session.");
-      }
-
       await fetchRoomHistoryData();
     };
 
@@ -286,7 +269,6 @@ const checkList = async () => {
       setMainAccess(true);
     });
      socket.on("receive_data", async (roomFoundData) => {
-       console.log("socket found data");
        setRoomData(roomFoundData);
        setRoom(roomFoundData.room_number);
      });
@@ -332,10 +314,8 @@ const checkList = async () => {
   }, [messageRecieved, typing]);
   useEffect(() => {
     if (joinedListResponse === "room was removed successfully") {
-      console.log("running in useEffect as false");
       return setFollowing(false);
     } else if (joinedListResponse === "User joined the room successfully.") {
-      console.log("running in useEffect as true");
       return setFollowing(true);
     }else if(joinedListResponse === ''){
       checkList();
@@ -345,11 +325,11 @@ const checkList = async () => {
     }
     //eslint-disable-next-line
   }, [following, joinedListResponse]);
-  useEffect(()=>{
-    console.log(searchName)
-    console.log(room);
-    //eslint-disable-next-line
-  },[searchName])
+  // useEffect(()=>{
+  //   console.log(searchName)
+  //   console.log(room);
+  //   //eslint-disable-next-line
+  // },[searchName])
   return (
     <>
       <Header

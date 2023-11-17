@@ -84,8 +84,6 @@ const CreateRoom = (props) => {
     axios
       .post(`${PORT}/new-room-creation`, newPublicRoom)
       .then((res) => {
-        console.log("made it this fat lol");
-        console.log(res.data.message);
         if (res.data.message === "room created") {
           navigate(`/currentservers`);
         }
@@ -137,12 +135,8 @@ const CreateRoom = (props) => {
     const roomAvailable = await axios.get(
       `${PORT}/availability/${numberValue}`
     );
-    if (roomAvailable.data.room === true) {
-      // setRoomTaken(true);
-      console.log('room taken');
       
-    } else if (roomAvailable.data.room === false) {
-      console.log('roomAvailable');
+  if (roomAvailable.data.room === false) {
       
       navigate(`/createroom/${numberValue}`);
     }

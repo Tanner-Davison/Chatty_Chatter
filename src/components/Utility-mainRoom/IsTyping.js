@@ -13,7 +13,6 @@ export const useIsTyping = (socket, username, room, typingTimeoutId) => {
         room: room,
       };
       socket.emit("typing", data);
-      console.log("working");
     }, 300);
   };
 

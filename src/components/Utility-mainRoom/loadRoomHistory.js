@@ -6,7 +6,6 @@ const loadRoomHistory = async (room) => {
     const data = await response.json();
 
     if (data.messageHistory) {
-      console.log(data.messageHistory);
       return {
         messageHistory: data.messageHistory,
         private: data.private_room,
