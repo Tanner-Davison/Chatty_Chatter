@@ -809,9 +809,7 @@ h1 {
   }
 
   .status_container {
-    position: absolute;
+    position: relative;
     display: flex;
-    bottom: -114px;
-    left: 25%;
   }
 }
