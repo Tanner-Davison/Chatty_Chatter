@@ -1,8 +1,8 @@
-
+const PORT = process.env.PORT;
 const loadRoomHistory = async (room) => {
   try {
     console.log(room);
-    const response = await fetch(`http://localhost:3001/roomHistory/${room}`);
+    const response = await fetch(`${PORT}/roomHistory/${room}`);
     const data = await response.json();
 
     if (data.messageHistory) {
