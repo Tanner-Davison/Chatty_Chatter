@@ -61,7 +61,7 @@ const Login = () => {
       //     image: formData.get("image"),
       //   });
       axios
-        .post(`/${PORT}/signup`, formData)
+        .post(`${PORT}/signup`, formData)
         .then((res) => {
           const data = res.data;
 
@@ -105,7 +105,7 @@ const Login = () => {
     }
       setUsername(username.toLowerCase());
       try {
-        const findUser = await axios.post(`/${PORT}/login`, {
+        const findUser = await axios.post(`${PORT}/login`, {
           username: username.toLowerCase(),
           password: password,
         });
