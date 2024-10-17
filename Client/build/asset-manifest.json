@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bba31bc5.css",
+    "main.js": "/static/js/main.ddb3773a.js",
+    "static/js/453.6fc33b34.chunk.js": "/static/js/453.6fc33b34.chunk.js",
+    "static/media/speachBubble.svg": "/static/media/speachBubble.6f0fe68ad66d77fcaf24.svg",
+    "index.html": "/index.html",
+    "static/media/build.svg": "/static/media/build.50a9dafaa9413c2abdc0da13907f2dcd.svg",
+    "static/media/dropdown.svg": "/static/media/dropdown.830043185934f0a4c75f4541253c3a31.svg",
+    "static/media/searchGlass.svg": "/static/media/searchGlass.9edc2d29d71a85899fe2ab93294770a2.svg",
+    "static/media/locked.svg": "/static/media/locked.cea0dd8e63f0e5c30099be38cf1978a6.svg",
+    "static/media/toggleOff.svg": "/static/media/toggleOff.aaebe36a449b4e7145380dd76de078e7.svg",
+    "static/media/toggleOn.svg": "/static/media/toggleOn.c8c430be91efa0b80a0ef78c2aaae63c.svg",
+    "static/media/lockOpen.svg": "/static/media/lockOpen.feb382f4f638b42b4d2ef33c7489524d.svg",
+    "static/media/SendIcon.svg": "/static/media/SendIcon.fbc82a3bfab784c4f0f7df050489c35a.svg",
+    "main.bba31bc5.css.map": "/static/css/main.bba31bc5.css.map",
+    "main.ddb3773a.js.map": "/static/js/main.ddb3773a.js.map",
+    "453.6fc33b34.chunk.js.map": "/static/js/453.6fc33b34.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bba31bc5.css",
+    "static/js/main.ddb3773a.js"
+  ]
+}
