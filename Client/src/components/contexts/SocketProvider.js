@@ -2,8 +2,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import io from "socket.io-client";
 
-const PORT = process.env.REACT_APP_API_URL || 5000;
-
 const SocketContext = createContext();
 
 export const useSocket = () => {

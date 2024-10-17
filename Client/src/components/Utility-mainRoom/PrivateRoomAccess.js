@@ -9,7 +9,6 @@ import { io } from "socket.io-client";
 const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
 	const { setMainAccess, setSocket, userLoginInfo } =
 	useContext(LoginContext);
-  const PORT = process.env.REACT_APP_API_URL || 5000;
 
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [password, setPassword] = useState("");

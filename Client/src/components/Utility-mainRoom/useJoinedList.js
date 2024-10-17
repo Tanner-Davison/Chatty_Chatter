@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const useJoinedList = () => {
-const PORT = process.env.REACT_APP_API_URL || 5000;
 
   const [error, setError] = useState(null);
   const [joinedListResponse, setJoinedListResponse] = useState("");

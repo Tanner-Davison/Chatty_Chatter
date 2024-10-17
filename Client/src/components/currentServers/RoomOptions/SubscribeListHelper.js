@@ -28,7 +28,6 @@ const SubscribeListHelper = ({
   const { userLoginInfo } = useContext(LoginContext);
   const [roomLength, setRoomLength] = useState("");
   const [displayAllUsers, SetDisplayAllUsers] = useState(false);
-const PORT = process.env.REACT_APP_API_URL || 5000;
   const defaultOptions = {
     reverse: true, // reverse the tilt direction
     max: 25, // max tilt rotation (degrees)

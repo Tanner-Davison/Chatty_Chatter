@@ -20,7 +20,6 @@ import Message from "./Message.js";
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
     useContext(LoginContext);
-  const PORT = process.env.REACT_APP_API_URL || 5000;
   const [clicked, setClicked] = useState(false);
   const [message, setMessage] = useState("");
   const [messageRecieved, setMessageRecieved] = useState([]);

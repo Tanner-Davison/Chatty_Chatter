@@ -30,7 +30,7 @@ const CreateRoom = (props) => {
   const [hubNamePass, setHubNamePass] = useState(false);
   const [password, setPassword] = useState("");
   const [category, setCategory] = useState("");
-  const PORT = process.env.REACT_APP_API_URL || 5000;
+
   const navigate = useNavigate();
   const currentTime = getCurrentTime();
   let { room } = useParams();

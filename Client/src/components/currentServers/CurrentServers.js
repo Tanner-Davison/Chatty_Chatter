@@ -21,7 +21,7 @@ const CurrentServers = () => {
   const [newUserToggle, setNewUserToggle] = useState(true);
   const [roomsCreated, setRoomsCreated] = useState([]);
   const [allRoomsData, setAllRoomsData] =useState([])
-  const PORT = process.env.REACT_APP_API_URL || 5000;
+
 
   const displayRooms = async () => {
     if (doesUserExist) {

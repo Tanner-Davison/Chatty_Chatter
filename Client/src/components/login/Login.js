@@ -18,7 +18,6 @@ const Login = () => {
   const [image, setImage] = useState(null);
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorCss, setErrorCss] = useState("");
-  const PORT = process.env.REACT_APP_API_URL || 5000 ;
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
   const [parentBackgroundColor, setParentBackgroundColor] = useState("gray");
   const [resError, setResError] = useState(null);
