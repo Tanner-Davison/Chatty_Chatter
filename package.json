@@ -6,7 +6,7 @@
     "start": "concurrently \"npm run start --prefix server\" \"npm run start --prefix client\"",
     "deploy": "npm run build --prefix client && node server/index.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^9.0.1"
   }
 }
