@@ -18,12 +18,12 @@ const Login = () => {
   const [image, setImage] = useState(null);
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorCss, setErrorCss] = useState("");
-  const PORT = ''
+  const PORT = "";
   // const PORT = process.env.PORT;
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
   const [parentBackgroundColor, setParentBackgroundColor] = useState("gray");
   const [resError, setResError] = useState(null);
-    const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,8 +42,8 @@ const Login = () => {
 
   const handleCreateUser = async (event) => {
     event.preventDefault();
-    if(!username || !password){
-      return setLoginFailed(true)
+    if (!username || !password) {
+      return setLoginFailed(true);
     }
     if (username.length > 1) {
       setUsername(username.toLowerCase());
@@ -100,34 +100,32 @@ const Login = () => {
   };
   const handleLoginSuccess = async (event) => {
     event.preventDefault();
-    if(!username || !password){
-    return setLoginFailed(true)
-    
+    if (!username || !password) {
+      return setLoginFailed(true);
     }
-      setUsername(username.toLowerCase());
-      try {
-        const findUser = await axios.post(`${PORT}/login`, {
-          username: username.toLowerCase(),
-          password: password,
-        });
-        const userExist = await findUser.data;
-        if (userExist.username === username.toLowerCase()) {
-          const storedUsername = userExist.username;
-          console.log(userExist.profilePic.url);
-          setLoginFailed(false);
-          sessionStorage.setItem("active_user", JSON.stringify(userExist));
-          sessionStorage.setItem("username", JSON.stringify(storedUsername));
-          createUserInfo();
-          submitHandler();
-        } else {
-          setLoginFailed(true);
-          setResError(true)
-        }
-      } catch (error) {
-        console.error(`error @ LOGIN--> HandleLoginSuccess`);
+    setUsername(username.toLowerCase());
+    try {
+      const findUser = await axios.post(`${PORT}/login`, {
+        username: username.toLowerCase(),
+        password: password,
+      });
+      const userExist = await findUser.data;
+      if (userExist.username === username.toLowerCase()) {
+        const storedUsername = userExist.username;
+        console.log(userExist.profilePic.url);
+        setLoginFailed(false);
+        sessionStorage.setItem("active_user", JSON.stringify(userExist));
+        sessionStorage.setItem("username", JSON.stringify(storedUsername));
+        createUserInfo();
+        submitHandler();
+      } else {
         setLoginFailed(true);
+        setResError(true);
       }
-   
+    } catch (error) {
+      console.error(`error @ LOGIN--> HandleLoginSuccess`);
+      setLoginFailed(true);
+    }
   };
   const submitHandler = () => {
     navigate("/currentservers");
@@ -157,7 +155,7 @@ const Login = () => {
   useEffect(() => {
     image && console.log(image);
     console.log(resError);
-    
+
     //eslint-disable-next-line
   }, []);
   return (
@@ -184,7 +182,8 @@ const Login = () => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                      }}>
+                      }}
+                    >
                       Welcome ,
                     </span>
                     Where the chatter gets chatty! Build your own chat hubs, set
@@ -197,7 +196,8 @@ const Login = () => {
                       <button
                         id="closeBtn"
                         type="button"
-                        onClick={toggleSignUp}>
+                        onClick={toggleSignUp}
+                      >
                         New User
                       </button>
 
@@ -206,7 +206,8 @@ const Login = () => {
                         type="button"
                         onClick={() => {
                           loginmodal();
-                        }}>
+                        }}
+                      >
                         Login
                       </button>
                     </div>
@@ -231,7 +232,8 @@ const Login = () => {
                       }
                       style={{
                         backgroundColor: parentBackgroundColor,
-                      }}>
+                      }}
+                    >
                       <div className={"userLoginElements"}>
                         <div className={"input-box-container"}>
                           {resError && (
@@ -312,14 +314,16 @@ const Login = () => {
                               }
                             : {}
                         }
-                        onAnimationEnd={handleAnimationEnd}>
+                        onAnimationEnd={handleAnimationEnd}
+                      >
                         {image && (
                           <img
                             id={"image-self"}
                             loading={"lazy"}
                             src={URL.createObjectURL(image)}
                             alt={"img-previewer"}
-                            height={100}></img>
+                            height={100}
+                          ></img>
                         )}
                       </div>
                     </div>
@@ -330,13 +334,18 @@ const Login = () => {
                       <button
                         id="closeBtn"
                         type="button"
-                        onClick={()=>{setLoginFailed(false); toggleSignUp()}}>
+                        onClick={() => {
+                          setLoginFailed(false);
+                          toggleSignUp();
+                        }}
+                      >
                         Back
                       </button>
                       <button
                         id="closeBtn"
                         type="submit"
-                        onClick={handleCreateUser}>
+                        onClick={handleCreateUser}
+                      >
                         Submit
                       </button>
                     </div>
@@ -415,13 +424,15 @@ const Login = () => {
                           setResError("");
                           setLoginFailed(false);
                           loginmodal();
-                        }}>
+                        }}
+                      >
                         close
                       </button>
                       <button
                         id="closeBtn"
                         type="submit"
-                        onClick={handleLoginSuccess}>
+                        onClick={handleLoginSuccess}
+                      >
                         Login
                       </button>
                     </div>

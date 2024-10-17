@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { LoginContext } from "./contexts/LoginContext";
-import "./MainRoom.css";
-import "../App.css";
-import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
-import getCurrentTime from "./Utility-mainRoom/getTime";
-import io from "socket.io-client";
-import { useNavigate } from "react-router-dom";
-import Header from "./Header/Header";
-import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
-import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
-import TypingComp from "./Utility-mainRoom/TypingComp";
-import PrivateRoomAccess from "./Utility-mainRoom/PrivateRoomAccess.js";
-import axios from "axios";
-import useJoinedList from "./Utility-mainRoom/useJoinedList.js";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import IndeterminateCheckBoxOutlinedIcon from "@mui/icons-material/IndeterminateCheckBoxOutlined";
 import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
+import axios from "axios";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+import "../App.css";
+import Header from "./Header/Header";
+import "./MainRoom.css";
+import { useIsTyping } from "./Utility-mainRoom/IsTyping.js";
+import PrivateRoomAccess from "./Utility-mainRoom/PrivateRoomAccess.js";
+import TypingComp from "./Utility-mainRoom/TypingComp";
+import getCurrentTime from "./Utility-mainRoom/getTime";
+import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
+import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
+import useJoinedList from "./Utility-mainRoom/useJoinedList.js";
+import { LoginContext } from "./contexts/LoginContext";
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
     useContext(LoginContext);
@@ -325,11 +325,7 @@ const checkList = async () => {
     }
     //eslint-disable-next-line
   }, [following, joinedListResponse]);
-  // useEffect(()=>{
-  //   console.log(searchName)
-  //   console.log(room);
-  //   //eslint-disable-next-line
-  // },[searchName])
+
   return (
     <>
       <Header
