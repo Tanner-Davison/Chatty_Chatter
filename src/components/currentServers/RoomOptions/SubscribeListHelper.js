@@ -67,7 +67,7 @@ const SubscribeListHelper = ({
   const getRoomData = async () => {
     const roomToSend = [995664];
     try {
-      const response = await axios.get(`${PORT}/get_all_rooms`, {
+      const response = await axios.get(`/get_all_rooms`, {
         params: { rooms: roomToSend },
       });
       if (response.data) {

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "./server/index.js",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -29,7 +30,7 @@
   },
   "scripts": {
     "go": "react-scripts start",
-    "start": "node ./server/index.js && npm build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -54,5 +55,8 @@
   },
   "engines": {
     "node": "20.8.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

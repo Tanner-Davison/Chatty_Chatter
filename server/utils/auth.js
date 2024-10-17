@@ -2,6 +2,7 @@ const { User } = require("./Schemas"); // your User model
 const bcrypt = require("bcrypt");
 
 const authenticateUser = async (username, password) => {
+  console.log("this is running")
   try {
     const userExist = await User.findOne({ username: username });
     if (userExist) {

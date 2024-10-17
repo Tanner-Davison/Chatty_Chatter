@@ -9,7 +9,7 @@ const PORT = process.env.REACT_APP_PORT;
 
    const checkJoinedRoomList = async (username, roomToCheck) => {
      try {
-       const response = await axios.get(`${PORT}/checkUsersJoinedList`, {
+       const response = await axios.get(`/checkUsersJoinedList`, {
          params: { username, roomToCheck }, // Use params to send data in the request
        });
        setJoinedListResponse(response.data.message)
@@ -21,7 +21,7 @@ const PORT = process.env.REACT_APP_PORT;
    };
    const checkJoinedRoomListOnLoad = async (username, roomToCheck,roomNumber) => {
      try {
-       const response = await axios.get(`${PORT}/checkUsersJoinedListOnLoad`, {
+       const response = await axios.get(`/checkUsersJoinedListOnLoad`, {
          params: { username, roomToCheck }, // Use params to send data in the request
        });
        setJoinedListResponse(response.data.message);
@@ -36,7 +36,7 @@ const PORT = process.env.REACT_APP_PORT;
       // console.log(roomNumber)
       // console.log(roomName)
         try{
-            const sendData = await axios.post(`${PORT}/addRoomToUser`,{
+            const sendData = await axios.post(`/addRoomToUser`,{
                     username, 
                     roomNumber, 
                     roomName,
@@ -58,7 +58,7 @@ const PORT = process.env.REACT_APP_PORT;
     const removeRoom = async(username, roomNumber, roomName) =>{
      
         try{
-            const sendData = await axios.post(`${PORT}/removeJoinedRoom`,
+            const sendData = await axios.post(`/removeJoinedRoom`,
             {
                 username,
                 roomNumber,

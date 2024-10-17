@@ -37,7 +37,7 @@ const Profile = () => {
       friend: username,
     };
     await axios
-      .post(`${PORT}/addFriend`, params)
+      .post(`/addFriend`, params)
       .then((res) => {
         console.log(res);
         const { success } = res.data;
@@ -88,7 +88,7 @@ const Profile = () => {
       username: userLoginInfo.username,
     };
     await axios
-      .post(`${PORT}/updateUserProfile`, params)
+      .post(`/updateUserProfile`, params)
       .then((res) => {
         const { success } = res;
         if (success) {

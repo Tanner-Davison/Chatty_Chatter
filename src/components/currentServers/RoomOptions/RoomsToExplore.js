@@ -21,7 +21,7 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   const [listOfRooms, setListOfRooms] = useState("");
   const getRoomData = async () => {
     try {
-      const response = await axios.get(`${PORT}/get_all_rooms`, {
+      const response = await axios.get(`/get_all_rooms`, {
         params: { rooms: roomValues },
       });
       if (response.data) {

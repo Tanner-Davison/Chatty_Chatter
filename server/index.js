@@ -20,9 +20,24 @@ mongoose.set("debug", true);
 const DATABASE_URL = process.env.DATABASE_URL;
 const PORT = process.env.PORT;
 
+const allowedOrigins = [
+  "http://localhost:3000/",
+  "http://localhost:3001/",
+  "http://localhost:5000/",
+  "https://protected-retreat-97985-3868e60ef0db.herokuapp.com"
+];
+
 app.use(
   cors({
-    origin: "https://protected-retreat-97985-3868e60ef0db.herokuapp.com/",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Allow requests with no origin (like mobile apps)
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true); // Allow the origin
+      } else {
+        console.log(origin)
+        callback(new Error("Not allowed by CORS")); // Block the origin
+      }
+    },
   })
 );
 app.use(express.json());
@@ -72,7 +87,7 @@ app.get("/*", function (req, res) {
 });
 const io = new Server(server, {
   cors: {
-    origin: "https://localhost:3000",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "DELETE"],
   },
   reconnection: true,
@@ -225,6 +240,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
+server.listen(5000, () => {
+  console.log(`Server is running on ${5000}`);
 });

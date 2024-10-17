@@ -18,8 +18,7 @@ const Login = () => {
   const [image, setImage] = useState(null);
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorCss, setErrorCss] = useState("");
-  const PORT = "";
-  // const PORT = process.env.PORT;
+  const PORT = process.env.PORT || "http://localhost:5000"
   const userExists = JSON.parse(sessionStorage.getItem("username")) || null;
   const [parentBackgroundColor, setParentBackgroundColor] = useState("gray");
   const [resError, setResError] = useState(null);
@@ -62,7 +61,7 @@ const Login = () => {
       //     image: formData.get("image"),
       //   });
       axios
-        .post(`${PORT}/signup`, formData)
+        .post(`/signup`, formData)
         .then((res) => {
           const data = res.data;
 
@@ -105,7 +104,7 @@ const Login = () => {
     }
     setUsername(username.toLowerCase());
     try {
-      const findUser = await axios.post(`${PORT}/login`, {
+      const findUser = await axios.post(`/login`, {
         username: username.toLowerCase(),
         password: password,
       });

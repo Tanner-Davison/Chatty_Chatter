@@ -3,9 +3,18 @@
   color: white;
 }
 :is(p) {
-  text-transform: capitalize;
   font-family: sans-serif;
   font-weight: 800;
+  text-transform: none !important;
+}
+:is(a) {
+  font-family: sans-serif;
+  font-weight: 800;
+  color:darkblue
+  
+}
+a:hover {
+  color: black;
 }
 :is(em) {
   color: rgb(10, 203, 233);

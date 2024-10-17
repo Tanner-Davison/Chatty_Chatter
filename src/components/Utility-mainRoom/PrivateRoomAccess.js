@@ -19,7 +19,7 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
        if(password === null || roomData.private_room_password=== null || roomData.room_number=== null){
 		return setIsError(true)
 	   }
-        axios.get(`${PORT}/password_check/`, {
+        axios.get(`/password_check/`, {
             params: {
                 password: password,
                 room: roomData.room_number,

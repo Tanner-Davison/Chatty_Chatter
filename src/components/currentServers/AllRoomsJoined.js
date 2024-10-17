@@ -5,7 +5,7 @@ const PORT = process.env.REACT_APP_PORT;
 const AllRoomsJoined = async (username) => {
   try {
     const roomsArray = await axios.get(
-      `${PORT}/api/users/${username}/rooms`
+      `/api/users/${username}/rooms`
     );
     const data = roomsArray.data;
     console.log(data);
@@ -17,7 +17,7 @@ const AllRoomsJoined = async (username) => {
 };
 const getAllRoomsData = async (username) =>{
   try{
-    const allRoomsCreated = await axios.get(`${PORT}/getAllRoomsUserCreated/${username}`);
+    const allRoomsCreated = await axios.get(`/getAllRoomsUserCreated/${username}`);
     const roomData = allRoomsCreated.data;
     console.log(roomData)
     return roomData ? roomData : [];
@@ -36,7 +36,7 @@ const TryDeleteOne = async (roomId, roomNumber) => {
 
   try {
     console.log(`${PORT}/deleteSingleRoom`);
-    const deleteRequest = await axios.post(`${PORT}/deleteSingleRoom`, {
+    const deleteRequest = await axios.post(`/deleteSingleRoom`, {
       roomId,
       roomNumber,
     });

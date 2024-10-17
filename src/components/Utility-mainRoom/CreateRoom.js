@@ -82,7 +82,7 @@ const CreateRoom = (props) => {
     };
 
     axios
-      .post(`${PORT}/new-room-creation`, newPublicRoom)
+      .post(`/new-room-creation`, newPublicRoom)
       .then((res) => {
         if (res.data.message === "room created") {
           navigate(`/currentservers`);
@@ -121,7 +121,7 @@ const CreateRoom = (props) => {
       imageUrl: userLoginInfo.imageUrl,
       cloudinary: userLoginInfo.cloudinary_id,
     };
-    axios.post(`${PORT}/create-private-room`, newPrivateRoom).then((res) => {
+    axios.post(`/create-private-room`, newPrivateRoom).then((res) => {
       if (res.data.message === "private room created") {
         navigate("/currentservers");
       }
@@ -133,7 +133,7 @@ const CreateRoom = (props) => {
       return;
     }
     const roomAvailable = await axios.get(
-      `${PORT}/availability/${numberValue}`
+      `/availability/${numberValue}`
     );
       
   if (roomAvailable.data.room === false) {

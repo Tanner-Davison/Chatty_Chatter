@@ -1,14 +1,4 @@
-.headerContainer {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px;
-  gap: 5px;
-  background-color: black;
-  width: auto;
-}
+
 .add-hub-icon{
   color: palegreen;
  align-self: center;

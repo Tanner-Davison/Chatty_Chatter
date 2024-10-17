@@ -2,7 +2,7 @@ import axios from "axios"
 const PORT = ''
 
 const LoadProfileRoom =async(username)=>{
-    const profileInfo = await axios.get(`${PORT}/user_info/${username}`);
+    const profileInfo = await axios.get(`/user_info/${username}`);
 
     if(profileInfo.data){
         console.log(profileInfo.data)

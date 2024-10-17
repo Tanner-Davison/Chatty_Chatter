@@ -1,8 +1,8 @@
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import IndeterminateCheckBoxOutlinedIcon from "@mui/icons-material/IndeterminateCheckBoxOutlined";
 import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
 import axios from "axios";
-import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import "../App.css";
@@ -16,6 +16,7 @@ import { loadRoomHistory } from "./Utility-mainRoom/loadRoomHistory";
 import sendIcon from "./Utility-mainRoom/svgs/SendIcon.svg";
 import useJoinedList from "./Utility-mainRoom/useJoinedList.js";
 import { LoginContext } from "./contexts/LoginContext";
+import Message from "./Message.js";
 const MainRoom = () => {
   const { userLoginInfo, mainAccess, setMainAccess, socket, setSocket } =
     useContext(LoginContext);
@@ -57,7 +58,7 @@ const MainRoom = () => {
   const getSearchResults = async () => {
     try {
       const response = await axios.get(
-        `${PORT}/searchByNameFinder/${searchName}`
+        `/searchByNameFinder/${searchName}`
       );
       setMainAccess(true);
       setSearchName('')
@@ -95,9 +96,9 @@ const MainRoom = () => {
     if (messages.allRoomData.private_room) {
       try {
         const privateAccessExist = await axios.get(
-          `${PORT}/api/users/${userLoginInfo.username}/rooms`
+          `/api/users/${userLoginInfo.username}/rooms`
         );
-        const response = privateAccessExist.data.roomsJoined;
+        const response = privateAccessExist?.data.roomsJoined;
         const listContainsRoom = response.find(
           (roomData) => parseInt(roomData.room) === parseInt(room)
         );
@@ -114,7 +115,7 @@ const MainRoom = () => {
     if (messages.allRoomData.private_room === false) {
       try {
         const publicAccess = await axios.get(
-          `${PORT}/api/users/${userLoginInfo.username}/rooms`
+          `/api/users/${userLoginInfo.username}/rooms`
         );
         const roomsJoinedList = publicAccess.data.roomsJoined;
         const isInJoinedList = roomsJoinedList.find(
@@ -174,7 +175,7 @@ const MainRoom = () => {
 const checkList = async () => {
   try {
     const response = await axios.get(
-      `${PORT}/api/users/${userLoginInfo.username}/rooms`
+      `/api/users/${userLoginInfo.username}/rooms`
     );
     const publicAccess = response.data.roomsJoined;
     const listContainsRoom = publicAccess.find(
@@ -388,7 +389,7 @@ const checkList = async () => {
                             navigate(`/profile/${userLoginInfo.username}`)
                           }
                         />
-                        <p className={"message-content"}>{msg.message}</p>
+                        <Message msg={msg}/>
                       </div>
                       <p className={"user"}>{userLoggedIn}</p>
                     </div>
@@ -414,7 +415,7 @@ const checkList = async () => {
                           alt="Profile-Pic"
                           onClick={() => navigate(`/profile/${msg.sentBy}`)}
                         />
-                        <p className={"message-content"}>{msg.message}</p>
+                        <Message msg={msg}/>
                         <p className={"user green"}>
                           {msg.sentBy
                             ? "@" + msg.sentBy.toUpperCase()
