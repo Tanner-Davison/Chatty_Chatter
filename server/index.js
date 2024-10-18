@@ -17,7 +17,7 @@ const mongoose = require("mongoose");
 mongoose.set("debug", true);
 
 // Access environment variables after dotenv has been loaded
-const DATABASE_URL = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 
 const allowedOrigins = [
@@ -35,23 +35,16 @@ app.use((req, res, next) => {
 });
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
-app.get("/*", function(req,res){
-  res.sendFile(
-    path.join(__dirname,"../client/build/index.html"),
-    function(err){
-      if(err){
-        res.status(500).send(err)
-      }
-    }
-  );
-})
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 // Create Server
 const server = http.createServer(app);
 
 // Connect to MongoDB
-connectDB(DATABASE_URL);
+connectDB(MONGODB_URI);
 
 app.get("/roomHistory/:room", EndpointHandler.roomHistory);
 app.get("/user_info/:username", EndpointHandler.userInfo);

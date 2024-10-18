@@ -19,14 +19,13 @@
     "socket.io-client": "^4.7.2",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "go": "react-scripts start",
-     "start": "node server/index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
-    "build": "react-scripts build && (cd ../server && npm install)",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+"scripts": {
+  "go": "react-scripts start",
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
