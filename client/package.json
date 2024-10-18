@@ -17,14 +17,15 @@
     "react-scripts": "^5.0.1",
     "react-tilt": "^1.0.2",
     "socket.io-client": "^4.7.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
-"scripts": {
-  "start": "react-scripts start",
-  "build": "./node_modules/.bin/react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject"
-},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -42,8 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
