@@ -4,29 +4,19 @@
   "description": "<h1>ChattyChatter.com </h1>\r Welcome to the official GitHub repository for the ChatterMatters website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.",
   "main": "index.js",
   "scripts": {
-   "start": "node server/index.js",
-    "dev": "nodemon index.js",
-   "heroku-postbuild": "cd client && npm install --legacy-peer-deps && npm run build"
+    "start": "node server/index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "dependencies": {
-    "axios": "^1.7.7",
-    "bcrypt": "^5.1.1",
-    "cloudinary": "^1.41.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
-    "mongoose": "^8.7.2",
-    "multer": "^1.4.5-lts.1",
-    "multer-storage-cloudinary": "^4.0.0",
-    "socket.io": "^4.8.0"
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
   },
+  "cacheDirectories": [
+    "Client/node_modules"
+  ],
   "devDependencies": {
     "nodemon": "^3.1.7"
   },
-"engines": {
-  "node": "20.x",
-  "npm": "10.x"
-},
   "keywords": [],
   "author": "Tanner Davison",
   "license": "ISC"
