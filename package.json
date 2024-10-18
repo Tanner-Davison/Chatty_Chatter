@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
     "node": "20.x",
     "npm": "10.x"
   },
   "cacheDirectories": [
-    "Client/node_modules"
+    "client/node_modules"
   ],
   "devDependencies": {
     "nodemon": "^3.1.7"
