@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client/build'));
 });
 // Create Server
 const server = http.createServer(app);
