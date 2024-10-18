@@ -1,12 +1,37 @@
 {
-  "name": "your-root-project",
+  "name": "chatty_chatter",
   "version": "1.0.0",
-  "private": true,
+  "description": "<h1>ChattyChatter.com </h1>\r Welcome to the official GitHub repository for the ChatterMatters website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.",
+  "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run start --prefix server\" \"npm run start --prefix client\"",
-    "deploy": "npm run build --prefix client && node server/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && node app.js"
   },
   "dependencies": {
-    "concurrently": "^9.0.1"
-  }
+    "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^1.41.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.7.2",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.16",
+    "concurrently": "^9.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
+    "react-scripts": "^5.0.1",
+    "react-tilt": "^1.0.2",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "web-vitals": "^2.1.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

@@ -18,7 +18,7 @@ mongoose.set("debug", true);
 
 // Access environment variables after dotenv has been loaded
 const DATABASE_URL = process.env.DATABASE_URL;
-const PORT = process.env.PORT || 5000;
+
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -38,6 +38,17 @@ app.use((req, res, next) => {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, "../build")));
+
+app.get("/*", function(req,res){
+  res.sendFile(
+    path.join(__dirname,"../client/build/index.html"),
+    function(err){
+      if(err){
+        res.status(500).send(err)
+      }
+    }
+  );
+})
 // Create Server
 const server = http.createServer(app);
 
@@ -232,6 +243,8 @@ io.on("connection", (socket) => {
     console.log("Connection Restored.");
   });
 });
+
+const PORT = process.env.PORT || 5000;
 
 server.listen(5000, () => {
   console.log(`Server is running on ${PORT}`);
