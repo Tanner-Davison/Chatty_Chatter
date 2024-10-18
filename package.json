@@ -4,8 +4,8 @@
   "description": "<h1>ChattyChatter.com </h1>\r Welcome to the official GitHub repository for the ChatterMatters website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-   "heroku-postbuild": "cd client && npm install --legacy-peer-deps && chmod +x ./node_modules/.bin/react-scripts && NODE_ENV=development npm run build"
+   "start": "node server/index.js",
+  "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "engines": {
     "node": "20.x",
