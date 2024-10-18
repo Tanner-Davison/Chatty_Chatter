@@ -110,7 +110,7 @@ const Login = () => {
       const userExist = await findUser.data;
       if (userExist.username === username.toLowerCase()) {
         const storedUsername = userExist.username;
-        console.log(userExist.profilePic.url);
+       
         setLoginFailed(false);
         sessionStorage.setItem("active_user", JSON.stringify(userExist));
         sessionStorage.setItem("username", JSON.stringify(storedUsername));
@@ -145,7 +145,6 @@ const Login = () => {
   useEffect(() => {
     if (loginFailed) {
       setErrorCss("error-css");
-      console.log("error css is working");
     } else if (loginFailed === false) {
       setErrorCss("");
       setResError("");

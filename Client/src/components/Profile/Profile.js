@@ -38,13 +38,13 @@ const Profile = () => {
     await axios
       .post(`/addFriend`, params)
       .then((res) => {
-        console.log(res);
+       
         const { success } = res.data;
         if (success) {
-          console.log("friend was added ");
+        
           setFriendAdded(true);
         } else {
-          console.log("friend removed");
+     
           setFriendAdded(false);
         }
       })
@@ -66,14 +66,13 @@ const Profile = () => {
         setAllUserData(userData);
       }
       setUserDataExists(true);
-      console.log(userData.profilePic);
+      
       setUserInfo({
         username: userData.username,
         profile_pic: userData.profilePic,
         userPageInfo: userData.profileContent,
       });
     } else {
-      console.log("no data");
       setUserDataExists(false);
       return;
     }
@@ -92,7 +91,7 @@ const Profile = () => {
         const { success } = res;
         if (success) {
           getData();
-          console.log("we did it!");
+        
           setCustomProfileData(!customProfileData);
           setUserDataExists(true);
         }
@@ -103,9 +102,6 @@ const Profile = () => {
   };
   const editYourProfile = async (e) => {
     e.preventDefault();
-    console.log("customProfileData", customProfileData);
-    console.log("switchToggle", switchToggle);
-    console.log("isEditing", isEditing);
 
     setCustomProfileData(!customProfileData);
     setSwitchToggle(!switchToggle);
@@ -118,7 +114,6 @@ const Profile = () => {
     return;
   };
   useEffect(() => {
-    console.log("URL changed:", location.pathname);
 
     getData(username);
     //eslint-disable-next-line

@@ -17,7 +17,7 @@ const mongoose = require("mongoose");
 mongoose.set("debug", true);
 
 // Access environment variables after dotenv has been loaded
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.MONGODB_URI;
 
 
 const allowedOrigins = [
@@ -31,8 +31,6 @@ const allowedOrigins = [
 app.use(cors())
 app.use(express.json());
 app.use((req, res, next) => {
-  console.log("Request body:", req.body);
-  console.log("Response Data", res.data);
   next();
 });
 
@@ -111,10 +109,9 @@ io.on("connection", (socket) => {
 
   socket.on("join_room", async (data) => {
     const userExist = await dbController.findUserAndRoom(data);
-    console.log("JOIN ROOM DATA");
     const inRoomPrev = userExist.inRoomPrev;
     const roomHasMessages = userExist.hasMessages;
-    console.log(data, "console.logging here");
+
     if (!userExist) {
       return console.log("No user found.");
     }
@@ -244,8 +241,9 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
 
-server.listen(5000, () => {
-  console.log(`Server is running on ${PORT}`);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

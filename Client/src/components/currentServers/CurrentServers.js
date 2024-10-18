@@ -29,10 +29,10 @@ const CurrentServers = () => {
         doesUserExist ? doesUserExist : userLoginInfo.username
       );
       setRoomsJoined(allRooms.roomsJoined);
-      console.log(allRooms.roomsJoined);
+      
       setRoomsCreated(allRooms.roomsCreated);
 
-      console.log(allRooms.roomsJoined.length);
+      
 
       if (allRooms.roomsJoined.length > 0 || allRooms.roomsCreated.length > 0) {
         setNewUserToggle(false);
@@ -41,7 +41,7 @@ const CurrentServers = () => {
   }; 
   const getAllDataForRooms =async()=>{
     const roomsData = await getAllRoomsData(doesUserExist? doesUserExist: userLoginInfo.username)
-   console.log(roomsData)
+  
       setAllRoomsData(roomsData)
     
   }
@@ -59,9 +59,6 @@ const CurrentServers = () => {
   useEffect(() => {
     getAllDataForRooms();
     displayRooms();
-    console.log(roomsJoined);
-    console.log(allRoomsData)
-
     // eslint-disable-next-line
   }, []);
 

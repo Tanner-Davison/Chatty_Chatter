@@ -68,7 +68,7 @@ const PublicRoomsCreated = ({ roomsCreated, handleClick, allRoomsData }) => {
   );
   useEffect(() => {
     if (privateMadeRooms.length === 4) {
-      console.log("this is running");
+     
       setCurrentIndex(0);
       setNoData(false)
       

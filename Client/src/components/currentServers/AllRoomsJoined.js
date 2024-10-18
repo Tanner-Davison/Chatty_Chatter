@@ -6,7 +6,7 @@ const AllRoomsJoined = async (username) => {
       `/api/users/${username}/rooms`
     );
     const data = roomsArray.data;
-    console.log(data);
+    
     return data ? data : [];
   } catch (error) {
     console.error("An error occurred:", error);
@@ -19,7 +19,7 @@ const getAllRoomsData = async (username) => {
       `/getAllRoomsUserCreated/${username}`
     );
     const roomData = allRoomsCreated.data;
-    console.log(roomData);
+   
     return roomData ? roomData : [];
   } catch (err) {
     console.error(
@@ -34,10 +34,8 @@ const TryDeleteOne = async (roomId, roomNumber) => {
     return;
   }
 
-  console.log("Deleting room:", roomId, roomNumber);
-
   try {
-    console.log(`/deleteSingleRoom`);
+   
     const deleteRequest = await axios.post(`/deleteSingleRoom`, {
       roomId,
       roomNumber,

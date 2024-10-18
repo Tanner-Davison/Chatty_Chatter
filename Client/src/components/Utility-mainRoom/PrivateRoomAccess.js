@@ -30,7 +30,6 @@ const PrivateRoomAccess = ({roomData, setIsPrivateRoom}) => {
             })
             .then((res) => {
                 if (res.data.message === 'success') {
-                    console.log('Access Granted')
                     setIsError(false)
                     setIsPrivateRoom(false)
 					handlLoginSuccess(roomData.room_number)

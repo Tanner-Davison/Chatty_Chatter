@@ -48,7 +48,6 @@ const RoomsToExplore = ({ roomsCreated, handleClick }) => {
   };
   useEffect(() => {
     getRoomData();
-    console.log(allRooms);
     //eslint-disable-next-line
   }, [roomsCreated]);
 

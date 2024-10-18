@@ -74,19 +74,16 @@ const RoomHelper = ({
 
     if (roomToMatch) {
       const numberOfUsers = roomToMatch.users_in_room.length;
-      console.log(numberOfUsers);
+     
       setUsersInroom(numberOfUsers); 
       SetDisplayAllUsers(!displayAllUsers);
     } else {
-      console.log("Room not found");
+      
     }
   };
 
   const handleDeleteEvent = async (event, room_id, roomNumber) => {
     event.stopPropagation();
-    console.log(room_id);
-    console.log(roomNumber);
-    console.log(roomData); 
     handleClose(event);
 
     try {

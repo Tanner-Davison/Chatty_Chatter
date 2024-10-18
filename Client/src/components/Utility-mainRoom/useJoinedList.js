@@ -41,9 +41,7 @@ const useJoinedList = () => {
     }
   };
   const addRoom = async (username, roomNumber, roomName) => {
-    // console.log(username)
-    // console.log(roomNumber)
-    // console.log(roomName)
+ 
     try {
       const sendData = await axios.post(
         `/addRoomToUser`,
@@ -59,7 +57,7 @@ const useJoinedList = () => {
       } else if (response.room) {
         console.log("did not receive a message body in return.");
       }
-      console.log(joinedListResponse);
+    
       return;
     } catch (err) {
       setError("Error in AddRoom Helper: " + err);

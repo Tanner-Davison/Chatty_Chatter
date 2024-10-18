@@ -60,7 +60,6 @@ const SubscribedList = ({ roomsJoined, handleRoomButtonClick, allRoomsData }) =>
       setNoData(false);
     }
     if (subscribedRooms.length === 4) {
-      console.log("this is running");
       setCurrentIndex(0);
       setNoData(false);
     }

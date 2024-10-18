@@ -1,6 +1,5 @@
 const loadRoomHistory = async (room) => {
   try {
-    console.log(room);
     const response = await fetch(`/roomHistory/${room}`);
     const data = await response.json();
 

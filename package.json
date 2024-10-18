@@ -4,7 +4,7 @@
   "description": "<h1>ChattyChatter.com </h1>\r Welcome to the official GitHub repository for the ChatterMatters website! Dive into some live, interactive debates on gender topics, share your insights, and see what others have to say.",
   "main": "index.js",
   "scripts": {
-    "start": "cd server && node index.js",
+   "start": "node server/index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

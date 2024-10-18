@@ -1,6 +1,5 @@
 import styles from "./ProfilePage.module.css";
 const ProfilePage = ({ userData }) => {
-  console.log(userData);
   const friendsCount = userData.friends ? userData.friends.length : "0";
   const profession = userData.profession ? userData.profession : "unkown";
   const education = userData.education ? userData.education : "unknown";

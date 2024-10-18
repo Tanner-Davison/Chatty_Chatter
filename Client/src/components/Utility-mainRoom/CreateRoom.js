@@ -101,7 +101,6 @@ const CreateRoom = (props) => {
     event.preventDefault();
     const isError = handlePrivateErrorState(category, privateRoomName, password);
     if(isError){
-      console.log('there is an error dude')
       return setErrorState(true)
     }
     const getRandomNum = () => {
