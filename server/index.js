@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../client/build')));
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
@@ -73,12 +73,8 @@ app.post("/updateUserProfile", EndpointHandler.updateProfileVariables);
 app.post("/addFriend", EndpointHandler.addFriend);
 app.post("/checkIfFriends", EndpointHandler.checkIfAlreadyFriend);
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"), (err) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-  });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 const io = new Server(server, {
   cors: {
