@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 
 const express = require("express");
 const app = express();
@@ -44,7 +44,7 @@ app.get('*', (req, res) => {
 const server = http.createServer(app);
 
 // Connect to MongoDB
-connectDB(MONGODB_URI);
+connectDB();
 
 app.get("/roomHistory/:room", EndpointHandler.roomHistory);
 app.get("/user_info/:username", EndpointHandler.userInfo);
