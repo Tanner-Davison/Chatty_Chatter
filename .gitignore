@@ -25,5 +25,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 #sub directories
-Client/node_modules/
-Server/node_modules/
+node_modules/
+client/node_modules/
